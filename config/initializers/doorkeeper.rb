@@ -1,0 +1,27 @@
+Doorkeeper.configure do
+  orm :active_record
+
+  # This block will be called to check whether the resource owner is authenticated or not.
+  resource_owner_authenticator do
+    current_person || warden.authenticate!(scope: :user)
+  end
+
+  resource_owner_from_credentials do |routes|
+    p = User.find_for_database_authentication(email: params[:email])
+    p if p && p.valid_password?(params[:password])
+  end
+
+  # Access token expiration time (default 2 hours)
+  access_token_expires_in 24.hours
+
+  # Define access token scopes for your provider
+  # For more information go to https://github.com/applicake/doorkeeper/wiki/Using-Scopes
+  default_scopes  :api
+  optional_scopes :write
+
+  skip_authorization do |resource_owner, client|
+    true
+  end
+
+  grant_flows %w(authorization_code implicit password client_credentials)
+end
