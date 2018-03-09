@@ -3,8 +3,8 @@ class CreateContracts < ActiveRecord::Migration[5.1]
     create_table :contracts do |t|
       t.belongs_to :player
       t.date :signed_date
-      t.date :start
-      t.date :end
+      t.date :start_date
+      t.date :end_date
 
       t.string :origin
       t.string :destination

@@ -6,26 +6,38 @@ module Users
 
     before_action :not_allowed, only: %i[new edit cancel]
 
+    def new
+      super
+    end
+
+    def edit
+      super
+    end
+
+    def cancel
+      super
+    end
+
     private
 
-    def not_allowed
-      raise MethodNotAllowed
-    end
+      def not_allowed
+        raise MethodNotAllowed
+      end
 
-    def sign_up_params
-      params.require(:user).permit %i[
-        email
-        password
-        password_confirmation
-        full_name
-      ]
-    end
+      def sign_up_params
+        params.require(:user).permit %i[
+          email
+          password
+          password_confirmation
+          full_name
+        ]
+      end
 
-    def account_update_params
-      params.require(:user).permit %i[
-        email
-        full_name
-      ]
-    end
+      def account_update_params
+        params.require(:user).permit %i[
+          email
+          full_name
+        ]
+      end
   end
 end

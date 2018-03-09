@@ -19,5 +19,26 @@
 require 'rails_helper'
 
 RSpec.describe Cost, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:addon_clause) { Faker::Number.between(0, 100) }
+
+  it "has a valid factory" do
+    expect(FactoryBot.create(:cost)).to be_valid
+  end
+  
+  it 'requires a type' do
+    expect(FactoryBot.build(:cost, type: nil)).to_not be_valid
+  end
+  
+  it 'requires some type of fee' do
+    expect(FactoryBot.build(:cost, fee: nil)).to_not be_valid
+    expect(FactoryBot.build(:cost, fee: nil, traded_player_id: Faker::Number.digit)).to be_valid
+    expect(FactoryBot.build(:cost, fee: nil, addon_clause: addon_clause)).to be_valid
+  end
+  
+  it 'has an add-on clause between 0 and 100' do
+    expect(FactoryBot.build(:cost, addon_clause: Faker::Number.negative)).to_not be_valid
+    expect(FactoryBot.build(:cost, addon_clause: Faker::Number.between(101, 1_000_000))).to_not be_valid
+    expect(FactoryBot.build(:cost, addon_clause: addon_clause)).to be_valid
+  end
+
 end

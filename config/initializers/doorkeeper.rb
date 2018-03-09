@@ -6,7 +6,7 @@ Doorkeeper.configure do
     current_person || warden.authenticate!(scope: :user)
   end
 
-  resource_owner_from_credentials do |routes|
+  resource_owner_from_credentials do
     p = User.find_for_database_authentication(email: params[:email])
     p if p && p.valid_password?(params[:password])
   end
@@ -19,7 +19,7 @@ Doorkeeper.configure do
   default_scopes  :api
   optional_scopes :write
 
-  skip_authorization do |resource_owner, client|
+  skip_authorization do
     true
   end
 

@@ -13,6 +13,7 @@
 #  age         :integer
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  status      :string
 #
 # Indexes
 #
@@ -21,11 +22,17 @@
 
 class Player < ApplicationRecord
   belongs_to :team
-  has_many :player_histories
-  has_many :injuries
-  has_many :loans
-  has_many :contracts
+  has_many :player_histories, dependent: :destroy
+  has_many :injuries, dependent: :destroy
+  has_many :loans, dependent: :destroy
+  has_many :contracts, dependent: :destroy
   validates_associated :contracts
+
+  STATUSES = %w[
+    active
+    injured
+    loaned
+  ].freeze
 
   POSITIONS = %w[
     GK
@@ -45,7 +52,25 @@ class Player < ApplicationRecord
     ST
   ].freeze
 
+  PERMITTED_ATTRIBUTES = %i[
+    name
+    nationality
+    pos
+    sec_pos
+    ovr
+    value
+    age
+  ].freeze
+
+  def self.permitted_attributes
+    PERMITTED_ATTRIBUTES
+  end
+
   serialize :sec_pos, Array
+
+  ################
+  #  VALIDATION  #
+  ################
 
   validates :name, presence: true
   validates :nationality, presence: true
@@ -53,6 +78,7 @@ class Player < ApplicationRecord
   validates :ovr, numericality: { only_integer: true }
   validates :value, numericality: { only_integer: true }
   validates :pos, inclusion: { in: POSITIONS }
+  validates :status, inclusion: { in: STATUSES }, allow_nil: true
   validate :valid_sec_pos
 
   def valid_sec_pos
@@ -63,4 +89,37 @@ class Player < ApplicationRecord
     end
   end
 
+  ##############
+  #  CALLBACK  #
+  ##############
+
+  after_save :save_history
+
+  def save_history
+    return unless saved_change_to_age? ||
+                  saved_change_to_ovr? ||
+                  saved_change_to_value?
+    player_histories.create(
+      datestamp: team.current_date,
+      age:       age,
+      ovr:       ovr,
+      value:     value,
+    )
+  end
+
+  ###############
+  #  ACCESSORS  #
+  ###############
+
+  def active?
+    status == 'active'
+  end
+
+  def injured?
+    status == 'injured'
+  end
+
+  def loaned?
+    status == 'loaned'
+  end
 end

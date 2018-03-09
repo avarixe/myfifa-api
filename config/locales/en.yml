@@ -20,4 +20,12 @@
 # available at http://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  activerecord:
+    attributes:
+      team:
+        start_date: 'Start Date'
+        current_date: 'Current Date'
+      player:
+        ovr: 'Overall Rating'
+        pos: 'Position'
+        sec_pos: 'Secondary Positions'

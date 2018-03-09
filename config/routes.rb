@@ -7,7 +7,15 @@ Rails.application.routes.draw do
                registrations: 'users/registrations'
              }
 
-  namespace :api, defaults: { format: :json }, path: '/' do
+  constraints format: :json do
     get 'users/sync', to: 'users#sync'
+
+    resources :teams do
+      resources :players do
+        resources :loans
+        resources :injuries
+        resources :contracts
+      end
+    end
   end
 end

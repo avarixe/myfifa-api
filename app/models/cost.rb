@@ -27,4 +27,13 @@ class Cost < ApplicationRecord
   ].freeze
 
   validates :type, inclusion: { in: VALID_TYPES }
+  validates :addon_clause,
+            inclusion: { in: 0..100 },
+            allow_nil: true
+  validate :valid_cost?
+
+  def valid_cost?
+    return if [fee, traded_player_id, addon_clause].any?
+    errors.add(:base, 'Cost cannot be free')
+  end
 end

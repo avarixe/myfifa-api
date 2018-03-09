@@ -16,11 +16,12 @@
 #  index_player_histories_on_player_id  (player_id)
 #
 
-class PlayerHistory < ApplicationRecord
-  belongs_to :player
-
-  validates :datestamp, presence: true
-  validates :age, numericality: { only_integer: true }
-  validates :ovr, numericality: { only_integer: true }
-  validates :value, numericality: { only_integer: true }
+FactoryBot.define do
+  factory :player_history do
+    datestamp Faker::Date.backward(365)
+    age Faker::Number.between(18, 40)
+    ovr Faker::Number.between(50, 90)
+    value Faker::Number.between(50_000, 200_000_000)
+    player
+  end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180305063245) do
+ActiveRecord::Schema.define(version: 20180308181339) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -33,8 +33,8 @@ ActiveRecord::Schema.define(version: 20180305063245) do
   create_table "contracts", force: :cascade do |t|
     t.bigint "player_id"
     t.date "signed_date"
-    t.date "start"
-    t.date "end"
+    t.date "start_date"
+    t.date "end_date"
     t.string "origin"
     t.string "destination"
     t.boolean "loan", default: false
@@ -63,8 +63,8 @@ ActiveRecord::Schema.define(version: 20180305063245) do
 
   create_table "injuries", force: :cascade do |t|
     t.bigint "player_id"
-    t.date "start"
-    t.date "end"
+    t.date "start_date"
+    t.date "end_date"
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -73,8 +73,8 @@ ActiveRecord::Schema.define(version: 20180305063245) do
 
   create_table "loans", force: :cascade do |t|
     t.bigint "player_id"
-    t.date "start"
-    t.date "end"
+    t.date "start_date"
+    t.date "end_date"
     t.string "destination"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -143,6 +143,7 @@ ActiveRecord::Schema.define(version: 20180305063245) do
     t.integer "age"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "status"
     t.index ["team_id"], name: "index_players_on_team_id"
   end
 
@@ -171,6 +172,7 @@ ActiveRecord::Schema.define(version: 20180305063245) do
     t.inet "last_sign_in_ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "admin", default: false
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end

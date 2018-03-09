@@ -16,6 +16,7 @@
 #  last_sign_in_ip        :inet
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
+#  admin                  :boolean          default(FALSE)
 #
 # Indexes
 #
@@ -29,5 +30,14 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  has_many :teams
+  PERMITTED_ATTRIBUTES = %i[
+    email
+    full_name
+  ].freeze
+
+  def self.permitted_attributes
+    PERMITTED_ATTRIBUTES
+  end
+
+  has_many :teams, dependent: :destroy
 end

@@ -13,12 +13,11 @@
 
 # Ignore all logfiles and tempfiles.
 /log/*
-/tmp/*
 !/log/.keep
-!/tmp/.keep
+/tmp
 
-# Ignore Byebug command history file.
-.byebug_history
-
+public/assets/*
+*.dump
 # Ignore application configuration
 /config/application.yml
+*.pdf

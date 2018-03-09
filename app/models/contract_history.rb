@@ -22,4 +22,19 @@
 
 class ContractHistory < ApplicationRecord
   belongs_to :contract
+
+  validates :datestamp, presence: true
+  validates :end_date, presence: true
+  validates :wage, numericality: { only_integer: true }
+  validates :bonus_req_type,
+            inclusion: { in: Contract::BONUS_REQUIREMENT_TYPES },
+            allow_nil: true
+  validate  :valid_performance_bonus
+
+  def valid_performance_bonus
+    if [performance_bonus, bonus_req, bonus_req_type].any? &&
+       ![performance_bonus, bonus_req, bonus_req_type].all?
+      errors.add(:performance_bonus, 'requires all three fields')
+    end
+  end
 end

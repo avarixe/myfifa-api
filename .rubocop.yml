@@ -1,0 +1,24 @@
+inherit_from: .rubocop_todo.yml
+
+Rails:
+  Enabled: true
+AllCops:
+  Exclude:
+    - 'bin/*'
+    - 'db/**/*'
+    - 'config/**/*'
+    - 'script/**/*'
+    - 'spec/**/*'
+
+Layout/IndentationConsistency:
+  EnforcedStyle: rails
+Style/Documentation:
+  Enabled: false
+Style/TrailingCommaInArguments:
+  Enabled: false
+Style/TrailingCommaInArrayLiteral:
+  Enabled: false
+Style/TrailingCommaInHashLiteral:
+  Enabled: false
+Rails/FindEach:
+  Enabled: false
