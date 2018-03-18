@@ -1,7 +1,7 @@
 class ContractsController < APIController
   load_and_authorize_resource :team
-  load_and_authorize_resource :player, through: :team
-  load_and_authorize_resource :contract, through: :player
+  load_and_authorize_resource :player
+  load_and_authorize_resource :contract, through: :player, except: %i[create]
 
   def index
     render json: @contracts

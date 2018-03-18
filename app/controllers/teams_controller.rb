@@ -1,5 +1,5 @@
 class TeamsController < APIController
-  load_and_authorize_resource
+  load_and_authorize_resource except: %i[create]
 
   def index
     render json: current_user.teams.to_json

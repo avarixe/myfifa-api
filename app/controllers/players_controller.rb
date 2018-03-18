@@ -1,6 +1,6 @@
 class PlayersController < APIController
   load_and_authorize_resource :team
-  load_and_authorize_resource :player, through: :team
+  load_and_authorize_resource :player, through: :team, except: %i[create]
 
   def index
     render json: @players
