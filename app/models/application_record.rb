@@ -1,5 +1,5 @@
 class ApplicationRecord < ActiveRecord::Base
-  default_scope { order(created_at: :desc) }
+  default_scope { order(id: :asc) }
 
   self.abstract_class = true
 end

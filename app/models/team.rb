@@ -58,4 +58,15 @@ class Team < ApplicationRecord
       player.contracts.expired? && player.update(status: nil)
     end
   end
+
+  def as_json(options = {})
+    super((options || {}).merge({
+      methods: %i[time_period]
+    }))
+  end
+
+  def time_period
+    start_year = start_date.year
+    "#{start_date.year} - #{current_date.year}"
+  end
 end
