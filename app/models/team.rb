@@ -37,12 +37,12 @@ class Team < ApplicationRecord
   validates :title, presence: true
   validates :start_date, presence: true
 
-  before_save :set_current_date
+  before_validation :set_start_date
   after_save :start_new_contracts
   after_save :close_expired_contracts
 
-  def set_current_date
-    self.current_date ||= start_date
+  def set_start_date
+    self.start_date ||= self.current_date
   end
 
   def start_new_contracts

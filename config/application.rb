@@ -32,8 +32,7 @@ module MyfifaApi
         origins '*'
         resource '*',
           headers: :any,
-          methods: %i(get post put delete options),
-          max_age: 0
+          methods: %i(get post put patch delete options)
       end
     end
 

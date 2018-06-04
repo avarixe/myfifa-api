@@ -16,8 +16,8 @@ Doorkeeper.configure do
 
   # Define access token scopes for your provider
   # For more information go to https://github.com/applicake/doorkeeper/wiki/Using-Scopes
-  default_scopes  :api
-  optional_scopes :write
+  # default_scopes  :public
+  # optional_scopes :write
 
   skip_authorization do
     true

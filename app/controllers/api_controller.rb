@@ -4,7 +4,7 @@ class APIController < ApplicationController
   clear_respond_to
   respond_to :json
 
-  before_action :doorkeeper_authorize!
+  # before_action :doorkeeper_authorize!
   before_action :authenticate_user!
 
   rescue_from CanCan::AccessDenied do |e|
