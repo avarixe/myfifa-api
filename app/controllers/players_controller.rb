@@ -1,6 +1,6 @@
 class PlayersController < APIController
   load_and_authorize_resource :team
-  load_and_authorize_resource :player, through: :team, except: %i[create]
+  load_and_authorize_resource :player, through: :team, shallow: true, except: %i[create]
 
   def index
     render json: @players
@@ -28,6 +28,6 @@ class PlayersController < APIController
   private
 
     def player_params
-      params.require(:player).permit Player.permitted_attributes
+      params.require(:player).permit(*Player.permitted_attributes, { sec_pos: [] })
     end
 end

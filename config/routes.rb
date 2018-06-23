@@ -1,5 +1,7 @@
 Rails.application.routes.draw do
-  use_doorkeeper
+  use_doorkeeper do
+    controllers tokens: 'tokens'
+  end
 
   devise_for :users,
              only: :registrations,
@@ -10,7 +12,7 @@ Rails.application.routes.draw do
   constraints format: :json do
     get 'users/sync', to: 'users#sync'
 
-    resources :teams do
+    resources :teams, shallow: true do
       resources :players do
         resources :loans
         resources :injuries

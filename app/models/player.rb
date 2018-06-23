@@ -56,7 +56,6 @@ class Player < ApplicationRecord
     name
     nationality
     pos
-    sec_pos
     ovr
     value
     age
@@ -73,7 +72,7 @@ class Player < ApplicationRecord
   ################
 
   validates :name, presence: true
-  validates :nationality, presence: true
+  # validates :nationality, presence: true
   validates :age, numericality: { only_integer: true }
   validates :ovr, numericality: { only_integer: true }
   validates :value, numericality: { only_integer: true }
