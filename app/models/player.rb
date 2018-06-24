@@ -14,6 +14,7 @@
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  status      :string
+#  youth       :boolean          default(TRUE)
 #
 # Indexes
 #
@@ -59,6 +60,7 @@ class Player < ApplicationRecord
     ovr
     value
     age
+    youth
   ].freeze
 
   def self.permitted_attributes
@@ -120,5 +122,15 @@ class Player < ApplicationRecord
 
   def loaned?
     status == 'loaned'
+  end
+
+  def as_json(options = {})
+    super((options || {}).merge({
+      methods: %i[last_contract]
+    }))
+  end
+
+  def last_contract
+    contracts.last
   end
 end

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180308181339) do
+ActiveRecord::Schema.define(version: 20180624075552) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -18,7 +18,6 @@ ActiveRecord::Schema.define(version: 20180308181339) do
   create_table "contract_histories", force: :cascade do |t|
     t.bigint "contract_id"
     t.date "datestamp"
-    t.date "end_date"
     t.integer "wage"
     t.integer "signing_bonus"
     t.integer "release_clause"
@@ -27,18 +26,13 @@ ActiveRecord::Schema.define(version: 20180308181339) do
     t.string "bonus_req_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "duration"
     t.index ["contract_id"], name: "index_contract_histories_on_contract_id"
   end
 
   create_table "contracts", force: :cascade do |t|
     t.bigint "player_id"
     t.date "signed_date"
-    t.date "start_date"
-    t.date "end_date"
-    t.string "origin"
-    t.string "destination"
-    t.boolean "loan", default: false
-    t.boolean "youth", default: false
     t.integer "wage"
     t.integer "signing_bonus"
     t.integer "release_clause"
@@ -47,18 +41,8 @@ ActiveRecord::Schema.define(version: 20180308181339) do
     t.string "bonus_req_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "duration"
     t.index ["player_id"], name: "index_contracts_on_player_id"
-  end
-
-  create_table "costs", force: :cascade do |t|
-    t.bigint "contract_id"
-    t.string "type"
-    t.integer "fee"
-    t.integer "traded_player_id"
-    t.integer "addon_clause"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.index ["contract_id"], name: "index_costs_on_contract_id"
   end
 
   create_table "injuries", force: :cascade do |t|
@@ -144,6 +128,7 @@ ActiveRecord::Schema.define(version: 20180308181339) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "status"
+    t.boolean "youth", default: true
     t.index ["team_id"], name: "index_players_on_team_id"
   end
 
@@ -155,7 +140,23 @@ ActiveRecord::Schema.define(version: 20180308181339) do
     t.boolean "active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "currency", default: "$"
     t.index ["user_id"], name: "index_teams_on_user_id"
+  end
+
+  create_table "transfers", force: :cascade do |t|
+    t.bigint "player_id"
+    t.date "signed_date"
+    t.date "effective_date"
+    t.string "origin"
+    t.string "destination"
+    t.integer "fee"
+    t.string "traded_player"
+    t.integer "addon_clause"
+    t.boolean "loan", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["player_id"], name: "index_transfers_on_player_id"
   end
 
   create_table "users", force: :cascade do |t|

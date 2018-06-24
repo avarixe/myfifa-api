@@ -5,7 +5,6 @@
 #  id                :integer          not null, primary key
 #  contract_id       :integer
 #  datestamp         :date
-#  end_date          :date
 #  wage              :integer
 #  signing_bonus     :integer
 #  release_clause    :integer
@@ -14,6 +13,7 @@
 #  bonus_req_type    :string
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  duration          :integer
 #
 # Indexes
 #

@@ -17,6 +17,7 @@ Rails.application.routes.draw do
         resources :loans
         resources :injuries
         resources :contracts
+        resources :transfers
       end
     end
   end

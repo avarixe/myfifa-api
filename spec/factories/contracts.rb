@@ -5,12 +5,6 @@
 #  id                :integer          not null, primary key
 #  player_id         :integer
 #  signed_date       :date
-#  start_date        :date
-#  end_date          :date
-#  origin            :string
-#  destination       :string
-#  loan              :boolean          default(FALSE)
-#  youth             :boolean          default(FALSE)
 #  wage              :integer
 #  signing_bonus     :integer
 #  release_clause    :integer
@@ -19,6 +13,7 @@
 #  bonus_req_type    :string
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
+#  duration          :integer
 #
 # Indexes
 #
