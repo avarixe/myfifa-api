@@ -3,7 +3,7 @@ class PlayersController < APIController
   load_and_authorize_resource :player, through: :team, shallow: true, except: %i[create]
 
   def index
-    @players = @players.includes(:contracts)
+    @players = @players.preload(:contracts, :injuries, :loans)
     render json: @players
   end
 

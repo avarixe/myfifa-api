@@ -24,7 +24,6 @@ class ContractHistory < ApplicationRecord
   belongs_to :contract
 
   validates :datestamp, presence: true
-  validates :end_date, presence: true
   validates :wage, numericality: { only_integer: true }
   validates :bonus_req_type,
             inclusion: { in: Contract::BONUS_REQUIREMENT_TYPES },

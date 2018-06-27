@@ -12,12 +12,12 @@ class LoansController < APIController
   end
 
   def create
-    @loan = @player.loans.new(new_loan_params)
+    @loan = @player.loans.new(loan_params)
     save_record @loan
   end
 
   def update
-    @loan.attributes = edit_loan_params
+    @loan.attributes = loan_params
     save_record @loan
   end
 
@@ -27,11 +27,7 @@ class LoansController < APIController
 
   private
 
-    def new_loan_params
-      params.require(:loan).permit Loan.permitted_create_attributes
-    end
-
-    def edit_loan_params
-      params.require(:loan).permit Loan.permitted_update_attributes
+    def loan_params
+      params.require(:loan).permit Loan.permitted_attributes
     end
 end

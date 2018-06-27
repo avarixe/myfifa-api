@@ -33,11 +33,7 @@ class Transfer < ApplicationRecord
     loan
   ].freeze
 
-  def self.permitted_create_attributes
-    PERMITTED_ATTRIBUTES
-  end
-
-  def self.permitted_update_attributes
+  def self.permitted_attributes
     PERMITTED_ATTRIBUTES
   end
 
@@ -54,9 +50,14 @@ class Transfer < ApplicationRecord
   ###############
 
   after_initialize :set_signed_date
+  after_save :set_player_status
 
   def set_signed_date
     self.signed_date = team.current_date
+  end
+
+  def set_player_status
+    player.update(status: nil) if out?
   end
 
   ###############
@@ -64,5 +65,9 @@ class Transfer < ApplicationRecord
   ###############
 
   delegate :team, to: :player
+
+  def out?
+    team.title == origin
+  end
 
 end

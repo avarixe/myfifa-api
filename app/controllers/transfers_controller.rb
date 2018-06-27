@@ -27,11 +27,7 @@ class TransfersController < APIController
 
   private
 
-    def new_transfer_params
-      params.require(:transfer).permit Transfer.permitted_create_attributes
-    end
-
-    def edit_transfer_params
-      params.require(:transfer).permit Transfer.permitted_update_attributes
+    def transfer_params
+      params.require(:transfer).permit Transfer.permitted_attributes
     end
 end

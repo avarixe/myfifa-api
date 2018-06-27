@@ -24,13 +24,13 @@ class Injury < ApplicationRecord
     description
   ].freeze
 
-  def self.permitted_create_attributes
+  def self.permitted_attributes
     PERMITTED_ATTRIBUTES
   end
 
-  def self.permitted_update_attributes
-    PERMITTED_ATTRIBUTES.drop 1
-  end
+  #################
+  #  VALIDATIONS  #
+  #################
 
   validates :start_date, presence: true
   validates :end_date, date: { after_or_equal_to: :start_date }, allow_nil: true
@@ -41,9 +41,24 @@ class Injury < ApplicationRecord
     errors.add(:base, 'Player can not be injured when already injured.')
   end
 
+  ###############
+  #  CALLBACKS  #
+  ###############
+
+  after_initialize :set_start_date
   after_save :set_player_status
 
-  def set_player_status
-    player.update(status: (end_date ? 'active' : 'injured'))
+  def set_start_date
+    self.start_date = team.current_date
   end
+
+  def set_player_status
+    player.update(status: (end_date ? 'Active' : 'Injured'))
+  end
+
+  ###############
+  #  ACCESSORS  #
+  ###############
+
+  delegate :team, to: :player
 end

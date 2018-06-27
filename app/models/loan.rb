@@ -24,13 +24,13 @@ class Loan < ApplicationRecord
     destination
   ].freeze
 
-  def self.permitted_create_attributes
+  def self.permitted_attributes
     PERMITTED_ATTRIBUTES
   end
 
-  def self.permitted_update_attributes
-    PERMITTED_ATTRIBUTES.drop 1
-  end
+  ################
+  #  VALIDATION  #
+  ################
 
   validates :start_date, presence: true
   validates :destination, presence: true
@@ -38,14 +38,29 @@ class Loan < ApplicationRecord
             date: { after_or_equal_to: :start_date },
             allow_nil: true
 
+  ###############
+  #  CALLBACKS  #
+  ###############
+
+  after_initialize :set_start_date
   after_create :end_pending_injuries
-  after_save :set_player_as_active
+  after_save :set_player_status
+
+  def set_start_date
+    self.start_date = team.current_date
+  end
 
   def end_pending_injuries
     player.injuries.where(end_date: nil).update(end_date: start_date)
   end
 
-  def set_player_as_active
-    player.update(status: (end_date ? 'active' : 'loaned'))
+  def set_player_status
+    player.update(status: (end_date ? 'Active' : 'Loaned'))
   end
+
+  ###############
+  #  ACCESSORS  #
+  ###############
+
+  delegate :team, to: :player
 end

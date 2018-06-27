@@ -27,12 +27,13 @@ class Player < ApplicationRecord
   has_many :injuries, dependent: :destroy
   has_many :loans, dependent: :destroy
   has_many :contracts, dependent: :destroy
+  has_many :transfers, dependent: :destroy
   validates_associated :contracts
 
   STATUSES = %w[
-    active
-    injured
-    loaned
+    Active
+    Injured
+    Loaned
   ].freeze
 
   POSITIONS = %w[
@@ -113,24 +114,26 @@ class Player < ApplicationRecord
   ###############
 
   def active?
-    status == 'active'
+    status == 'Active'
   end
 
   def injured?
-    status == 'injured'
+    status == 'Injured'
   end
 
   def loaned?
-    status == 'loaned'
+    status == 'Loaned'
   end
 
   def as_json(options = {})
     super((options || {}).merge({
-      methods: %i[last_contract]
+      methods: %i[last_contract last_injury last_loan last_transfer]
     }))
   end
 
-  def last_contract
-    contracts.last
+  %w[contract injury loan transfer].each do |record|
+    define_method "last_#{record}" do
+      public_send(record.pluralize).last
+    end
   end
 end

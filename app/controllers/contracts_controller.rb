@@ -27,11 +27,7 @@ class ContractsController < APIController
 
   private
 
-    def new_contract_params
-      params.require(:contract).permit Contract.permitted_create_attributes
-    end
-
-    def edit_contract_params
-      params.require(:contract).permit Contract.permitted_update_attributes
+    def contract_params
+      params.require(:contract).permit Contract.permitted_attributes
     end
 end

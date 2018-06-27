@@ -42,11 +42,7 @@ class Contract < ApplicationRecord
     duration
   ].freeze
 
-  def self.permitted_create_attributes
-    PERMITTED_ATTRIBUTES
-  end
-
-  def self.permitted_update_attributes
+  def self.permitted_attributes
     PERMITTED_ATTRIBUTES
   end
 
@@ -75,8 +71,9 @@ class Contract < ApplicationRecord
 
   after_initialize :set_signed_date
   after_save :save_history
+  after_create :set_player_status
 
-  def set_signed_Date
+  def set_signed_date
     self.signed_date ||= team.current_date
   end
 
@@ -91,6 +88,10 @@ class Contract < ApplicationRecord
       bonus_req_type:    bonus_req_type,
       duration:          duration
     )
+  end
+
+  def set_player_status
+    player.update(status: 'Active')
   end
 
   ###############

@@ -12,12 +12,12 @@ class InjuriesController < APIController
   end
 
   def create
-    @injury = @player.injuries.new(new_injury_params)
+    @injury = @player.injuries.new(injury_params)
     save_record @injury
   end
 
   def update
-    @injury.attributes = edit_injury_params
+    @injury.attributes = injury_params
     save_record @injury
   end
 
@@ -27,11 +27,7 @@ class InjuriesController < APIController
 
   private
 
-    def new_injury_params
-      params.require(:injury).permit Injury.permitted_create_attributes
-    end
-
-    def edit_injury_params
-      params.require(:injury).permit Injury.permitted_update_attributes
+    def injury_params
+      params.require(:injury).permit Injury.permitted_attributes
     end
 end
