@@ -14,6 +14,7 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  duration          :integer
+#  end_date          :date
 #
 # Indexes
 #

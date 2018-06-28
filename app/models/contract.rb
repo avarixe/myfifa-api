@@ -14,6 +14,7 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  duration          :integer
+#  end_date          :date
 #
 # Indexes
 #
@@ -40,11 +41,14 @@ class Contract < ApplicationRecord
     bonus_req
     bonus_req_type
     duration
+    end_date
   ].freeze
 
   def self.permitted_attributes
     PERMITTED_ATTRIBUTES
   end
+
+  scope :active, -> { where(end_date: nil) }
 
   ################
   #  VALIDATION  #

@@ -19,7 +19,6 @@ class Loan < ApplicationRecord
   belongs_to :player
 
   PERMITTED_ATTRIBUTES = %i[
-    start_date
     end_date
     destination
   ].freeze
@@ -27,6 +26,8 @@ class Loan < ApplicationRecord
   def self.permitted_attributes
     PERMITTED_ATTRIBUTES
   end
+
+  scope :active, -> { where(end_date: nil) }
 
   ################
   #  VALIDATION  #

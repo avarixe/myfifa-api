@@ -28,6 +28,8 @@ class Injury < ApplicationRecord
     PERMITTED_ATTRIBUTES
   end
 
+  scope :active, -> { where(end_date: nil) }
+
   #################
   #  VALIDATIONS  #
   #################

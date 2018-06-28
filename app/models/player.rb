@@ -133,7 +133,7 @@ class Player < ApplicationRecord
 
   %w[contract injury loan transfer].each do |record|
     define_method "last_#{record}" do
-      public_send(record.pluralize).last
+      public_send(record.pluralize).active.last
     end
   end
 end

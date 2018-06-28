@@ -37,6 +37,8 @@ class Transfer < ApplicationRecord
     PERMITTED_ATTRIBUTES
   end
 
+  scope :active, -> { where(1) }
+
   ################
   #  VALIDATION  #
   ################
