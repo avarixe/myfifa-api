@@ -42,26 +42,26 @@ class Team < ApplicationRecord
   validates :currency, presence: true
 
   before_validation :set_start_date
-  # after_save :start_new_contracts
-  # after_save :close_expired_contracts
+  after_save :start_new_contracts
+  after_save :close_expired_contracts
 
   def set_start_date
     self.current_date ||= self.start_date
   end
 
-  # def start_new_contracts
-  #   players.includes(:contracts).where(status: nil).each do |player|
-  #     if player.contracts && player.contracts.last.active?
-  #       player.update(status: 'active')
-  #     end
-  #   end
-  # end
+  def start_new_contracts
+    players.includes(:contracts).where(status: nil).each do |player|
+      if player.contracts && player.contracts.last.active?
+        player.update(status: 'active')
+      end
+    end
+  end
 
-  # def close_expired_contracts
-  #   players.includes(:contracts).where.not(status: nil).each do |player|
-  #     player.contracts.expired? && player.update(status: nil)
-  #   end
-  # end
+  def close_expired_contracts
+    players.includes(:contracts).where.not(status: nil).each do |player|
+      player.contracts.expired? && player.update(status: nil)
+    end
+  end
 
   def as_json(options = {})
     super((options || {}).merge({

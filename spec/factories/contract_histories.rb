@@ -13,7 +13,8 @@
 #  bonus_req_type    :string
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
-#  duration          :integer
+#  end_date          :date
+#  effective_date    :date
 #
 # Indexes
 #

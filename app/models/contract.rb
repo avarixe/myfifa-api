@@ -13,8 +13,8 @@
 #  bonus_req_type    :string
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
-#  duration          :integer
 #  end_date          :date
+#  effective_date    :date
 #
 # Indexes
 #
@@ -40,8 +40,8 @@ class Contract < ApplicationRecord
     performance_bonus
     bonus_req
     bonus_req_type
-    duration
     end_date
+    effective_date
   ].freeze
 
   def self.permitted_attributes
@@ -55,12 +55,17 @@ class Contract < ApplicationRecord
   ################
 
   validates :signed_date, presence: true
+  validates :effective_date,
+            date: {
+              after_or_equal_to: :signed_date,
+              before_or_equal_to: :end_date
+            }
+  validates :end_date, presence: true
   validates :wage, numericality: { only_integer: true }
   validates :bonus_req_type,
             inclusion: { in: BONUS_REQUIREMENT_TYPES },
             allow_nil: true
   validates :duration, numericality: { only_integer: true }
-  # validates :costs, length: { maximum: 2 }
   validate  :valid_performance_bonus
 
   def valid_performance_bonus
@@ -90,12 +95,13 @@ class Contract < ApplicationRecord
       performance_bonus: performance_bonus,
       bonus_req:         bonus_req,
       bonus_req_type:    bonus_req_type,
-      duration:          duration
+      effective_date:    effective_date,
+      end_date:          end_date
     )
   end
 
   def set_player_status
-    player.update(status: 'Active')
+    player.update(status: 'Active') if team.current_date >= effective_date
   end
 
   ###############
@@ -105,4 +111,12 @@ class Contract < ApplicationRecord
   delegate :team, to: :player
   delegate :youth?, to: :player
   delegate :loaned?, to: :player
+
+  def active?
+    effective_date <= team.current_date && team.current_date <= end_date
+  end
+
+  def expired?
+    end_date < team.current_date
+  end
 end

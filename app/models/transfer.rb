@@ -37,12 +37,13 @@ class Transfer < ApplicationRecord
     PERMITTED_ATTRIBUTES
   end
 
-  scope :active, -> { where(1) }
+  scope :active, -> { where.not(signed_date: nil) }
 
   ################
   #  VALIDATION  #
   ################
 
+  validates :origin, presence: true
   validates :addon_clause,
             inclusion: { in: 0..100 },
             allow_nil: true
@@ -52,14 +53,14 @@ class Transfer < ApplicationRecord
   ###############
 
   after_initialize :set_signed_date
-  after_save :set_player_status
+  after_create :end_current_contract, if: :out?
 
   def set_signed_date
     self.signed_date = team.current_date
   end
 
-  def set_player_status
-    player.update(status: nil) if out?
+  def end_current_contract
+    player.contracts && player.contracts.last.update(end_date: signed_date)
   end
 
   ###############

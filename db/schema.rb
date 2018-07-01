@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180628062544) do
+ActiveRecord::Schema.define(version: 20180701045042) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -26,7 +26,8 @@ ActiveRecord::Schema.define(version: 20180628062544) do
     t.string "bonus_req_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "duration"
+    t.date "end_date"
+    t.date "effective_date"
     t.index ["contract_id"], name: "index_contract_histories_on_contract_id"
   end
 
@@ -41,8 +42,8 @@ ActiveRecord::Schema.define(version: 20180628062544) do
     t.string "bonus_req_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "duration"
     t.date "end_date"
+    t.date "effective_date"
     t.index ["player_id"], name: "index_contracts_on_player_id"
   end
 
