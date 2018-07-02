@@ -19,6 +19,8 @@ Rails.application.routes.draw do
         resources :contracts
         resources :transfers
       end
+      resources :matches do
+      end
     end
   end
 end

@@ -12,18 +12,12 @@ class Ability
         team.try(:user) == user
       end
       can :manage, Player, team: { user: user }
-      can :manage, Injury do |injury|
-        injury.try(:team).user_id == user.id
-      end
-      can :manage, Contract do |contract|
-        contract.try(:team).user_id == user.id
-      end
-      can :manage, Loan do |loan|
-        loan.try(:team).user_id == user.id
-      end
-      can :manage, Transfer do |transfer|
-        transfer.try(:team).user_id == user.id
-      end
+      can :manage, Match, team: { user: user }
+
+      can :manage, Injury, team: { user: user }
+      can :manage, Contract, team: { user: user }
+      can :manage, Loan, team: { user: user }
+      can :manage, Transfer, team: { user: user }
 
     end
     #
