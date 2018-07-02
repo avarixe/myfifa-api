@@ -13,12 +13,12 @@ class InjuriesController < APIController
 
   def create
     @injury = @player.injuries.new(injury_params)
-    save_record @injury
+    save_record @injury, json: @player
   end
 
   def update
     @injury.attributes = injury_params
-    save_record @injury
+    save_record @injury, json: @injury.player
   end
 
   def destroy

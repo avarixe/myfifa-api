@@ -45,12 +45,12 @@ class APIController < ApplicationController
       }, status: 500
     end
 
-    def save_record(record)
+    def save_record(record, options = {})
       if record.invalid?
         render json: { errors: record.errors.full_messages },
                status: 422
       elsif record.save
-        render json: record
+        render json: options[:json] || record
       else
         render_server_error
       end

@@ -13,12 +13,12 @@ class ContractsController < APIController
 
   def create
     @contract = @player.contracts.new(contract_params)
-    save_record @contract
+    save_record @contract, json: @player
   end
 
   def update
     @contract.attributes = contract_params
-    save_record @contract
+    save_record @contract, json: @contract.player
   end
 
   def destroy

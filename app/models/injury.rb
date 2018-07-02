@@ -19,16 +19,15 @@ class Injury < ApplicationRecord
   belongs_to :player
 
   PERMITTED_ATTRIBUTES = %i[
-    start_date
-    end_date
     description
+    recovered
   ].freeze
 
   def self.permitted_attributes
     PERMITTED_ATTRIBUTES
   end
 
-  scope :active, -> { where(end_date: nil) }
+  scope :active, -> (player) { where(end_date: nil) }
 
   #################
   #  VALIDATIONS  #
@@ -48,14 +47,22 @@ class Injury < ApplicationRecord
   ###############
 
   after_initialize :set_start_date
-  after_save :set_player_status
+  after_save :update_status
 
   def set_start_date
     self.start_date = team.current_date
   end
 
-  def set_player_status
-    player.update(status: (end_date ? 'Active' : 'Injured'))
+  ##############
+  #  MUTATORS  #
+  ##############
+
+  delegate :update_status, to: :player
+
+  def recovered=(val)
+    if player_id
+      write_attribute :end_date, team.current_date
+    end
   end
 
   ###############
@@ -63,4 +70,23 @@ class Injury < ApplicationRecord
   ###############
 
   delegate :team, to: :player
+
+  def active?
+    start_date <= team.current_date &&
+    (end_date.nil? || team.current_date < end_date)
+  end
+
+  def recovered?
+    end_date.present?
+  end
+
+  def recovered
+    recovered?
+  end
+
+  def as_json(options = {})
+    super((options || {}).merge({
+      methods: %i[ recovered ]
+    }))
+  end
 end

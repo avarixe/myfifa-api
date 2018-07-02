@@ -42,24 +42,17 @@ class Team < ApplicationRecord
   validates :currency, presence: true
 
   before_validation :set_start_date
-  after_save :start_new_contracts
-  after_save :close_expired_contracts
+  after_save :update_player_statuses
 
   def set_start_date
     self.current_date ||= self.start_date
   end
 
-  def start_new_contracts
-    players.includes(:contracts).where(status: nil).each do |player|
-      if player.contracts && player.contracts.last.active?
-        player.update(status: 'active')
-      end
-    end
-  end
-
-  def close_expired_contracts
-    players.includes(:contracts).where.not(status: nil).each do |player|
-      player.contracts.expired? && player.update(status: nil)
+  def update_player_statuses
+    Player.transaction do
+      players
+        .preload(:contracts, :loans, :injuries)
+        .map(&:update_status)
     end
   end
 
@@ -73,4 +66,5 @@ class Team < ApplicationRecord
     start_year = start_date.year
     "#{start_date.year} - #{current_date.year}"
   end
+
 end

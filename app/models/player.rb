@@ -28,9 +28,9 @@ class Player < ApplicationRecord
   has_many :loans, dependent: :destroy
   has_many :contracts, dependent: :destroy
   has_many :transfers, dependent: :destroy
-  validates_associated :contracts
 
   STATUSES = %w[
+    Pending
     Active
     Injured
     Loaned
@@ -109,31 +109,47 @@ class Player < ApplicationRecord
     )
   end
 
+  ##############
+  #  MUTATORS  #
+  ##############
+
+    def update_status
+      self.status =
+        if active_loan
+          'Loaned'
+        elsif active_injury
+          'Injured'
+        elsif active_contract
+          active_contract.pending? ? 'Pending' : 'Active'
+        else
+          nil
+        end
+      save!
+    end
+
+
   ###############
   #  ACCESSORS  #
   ###############
 
-  def active?
-    status == 'Active'
-  end
+  delegate :current_date, to: :team
 
-  def injured?
-    status == 'Injured'
-  end
-
-  def loaned?
-    status == 'Loaned'
+  %w[ active pending injured loaned ].each do |condition|
+    define_method "#{condition}?" do
+      status == condition.capitalize
+    end
   end
 
   def as_json(options = {})
     super((options || {}).merge({
-      methods: %i[last_contract last_injury last_loan last_transfer]
+      methods: %i[active_contract active_injury active_loan active_transfer]
     }))
   end
 
   %w[contract injury loan transfer].each do |record|
-    define_method "last_#{record}" do
-      public_send(record.pluralize).active.last
+    define_method "active_#{record}" do
+      last_record = public_send(record.pluralize).last
+      last_record if last_record && last_record.active?
     end
   end
 end

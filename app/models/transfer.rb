@@ -37,7 +37,7 @@ class Transfer < ApplicationRecord
     PERMITTED_ATTRIBUTES
   end
 
-  scope :active, -> { where.not(signed_date: nil) }
+  scope :active, -> (player) { where.not(signed_date: nil) }
 
   ################
   #  VALIDATION  #
@@ -68,6 +68,10 @@ class Transfer < ApplicationRecord
   ###############
 
   delegate :team, to: :player
+
+  def active?
+    true
+  end
 
   def out?
     team.title == origin

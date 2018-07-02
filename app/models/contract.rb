@@ -48,7 +48,10 @@ class Contract < ApplicationRecord
     PERMITTED_ATTRIBUTES
   end
 
-  scope :active, -> { where(end_date: nil) }
+  scope :active, -> (player) {
+    where('effective_date >= ?', player.current_date)
+    .where('? <= end_date', player.current_date)
+  }
 
   ################
   #  VALIDATION  #
@@ -65,7 +68,6 @@ class Contract < ApplicationRecord
   validates :bonus_req_type,
             inclusion: { in: BONUS_REQUIREMENT_TYPES },
             allow_nil: true
-  validates :duration, numericality: { only_integer: true }
   validate  :valid_performance_bonus
 
   def valid_performance_bonus
@@ -80,7 +82,7 @@ class Contract < ApplicationRecord
 
   after_initialize :set_signed_date
   after_save :save_history
-  after_create :set_player_status
+  after_create :update_status
 
   def set_signed_date
     self.signed_date ||= team.current_date
@@ -100,9 +102,11 @@ class Contract < ApplicationRecord
     )
   end
 
-  def set_player_status
-    player.update(status: 'Active') if team.current_date >= effective_date
-  end
+  ##############
+  #  MUTATORS  #
+  ##############
+
+  delegate :update_status, to: :player
 
   ###############
   #  ACCESSORS  #
@@ -113,10 +117,13 @@ class Contract < ApplicationRecord
   delegate :loaned?, to: :player
 
   def active?
-    effective_date <= team.current_date && team.current_date <= end_date
+    player.pending? ||
+    effective_date <= team.current_date &&
+    (!end_date || team.current_date <= end_date)
   end
 
-  def expired?
-    end_date < team.current_date
+  def pending?
+    signed_date <= team.current_date && team.current_date < effective_date
   end
+
 end
