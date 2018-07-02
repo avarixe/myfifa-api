@@ -1,6 +1,6 @@
 class PlayersController < APIController
   load_and_authorize_resource :team
-  load_and_authorize_resource :player, through: :team, shallow: true, except: %i[create]
+  load_and_authorize_resource :player, through: :team, shallow: true
 
   def index
     @players = @players.preload(:contracts, :injuries, :loans)
@@ -8,7 +8,6 @@ class PlayersController < APIController
   end
 
   def show
-    # byebug
     render json: @player
   end
 
