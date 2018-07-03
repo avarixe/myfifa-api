@@ -20,6 +20,11 @@ Rails.application.routes.draw do
         resources :transfers
       end
       resources :matches do
+        MatchEvent::EVENT_TYPES.each do |event|
+          resources event.to_sym,
+                    controller: :events,
+                    type: event
+        end
       end
     end
   end

@@ -2,6 +2,7 @@ class CreateMatchEvents < ActiveRecord::Migration[5.1]
   def change
     create_table :match_events do |t|
       t.belongs_to :match
+      t.belongs_to :parent
       t.string :type
       t.integer :minute
 

@@ -4,6 +4,7 @@
 #
 #  id          :integer          not null, primary key
 #  match_id    :integer
+#  parent_id   :integer
 #  type        :string
 #  minute      :integer
 #  player_name :string
@@ -16,12 +17,25 @@
 # Indexes
 #
 #  index_match_events_on_match_id   (match_id)
+#  index_match_events_on_parent_id  (parent_id)
 #  index_match_events_on_player_id  (player_id)
 #
 
 class MatchEvent < ApplicationRecord
   belongs_to :match
   belongs_to :player, optional: true
+
+  EVENT_TYPES = %w[
+    starts
+    goals
+    assists
+    own_goals
+    sub_ins
+    sub_outs
+    injuries
+    bookings
+    penalty_shootouts
+  ].freeze
 
   TEAM_TYPES = %w[
     home

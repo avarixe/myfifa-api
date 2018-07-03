@@ -17,18 +17,12 @@
 #
 
 class Match < ApplicationRecord
-  belongs_to :team
+  attr_accessor :line_up
 
-  %w[
-    line_ups
-    goals
-    assists
-    own_goals
-    sub_ins
-    sub_outs
-    injuries
-    bookings
-  ].each do |event|
+  belongs_to :team
+  has_many :events, class_name: 'MatchEvent'
+
+  MatchEvent::EVENT_TYPES.drop(1).each do |event|
     has_many event.to_sym,
              class_name: "Event::#{event.singularize.titleize.tr(' ', '')}",
              inverse_of: :match
@@ -55,15 +49,32 @@ class Match < ApplicationRecord
   validates :away, presence: true
   validates :competition, presence: true
   validates :date_played, presence: true
+  validates :line_up, presence: true
+  validate :valid_line_up?
+
+  def valid_line_up?
+    if !line_up.is_a?(Array) ||
+       line_up.length != 11 ||
+       line_up.any? { |player| invalid_start?(player) }
+      errors.add(:line_up, :invalid)
+    end
+  end
+
+  def invalid_start?(player)
+    player.is_a?(Hash) &&
+    player[:name].present? &&
+    player[:position].present?
+  end
 
   ##############
   #  CALLBACK  #
   ##############
 
-  after_initialize :set_signed_date
+  after_initialize :set_defaults
 
-  def set_signed_date
+  def set_defaults
     self.date_played ||= team.current_date
+    @line_up ||= []
   end
 
   ##############

@@ -69,6 +69,7 @@ ActiveRecord::Schema.define(version: 20180702064825) do
 
   create_table "match_events", force: :cascade do |t|
     t.bigint "match_id"
+    t.bigint "parent_id"
     t.string "type"
     t.integer "minute"
     t.string "player_name"
@@ -78,6 +79,7 @@ ActiveRecord::Schema.define(version: 20180702064825) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["match_id"], name: "index_match_events_on_match_id"
+    t.index ["parent_id"], name: "index_match_events_on_parent_id"
     t.index ["player_id"], name: "index_match_events_on_player_id"
   end
 

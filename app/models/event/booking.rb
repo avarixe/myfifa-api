@@ -4,6 +4,7 @@
 #
 #  id          :integer          not null, primary key
 #  match_id    :integer
+#  parent_id   :integer
 #  type        :string
 #  minute      :integer
 #  player_name :string
@@ -16,15 +17,16 @@
 # Indexes
 #
 #  index_match_events_on_match_id   (match_id)
+#  index_match_events_on_parent_id  (parent_id)
 #  index_match_events_on_player_id  (player_id)
 #
 
 class Event::Booking < MatchEvent
 
-  BOOKING_TYPES = [
+  DETAIL_TYPES = [
     'Yellow Card',
     'Red Card'
   ].freeze
 
-  validates :detail, inclusion: { in: BOOKING_TYPES }
+  validates :detail, inclusion: { in: DETAIL_TYPES }
 end
