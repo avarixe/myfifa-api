@@ -7,7 +7,6 @@
 #  datestamp  :date
 #  ovr        :integer
 #  value      :integer
-#  age        :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
@@ -20,7 +19,21 @@ class PlayerHistory < ApplicationRecord
   belongs_to :player
 
   validates :datestamp, presence: true
-  validates :age, numericality: { only_integer: true }
-  validates :ovr, numericality: { only_integer: true }
-  validates :value, numericality: { only_integer: true }
+  validates :ovr, numericality: { only_integer: true }, allow_nil: true
+  validates :value, numericality: { only_integer: true }, allow_nil: true
+  validate :player_changed?
+
+  def player_changed?
+    if ovr.blank? || value.blank?
+      errors.add(:base, :invalid)
+    end
+  end
+
+  delegate :current_date, to: :player
+
+  after_initialize :set_datestamp
+
+  def set_datestamp
+    self.datestamp ||= current_date
+  end
 end

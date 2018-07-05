@@ -7,7 +7,6 @@
 #  datestamp  :date
 #  ovr        :integer
 #  value      :integer
-#  age        :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #

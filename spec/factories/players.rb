@@ -10,7 +10,7 @@
 #  sec_pos     :text
 #  ovr         :integer
 #  value       :integer
-#  age         :integer
+#  birth_year  :integer
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  status      :string

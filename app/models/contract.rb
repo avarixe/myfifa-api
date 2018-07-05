@@ -89,17 +89,14 @@ class Contract < ApplicationRecord
   end
 
   def save_history
-    contract_histories.create(
-      datestamp:         team.current_date,
-      wage:              wage,
-      signing_bonus:     signing_bonus,
-      release_clause:    release_clause,
-      performance_bonus: performance_bonus,
-      bonus_req:         bonus_req,
-      bonus_req_type:    bonus_req_type,
-      effective_date:    effective_date,
-      end_date:          end_date
-    )
+    contract_histories.create wage:              wage,
+                              signing_bonus:     signing_bonus,
+                              release_clause:    release_clause,
+                              performance_bonus: performance_bonus,
+                              bonus_req:         bonus_req,
+                              bonus_req_type:    bonus_req_type,
+                              effective_date:    effective_date,
+                              end_date:          end_date
   end
 
   ##############
@@ -113,17 +110,18 @@ class Contract < ApplicationRecord
   ###############
 
   delegate :team, to: :player
+  delegate :current_date, to: :player
   delegate :youth?, to: :player
   delegate :loaned?, to: :player
 
   def active?
     player.pending? ||
-    effective_date <= team.current_date &&
-    (!end_date || team.current_date <= end_date)
+    effective_date <= current_date &&
+    (!end_date || current_date <= end_date)
   end
 
   def pending?
-    signed_date <= team.current_date && team.current_date < effective_date
+    signed_date <= current_date && current_date < effective_date
   end
 
 end

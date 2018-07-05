@@ -10,7 +10,7 @@
 #  sec_pos     :text
 #  ovr         :integer
 #  value       :integer
-#  age         :integer
+#  birth_year  :integer
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  status      :string
@@ -56,11 +56,10 @@ class Player < ApplicationRecord
 
   PERMITTED_ATTRIBUTES = %i[
     name
-    nationality
     pos
     ovr
     value
-    age
+    birth_year
     youth
   ].freeze
 
@@ -75,8 +74,7 @@ class Player < ApplicationRecord
   ################
 
   validates :name, presence: true
-  # validates :nationality, presence: true
-  validates :age, numericality: { only_integer: true }
+  validates :birth_year, numericality: { only_integer: true }
   validates :ovr, numericality: { only_integer: true }
   validates :value, numericality: { only_integer: true }
   validates :pos, inclusion: { in: POSITIONS }
@@ -95,18 +93,19 @@ class Player < ApplicationRecord
   #  CALLBACK  #
   ##############
 
-  after_save :save_history
+  after_create :start_history
+  after_update :update_history
 
-  def save_history
-    return unless saved_change_to_age? ||
-                  saved_change_to_ovr? ||
-                  saved_change_to_value?
-    player_histories.create(
-      datestamp: team.current_date,
-      age:       age,
-      ovr:       ovr,
-      value:     value,
-    )
+  def start_history
+    player_histories.create ovr: ovr,
+                            value: value
+  end
+
+  def update_history
+    record = player_histories.new
+    record.ovr = ovr if saved_change_to_ovr?
+    record.value = value if saved_change_to_value?
+    record.save!
   end
 
   ##############
@@ -142,7 +141,7 @@ class Player < ApplicationRecord
 
   def as_json(options = {})
     super((options || {}).merge({
-      methods: %i[active_contract active_injury active_loan active_transfer]
+      methods: %i[age active_contract active_injury active_loan active_transfer]
     }))
   end
 
@@ -151,5 +150,9 @@ class Player < ApplicationRecord
       last_record = public_send(record.pluralize).last
       last_record if last_record && last_record.active?
     end
+  end
+
+  def age
+    current_date.year - birth_year
   end
 end

@@ -54,7 +54,7 @@ class Match < ApplicationRecord
 
   def valid_line_up?
     if !line_up.is_a?(Array) ||
-       line_up.length != 11 ||
+       [0, 11].include?(line_up.length) ||
        line_up.any? { |player| invalid_start?(player) }
       errors.add(:line_up, :invalid)
     end

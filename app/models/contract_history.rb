@@ -37,4 +37,12 @@ class ContractHistory < ApplicationRecord
       errors.add(:performance_bonus, 'requires all three fields')
     end
   end
+
+  delegate :current_date, to: :contract
+
+  after_initialize :set_datestamp
+
+  def set_datestamp
+    self.datestamp ||= current_date
+  end
 end

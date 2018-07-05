@@ -18,6 +18,10 @@ Rails.application.routes.draw do
         resources :injuries
         resources :contracts
         resources :transfers
+
+        collection do
+          patch :update_multiple
+        end
       end
       resources :matches do
         MatchEvent::EVENT_TYPES.each do |event|
