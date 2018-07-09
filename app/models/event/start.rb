@@ -22,4 +22,9 @@
 #
 
 class Event::Start < MatchEvent
+  before_create :set_defaults
+
+  def set_defaults
+    self.minutes = 0
+  end
 end

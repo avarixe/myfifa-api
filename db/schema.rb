@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180705000726) do
+ActiveRecord::Schema.define(version: 20180709062857) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -149,7 +149,7 @@ ActiveRecord::Schema.define(version: 20180705000726) do
     t.string "name"
     t.string "nationality"
     t.string "pos"
-    t.text "sec_pos"
+    t.text "sec_pos", default: [], array: true
     t.integer "ovr"
     t.integer "value"
     t.integer "birth_year"
@@ -158,6 +158,16 @@ ActiveRecord::Schema.define(version: 20180705000726) do
     t.string "status"
     t.boolean "youth", default: true
     t.index ["team_id"], name: "index_players_on_team_id"
+  end
+
+  create_table "squads", force: :cascade do |t|
+    t.bigint "team_id"
+    t.string "name"
+    t.text "players_list", default: [], array: true
+    t.text "positions_list", default: [], array: true
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["team_id"], name: "index_squads_on_team_id"
   end
 
   create_table "teams", force: :cascade do |t|

@@ -7,7 +7,7 @@
 #  name        :string
 #  nationality :string
 #  pos         :string
-#  sec_pos     :text
+#  sec_pos     :text             default([]), is an Array
 #  ovr         :integer
 #  value       :integer
 #  birth_year  :integer
@@ -66,8 +66,6 @@ class Player < ApplicationRecord
   def self.permitted_attributes
     PERMITTED_ATTRIBUTES
   end
-
-  serialize :sec_pos, Array
 
   ################
   #  VALIDATION  #
@@ -141,7 +139,7 @@ class Player < ApplicationRecord
 
   def as_json(options = {})
     super((options || {}).merge({
-      methods: %i[age active_contract active_injury active_loan active_transfer]
+      methods: %i[age pos_idx active_contract active_injury active_loan active_transfer]
     }))
   end
 
@@ -154,5 +152,9 @@ class Player < ApplicationRecord
 
   def age
     current_date.year - birth_year
+  end
+
+  def pos_idx
+    POSITIONS.index pos
   end
 end

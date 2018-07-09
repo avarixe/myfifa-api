@@ -20,6 +20,7 @@
 class Team < ApplicationRecord
   belongs_to :user, optional: true
   has_many :players, dependent: :destroy
+  has_many :squads, dependent: :destroy
   has_many :matches, dependent: :destroy
 
   PERMITTED_ATTRIBUTES = %i[

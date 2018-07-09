@@ -7,7 +7,7 @@
 #  name        :string
 #  nationality :string
 #  pos         :string
-#  sec_pos     :text
+#  sec_pos     :text             default([]), is an Array
 #  ovr         :integer
 #  value       :integer
 #  birth_year  :integer

@@ -23,6 +23,7 @@ Rails.application.routes.draw do
           patch :update_multiple
         end
       end
+      resources :squads
       resources :matches do
         MatchEvent::EVENT_TYPES.each do |event|
           resources event.to_sym,
