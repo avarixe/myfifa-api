@@ -29,6 +29,9 @@ class Player < ApplicationRecord
   has_many :contracts, dependent: :destroy
   has_many :transfers, dependent: :destroy
 
+  has_many :match_logs
+  has_many :matches, through: :match_logs
+
   STATUSES = %w[
     Pending
     Active

@@ -20,16 +20,13 @@ class Match < ApplicationRecord
   attr_accessor :line_up
 
   belongs_to :team
-  has_many :events, class_name: 'MatchEvent'
+  has_one :penalty_shootout
+  has_many :goals
+  has_many :substitutions
+  has_many :bookings
 
-  MatchEvent::EVENT_TYPES.drop(1).each do |event|
-    has_many event.to_sym,
-             class_name: "Event::#{event.singularize.titleize.tr(' ', '')}",
-             inverse_of: :match
-  end
-  has_one :penalty_shootout,
-          class_name: "Event::PenaltyShootout",
-          inverse_of: :match
+  has_many :logs, class_name: 'MatchLog', inverse_of: :match
+  has_many :players, through: :logs
 
   PERMITTED_ATTRIBUTES = %i[
     home
@@ -86,23 +83,16 @@ class Match < ApplicationRecord
   ###############
 
   def score
-    "#{home_score} - #{away_score}"
-  end
+    total_goals = goals.count
+    home_score = goals.count { |goal| goal.home? || goal.away? && goal.own_goal? }
+    away_score = total_goals - home_goals
 
-  def home_score
-    score = goals.home.count + own_goals.away.count
     if penalty_shootout
-      score += " (#{penalty_shootout.home_score})"
+      home_score += " (#{ penalty_shootout.home_score })"
+      away_score += " (#{ penalty_shootout.away_score })"
     end
-    score
-  end
 
-  def away_score
-    score = goals.away.count + own_goals.home.count
-    if penalty_shootout
-      score += " (#{penalty_shootout.away_score})"
-    end
-    score
+    "#{ home_score } - #{ away_score }"
   end
 
   def as_json(options = {})

@@ -87,32 +87,74 @@ class Import < Thor
             player.id = player_row['id']
             player.save!
           end
-
         end
 
-        # TODO: Iterate through all PlayerEvents and Matches
-        # sort both arrays by date
-        # until both arrays are empty
-        #   pop the earliest (event or match)
-        #   increment team current date
-        #   create relevant record(s)
-
         run_cmd 'Retrieving PlayerEvents and Matches' do
-          puts "team: #{$team.inspect}"
           $player_events = client.query('SELECT my_fifa_player_events.* '\
                                         'FROM my_fifa_player_events'\
                                         '  LEFT JOIN my_fifa_players'\
                                         '  ON my_fifa_player_events.player_id = my_fifa_players.id '\
                                         'WHERE my_fifa_players.team_id = $1', [ $team.id ])
-          puts $player_events.values.length
-          $player_events = $player_events
-                           .sort_by{ |event| event['start_date'] }
-                           .each do |event|
-                             desc_object event, 'Event'
-                           end
-         end
+          $matches = client.query('SELECT * FROM my_fifa_matches WHERE team_id = $1', [ $team.id ])
 
+          $all_events = []
+          $events_to_end = []
 
+          $player_events.each { |event| $all_events << event }
+          $matches.each { |event| $all_events << event }
+
+          $all_events
+            .sort_by { |event| puts event; event['start_date'] || event['date_played'] }
+            .each do |event|
+              events_to_end = $events_to_end.select do |end_event|
+                end_event['end_date'] < (event['start_date'] || event['date_played'])
+              end
+              if events_to_end.any?
+                events_to_end.sort_by! { |end_event| end_event['end_date'] }
+                event_to_end.each do |end_event|
+                  event_record = event['record']
+
+                  $team.current_date = event['end_date']
+                  $team.save!
+
+                  case event['type']
+                  when 'MyFifa::Contract'
+                    puts "TODO: End Contract"
+                  when 'MyFifa::Injury'
+                    event_record.recovered = true
+                    event_record.save!
+                  when 'MyFifa::Loan'
+                    event_record.returned = true
+                    event_record.save!
+                  end
+                end
+              end
+
+              $team.current_date = event['start_date'] || event['date_played']
+              $team.save!
+
+              case event['type']
+              when 'MyFifa::Contract'
+                puts "TODO: Create Contract"
+              when 'MyFifa::Injury'
+                injury = Injury.new(description: event['notes'] || 'N/A')
+                injury.save!
+                if event['end_date']
+                  event['record'] = injury
+                  $events_to_end << event
+                end
+              when 'MyFifa::Loan'
+                loan = Loan.new(description: event['notes'] || 'N/A')
+                loan.save!
+                if event['end_date']
+                  event['record'] = loan
+                  $events_to_end << event
+                end
+              else # Match
+                puts "TODO: Match creation"
+              end
+            end
+        end
       end
 
     rescue => e

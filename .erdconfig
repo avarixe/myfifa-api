@@ -1,0 +1,3 @@
+filename: myfifa_erd
+orientation: vertical
+exclude: Doorkeeper::Application,Doorkeeper::AccessToken,Doorkeeper::AccessGrant

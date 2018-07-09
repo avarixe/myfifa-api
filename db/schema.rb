@@ -10,10 +10,21 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180709062857) do
+ActiveRecord::Schema.define(version: 20180709214239) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+
+  create_table "bookings", force: :cascade do |t|
+    t.bigint "match_id"
+    t.integer "minute"
+    t.bigint "player_id"
+    t.boolean "red_card", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["match_id"], name: "index_bookings_on_match_id"
+    t.index ["player_id"], name: "index_bookings_on_player_id"
+  end
 
   create_table "contract_histories", force: :cascade do |t|
     t.bigint "contract_id"
@@ -47,6 +58,22 @@ ActiveRecord::Schema.define(version: 20180709062857) do
     t.index ["player_id"], name: "index_contracts_on_player_id"
   end
 
+  create_table "goals", force: :cascade do |t|
+    t.bigint "match_id"
+    t.integer "minute"
+    t.string "player_name"
+    t.bigint "player_id"
+    t.bigint "assist_id"
+    t.boolean "home", default: false
+    t.boolean "own_goal", default: false
+    t.boolean "penalty", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["assist_id"], name: "index_goals_on_assist_id"
+    t.index ["match_id"], name: "index_goals_on_match_id"
+    t.index ["player_id"], name: "index_goals_on_player_id"
+  end
+
   create_table "injuries", force: :cascade do |t|
     t.bigint "player_id"
     t.date "start_date"
@@ -67,20 +94,16 @@ ActiveRecord::Schema.define(version: 20180709062857) do
     t.index ["player_id"], name: "index_loans_on_player_id"
   end
 
-  create_table "match_events", force: :cascade do |t|
+  create_table "match_logs", force: :cascade do |t|
     t.bigint "match_id"
-    t.bigint "parent_id"
-    t.string "type"
-    t.integer "minute"
-    t.string "player_name"
     t.bigint "player_id"
-    t.string "detail"
-    t.boolean "home", default: true
+    t.string "pos"
+    t.integer "start"
+    t.integer "stop"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["match_id"], name: "index_match_events_on_match_id"
-    t.index ["parent_id"], name: "index_match_events_on_parent_id"
-    t.index ["player_id"], name: "index_match_events_on_player_id"
+    t.index ["match_id"], name: "index_match_logs_on_match_id"
+    t.index ["player_id"], name: "index_match_logs_on_player_id"
   end
 
   create_table "matches", force: :cascade do |t|
@@ -134,6 +157,15 @@ ActiveRecord::Schema.define(version: 20180709062857) do
     t.index ["uid"], name: "index_oauth_applications_on_uid", unique: true
   end
 
+  create_table "penalty_shootouts", force: :cascade do |t|
+    t.bigint "match_id"
+    t.integer "home_score"
+    t.integer "away_score"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["match_id"], name: "index_penalty_shootouts_on_match_id"
+  end
+
   create_table "player_histories", force: :cascade do |t|
     t.bigint "player_id"
     t.date "datestamp"
@@ -168,6 +200,19 @@ ActiveRecord::Schema.define(version: 20180709062857) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["team_id"], name: "index_squads_on_team_id"
+  end
+
+  create_table "substitutions", force: :cascade do |t|
+    t.bigint "match_id"
+    t.integer "minute"
+    t.bigint "player_id"
+    t.bigint "replacement_id"
+    t.boolean "injury", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["match_id"], name: "index_substitutions_on_match_id"
+    t.index ["player_id"], name: "index_substitutions_on_player_id"
+    t.index ["replacement_id"], name: "index_substitutions_on_replacement_id"
   end
 
   create_table "teams", force: :cascade do |t|
