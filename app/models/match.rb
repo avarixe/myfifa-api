@@ -59,7 +59,7 @@ class Match < ApplicationRecord
 
   def invalid_start?(player)
     player.is_a?(Hash) &&
-    player[:name].present? &&
+    player[:id].present? &&
     player[:position].present?
   end
 

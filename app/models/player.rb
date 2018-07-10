@@ -15,6 +15,7 @@
 #  updated_at  :datetime         not null
 #  status      :string
 #  youth       :boolean          default(TRUE)
+#  kit_no      :integer
 #
 # Indexes
 #
@@ -62,6 +63,7 @@ class Player < ApplicationRecord
     pos
     ovr
     value
+    kit_no
     birth_year
     youth
   ].freeze
@@ -78,6 +80,7 @@ class Player < ApplicationRecord
   validates :birth_year, numericality: { only_integer: true }
   validates :ovr, numericality: { only_integer: true }
   validates :value, numericality: { only_integer: true }
+  validates :kit_no, numericality: { only_integer: true }, allow_nil: true
   validates :pos, inclusion: { in: POSITIONS }
   validates :status, inclusion: { in: STATUSES }, allow_nil: true
   validate :valid_sec_pos
@@ -94,19 +97,21 @@ class Player < ApplicationRecord
   #  CALLBACK  #
   ##############
 
-  after_create :start_history
-  after_update :update_history
+  after_create :start_history, unless: :skip_callbacks
+  after_update :update_history, unless: :skip_callbacks
 
   def start_history
     player_histories.create ovr: ovr,
-                            value: value
+                            value: value,
+                            kit_no: kit_no
   end
 
   def update_history
     record = player_histories.new
     record.ovr = ovr if saved_change_to_ovr?
     record.value = value if saved_change_to_value?
-    record.save!
+    record.kit_no = kit_no if saved_change_to_kit_no?
+    record.save
   end
 
   ##############

@@ -9,6 +9,7 @@
 #  value      :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  kit_no     :integer
 #
 # Indexes
 #

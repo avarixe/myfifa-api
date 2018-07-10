@@ -9,6 +9,7 @@
 #  value      :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  kit_no     :integer
 #
 # Indexes
 #
@@ -21,6 +22,7 @@ class PlayerHistory < ApplicationRecord
   validates :datestamp, presence: true
   validates :ovr, numericality: { only_integer: true }, allow_nil: true
   validates :value, numericality: { only_integer: true }, allow_nil: true
+  validates :kit_no, numericality: { only_integer: true }, allow_nil: true
   validate :player_changed?
 
   def player_changed?

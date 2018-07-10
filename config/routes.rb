@@ -25,7 +25,7 @@ Rails.application.routes.draw do
       end
       resources :squads
       resources :matches do
-        MatchEvent::EVENT_TYPES.each do |event|
+        %i[ goals substitutions bookings penalty_shootouts ].each do |event|
           resources event.to_sym,
                     controller: :events,
                     type: event

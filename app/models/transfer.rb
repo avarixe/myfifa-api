@@ -53,10 +53,10 @@ class Transfer < ApplicationRecord
   ###############
 
   after_initialize :set_signed_date
-  after_create :end_current_contract, if: :out?
+  after_create :end_current_contract, if: :out?, unless: :skip_callbacks
 
   def set_signed_date
-    self.signed_date = team.current_date
+    self.signed_date ||= team.current_date
   end
 
   def end_current_contract

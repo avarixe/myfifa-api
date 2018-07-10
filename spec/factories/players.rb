@@ -15,6 +15,7 @@
 #  updated_at  :datetime         not null
 #  status      :string
 #  youth       :boolean          default(TRUE)
+#  kit_no      :integer
 #
 # Indexes
 #

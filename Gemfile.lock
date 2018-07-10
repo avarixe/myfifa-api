@@ -33,6 +33,8 @@ GEM
       activemodel (= 5.1.5)
       activesupport (= 5.1.5)
       arel (~> 8.0)
+    activerecord-import (0.24.0)
+      activerecord (>= 3.2)
     activesupport (5.1.5)
       concurrent-ruby (~> 1.0, >= 1.0.2)
       i18n (~> 0.7)
@@ -166,9 +168,6 @@ GEM
       rainbow (>= 2.2.2, < 4.0)
       ruby-progressbar (~> 1.7)
       unicode-display_width (~> 1.0, >= 1.0.1)
-    rubocop-rails (1.2.2)
-      railties (>= 3.0)
-      rubocop (~> 0.49)
     ruby-graphviz (1.2.3)
     ruby-progressbar (1.9.0)
     spring (2.0.2)
@@ -198,6 +197,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  activerecord-import
   annotate
   brakeman
   byebug
@@ -217,7 +217,6 @@ DEPENDENCIES
   rails-erd
   rspec-rails
   rubocop
-  rubocop-rails
   spring
   spring-watcher-listen (~> 2.0.0)
   tzinfo-data

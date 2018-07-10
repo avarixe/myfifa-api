@@ -47,10 +47,10 @@ class Injury < ApplicationRecord
   ###############
 
   after_initialize :set_start_date
-  after_save :update_status
+  after_save :update_status, unless: :skip_callbacks
 
   def set_start_date
-    self.start_date = team.current_date
+    self.start_date ||= team.current_date
   end
 
   ##############

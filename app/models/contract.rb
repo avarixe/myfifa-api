@@ -71,8 +71,9 @@ class Contract < ApplicationRecord
   validate  :valid_performance_bonus
 
   def valid_performance_bonus
-    return unless [performance_bonus, bonus_req, bonus_req_type].any? &&
-                  ![performance_bonus, bonus_req, bonus_req_type].all?
+    return if [performance_bonus, bonus_req, bonus_req_type].all? ||
+              [performance_bonus, bonus_req, bonus_req_type].none?
+    puts 'not valid performance bonus'
     errors.add(:performance_bonus, 'requires all three fields')
   end
 
@@ -81,8 +82,8 @@ class Contract < ApplicationRecord
   ##############
 
   after_initialize :set_signed_date
-  after_save :save_history
-  after_create :update_status
+  after_save :save_history, unless: :skip_callbacks
+  after_create :update_status, unless: :skip_callbacks
 
   def set_signed_date
     self.signed_date ||= team.current_date

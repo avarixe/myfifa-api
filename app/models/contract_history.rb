@@ -32,10 +32,10 @@ class ContractHistory < ApplicationRecord
   validate  :valid_performance_bonus
 
   def valid_performance_bonus
-    if [performance_bonus, bonus_req, bonus_req_type].any? &&
-       ![performance_bonus, bonus_req, bonus_req_type].all?
-      errors.add(:performance_bonus, 'requires all three fields')
-    end
+    return if [performance_bonus, bonus_req, bonus_req_type].all? ||
+              [performance_bonus, bonus_req, bonus_req_type].none?
+    puts 'not valid performance bonus in history'
+    errors.add(:performance_bonus, 'requires all three fields')
   end
 
   delegate :current_date, to: :contract

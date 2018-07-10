@@ -44,8 +44,8 @@ class Loan < ApplicationRecord
   ###############
 
   after_initialize :set_start_date
-  after_create :end_pending_injuries
-  after_save :update_status
+  after_create :end_pending_injuries, unless: :skip_callbacks
+  after_save :update_status, unless: :skip_callbacks
 
   def set_start_date
     self.start_date = team.current_date

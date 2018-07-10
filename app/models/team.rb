@@ -44,7 +44,7 @@ class Team < ApplicationRecord
   validates :currency, presence: true
 
   before_validation :set_start_date
-  after_save :update_player_statuses
+  after_save :update_player_statuses, unless: :skip_callbacks
 
   def set_start_date
     self.current_date ||= self.start_date

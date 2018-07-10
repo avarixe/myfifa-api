@@ -18,8 +18,8 @@
 #
 
 class MatchLog < ApplicationRecord
-  belongs_to :match
-  belongs_to :player
+  belongs_to :match, inverse_of: :logs
+  belongs_to :player, inverse_of: :match_logs
 
   validates :start, inclusion: 0..120
   validates :stop, inclusion: 0..120
