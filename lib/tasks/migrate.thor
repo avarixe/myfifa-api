@@ -1,4 +1,4 @@
-class Import < Thor
+class Migrate < Thor
   desc 'teams [SRC]', 'Import Teams from JoonDEV database [SRC]'
   # method_option :benchmark, type: :boolean, aliases: '-b', desc: "Output benchmark performance"
   method_option :verbose, type: :boolean, aliases: '-v', desc: "Output all database commands"
@@ -32,10 +32,11 @@ class Import < Thor
         end
       end
 
+      $teams = client.query 'SELECT * FROM my_fifa_teams'
+      $seasons = client.query 'SELECT * FROM my_fifa_seasons'
+
       teams = []
       run_cmd "Migrating Teams" do
-        $teams = client.query 'SELECT * FROM my_fifa_teams'
-        $seasons = client.query 'SELECT * FROM my_fifa_seasons'
         $teams.each do |team_row|
           first_season = $seasons
                          .select { |season| season['team_id'] == team_row['id'] }
@@ -54,10 +55,17 @@ class Import < Thor
         Team.import teams, validate: false
       end
 
+      $players = client.query 'SELECT * FROM my_fifa_players'
+      $contracts = client.query 'SELECT events.*, team_name
+                                 FROM my_fifa_player_events AS events
+                                 LEFT JOIN my_fifa_players AS players
+                                   ON events.player_id = players.id
+                                 LEFT JOIN my_fifa_teams AS teams
+                                   ON players.team_id = teams.id
+                                 WHERE type = $1', [ 'MyFifa::Contract' ]
+
       players = []
       run_cmd "Migrating Players" do
-        $players = client.query 'SELECT * FROM my_fifa_players'
-        $contracts = client.query 'SELECT * FROM my_fifa_player_events WHERE type = $1', [ 'MyFifa::Contract' ]
         $players.each do |player_row|
           player_params = {
             id:      player_row['id'],
@@ -68,7 +76,7 @@ class Import < Thor
 
             ovr:     player_row['start_ovr'],
             value:   player_row['start_value'],
-            youth:   player_row['youth'],
+            youth:   player_row['youth'] == 't'
 
           }
 
@@ -77,7 +85,8 @@ class Import < Thor
                            .sort_by { |contract| contract['start_date'] }
                            .first
 
-          player_params[:birth_year] = Date.strptime(first_contract['start_date']).year - player_row['start_age'].to_i
+          player_params[:birth_year] = Date.strptime(first_contract['start_date']).year -
+                                       player_row['start_age'].to_i
 
           # desc_object player_params, 'Player'
           players << player_params
@@ -88,12 +97,13 @@ class Import < Thor
         Player.import players, validate: false
       end
 
+      $player_seasons = client.query 'SELECT player_seasons.*, end_date
+                                      FROM my_fifa_player_seasons AS player_seasons
+                                      LEFT JOIN my_fifa_seasons AS seasons
+                                        ON player_seasons.season_id = seasons.id'
+
       run_cmd 'Migrating Player Histories' do
         Player.skip_callbacks = true
-
-        $player_seasons = client.query 'SELECT my_fifa_player_seasons.*, end_date
-                                        FROM my_fifa_player_seasons
-                                        LEFT JOIN my_fifa_seasons ON my_fifa_player_seasons.season_id = my_fifa_seasons.id'
 
         histories = []
         $player_seasons.each do |record|
@@ -121,16 +131,13 @@ class Import < Thor
       transfers = []
       histories = []
       run_cmd 'Migrating Contracts and Transfers' do
-
-        $contracts = client.query 'SELECT my_fifa_player_events.*, team_id
-                                   FROM my_fifa_player_events
-                                     LEFT JOIN my_fifa_players
-                                     ON my_fifa_player_events.player_id = my_fifa_players.id
-                                   WHERE type = $1', [ 'MyFifa::Contract' ]
-
         $contracts.each do |contract|
           if contract['origin'].present?
-            cost = client.query 'SELECT * FROM my_fifa_costs WHERE event_id = $1 AND dir = $2', [ contract['id'], 'in' ]
+            cost = client.query 'SELECT costs.*, name
+                                 FROM my_fifa_costs AS costs
+                                 LEFT JOIN my_fifa_players AS players
+                                   ON costs.player_id = players.id
+                                 WHERE event_id = $1 AND dir = $2', [ contract['id'], 'in' ]
             cost = cost.first
 
             transfer_params = {
@@ -138,11 +145,11 @@ class Import < Thor
               signed_date:    contract['start_date'],
               effective_date: contract['start_date'],
               origin:         contract['origin'],
-              destination:    $teams.find { |team| team['id'] == contract['team_id'] }['team_name'],
+              destination:    contract['team_name'],
               fee:            cost['fee'],
               addon_clause:   cost['add_on_clause'],
-              traded_player:  cost['player_id'] ? players.find{ |player| player.id.to_s == cost['player_id'] }.name : nil,
-              loan:           contract['loan']
+              traded_player:  cost['name'],
+              loan:           contract['loan'] == 't'
             }
 
             # desc_object transfer_params, 'Transfer'
@@ -150,19 +157,23 @@ class Import < Thor
           end
 
           if contract['destination'].present?
-            cost = client.query 'SELECT * FROM my_fifa_costs WHERE event_id = $1 AND dir = $2', [ contract['id'], 'out' ]
+            cost = client.query 'SELECT my_fifa_costs.*, name
+                                 FROM my_fifa_costs
+                                 LEFT JOIN my_fifa_players
+                                   ON my_fifa_costs.player_id = my_fifa_players.id
+                                 WHERE event_id = $1 AND dir = $2', [ contract['id'], 'out' ]
             cost = cost.first
 
             transfer_params = {
               player_id:      contract['player_id'],
               signed_date:    contract['end_date'],
               effective_date: contract['end_date'],
-              origin:         $teams.find { |team| team['id'] == contract['team_id'] }['team_name'],
+              origin:         contract['team_name'],
               destination:    contract['destination'],
               fee:            cost['fee'],
               addon_clause:   cost['add_on_clause'],
-              traded_player:  cost['player_id'] ? players.find{ |player| player.id.to_s == cost['player_id'] }.name : nil,
-              loan:           contract['loan'],
+              traded_player:  cost['name'],
+              loan:           contract['loan'] == 't'
             }
 
             transfer_params[:destination] = nil if transfer_params[:destination] == 'RELEASED'
@@ -171,7 +182,9 @@ class Import < Thor
             transfers << transfer_params
           end
 
-          $terms = client.query 'SELECT * FROM my_fifa_contract_terms WHERE contract_id = $1', [ contract['id'] ]
+          $terms = client.query 'SELECT *
+                                 FROM my_fifa_contract_terms
+                                 WHERE contract_id = $1', [ contract['id'] ]
           $terms = $terms.to_a
 
           contract_params = {
@@ -219,9 +232,12 @@ class Import < Thor
         ContractHistory.import histories, validate: false
       end
 
+      $loans = client.query 'SELECT *
+                             FROM my_fifa_player_events
+                             WHERE type = $1', [ 'MyFifa::Loan' ]
+
       loans = []
       run_cmd 'Migrating Loans' do
-        $loans = client.query('SELECT * FROM my_fifa_player_events WHERE type = $1', [ 'MyFifa::Loan' ])
         $loans.each do |loan|
           loans << {
             player_id:   loan['player_id'],
@@ -236,9 +252,11 @@ class Import < Thor
         Loan.import loans, validate: false
       end
 
+      $injuries = client.query 'SELECT *
+                                FROM my_fifa_player_events
+                                WHERE type = $1', [ 'MyFifa::Injury' ]
       injuries = []
       run_cmd 'Migrating Injuries' do
-        $injuries = client.query 'SELECT * FROM my_fifa_player_events WHERE type = $1', [ 'MyFifa::Injury' ]
         $injuries.each do |injury|
           injuries << {
             player_id:   injury['player_id'],
@@ -258,6 +276,111 @@ class Import < Thor
           current_date = $teams.find { |t| t['id'] == team.id.to_s }['current_date']
           team.update(current_date: current_date)
         end
+      end
+
+      $matches = client.query 'SELECT matches.*, team_name
+                               FROM my_fifa_matches AS matches
+                               LEFT JOIN my_fifa_teams AS teams
+                                 ON teams.id = matches.team_id'
+      matches = []
+      goals = []
+      penalty_shootouts = []
+      run_cmd 'Importing Matches' do
+        $matches.each do |record|
+          matches << {
+            id:          record['id'],
+            team_id:     record['team_id'],
+            competition: record['competition'],
+            date_played: record['date_played'],
+            home:        record['home'] == 't' ? record['team_name'] : record['opponent'],
+            away:        record['home'] == 't' ? record['opponent'] : record['team_name'],
+            home_score_override: record['home'] == 't' ? record['score_gf'] : record['score_ga'],
+            away_score_override: record['home'] == 't' ? record['score_ga'] : record['score_gf'],
+          }
+
+          if record['penalty_gf'] && record['penalty_ga']
+            penalty_shootouts << {
+              match_id: record['id'],
+              home_score: record['home'] == 't' ? record['penalty_gf'] : record['penalty_ga'],
+              away_score: record['home'] == 't' ? record['penalty_ga'] : record['penalty_gf']
+            }
+          end
+        end
+      end
+
+      $match_events = client.query 'SELECT logs.*, name, home
+                                    FROM my_fifa_match_logs AS logs
+                                    LEFT JOIN my_fifa_matches AS matches
+                                      ON matches.id = logs.match_id
+                                    LEFT JOIN my_fifa_players AS players
+                                      ON players.id = logs.player1_id'
+      substitutions = []
+      bookings = []
+      run_cmd 'Importing Match Events' do
+        $match_events.each do |event|
+          case event['event']
+          when 'Goal'
+            goals << {
+              match_id:    event['match_id'],
+              minute:      event['minute'],
+              player_name: event['name'],
+              player_id:   event['player1_id'],
+              assist_id:   event['player2_id'],
+              home:        event['home'] == 't',
+              own_goal:    false
+            }
+          when 'Substitution'
+            substitutions << {
+              match_id:       event['match_id'],
+              minute:         event['minute'],
+              player_name:    event['name'],
+              player_id:      event['player1_id'],
+              replacement_id: event['player2_id'],
+              home:           event['home'] == 't'
+            }
+          when 'Booking'
+            bookings << {
+              match_id:    event['match_id'],
+              minute:      event['minute'],
+              player_name: event['name'],
+              player_id:   event['player1_id'],
+              home:        event['home'] == 't'
+            }
+          end
+        end
+      end
+
+      $player_records = client.query "SELECT records.*,
+                                             subins.minute AS subin_minute,
+                                             subouts.minute AS subout_minute
+                                      FROM my_fifa_player_records AS records
+                                      LEFT JOIN my_fifa_match_logs AS subins
+                                        ON subins.match_id = records.match_id
+                                        AND subins.player2_id = records.player_id
+                                        AND subins.event = 'Substitution'
+                                      LEFT JOIN my_fifa_match_logs AS subouts
+                                        ON subouts.match_id = records.match_id
+                                        AND subouts.player1_id = records.player_id
+                                        AND subouts.event = 'Substitution'
+                                      GROUP BY records.id, subins.minute, subouts.minute"
+      logs = []
+      run_cmd 'Importing Match-Player Records' do
+        $player_records.each do |record|
+          logs << {
+            player_id: record['player_id'],
+            match_id:  record['match_id'],
+            pos:       record['pos'],
+            start:     record['subin_minute'] || 0,
+            stop:      record['subout_minute'] || 90
+          }
+        end
+      end
+
+      run_cmd 'Importing Migrated Match Data' do
+        Match.import matches, validate: false
+        Goal.import goals, validate: false
+        PenaltyShootout.import penalty_shootouts, validate: false
+        MatchLog.import logs, validate: false
       end
 
     rescue => e

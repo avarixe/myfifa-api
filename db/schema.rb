@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180710045851) do
+ActiveRecord::Schema.define(version: 20180710233655) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -114,6 +114,9 @@ ActiveRecord::Schema.define(version: 20180710045851) do
     t.date "date_played"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "extra_time", default: false
+    t.integer "home_score_override"
+    t.integer "away_score_override"
     t.index ["team_id"], name: "index_matches_on_team_id"
   end
 

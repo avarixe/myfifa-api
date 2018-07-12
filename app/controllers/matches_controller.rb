@@ -3,6 +3,7 @@ class MatchesController < APIController
   load_and_authorize_resource :match, through: :team, shallow: true
 
   def index
+    @matches = @matches.preload(:players, :goals, :substitutions, :bookings, :penalty_shootout)
     render json: @matches
   end
 

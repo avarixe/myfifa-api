@@ -46,4 +46,7 @@ class Goal < ApplicationRecord
 
   validates :minute, inclusion: 1..120
 
+  def away?
+    !home?
+  end
 end
