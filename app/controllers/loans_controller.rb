@@ -12,7 +12,7 @@ class LoansController < APIController
   end
 
   def create
-    @loan = @player.loans.new(loan_params)
+    # @loan = @player.loans.new(loan_params)
     save_record @loan, json: @player
   end
 

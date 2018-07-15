@@ -2,8 +2,8 @@
 #
 # Table name: transfers
 #
-#  id             :integer          not null, primary key
-#  player_id      :integer
+#  id             :bigint(8)        not null, primary key
+#  player_id      :bigint(8)
 #  signed_date    :date
 #  effective_date :date
 #  origin         :string

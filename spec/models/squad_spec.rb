@@ -2,8 +2,8 @@
 #
 # Table name: squads
 #
-#  id             :integer          not null, primary key
-#  team_id        :integer
+#  id             :bigint(8)        not null, primary key
+#  team_id        :bigint(8)
 #  name           :string
 #  players_list   :text             default([]), is an Array
 #  positions_list :text             default([]), is an Array

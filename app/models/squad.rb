@@ -2,8 +2,8 @@
 #
 # Table name: squads
 #
-#  id             :integer          not null, primary key
-#  team_id        :integer
+#  id             :bigint(8)        not null, primary key
+#  team_id        :bigint(8)
 #  name           :string
 #  players_list   :text             default([]), is an Array
 #  positions_list :text             default([]), is an Array
@@ -20,7 +20,8 @@ class Squad < ApplicationRecord
 
   PERMITTED_ATTRIBUTES = %i[
     name
-    list
+    players_list
+    positions_list
   ].freeze
 
   def self.permitted_attributes
@@ -31,7 +32,7 @@ class Squad < ApplicationRecord
   validate :eleven_players?
 
   def eleven_players?
-    return if list.length == 11
-    errors.add(:list, 'needs to have eleven Players.')
+    return if players_list.length == 11 && positions_list.length == 11
+    errors.add(:players_list, 'needs to have eleven Players.')
   end
 end

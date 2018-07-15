@@ -2,8 +2,8 @@
 #
 # Table name: players
 #
-#  id          :integer          not null, primary key
-#  team_id     :integer
+#  id          :bigint(8)        not null, primary key
+#  team_id     :bigint(8)
 #  name        :string
 #  nationality :string
 #  pos         :string
@@ -32,6 +32,13 @@ class Player < ApplicationRecord
 
   has_many :match_logs
   has_many :matches, through: :match_logs
+
+  has_many :goals
+  has_many :assists,
+           class_name: 'Goal',
+           foreign_key: :assist_id,
+           inverse_of: :assisting_player
+  has_many :bookings
 
   STATUSES = %w[
     Pending

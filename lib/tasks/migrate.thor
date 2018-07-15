@@ -28,7 +28,21 @@ class Migrate < Thor
     begin
       run_cmd 'Removing existing data' do
         Team.transaction do
-          Team.all.map(&:destroy)
+          Team.connection.execute 'TRUNCATE TABLE teams,
+                                                  players,
+                                                  player_histories,
+                                                  contracts,
+                                                  contract_histories,
+                                                  injuries,
+                                                  transfers,
+                                                  loans,
+                                                  squads,
+                                                  matches,
+                                                  match_logs,
+                                                  goals,
+                                                  bookings,
+                                                  substitutions,
+                                                  penalty_shootouts'
         end
       end
 
@@ -53,6 +67,7 @@ class Migrate < Thor
         end
 
         Team.import teams, validate: false
+        correct_sequence Team
       end
 
       $players = client.query 'SELECT * FROM my_fifa_players'
@@ -95,6 +110,7 @@ class Migrate < Thor
 
       run_cmd 'Importing Migrated Players' do
         Player.import players, validate: false
+        correct_sequence Player
       end
 
       $player_seasons = client.query 'SELECT player_seasons.*, end_date
@@ -123,6 +139,7 @@ class Migrate < Thor
         end
 
         PlayerHistory.import histories, validate: false
+        correct_sequence PlayerHistory
 
         Player.skip_callbacks = false
       end
@@ -225,11 +242,14 @@ class Migrate < Thor
 
       run_cmd 'Importing Migrated Transfers' do
         Transfer.import transfers, validate: false
+        correct_sequence Transfer
       end
 
       run_cmd 'Importing Migrated Contracts' do
         Contract.import contracts, validate: false
         ContractHistory.import histories, validate: false
+        correct_sequence Contract
+        correct_sequence ContractHistory
       end
 
       $loans = client.query 'SELECT *
@@ -250,6 +270,7 @@ class Migrate < Thor
 
       run_cmd 'Importing Migrated Loans' do
         Loan.import loans, validate: false
+        correct_sequence Loan
       end
 
       $injuries = client.query 'SELECT *
@@ -269,6 +290,7 @@ class Migrate < Thor
 
       run_cmd 'Importing Migrated Injuries' do
         Injury.import injuries, validate: false
+        correct_sequence Injury
       end
 
       run_cmd 'Update Team Current Dates and Player Statuses' do
@@ -308,12 +330,14 @@ class Migrate < Thor
         end
       end
 
-      $match_events = client.query 'SELECT logs.*, name, home
+      $match_events = client.query 'SELECT logs.*, players.name AS name1, secondary.name AS name2, home
                                     FROM my_fifa_match_logs AS logs
                                     LEFT JOIN my_fifa_matches AS matches
                                       ON matches.id = logs.match_id
                                     LEFT JOIN my_fifa_players AS players
-                                      ON players.id = logs.player1_id'
+                                      ON players.id = logs.player1_id
+                                    LEFT JOIN my_fifa_players AS secondary
+                                      ON secondary.id = logs.player2_id'
       substitutions = []
       bookings = []
       run_cmd 'Importing Match Events' do
@@ -323,8 +347,9 @@ class Migrate < Thor
             goals << {
               match_id:    event['match_id'],
               minute:      event['minute'],
-              player_name: event['name'],
+              player_name: event['name1'],
               player_id:   event['player1_id'],
+              assisted_by: event['name2'],
               assist_id:   event['player2_id'],
               home:        event['home'] == 't',
               own_goal:    false
@@ -333,18 +358,17 @@ class Migrate < Thor
             substitutions << {
               match_id:       event['match_id'],
               minute:         event['minute'],
-              player_name:    event['name'],
+              player_name:    event['name1'],
               player_id:      event['player1_id'],
-              replacement_id: event['player2_id'],
-              home:           event['home'] == 't'
+              replaced_by:    event['name2'],
+              replacement_id: event['player2_id']
             }
           when 'Booking'
             bookings << {
               match_id:    event['match_id'],
               minute:      event['minute'],
-              player_name: event['name'],
-              player_id:   event['player1_id'],
-              home:        event['home'] == 't'
+              player_name: event['name1'],
+              player_id:   event['player1_id']
             }
           end
         end
@@ -367,11 +391,12 @@ class Migrate < Thor
       run_cmd 'Importing Match-Player Records' do
         $player_records.each do |record|
           logs << {
-            player_id: record['player_id'],
-            match_id:  record['match_id'],
-            pos:       record['pos'],
-            start:     record['subin_minute'] || 0,
-            stop:      record['subout_minute'] || 90
+            player_id:  record['player_id'],
+            match_id:   record['match_id'],
+            pos:        record['pos'],
+            start:      record['subin_minute'] || 0,
+            stop:       record['subout_minute'] || 90,
+            subbed_out: record['subout_minute'].present?
           }
         end
       end
@@ -381,6 +406,15 @@ class Migrate < Thor
         Goal.import goals, validate: false
         PenaltyShootout.import penalty_shootouts, validate: false
         MatchLog.import logs, validate: false
+        Substitution.import substitutions, validate: false
+        Booking.import bookings, validate: false
+
+        correct_sequence Match
+        correct_sequence Goal
+        correct_sequence PenaltyShootout
+        correct_sequence MatchLog
+        correct_sequence Substitution
+        correct_sequence Booking
       end
 
     rescue => e
@@ -405,6 +439,12 @@ class Migrate < Thor
       puts "#{ type }:"
       obj.each do |k, v|
         puts "  #{ (k.to_s + ': ').ljust(max_key_length + 2) } #{ v }"
+      end
+    end
+
+    def correct_sequence(table)
+      if table.any?
+        table.connection.execute "ALTER SEQUENCE #{ table.table_name }_id_seq RESTART WITH #{ table.last.id + 1 }"
       end
     end
 end

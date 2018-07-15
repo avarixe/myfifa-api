@@ -2,8 +2,8 @@
 #
 # Table name: penalty_shootouts
 #
-#  id         :integer          not null, primary key
-#  match_id   :integer
+#  id         :bigint(8)        not null, primary key
+#  match_id   :bigint(8)
 #  home_score :integer
 #  away_score :integer
 #  created_at :datetime         not null

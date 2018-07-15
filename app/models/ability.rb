@@ -11,14 +11,15 @@ class Ability
       can :manage, Team do |team|
         team.try(:user) == user
       end
-      can :manage, Player, team: { user: user }
-      can :manage, Match, team: { user: user }
 
+      can :manage, Player, team: { user: user }
       can :manage, Injury, team: { user: user }
       can :manage, Contract, team: { user: user }
       can :manage, Loan, team: { user: user }
       can :manage, Transfer, team: { user: user }
 
+      can :manage, Match, team: { user: user }
+      can :manage, MatchLog, team: { user: user }
     end
     #
     # The first argument to `can` is the action you are giving the user

@@ -2,8 +2,8 @@
 #
 # Table name: contract_histories
 #
-#  id                :integer          not null, primary key
-#  contract_id       :integer
+#  id                :bigint(8)        not null, primary key
+#  contract_id       :bigint(8)
 #  datestamp         :date
 #  wage              :integer
 #  signing_bonus     :integer

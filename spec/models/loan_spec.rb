@@ -2,8 +2,8 @@
 #
 # Table name: loans
 #
-#  id          :integer          not null, primary key
-#  player_id   :integer
+#  id          :bigint(8)        not null, primary key
+#  player_id   :bigint(8)
 #  start_date  :date
 #  end_date    :date
 #  destination :string

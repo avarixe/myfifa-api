@@ -2,8 +2,8 @@
 #
 # Table name: matches
 #
-#  id                  :integer          not null, primary key
-#  team_id             :integer
+#  id                  :bigint(8)        not null, primary key
+#  team_id             :bigint(8)
 #  home                :string
 #  away                :string
 #  competition         :string

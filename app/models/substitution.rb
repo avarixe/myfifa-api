@@ -2,14 +2,16 @@
 #
 # Table name: substitutions
 #
-#  id             :integer          not null, primary key
-#  match_id       :integer
+#  id             :bigint(8)        not null, primary key
+#  match_id       :bigint(8)
 #  minute         :integer
-#  player_id      :integer
-#  replacement_id :integer
+#  player_id      :bigint(8)
+#  replacement_id :bigint(8)
 #  injury         :boolean          default(FALSE)
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  player_name    :string
+#  replaced_by    :string
 #
 # Indexes
 #
@@ -26,6 +28,7 @@ class Substitution < ApplicationRecord
   PERMITTED_ATTRIBUTES = %i[
     minute
     player_id
+    replaced_by
     replacement_id
     injury
   ].freeze
@@ -35,4 +38,19 @@ class Substitution < ApplicationRecord
   end
 
   validates :minute, inclusion: 1..120
+
+  def home
+    match.team_home?
+  end
+
+  def event_type
+    'Substitution'
+  end
+
+  def as_json(options = {})
+    super((options || {}).merge({
+      methods: %i[ event_type home ]
+    }))
+  end
+
 end

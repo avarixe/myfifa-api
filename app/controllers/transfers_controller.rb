@@ -12,7 +12,7 @@ class TransfersController < APIController
   end
 
   def create
-    @transfer = @player.transfers.new(transfer_params)
+    # @transfer = @player.transfers.new(transfer_params)
     save_record @transfer, json: @transfer.json(methods: [:player])
   end
 

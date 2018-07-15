@@ -2,17 +2,18 @@
 #
 # Table name: goals
 #
-#  id          :integer          not null, primary key
-#  match_id    :integer
+#  id          :bigint(8)        not null, primary key
+#  match_id    :bigint(8)
 #  minute      :integer
 #  player_name :string
-#  player_id   :integer
-#  assist_id   :integer
+#  player_id   :bigint(8)
+#  assist_id   :bigint(8)
 #  home        :boolean          default(FALSE)
 #  own_goal    :boolean          default(FALSE)
 #  penalty     :boolean          default(FALSE)
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  assisted_by :string
 #
 # Indexes
 #
@@ -24,7 +25,7 @@
 class Goal < ApplicationRecord
   belongs_to :match
   belongs_to :player, optional: true
-  belongs_to :assisted_by,
+  belongs_to :assisting_player,
              foreign_key: :assist_id,
              class_name: 'Player',
              optional: true,
@@ -34,6 +35,7 @@ class Goal < ApplicationRecord
     minute
     player_name
     player_id
+    assisted_by
     assist_id
     home
     own_goal
@@ -48,5 +50,15 @@ class Goal < ApplicationRecord
 
   def away?
     !home?
+  end
+
+  def event_type
+    'Goal'
+  end
+
+  def as_json(options = {})
+    super((options || {}).merge({
+      methods: %i[ event_type ]
+    }))
   end
 end

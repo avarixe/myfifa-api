@@ -2,14 +2,15 @@
 #
 # Table name: match_logs
 #
-#  id         :integer          not null, primary key
-#  match_id   :integer
-#  player_id  :integer
+#  id         :bigint(8)        not null, primary key
+#  match_id   :bigint(8)
+#  player_id  :bigint(8)
 #  pos        :string
 #  start      :integer
-#  stop       :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  stop       :integer
+#  subbed_out :boolean          default(FALSE)
 #
 # Indexes
 #
@@ -18,9 +19,28 @@
 #
 
 class MatchLog < ApplicationRecord
-  belongs_to :match, inverse_of: :logs
-  belongs_to :player, inverse_of: :match_logs
+  belongs_to :match
+  belongs_to :player
+
+  PERMITTED_ATTRIBUTES = %i[
+    player_id
+    pos
+  ].freeze
+
+  def self.permitted_attributes
+    PERMITTED_ATTRIBUTES
+  end
 
   validates :start, inclusion: 0..120
   validates :stop, inclusion: 0..120
+
+  after_initialize :set_defaults
+
+  def set_defaults
+    self.start ||= 0
+    self.stop ||= 90
+  end
+
+  delegate :team, to: :match
+  delegate :name, to: :player
 end

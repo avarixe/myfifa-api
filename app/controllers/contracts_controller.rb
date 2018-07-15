@@ -12,7 +12,7 @@ class ContractsController < APIController
   end
 
   def create
-    @contract = @player.contracts.new(contract_params)
+    # @contract = @player.contracts.new(contract_params)
     save_record @contract, json: @player
   end
 

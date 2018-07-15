@@ -50,6 +50,8 @@ class APIController < ApplicationController
         render json: { errors: record.errors.full_messages },
                status: 422
       elsif record.save
+        puts options[:json].to_json
+        puts record.to_json
         render json: options[:json] || record
       else
         render_server_error

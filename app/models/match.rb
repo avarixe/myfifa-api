@@ -2,8 +2,8 @@
 #
 # Table name: matches
 #
-#  id                  :integer          not null, primary key
-#  team_id             :integer
+#  id                  :bigint(8)        not null, primary key
+#  team_id             :bigint(8)
 #  home                :string
 #  away                :string
 #  competition         :string
@@ -20,16 +20,14 @@
 #
 
 class Match < ApplicationRecord
-  attr_accessor :line_up
-
   belongs_to :team
   has_one :penalty_shootout, dependent: :destroy
   has_many :goals, dependent: :destroy
   has_many :substitutions, dependent: :destroy
   has_many :bookings, dependent: :destroy
 
-  has_many :logs, class_name: 'MatchLog', inverse_of: :match, dependent: :destroy
-  has_many :players, through: :logs
+  has_many :match_logs, dependent: :destroy
+  has_many :players, through: :match_logs
 
   PERMITTED_ATTRIBUTES = %i[
     home
@@ -50,22 +48,6 @@ class Match < ApplicationRecord
   validates :away, presence: true
   validates :competition, presence: true
   validates :date_played, presence: true
-  validates :line_up, presence: true
-  validate :valid_line_up?
-
-  def valid_line_up?
-    if !line_up.is_a?(Array) ||
-       [0, 11].include?(line_up.length) ||
-       line_up.any? { |player| invalid_start?(player) }
-      errors.add(:line_up, :invalid)
-    end
-  end
-
-  def invalid_start?(player)
-    player.is_a?(Hash) &&
-    player[:id].present? &&
-    player[:position].present?
-  end
 
   ##############
   #  CALLBACK  #
@@ -100,11 +82,18 @@ class Match < ApplicationRecord
     [ home, away ].include? team.title
   end
 
+  def team_home?
+    team.title == home
+  end
+
   def team_result
     if team_played?
-      if home_score > away_score
+      team_score = team_home? ? home_score : away_score
+      other_score = team_home? ? away_score : home_score
+
+      if team_score > other_score
         'win'
-      elsif home_score == away_score
+      elsif team_score == other_score
         'draw'
       else
         'loss'
@@ -123,9 +112,16 @@ class Match < ApplicationRecord
     score
   end
 
+  def events
+    [ *goals, *substitutions, *bookings ]
+  end
+
   def as_json(options = {})
     super((options || {}).merge({
-      methods: %i[ score team_result ]
+      methods: %i[ score team_result events ],
+      include: {
+        match_logs: { methods: %i[ name ] }
+      }
     }))
   end
 

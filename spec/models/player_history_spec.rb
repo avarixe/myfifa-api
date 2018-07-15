@@ -2,8 +2,8 @@
 #
 # Table name: player_histories
 #
-#  id         :integer          not null, primary key
-#  player_id  :integer
+#  id         :bigint(8)        not null, primary key
+#  player_id  :bigint(8)
 #  datestamp  :date
 #  ovr        :integer
 #  value      :integer

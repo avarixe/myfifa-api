@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180710233655) do
+ActiveRecord::Schema.define(version: 2018_07_14_175633) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,7 @@ ActiveRecord::Schema.define(version: 20180710233655) do
     t.boolean "red_card", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "player_name"
     t.index ["match_id"], name: "index_bookings_on_match_id"
     t.index ["player_id"], name: "index_bookings_on_player_id"
   end
@@ -69,6 +70,7 @@ ActiveRecord::Schema.define(version: 20180710233655) do
     t.boolean "penalty", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "assisted_by"
     t.index ["assist_id"], name: "index_goals_on_assist_id"
     t.index ["match_id"], name: "index_goals_on_match_id"
     t.index ["player_id"], name: "index_goals_on_player_id"
@@ -99,9 +101,10 @@ ActiveRecord::Schema.define(version: 20180710233655) do
     t.bigint "player_id"
     t.string "pos"
     t.integer "start"
-    t.integer "stop"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "stop"
+    t.boolean "subbed_out", default: false
     t.index ["match_id"], name: "index_match_logs_on_match_id"
     t.index ["player_id"], name: "index_match_logs_on_player_id"
   end
@@ -215,6 +218,8 @@ ActiveRecord::Schema.define(version: 20180710233655) do
     t.boolean "injury", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "player_name"
+    t.string "replaced_by"
     t.index ["match_id"], name: "index_substitutions_on_match_id"
     t.index ["player_id"], name: "index_substitutions_on_player_id"
     t.index ["replacement_id"], name: "index_substitutions_on_replacement_id"

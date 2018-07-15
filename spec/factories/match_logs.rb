@@ -2,14 +2,15 @@
 #
 # Table name: match_logs
 #
-#  id         :integer          not null, primary key
-#  match_id   :integer
-#  player_id  :integer
+#  id         :bigint(8)        not null, primary key
+#  match_id   :bigint(8)
+#  player_id  :bigint(8)
 #  pos        :string
 #  start      :integer
-#  stop       :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  stop       :integer
+#  subbed_out :boolean          default(FALSE)
 #
 # Indexes
 #

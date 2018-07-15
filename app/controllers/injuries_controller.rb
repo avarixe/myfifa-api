@@ -12,7 +12,7 @@ class InjuriesController < APIController
   end
 
   def create
-    @injury = @player.injuries.new(injury_params)
+    # @injury = @player.injuries.new(injury_params)
     save_record @injury, json: @player
   end
 
