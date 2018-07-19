@@ -12,7 +12,6 @@ class MatchesController < APIController
   end
 
   def create
-    @match = @team.matches.new(match_params)
     save_record @match
   end
 

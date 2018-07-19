@@ -1,5 +1,4 @@
 class TransfersController < APIController
-  # load_and_authorize_resource :team
   load_and_authorize_resource :player
   load_and_authorize_resource :transfer, through: :player, shallow: true
 
@@ -12,7 +11,6 @@ class TransfersController < APIController
   end
 
   def create
-    # @transfer = @player.transfers.new(transfer_params)
     save_record @transfer, json: @transfer.json(methods: [:player])
   end
 

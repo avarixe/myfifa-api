@@ -18,6 +18,8 @@ class Ability
       can :manage, Loan, team: { user: user }
       can :manage, Transfer, team: { user: user }
 
+      can :manage, Squad, team: { user: user }
+
       can :manage, Match, team: { user: user }
       can :manage, MatchLog, team: { user: user }
     end

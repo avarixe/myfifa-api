@@ -10,6 +10,8 @@ class TokensController < Doorkeeper::TokensController
       # User the resource_owner_id from token to identify the user
       user = User.find(response.token.resource_owner_id) rescue nil
       body[:user] = user.as_json unless user.nil?
+    else
+      body[:error_description] = 'Invalid Username/Password. Please try again.'
     end
 
     self.headers.merge! response.headers

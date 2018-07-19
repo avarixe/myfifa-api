@@ -1,5 +1,4 @@
 class LoansController < APIController
-  # load_and_authorize_resource :team
   load_and_authorize_resource :player
   load_and_authorize_resource :loan, through: :player, shallow: true
 
@@ -12,7 +11,6 @@ class LoansController < APIController
   end
 
   def create
-    # @loan = @player.loans.new(loan_params)
     save_record @loan, json: @player
   end
 

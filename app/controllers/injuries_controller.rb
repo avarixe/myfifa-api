@@ -1,5 +1,4 @@
 class InjuriesController < APIController
-  # load_and_authorize_resource :team
   load_and_authorize_resource :player
   load_and_authorize_resource :injury, through: :player, shallow: true
 
@@ -12,7 +11,6 @@ class InjuriesController < APIController
   end
 
   def create
-    # @injury = @player.injuries.new(injury_params)
     save_record @injury, json: @player
   end
 
