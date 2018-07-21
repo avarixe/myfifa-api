@@ -35,10 +35,25 @@ class MatchLog < ApplicationRecord
   validates :stop, inclusion: 0..120
 
   after_initialize :set_defaults
+  after_destroy :remove_events
 
   def set_defaults
     self.start ||= 0
     self.stop ||= 90
+  end
+
+  def remove_events
+    Goal
+      .where(match_id: match_id, player_id: player_id)
+      .or(Goal.where(match_id: match_id, assist_id: player_id))
+      .delete_all
+    Booking
+      .where(match_id: match_id, player_id: player_id)
+      .delete_all
+    Substitution
+      .where(match_id: match_id, player_id: player_id)
+      .or(Substitution.where(match_id: match_id, replacement_id: player_id))
+      .delete_all
   end
 
   delegate :team, to: :match

@@ -113,7 +113,7 @@ class Match < ApplicationRecord
   end
 
   def events
-    [ *goals, *substitutions, *bookings ]
+    [ *goals, *substitutions, *bookings ].sort_by(&:minute)
   end
 
   def as_json(options = {})

@@ -24,6 +24,22 @@ class MatchesController < APIController
     render json: @match.destroy
   end
 
+  def apply_squad
+    @squad = Squad.find(params[:squad_id])
+
+    # Remove existing Match Logs
+    @matches.logs.clear
+
+    # Add new Match Logs from Squad player list
+    MatchLog.import @squad.players_list.map do |player_id|
+      {
+        match_id: @match.id,
+        player_id: player_id
+      }
+    end
+
+  end
+
   private
 
     def match_params

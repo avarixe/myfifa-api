@@ -46,7 +46,7 @@ class Migrate < Thor
         end
       end
 
-      $teams = client.query 'SELECT * FROM my_fifa_teams'
+      $teams = client.query 'SELECT * FROM my_fifa_teams ORDER BY id'
       $seasons = client.query 'SELECT * FROM my_fifa_seasons'
 
       teams = []
@@ -70,14 +70,15 @@ class Migrate < Thor
         correct_sequence Team
       end
 
-      $players = client.query 'SELECT * FROM my_fifa_players'
+      $players = client.query 'SELECT * FROM my_fifa_players ORDER BY id'
       $contracts = client.query 'SELECT events.*, team_name
                                  FROM my_fifa_player_events AS events
                                  LEFT JOIN my_fifa_players AS players
                                    ON events.player_id = players.id
                                  LEFT JOIN my_fifa_teams AS teams
                                    ON players.team_id = teams.id
-                                 WHERE type = $1', [ 'MyFifa::Contract' ]
+                                 WHERE type = $1
+                                 ORDER BY events.id', [ 'MyFifa::Contract' ]
 
       players = []
       run_cmd "Migrating Players" do
@@ -116,7 +117,8 @@ class Migrate < Thor
       $player_seasons = client.query 'SELECT player_seasons.*, end_date
                                       FROM my_fifa_player_seasons AS player_seasons
                                       LEFT JOIN my_fifa_seasons AS seasons
-                                        ON player_seasons.season_id = seasons.id'
+                                        ON player_seasons.season_id = seasons.id
+                                      ORDER BY player_seasons.id'
 
       run_cmd 'Migrating Player Histories' do
         Player.skip_callbacks = true
@@ -154,7 +156,8 @@ class Migrate < Thor
                                  FROM my_fifa_costs AS costs
                                  LEFT JOIN my_fifa_players AS players
                                    ON costs.player_id = players.id
-                                 WHERE event_id = $1 AND dir = $2', [ contract['id'], 'in' ]
+                                 WHERE event_id = $1 AND dir = $2
+                                 ORDER BY costs.id', [ contract['id'], 'in' ]
             cost = cost.first
 
             transfer_params = {
@@ -174,11 +177,12 @@ class Migrate < Thor
           end
 
           if contract['destination'].present?
-            cost = client.query 'SELECT my_fifa_costs.*, name
-                                 FROM my_fifa_costs
-                                 LEFT JOIN my_fifa_players
-                                   ON my_fifa_costs.player_id = my_fifa_players.id
-                                 WHERE event_id = $1 AND dir = $2', [ contract['id'], 'out' ]
+            cost = client.query 'SELECT costs.*, name
+                                 FROM my_fifa_costs AS costs
+                                 LEFT JOIN my_fifa_players AS players
+                                   ON costs.player_id = players.id
+                                 WHERE event_id = $1 AND dir = $2
+                                 ORDER BY costs.id', [ contract['id'], 'out' ]
             cost = cost.first
 
             transfer_params = {
@@ -201,7 +205,8 @@ class Migrate < Thor
 
           $terms = client.query 'SELECT *
                                  FROM my_fifa_contract_terms
-                                 WHERE contract_id = $1', [ contract['id'] ]
+                                 WHERE contract_id = $1
+                                 ORDER BY id', [ contract['id'] ]
           $terms = $terms.to_a
 
           contract_params = {
@@ -254,7 +259,8 @@ class Migrate < Thor
 
       $loans = client.query 'SELECT *
                              FROM my_fifa_player_events
-                             WHERE type = $1', [ 'MyFifa::Loan' ]
+                             WHERE type = $1
+                             ORDER BY id', [ 'MyFifa::Loan' ]
 
       loans = []
       run_cmd 'Migrating Loans' do
@@ -275,7 +281,8 @@ class Migrate < Thor
 
       $injuries = client.query 'SELECT *
                                 FROM my_fifa_player_events
-                                WHERE type = $1', [ 'MyFifa::Injury' ]
+                                WHERE type = $1
+                                ORDER BY id', [ 'MyFifa::Injury' ]
       injuries = []
       run_cmd 'Migrating Injuries' do
         $injuries.each do |injury|
@@ -303,11 +310,12 @@ class Migrate < Thor
       $matches = client.query 'SELECT matches.*, team_name
                                FROM my_fifa_matches AS matches
                                LEFT JOIN my_fifa_teams AS teams
-                                 ON teams.id = matches.team_id'
+                                 ON teams.id = matches.team_id
+                               ORDER BY matches.id'
       matches = []
       goals = []
       penalty_shootouts = []
-      run_cmd 'Importing Matches' do
+      run_cmd 'Migrating Matches' do
         $matches.each do |record|
           matches << {
             id:          record['id'],
@@ -337,10 +345,11 @@ class Migrate < Thor
                                     LEFT JOIN my_fifa_players AS players
                                       ON players.id = logs.player1_id
                                     LEFT JOIN my_fifa_players AS secondary
-                                      ON secondary.id = logs.player2_id'
+                                      ON secondary.id = logs.player2_id
+                                    ORDER BY logs.id'
       substitutions = []
       bookings = []
-      run_cmd 'Importing Match Events' do
+      run_cmd 'Migrating Match Events' do
         $match_events.each do |event|
           case event['event']
           when 'Goal'
@@ -386,9 +395,10 @@ class Migrate < Thor
                                         ON subouts.match_id = records.match_id
                                         AND subouts.player1_id = records.player_id
                                         AND subouts.event = 'Substitution'
-                                      GROUP BY records.id, subins.minute, subouts.minute"
+                                      GROUP BY records.id, subins.minute, subouts.minute
+                                      ORDER BY records.id"
       logs = []
-      run_cmd 'Importing Match-Player Records' do
+      run_cmd 'Migrating Match-Player Records' do
         $player_records.each do |record|
           logs << {
             player_id:  record['player_id'],
@@ -415,6 +425,40 @@ class Migrate < Thor
         correct_sequence MatchLog
         correct_sequence Substitution
         correct_sequence Booking
+      end
+
+      $squads = client.query "SELECT team_id, squad_name,
+                                     #{ (1..11).map{ |i| "player_id_#{ i }, " }.join }
+                                     #{ (1..11).map{ |i| "pos_#{ i }" }.join(', ') }
+                              FROM my_fifa_squads AS squads
+                              LEFT JOIN my_fifa_formations AS formations
+                                ON squads.formation_id = formations.id
+                              ORDER BY squads.id"
+
+      squads = []
+      run_cmd 'Migrating Squads' do
+        $squads.each do |squad|
+          players_list = []
+          positions_list = []
+
+          11.times do |i|
+            players_list << squad["player_id_#{ i+1 }"]
+            positions_list << squad["pos_#{ i+1 }"]
+          end
+
+          squads << {
+            team_id:        squad['team_id'],
+            name:           squad['squad_name'],
+            players_list:   players_list,
+            positions_list: positions_list
+
+          }
+        end
+      end
+
+      run_cmd 'Importing Migrated Squads' do
+        Squad.import squads, validate: false
+        correct_sequence Squad
       end
 
     rescue => e

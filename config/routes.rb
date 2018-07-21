@@ -25,6 +25,8 @@ Rails.application.routes.draw do
       end
       resources :squads
       resources :matches do
+        post 'apply_squad', on: :member
+
         resources :logs, controller: :match_logs
         %i[ goals substitutions bookings penalty_shootouts ].each do |event|
           resources event.to_sym,
