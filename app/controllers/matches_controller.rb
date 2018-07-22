@@ -1,6 +1,6 @@
 class MatchesController < APIController
   load_and_authorize_resource :team
-  load_and_authorize_resource :match, through: :team, shallow: true
+  load_and_authorize_resource through: :team, shallow: true
 
   def index
     @matches = @matches.preload(:players, :goals, :substitutions, :bookings, :penalty_shootout)
@@ -26,18 +26,8 @@ class MatchesController < APIController
 
   def apply_squad
     @squad = Squad.find(params[:squad_id])
-
-    # Remove existing Match Logs
-    @matches.logs.clear
-
-    # Add new Match Logs from Squad player list
-    MatchLog.import @squad.players_list.map do |player_id|
-      {
-        match_id: @match.id,
-        player_id: player_id
-      }
-    end
-
+    @match.apply(@squad)
+    render json: @match
   end
 
   private

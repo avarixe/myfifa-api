@@ -27,6 +27,7 @@ class Substitution < ApplicationRecord
 
   PERMITTED_ATTRIBUTES = %i[
     minute
+    player_name
     player_id
     replaced_by
     replacement_id
@@ -38,6 +39,26 @@ class Substitution < ApplicationRecord
   end
 
   validates :minute, inclusion: 1..120
+
+  after_create :create_sub_log
+  after_destroy :delete_sub_log
+
+  def create_sub_log
+    replaced_log = match.match_logs.find_by_player_id(player_id)
+    replaced_log.update(stop: minute, subbed_out: true)
+    match.match_logs.create player_id: replacement_id,
+                            pos:       replaced_log.pos,
+                            start:     minute
+  end
+
+  def delete_sub_log
+    match.match_logs
+      .find_by_player_id(replacement_id)
+      .destroy
+    match.match_logs
+      .find_by_player_id(player_id)
+      .update(stop: 90, subbed_out: false)
+  end
 
   def home
     match.team_home?

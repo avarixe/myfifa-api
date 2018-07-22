@@ -22,6 +22,11 @@ class Ability
 
       can :manage, Match, team: { user: user }
       can :manage, MatchLog, team: { user: user }
+
+      can :manage, Goal, match: { team: { user: user }}
+      can :manage, Booking, match: { team: { user: user }}
+      can :manage, Substitution, match: { team: { user: user }}
+      can :manage, PenaltyShootout, match: { team: { user: user }}
     end
     #
     # The first argument to `can` is the action you are giving the user

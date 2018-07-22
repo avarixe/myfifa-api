@@ -1,6 +1,6 @@
 class MatchLogsController < APIController
   load_and_authorize_resource :match
-  load_and_authorize_resource :match_log, through: :match, shallow: true
+  load_and_authorize_resource through: :match, shallow: true
 
   def create
     save_record @match_log, json: @match

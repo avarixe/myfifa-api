@@ -1,6 +1,6 @@
 class LoansController < APIController
   load_and_authorize_resource :player
-  load_and_authorize_resource :loan, through: :player, shallow: true
+  load_and_authorize_resource through: :player, shallow: true
 
   def index
     render json: @loans

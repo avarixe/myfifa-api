@@ -64,6 +64,22 @@ class Match < ApplicationRecord
   #  MUTATORS  #
   ##############
 
+  def apply(squad)
+    MatchLog.transaction do
+      # Remove existing Match Logs
+      match_logs.clear
+
+      # Add new Match Logs from Squad player list
+      squad.players_list.each_with_index do |player_id, i|
+        match_logs.create player_id: player_id,
+                          pos: squad.positions_list[i]
+      end
+    end
+
+    # Reload association to include new MatchLogs
+    match_logs.reload
+  end
+
   ###############
   #  ACCESSORS  #
   ###############
@@ -112,13 +128,32 @@ class Match < ApplicationRecord
     score
   end
 
+  def winner
+    if home_score > away_score
+      home
+    elsif home_score < away_score
+      away
+    elsif penalty_shootout.present?
+      penalty_shootout.home_score > penalty_shootout.away_score ? home : away
+    else
+      nil
+    end
+  end
+
   def events
     [ *goals, *substitutions, *bookings ].sort_by(&:minute)
   end
 
   def as_json(options = {})
     super((options || {}).merge({
-      methods: %i[ score team_result events ],
+      methods: %i[
+        home_score
+        away_score
+        score
+        team_result
+        events
+        penalty_shootout
+      ],
       include: {
         match_logs: { methods: %i[ name ] }
       }
