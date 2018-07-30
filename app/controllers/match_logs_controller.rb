@@ -8,6 +8,10 @@ class MatchLogsController < APIController
     render json: @match_logs
   end
 
+  def show
+    render json: @match_log
+  end
+
   def create
     save_record @match_log
   end

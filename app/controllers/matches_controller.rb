@@ -21,7 +21,7 @@ class MatchesController < APIController
 
   def update
     @match.attributes = match_params
-    save_record @match
+    save_record @match.full_json
   end
 
   def destroy
