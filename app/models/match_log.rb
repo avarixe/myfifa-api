@@ -56,6 +56,11 @@ class MatchLog < ApplicationRecord
       .delete_all
   end
 
-  delegate :team, to: :match
   delegate :name, to: :player
+
+  def as_json(options = {})
+    options[:methods] ||= []
+    options[:methods] << :name
+    super
+  end
 end

@@ -14,18 +14,25 @@ Rails.application.routes.draw do
 
     resources :teams, shallow: true do
       resources :players do
+        collection do
+          patch :update_multiple
+        end
+        member do
+          get 'active_loan'
+          get 'active_injury'
+        end
+
         resources :loans
         resources :injuries
         resources :contracts
         resources :transfers
-
-        collection do
-          patch :update_multiple
-        end
       end
       resources :squads
       resources :matches do
-        post 'apply_squad', on: :member
+        member do
+          get 'events'
+          post 'apply_squad'
+        end
 
         resources :logs, controller: :match_logs
         resources :goals

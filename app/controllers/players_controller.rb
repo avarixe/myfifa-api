@@ -4,7 +4,7 @@ class PlayersController < APIController
   skip_load_and_authorize_resource only: :update_multiple
 
   def index
-    @players = @players.preload(:contracts, :injuries, :loans, :transfers)
+    @players = @players.preload(:contracts)
     render json: @players
   end
 
@@ -28,6 +28,14 @@ class PlayersController < APIController
   def update_multiple
     Player.update(params[:players].keys, params[:players].values)
     render json: @team.players.preload(:contracts, :injuries, :loans)
+  end
+
+  def active_loan
+    render json: @player.active_loan
+  end
+
+  def active_injury
+    render json: @player.active_injury
   end
 
   private

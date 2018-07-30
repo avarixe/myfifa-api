@@ -7,19 +7,19 @@ class PenaltyShootoutsController < APIController
   end
 
   def create
-    save_record @penalty_shootout, json: @match
+    save_record @penalty_shootout, json: @match.full_json
   end
 
   def update
     @penalty_shootout.attributes = penalty_shootout_params
-    save_record @penalty_shootout, json: @penalty_shootout.match
+    save_record @penalty_shootout, json: @penalty_shootout.match.full_json
   end
 
   def destroy
     @match = @penalty_shootout.match
     @penalty_shootout.destroy
     @match.reload
-    render json: @match
+    render json: @match.full_json
   end
 
   private
