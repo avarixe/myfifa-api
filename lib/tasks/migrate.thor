@@ -121,8 +121,6 @@ class Migrate < Thor
                                       ORDER BY player_seasons.id'
 
       run_cmd 'Migrating Player Histories' do
-        Player.skip_callbacks = true
-
         histories = []
         $player_seasons.each do |record|
           histories << {
@@ -142,8 +140,6 @@ class Migrate < Thor
 
         PlayerHistory.import histories, validate: false
         correct_sequence PlayerHistory
-
-        Player.skip_callbacks = false
       end
 
       contracts = []

@@ -82,8 +82,8 @@ class Contract < ApplicationRecord
   ##############
 
   after_initialize :set_signed_date
-  after_save :save_history, unless: :skip_callbacks
-  after_create :update_status, unless: :skip_callbacks
+  after_save :save_history
+  after_create :update_status
 
   def set_signed_date
     self.signed_date ||= team.current_date

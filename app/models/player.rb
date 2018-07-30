@@ -104,8 +104,8 @@ class Player < ApplicationRecord
   #  CALLBACK  #
   ##############
 
-  after_create :start_history, unless: :skip_callbacks
-  after_update :update_history, unless: :skip_callbacks
+  after_create :start_history
+  after_update :update_history
 
   def start_history
     player_histories.create ovr: ovr,
