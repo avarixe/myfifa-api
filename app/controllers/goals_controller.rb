@@ -11,17 +11,17 @@ class GoalsController < APIController
   end
 
   def create
-    save_record @goal, json: @match
+    save_record @goal, json: @match.full_json
   end
 
   def update
     @goal.attributes = goal_params
-    save_record @goal, json: @goal.match
+    save_record @goal, json: @goal.match.full_json
   end
 
   def destroy
     @goal.destroy
-    render json: @goal.match
+    render json: @goal.match.full_json
   end
 
   private

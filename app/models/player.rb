@@ -139,7 +139,6 @@ class Player < ApplicationRecord
       save!
     end
 
-
   ###############
   #  ACCESSORS  #
   ###############
@@ -154,7 +153,7 @@ class Player < ApplicationRecord
 
   def as_json(options = {})
     super((options || {}).merge({
-      methods: %i[age pos_idx active_contract active_injury active_loan active_transfer]
+      methods: %i[ age pos_idx active_contract ]
     }))
   end
 
@@ -171,5 +170,21 @@ class Player < ApplicationRecord
 
   def pos_idx
     POSITIONS.index pos
+  end
+
+  def num_goals
+    goals.size
+  end
+
+  def num_assists
+    assists.size
+  end
+
+  def num_bookings
+    bookings.size
+  end
+
+  def num_games
+    match_logs.size
   end
 end

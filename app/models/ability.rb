@@ -8,9 +8,7 @@ class Ability
       can :manage, :all
     else
       can :read, :all
-      can :manage, Team do |team|
-        team.try(:user) == user
-      end
+      can :manage, Team, user: user
 
       can :manage, Player, team: { user: user }
       can :manage, Injury, team: { user: user }
@@ -21,7 +19,7 @@ class Ability
       can :manage, Squad, team: { user: user }
 
       can :manage, Match, team: { user: user }
-      can :manage, MatchLog, team: { user: user }
+      can :manage, MatchLog, match: { team: { user: user }}
 
       can :manage, Goal, match: { team: { user: user }}
       can :manage, Booking, match: { team: { user: user }}

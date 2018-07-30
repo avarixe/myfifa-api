@@ -145,19 +145,22 @@ class Match < ApplicationRecord
   end
 
   def as_json(options = {})
-    super((options || {}).merge({
-      methods: %i[
-        home_score
-        away_score
-        score
-        team_result
-        events
-        penalty_shootout
-      ],
-      include: {
-        match_logs: { methods: %i[ name ] }
-      }
-    }))
+    options[:methods] ||= []
+    options[:methods] += %i[
+      home_score
+      away_score
+      score
+      team_result
+      penalty_shootout
+    ]
+    super
+  end
+
+  def full_json
+    as_json(methods: %i[
+      events
+      match_logs
+    ])
   end
 
 end

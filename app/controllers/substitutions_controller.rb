@@ -11,17 +11,17 @@ class SubstitutionsController < APIController
   end
 
   def create
-    save_record @substitution, json: @match
+    save_record @substitution, json: @match.full_json
   end
 
   def update
     @substitution.attributes = substitution_params
-    save_record @substitution, json: @substitution.match
+    save_record @substitution, json: @substitution.match.full_json
   end
 
   def destroy
     @substitution.destroy
-    render json: @substitution.match
+    render json: @substitution.match.full_json
   end
 
   private
