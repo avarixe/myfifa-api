@@ -22,7 +22,7 @@ class Ability
       Loan,
       Transfer,
       Squad,
-      User
+      Match
     ]
   end
 

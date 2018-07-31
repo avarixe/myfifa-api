@@ -1,6 +1,6 @@
 class TransfersController < APIController
   load_and_authorize_resource :player
-  load_and_authorize_resource :transfer, through: :player, shallow: true
+  load_resource through: :player, shallow: true
 
   def index
     render json: @transfers
@@ -11,12 +11,12 @@ class TransfersController < APIController
   end
 
   def create
-    save_record @transfer, json: @transfer.json(methods: [:player])
+    save_record @transfer, json: @player
   end
 
   def update
     @transfer.attributes = transfer_params
-    save_record @transfer, json: @transfer.json(methods: [:player])
+    save_record @transfer, json: @transfer.player
   end
 
   def destroy
