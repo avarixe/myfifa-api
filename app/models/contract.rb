@@ -48,9 +48,9 @@ class Contract < ApplicationRecord
     PERMITTED_ATTRIBUTES
   end
 
-  scope :active, -> (player) {
+  scope :active, lambda { |player|
     where('effective_date >= ?', player.current_date)
-    .where('? <= end_date', player.current_date)
+      .where('? <= end_date', player.current_date)
   }
 
   ################
@@ -73,7 +73,6 @@ class Contract < ApplicationRecord
   def valid_performance_bonus
     return if [performance_bonus, bonus_req, bonus_req_type].all? ||
               [performance_bonus, bonus_req, bonus_req_type].none?
-    puts 'not valid performance bonus'
     errors.add(:performance_bonus, 'requires all three fields')
   end
 
@@ -116,13 +115,10 @@ class Contract < ApplicationRecord
   delegate :loaned?, to: :player
 
   def active?
-    player.pending? ||
-    effective_date <= current_date &&
-    (!end_date || current_date <= end_date)
+    player.pending? || current_date.between?(effective_date, end_date)
   end
 
   def pending?
-    signed_date <= current_date && current_date < effective_date
+    current_date.between?(signed_date, effective_date)
   end
-
 end

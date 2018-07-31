@@ -57,7 +57,6 @@ class Match < ApplicationRecord
 
   def set_defaults
     self.date_played ||= team.current_date
-    @line_up ||= []
   end
 
   ##############
@@ -95,7 +94,7 @@ class Match < ApplicationRecord
   end
 
   def team_played?
-    [ home, away ].include? team.title
+    [home, away].include? team.title
   end
 
   def team_home?
@@ -103,28 +102,25 @@ class Match < ApplicationRecord
   end
 
   def team_result
-    if team_played?
-      team_score = team_home? ? home_score : away_score
-      other_score = team_home? ? away_score : home_score
+    return unless team_played?
+    team_score = team_home? ? home_score : away_score
+    other_score = team_home? ? away_score : home_score
 
-      if team_score > other_score
-        'win'
-      elsif team_score == other_score
-        'draw'
-      else
-        'loss'
-      end
+    if team_score > other_score
+      'win'
+    elsif team_score == other_score
+      'draw'
     else
-      nil
+      'loss'
     end
   end
 
   def score
     score = home_score.to_s
-    score += " (#{ penalty_shootout.home_score })" if penalty_shootout
+    score += " (#{penalty_shootout.home_score})" if penalty_shootout
     score += ' - '
     score += away_score.to_s
-    score += " (#{ penalty_shootout.away_score })" if penalty_shootout
+    score += " (#{penalty_shootout.away_score})" if penalty_shootout
     score
   end
 
@@ -134,14 +130,12 @@ class Match < ApplicationRecord
     elsif home_score < away_score
       away
     elsif penalty_shootout.present?
-      penalty_shootout.home_score > penalty_shootout.away_score ? home : away
-    else
-      nil
+      penalty_shootout.winner
     end
   end
 
   def events
-    [ *goals, *substitutions, *bookings ].sort_by(&:minute)
+    [*goals, *substitutions, *bookings].sort_by(&:minute)
   end
 
   def as_json(options = {})
@@ -157,10 +151,6 @@ class Match < ApplicationRecord
   end
 
   def full_json
-    as_json(methods: %i[
-      events
-      match_logs
-    ])
+    as_json methods: %i[events match_logs]
   end
-
 end

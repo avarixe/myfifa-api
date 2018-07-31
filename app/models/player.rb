@@ -30,15 +30,16 @@ class Player < ApplicationRecord
   has_many :contracts, dependent: :destroy
   has_many :transfers, dependent: :destroy
 
-  has_many :match_logs
+  has_many :match_logs, dependent: :destroy
   has_many :matches, through: :match_logs
 
-  has_many :goals
+  has_many :goals, dependent: :destroy
   has_many :assists,
            class_name: 'Goal',
            foreign_key: :assist_id,
-           inverse_of: :assisting_player
-  has_many :bookings
+           inverse_of: :assisting_player,
+           dependent: :destroy
+  has_many :bookings, dependent: :destroy
 
   STATUSES = %w[
     Pending
@@ -125,19 +126,17 @@ class Player < ApplicationRecord
   #  MUTATORS  #
   ##############
 
-    def update_status
-      self.status =
-        if active_loan
-          'Loaned'
-        elsif active_injury
-          'Injured'
-        elsif active_contract
-          active_contract.pending? ? 'Pending' : 'Active'
-        else
-          nil
-        end
-      save!
-    end
+  def update_status
+    self.status =
+      if active_loan
+        'Loaned'
+      elsif active_injury
+        'Injured'
+      elsif active_contract
+        active_contract.pending? ? 'Pending' : 'Active'
+      end
+    save!
+  end
 
   ###############
   #  ACCESSORS  #
@@ -145,16 +144,16 @@ class Player < ApplicationRecord
 
   delegate :current_date, to: :team
 
-  %w[ active pending injured loaned ].each do |condition|
+  %w[active pending injured loaned].each do |condition|
     define_method "#{condition}?" do
       status == condition.capitalize
     end
   end
 
   def as_json(options = {})
-    super((options || {}).merge({
-      methods: %i[ age pos_idx active_contract ]
-    }))
+    options[:methods] ||= []
+    options[:methods] += %i[age pos_idx active_contract]
+    super
   end
 
   %w[contract injury loan transfer].each do |record|
@@ -170,21 +169,5 @@ class Player < ApplicationRecord
 
   def pos_idx
     POSITIONS.index pos
-  end
-
-  def num_goals
-    goals.size
-  end
-
-  def num_assists
-    assists.size
-  end
-
-  def num_bookings
-    bookings.size
-  end
-
-  def num_games
-    match_logs.size
   end
 end

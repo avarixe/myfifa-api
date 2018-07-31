@@ -34,7 +34,6 @@ class ContractHistory < ApplicationRecord
   def valid_performance_bonus
     return if [performance_bonus, bonus_req, bonus_req_type].all? ||
               [performance_bonus, bonus_req, bonus_req_type].none?
-    puts 'not valid performance bonus in history'
     errors.add(:performance_bonus, 'requires all three fields')
   end
 

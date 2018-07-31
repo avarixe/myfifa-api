@@ -41,6 +41,11 @@ class PlayersController < APIController
   private
 
     def player_params
-      params.require(:player).permit(*Player.permitted_attributes, { sec_pos: [] })
+      params
+        .require(:player)
+        .permit(
+          *Player.permitted_attributes,
+          sec_pos: []
+        )
     end
 end

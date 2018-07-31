@@ -29,4 +29,9 @@ class PenaltyShootout < ApplicationRecord
   validates :home_score, numericality: { only_integer: true }
   validates :away_score, numericality: { only_integer: true }
 
+  def winner
+    home_score > away_score ? home : away
+  end
+
+  delegate :home, :away, to: :match
 end

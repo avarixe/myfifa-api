@@ -4,11 +4,8 @@ class ApplicationRecord < ActiveRecord::Base
   self.abstract_class = true
 
   def as_json(options = {})
-    super((options || {}).merge({
-      except: %i[
-        created_at
-        updated_at
-      ]
-    }))
+    options[:except] ||= []
+    options[:except] += %i[created_at updated_at]
+    super
   end
 end

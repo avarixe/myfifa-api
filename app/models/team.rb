@@ -47,7 +47,7 @@ class Team < ApplicationRecord
   after_save :update_player_statuses
 
   def set_start_date
-    self.current_date ||= self.start_date
+    self.current_date ||= start_date
   end
 
   def update_player_statuses
@@ -59,14 +59,12 @@ class Team < ApplicationRecord
   end
 
   def as_json(options = {})
-    super((options || {}).merge({
-      methods: %i[time_period]
-    }))
+    options[:methods] ||= []
+    options[:methods] << :time_period
+    super
   end
 
   def time_period
-    start_year = start_date.year
     "#{start_date.year} - #{current_date.year}"
   end
-
 end

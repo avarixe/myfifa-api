@@ -27,7 +27,7 @@ class Injury < ApplicationRecord
     PERMITTED_ATTRIBUTES
   end
 
-  scope :active, -> (player) { where(end_date: nil) }
+  scope :active, -> { where(end_date: nil) }
 
   #################
   #  VALIDATIONS  #
@@ -60,9 +60,8 @@ class Injury < ApplicationRecord
   delegate :update_status, to: :player
 
   def recovered=(val)
-    if player_id
-      write_attribute :end_date, team.current_date
-    end
+    return unless player_id && val
+    self.end_date = team.current_date
   end
 
   ###############
@@ -73,7 +72,7 @@ class Injury < ApplicationRecord
 
   def active?
     start_date <= team.current_date &&
-    (end_date.nil? || team.current_date < end_date)
+      (end_date.nil? || team.current_date < end_date)
   end
 
   def recovered?
@@ -85,8 +84,8 @@ class Injury < ApplicationRecord
   end
 
   def as_json(options = {})
-    super((options || {}).merge({
-      methods: %i[ recovered ]
-    }))
+    options[:methods] ||= []
+    options[:methods] << :recovered
+    super
   end
 end

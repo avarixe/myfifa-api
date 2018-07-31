@@ -424,8 +424,8 @@ class Migrate < Thor
       end
 
       $squads = client.query "SELECT team_id, squad_name,
-                                     #{ (1..11).map{ |i| "player_id_#{ i }, " }.join }
-                                     #{ (1..11).map{ |i| "pos_#{ i }" }.join(', ') }
+                                     #{(1..11).map { |i| "player_id_#{i}, " }.join}
+                                     #{(1..11).map { |i| "pos_#{i}" }.join(', ')}
                               FROM my_fifa_squads AS squads
                               LEFT JOIN my_fifa_formations AS formations
                                 ON squads.formation_id = formations.id
@@ -438,8 +438,8 @@ class Migrate < Thor
           positions_list = []
 
           11.times do |i|
-            players_list << squad["player_id_#{ i+1 }"]
-            positions_list << squad["pos_#{ i+1 }"]
+            players_list << squad["player_id_#{i + 1}"]
+            positions_list << squad["pos_#{i + 1}"]
           end
 
           squads << {
@@ -456,12 +456,11 @@ class Migrate < Thor
         Squad.import squads, validate: false
         correct_sequence Squad
       end
-
     rescue => e
-      puts "===ERROR!==="
+      puts '===ERROR!==='
       puts e.message
       puts e.backtrace.join("\n")
-      puts "===END ERROR!==="
+      puts '===END ERROR!==='
     end
   end
 
@@ -476,15 +475,15 @@ class Migrate < Thor
     def desc_object(obj, type)
       max_key_length = obj.keys.map(&:length).max
 
-      puts "#{ type }:"
+      puts "#{type}:"
       obj.each do |k, v|
-        puts "  #{ (k.to_s + ': ').ljust(max_key_length + 2) } #{ v }"
+        puts "  #{(k.to_s + ': ').ljust(max_key_length + 2)} #{v}"
       end
     end
 
     def correct_sequence(table)
-      if table.any?
-        table.connection.execute "ALTER SEQUENCE #{ table.table_name }_id_seq RESTART WITH #{ table.last.id + 1 }"
-      end
+      return unless table.any?
+      table.connection.execute "ALTER SEQUENCE #{table.table_name}_id_seq
+                                RESTART WITH #{table.last.id + 1}"
     end
 end

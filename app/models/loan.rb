@@ -27,7 +27,7 @@ class Loan < ApplicationRecord
     PERMITTED_ATTRIBUTES
   end
 
-  scope :active, -> (player) { where(end_date: nil) }
+  scope :active, -> { where(end_date: nil) }
 
   ################
   #  VALIDATION  #
@@ -62,9 +62,8 @@ class Loan < ApplicationRecord
   delegate :update_status, to: :player
 
   def returned=(val)
-    if player_id
-      write_attribute :end_date, team.current_date
-    end
+    return unless player_id && val
+    self.end_date = team.current_date
   end
 
   ###############
@@ -75,7 +74,7 @@ class Loan < ApplicationRecord
 
   def active?
     start_date <= team.current_date &&
-    (end_date.nil? || team.current_date < end_date)
+      (end_date.nil? || team.current_date < end_date)
   end
 
   def returned?
@@ -87,9 +86,8 @@ class Loan < ApplicationRecord
   end
 
   def as_json(options = {})
-    super((options || {}).merge({
-      methods: %i[ returned ]
-    }))
+    options[:methods] ||= []
+    options[:methods] << :returned
+    super
   end
-
 end

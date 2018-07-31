@@ -26,6 +26,12 @@ class SquadsController < APIController
   private
 
     def squad_params
-      params.require(:squad).permit(*Squad.permitted_attributes, { players_list: [], positions_list: [] })
+      params
+        .require(:squad)
+        .permit(
+          *Squad.permitted_attributes,
+          players_list: [],
+          positions_list: []
+        )
     end
 end

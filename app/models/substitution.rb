@@ -44,7 +44,7 @@ class Substitution < ApplicationRecord
   after_destroy :delete_sub_log
 
   def create_sub_log
-    replaced_log = match.match_logs.find_by_player_id(player_id)
+    replaced_log = match.match_logs.find_by(player_id: player_id)
     replaced_log.update(stop: minute, subbed_out: true)
     match.match_logs.create player_id: replacement_id,
                             pos:       replaced_log.pos,
@@ -52,11 +52,13 @@ class Substitution < ApplicationRecord
   end
 
   def delete_sub_log
-    match.match_logs
-      .find_by_player_id(replacement_id)
+    match
+      .match_logs
+      .find_by(player_id: replacement_id)
       .destroy
-    match.match_logs
-      .find_by_player_id(player_id)
+    match
+      .match_logs
+      .find_by(player_id: player_id)
       .update(stop: 90, subbed_out: false)
   end
 
@@ -69,9 +71,8 @@ class Substitution < ApplicationRecord
   end
 
   def as_json(options = {})
-    super((options || {}).merge({
-      methods: %i[ event_type home ]
-    }))
+    options[:methods] ||= []
+    options[:methods] += %i[event_type home]
+    super
   end
-
 end

@@ -43,9 +43,8 @@ class Booking < ApplicationRecord
   end
 
   def as_json(options = {})
-    super((options || {}).merge({
-      methods: %i[ event_type home ]
-    }))
+    options[:methods] ||= []
+    options[:methods] += %i[event_type home]
+    super
   end
-
 end

@@ -57,8 +57,8 @@ class Goal < ApplicationRecord
   end
 
   def as_json(options = {})
-    super((options || {}).merge({
-      methods: %i[ event_type ]
-    }))
+    options[:methods] ||= []
+    options[:methods] << :event_type
+    super
   end
 end

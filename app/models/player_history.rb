@@ -26,9 +26,8 @@ class PlayerHistory < ApplicationRecord
   validate :player_changed?
 
   def player_changed?
-    if ovr.blank? || value.blank?
-      errors.add(:base, :invalid)
-    end
+    return unless ovr.blank? || value.blank?
+    errors.add(:base, :invalid)
   end
 
   delegate :current_date, to: :player

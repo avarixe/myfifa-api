@@ -43,17 +43,33 @@ class MatchLog < ApplicationRecord
   end
 
   def remove_events
-    Goal
-      .where(match_id: match_id, player_id: player_id)
-      .or(Goal.where(match_id: match_id, assist_id: player_id))
-      .delete_all
-    Booking
-      .where(match_id: match_id, player_id: player_id)
-      .delete_all
-    Substitution
-      .where(match_id: match_id, player_id: player_id)
-      .or(Substitution.where(match_id: match_id, replacement_id: player_id))
-      .delete_all
+    [
+      goals,
+      assists,
+      bookings,
+      sub_outs,
+      sub_ins
+    ].map(&:delete_all)
+  end
+
+  def goals
+    Goal.where(match_id: match_id, player_id: player_id)
+  end
+
+  def assists
+    Goal.where(match_id: match_id, assist_id: player_id)
+  end
+
+  def bookings
+    Booking.where(match_id: match_id, player_id: player_id)
+  end
+
+  def sub_outs
+    Substitution.where(match_id: match_id, player_id: player_id)
+  end
+
+  def sub_ins
+    Substitution.where(match_id: match_id, replacement_id: player_id)
   end
 
   delegate :name, to: :player

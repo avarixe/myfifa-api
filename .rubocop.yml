@@ -1,5 +1,3 @@
-inherit_from: .rubocop_todo.yml
-
 Rails:
   Enabled: true
 AllCops:
@@ -9,6 +7,7 @@ AllCops:
     - 'config/**/*'
     - 'script/**/*'
     - 'spec/**/*'
+    - 'lib/tasks/*'
 
 Layout/IndentationConsistency:
   EnforcedStyle: rails
@@ -20,5 +19,13 @@ Style/TrailingCommaInArrayLiteral:
   Enabled: false
 Style/TrailingCommaInHashLiteral:
   Enabled: false
+Style/RescueStandardError:
+  Enabled: false
 Rails/FindEach:
   Enabled: false
+# Metrics/AbcSize:
+#   Enabled: false
+Metrics/ClassLength:
+  Enabled: false
+# Metrics/MethodLength:
+#   Enabled: false

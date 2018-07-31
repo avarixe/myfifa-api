@@ -42,16 +42,14 @@ class APIController < ApplicationController
         errors: [
           'An error occurred while processing this request.'
         ]
-      }, status: 500
+      }, status: :interval_server_error
     end
 
     def save_record(record, options = {})
       if record.invalid?
         render json: { errors: record.errors.full_messages },
-               status: 422
+               status: :unprocessable_entity
       elsif record.save
-        puts options[:json].to_json
-        puts record.to_json
         render json: options[:json] || record
       else
         render_server_error
