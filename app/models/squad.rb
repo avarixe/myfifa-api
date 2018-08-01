@@ -32,7 +32,13 @@ class Squad < ApplicationRecord
   validate :eleven_players?
 
   def eleven_players?
-    return if players_list.length == 11 && positions_list.length == 11
+    return if players_list.length == 11 &&
+              positions_list.length == 11 &&
+              positions_list.all? { |pos| valid_pos? pos }
     errors.add(:players_list, 'needs to have eleven Players.')
+  end
+
+  def valid_pos?(pos)
+    MatchLog::POSITIONS.include? pos
   end
 end

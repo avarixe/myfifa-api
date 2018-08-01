@@ -44,6 +44,7 @@ class Transfer < ApplicationRecord
   ################
 
   validates :origin, presence: true
+  validates :destination, presence: true
   validates :addon_clause,
             inclusion: { in: 0..100 },
             allow_nil: true
@@ -52,7 +53,7 @@ class Transfer < ApplicationRecord
   #  CALLBACKS  #
   ###############
 
-  after_initialize :set_signed_date
+  before_validation :set_signed_date
   after_create :end_current_contract, if: :out?
 
   def set_signed_date

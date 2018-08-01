@@ -64,6 +64,10 @@ class Team < ApplicationRecord
     super
   end
 
+  def increment_date(amount)
+    update(current_date: current_date + amount)
+  end
+
   def time_period
     "#{start_date.year} - #{current_date.year}"
   end

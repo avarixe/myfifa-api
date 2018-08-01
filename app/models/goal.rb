@@ -47,6 +47,17 @@ class Goal < ApplicationRecord
   end
 
   validates :minute, inclusion: 1..120
+  validates :player_name, presence: true
+
+  def player_id=(val)
+    self.player_name = Player.find(val).name
+    super
+  end
+
+  def assist_id=(val)
+    self.assisted_by = Player.find(val).name
+    super
+  end
 
   def away?
     !home?

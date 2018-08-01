@@ -22,6 +22,32 @@ class MatchLog < ApplicationRecord
   belongs_to :match
   belongs_to :player
 
+  POSITIONS = %w[
+    GK
+    CB
+    LB
+    LWB
+    LCB
+    RCB
+    RB
+    RWB
+    LDM
+    CDM
+    RDM
+    LM
+    LCM
+    CM
+    RCM
+    RM
+    LAM
+    CAM
+    RAM
+    LW
+    RW
+    CF
+    ST
+  ].freeze
+
   PERMITTED_ATTRIBUTES = %i[
     player_id
     pos
@@ -32,7 +58,11 @@ class MatchLog < ApplicationRecord
   end
 
   validates :start, inclusion: 0..120
-  validates :stop, inclusion: 0..120
+  validates :stop,
+            inclusion: 0..120,
+            numericality: { greater_than: :start },
+            if: :start
+  validates :pos, inclusion: { in: POSITIONS }
 
   after_initialize :set_defaults
   after_destroy :remove_events

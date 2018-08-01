@@ -25,6 +25,7 @@ class ContractHistory < ApplicationRecord
   belongs_to :contract
 
   validates :datestamp, presence: true
+  validates :end_date, presence: true
   validates :wage, numericality: { only_integer: true }
   validates :bonus_req_type,
             inclusion: { in: Contract::BONUS_REQUIREMENT_TYPES },
@@ -37,11 +38,11 @@ class ContractHistory < ApplicationRecord
     errors.add(:performance_bonus, 'requires all three fields')
   end
 
-  delegate :current_date, to: :contract
-
-  after_initialize :set_datestamp
+  before_validation :set_datestamp
 
   def set_datestamp
     self.datestamp ||= current_date
   end
+
+  delegate :current_date, to: :contract
 end

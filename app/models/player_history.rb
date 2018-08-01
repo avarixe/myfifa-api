@@ -20,19 +20,19 @@ class PlayerHistory < ApplicationRecord
   belongs_to :player
 
   validates :datestamp, presence: true
-  validates :ovr, numericality: { only_integer: true }, allow_nil: true
-  validates :value, numericality: { only_integer: true }, allow_nil: true
+  validates :ovr, numericality: { only_integer: true }
+  validates :value, numericality: { only_integer: true }
   validates :kit_no, numericality: { only_integer: true }, allow_nil: true
   validate :player_changed?
 
   def player_changed?
-    return unless ovr.blank? || value.blank?
+    return unless ovr.blank? && value.blank?
     errors.add(:base, :invalid)
   end
 
   delegate :current_date, to: :player
 
-  after_initialize :set_datestamp
+  before_validation :set_datestamp
 
   def set_datestamp
     self.datestamp ||= current_date

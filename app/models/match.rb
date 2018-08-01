@@ -48,12 +48,17 @@ class Match < ApplicationRecord
   validates :away, presence: true
   validates :competition, presence: true
   validates :date_played, presence: true
+  validate :different_teams
+
+  def different_teams
+    errors.add(:away, 'must differ from Home') if home == away
+  end
 
   ##############
   #  CALLBACK  #
   ##############
 
-  after_initialize :set_defaults
+  before_validation :set_defaults
 
   def set_defaults
     self.date_played ||= team.current_date
@@ -77,6 +82,11 @@ class Match < ApplicationRecord
 
     # Reload association to include new MatchLogs
     match_logs.reload
+  end
+
+  def reset_score
+    @home_score = nil
+    @away_score = nil
   end
 
   ###############

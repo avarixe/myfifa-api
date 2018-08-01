@@ -33,6 +33,7 @@ class Booking < ApplicationRecord
   end
 
   validates :minute, inclusion: 1..120
+  validates :player_name, presence: true
 
   def home
     match.team_home?

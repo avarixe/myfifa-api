@@ -85,9 +85,9 @@ class Player < ApplicationRecord
   ################
 
   validates :name, presence: true
-  validates :birth_year, numericality: { only_integer: true }
-  validates :ovr, numericality: { only_integer: true }
-  validates :value, numericality: { only_integer: true }
+  validates :birth_year, numericality: { greater_than: 0, only_integer: true }
+  validates :ovr, inclusion: 0..100
+  validates :value, numericality: { greater_than: 0, only_integer: true }
   validates :kit_no, numericality: { only_integer: true }, allow_nil: true
   validates :pos, inclusion: { in: POSITIONS }
   validates :status, inclusion: { in: STATUSES }, allow_nil: true
@@ -105,21 +105,21 @@ class Player < ApplicationRecord
   #  CALLBACK  #
   ##############
 
-  after_create :start_history
+  after_create :save_history
   after_update :update_history
 
-  def start_history
+  def save_history
     player_histories.create ovr: ovr,
                             value: value,
                             kit_no: kit_no
   end
 
   def update_history
-    record = player_histories.new
-    record.ovr = ovr if saved_change_to_ovr?
-    record.value = value if saved_change_to_value?
-    record.kit_no = kit_no if saved_change_to_kit_no?
-    record.save
+    if saved_change_to_ovr? ||
+       saved_change_to_value? ||
+       saved_change_to_kit_no?
+      save_history
+    end
   end
 
   ##############
