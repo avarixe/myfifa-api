@@ -16,6 +16,8 @@
 
 FactoryBot.define do
   factory :penalty_shootout do
-    
+    home_score Faker::Number.between(0, 20)
+    away_score Faker::Number.between(0, 20)
+    match
   end
 end

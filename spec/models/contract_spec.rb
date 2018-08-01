@@ -37,8 +37,8 @@ RSpec.describe Contract, type: :model do
     expect(FactoryBot.build(:contract, signed_date: nil)).to_not be_valid
   end
 
-  it 'requires a start date' do
-    expect(FactoryBot.build(:contract, start_date: nil)).to_not be_valid
+  it 'requires an effective date' do
+    expect(FactoryBot.build(:contract, effective_date: nil)).to_not be_valid
   end
 
   it 'requires an end date' do
@@ -61,18 +61,6 @@ RSpec.describe Contract, type: :model do
     expect(FactoryBot.build(:contract, performance_bonus: perf_bonus, bonus_req_type: bonus_req_type)).to_not be_valid
     expect(FactoryBot.build(:contract, bonus_req: bonus_req, bonus_req_type: bonus_req_type)).to_not be_valid
     expect(FactoryBot.build(:contract, bonus_req: bonus_req, performance_bonus: perf_bonus, bonus_req_type: bonus_req_type)).to be_valid
-  end
-
-  it 'has no origin if youth' do
-    expect(FactoryBot.build(:contract, youth: true, origin: Faker::Team.name)).to_not be_valid
-  end
-
-  it 'is not loan and youth' do
-    expect(FactoryBot.build(:contract, youth: true, loan: true)).to_not be_valid
-  end
-
-  it 'has the same origin and destination if on loan' do
-    expect(FactoryBot.build(:contract, loan: true, origin: Faker::Team.unique.name, destination: Faker::Team.unique.name)).to_not be_valid
   end
 
   it 'has an initial contract history record' do
@@ -98,5 +86,5 @@ RSpec.describe Contract, type: :model do
     expect(contract.contract_histories.last.bonus_req).to be == contract.bonus_req
     expect(contract.contract_histories.last.performance_bonus).to be == contract.performance_bonus
     expect(contract.contract_histories.last.bonus_req_type).to be == contract.bonus_req_type
-  end  
+  end
 end

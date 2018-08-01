@@ -17,6 +17,9 @@
 
 FactoryBot.define do
   factory :squad do
-    
+    name Faker::Lorem.word
+    players_list (1..11).map { |i| Faker::Number.number }
+    positions_list (1..11).map { |i| MatchLog::POSITIONS.sample }
+    team
   end
 end

@@ -17,7 +17,6 @@
 
 FactoryBot.define do
   factory :loan do
-    start_date Faker::Date.backward(90)
     destination Faker::Team.name
     player
   end

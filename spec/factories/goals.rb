@@ -24,6 +24,24 @@
 
 FactoryBot.define do
   factory :goal do
-    
+    minute Faker::Number.between(1, 120)
+    player_name Faker::Name.name
+    match
+
+    factory :home_goal do
+      home true
+
+      factory :own_home_goal do
+        own_goal true
+      end
+    end
+
+    factory :away_goal do
+      home false
+
+      factory :own_away_goal do
+        own_goal true
+      end
+    end
   end
 end

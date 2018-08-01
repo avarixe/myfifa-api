@@ -20,6 +20,10 @@
 
 FactoryBot.define do
   factory :match_log do
-    
+    pos MatchLog::POSITIONS.sample
+    start Faker::Number.between(0, 90)
+    stop Faker::Number.between(90, 120)
+    player
+    match
   end
 end

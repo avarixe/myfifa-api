@@ -24,8 +24,8 @@
 FactoryBot.define do
   factory :contract do
     signed_date Faker::Date.between(500.days.ago, 365.days.ago)
-    start_date Faker::Date.backward(365)
-    end_date Faker::Date.forward(365)
+    effective_date Faker::Date.between(365.days.ago, 100.days.ago)
+    end_date Faker::Date.between(365.days.from_now, 1000.days.from_now)
     wage Faker::Number.between(1_000, 10_000_000)
     player
 

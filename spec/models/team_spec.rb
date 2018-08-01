@@ -33,12 +33,8 @@ RSpec.describe Team, type: :model do
   it 'requires a start date' do
     expect(FactoryBot.build(:team, start_date: nil)).to_not be_valid
   end
-  
-  it 'checks for expired player contracts' do
-    player = team.players.create(FactoryBot.attributes_for(:player))
-    player.contracts.create(FactoryBot.attributes_for(:contract))
-    team.update(current_date: player.contracts.last.end_date + 1.day)
-    expect(team.players.last.status).to be_nil
-  end
 
+  it 'requires a currency' do
+    expect(FactoryBot.build(:team, currency: nil)).to_not be_valid
+  end
 end
