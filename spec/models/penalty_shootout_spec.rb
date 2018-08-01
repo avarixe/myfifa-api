@@ -17,5 +17,15 @@
 require 'rails_helper'
 
 RSpec.describe PenaltyShootout, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  it "has a valid factory" do
+    expect(FactoryBot.create(:penalty_shootout)).to be_valid
+  end
+
+  it 'requires a home score' do
+    expect(FactoryBot.build(:penalty_shootout, home_score: nil)).to_not be_valid
+  end
+
+  it 'requires an away score' do
+    expect(FactoryBot.build(:penalty_shootout, away_score: nil)).to_not be_valid
+  end
 end

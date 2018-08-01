@@ -17,7 +17,7 @@
 
 FactoryBot.define do
   factory :injury do
-    start_date Faker::Date.backward(90)
+    description Faker::Lorem.word
     player
   end
 end

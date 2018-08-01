@@ -22,6 +22,9 @@
 
 FactoryBot.define do
   factory :substitution do
-    
+    minute Faker::Number.between(1, 120)
+    match
+    player
+    association :replacement, factory: :player
   end
 end

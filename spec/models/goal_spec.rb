@@ -25,5 +25,52 @@
 require 'rails_helper'
 
 RSpec.describe Goal, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:goal) { FactoryBot.create(:goal) }
+
+  it "has a valid factory" do
+    expect(goal).to be_valid
+  end
+
+  it 'requires a valid minute' do
+    expect(FactoryBot.build(:goal, minute: nil)).to_not be_valid
+    expect(FactoryBot.build(:goal, minute: -1)).to_not be_valid
+  end
+
+  it 'requires a valid player name' do
+    expect(FactoryBot.build(:goal, player_name: nil)).to_not be_valid
+  end
+
+  it 'increments appropriate score' do
+    home_goal = FactoryBot.create(:home_goal)
+    match = home_goal.match
+    expect(match.score).to be == '1 - 0'
+
+    match.goals.create(FactoryBot.attributes_for(:away_goal))
+    match.reset_score
+    expect(match.score).to be == '1 - 1'
+  end
+
+  it 'increments opposite score if own goal' do
+    home_goal = FactoryBot.create(:own_home_goal)
+    match = home_goal.match
+    expect(match.score).to be == '0 - 1'
+
+    match.goals.create(FactoryBot.attributes_for(:own_away_goal))
+    match.reset_score
+    expect(match.score).to be == '1 - 1'
+  end
+
+  it 'automatically sets player name if player_id set' do
+    player = FactoryBot.create(:player)
+    player_goal = FactoryBot.create(:goal, player_id: player.id)
+    expect(player_goal.player_name).to be == player.name
+  end
+
+  it 'automatically sets assisted by if assist_id set' do
+    player = FactoryBot.create(:player)
+    player_assist = FactoryBot.create(:goal, assist_id: player.id)
+
+    expect(player_assist.assisted_by).to be == player.name
+  end
+
 end

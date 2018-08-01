@@ -45,6 +45,7 @@ class Substitution < ApplicationRecord
 
   def create_sub_log
     replaced_log = match.match_logs.find_by(player_id: player_id)
+    return unless replaced_log
     replaced_log.update(stop: minute, subbed_out: true)
     match.match_logs.create player_id: replacement_id,
                             pos:       replaced_log.pos,

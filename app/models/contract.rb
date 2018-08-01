@@ -80,7 +80,7 @@ class Contract < ApplicationRecord
   #  CALLBACK  #
   ##############
 
-  after_initialize :set_signed_date
+  before_validation :set_signed_date
   after_save :save_history
   after_create :update_status
 

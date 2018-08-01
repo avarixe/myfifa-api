@@ -33,6 +33,7 @@ class Injury < ApplicationRecord
   #  VALIDATIONS  #
   #################
 
+  validates :description, presence: true
   validates :start_date, presence: true
   validates :end_date, date: { after_or_equal_to: :start_date }, allow_nil: true
   validate :no_double_injury, on: :create
@@ -46,7 +47,7 @@ class Injury < ApplicationRecord
   #  CALLBACKS  #
   ###############
 
-  after_initialize :set_start_date
+  before_validation :set_start_date
   after_save :update_status
 
   def set_start_date

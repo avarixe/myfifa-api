@@ -18,18 +18,36 @@
 require 'rails_helper'
 
 RSpec.describe Injury, type: :model do
-  let(:end_date) { Faker::Date.forward(30) }
+  let(:contracted_player) { FactoryBot.create(:contracted_player)}
 
   it "has a valid factory" do
     expect(FactoryBot.create(:injury)).to be_valid
   end
 
-  it 'requires a start date' do
-    expect(FactoryBot.build(:injury, start_date: nil)).to_not be_valid
+  it 'requires a description' do
+    expect(FactoryBot.build(:injury, description: nil)).to_not be_valid
   end
 
   it 'has an end date after start date' do
     expect(FactoryBot.build(:injury, start_date: Faker::Date.forward(1), end_date: Faker::Date.backward(1))).to_not be_valid
   end
 
+  it 'occurs on the Team current date' do
+    injury = FactoryBot.create(:injury)
+    expect(injury.start_date).to be == injury.team.current_date
+    injury.team.increment_date(2.days)
+    injury.update(recovered: true)
+    expect(injury.end_date).to be == injury.team.current_date
+  end
+
+  it 'changes Player status to injured when injured' do
+    contracted_player.injuries.create(FactoryBot.attributes_for(:injury))
+    expect(contracted_player.injured?).to be true
+  end
+  
+  it 'changes Player status when no longer injured' do
+    contracted_player.injuries.create(FactoryBot.attributes_for(:injury))
+    contracted_player.injuries.last.update(recovered: true)
+    expect(contracted_player.active?).to be true
+  end
 end

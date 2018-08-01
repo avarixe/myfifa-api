@@ -28,24 +28,16 @@ FactoryBot.define do
     pos Player::POSITIONS.sample
     nationality Faker::Address.country
     sec_pos []
-    age Faker::Number.between(18, 40)
+    birth_year Faker::Number.between(1980, 2000)
     ovr Faker::Number.between(50, 90)
     value Faker::Number.between(50_000, 200_000_000)
+    kit_no Faker::Number.between(1, 99)
     team
 
-    transient do
-      contracts_count 1
-      injuries_count 0
-      loans_count 0
-    end
-
-    after :create do |player, evaluator|
-      evaluator.contracts_count.times do
-        player.contracts.create(attributes_for(:contract))
+    factory :contracted_player do
+      after :create do |player|
+        player.contracts.create(FactoryBot.attributes_for(:contract))
       end
-      # create_list :contract, evaluator.contracts_count, player: player
-      create_list :injury, evaluator.injuries_count, player: player
-      create_list :loan, evaluator.loans_count, player: player
     end
   end
 end

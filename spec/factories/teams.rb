@@ -20,7 +20,7 @@
 FactoryBot.define do
   factory :team do
     title Faker::Team.name
-    start_date Faker::Date.backward(365)
+    start_date Time.now
 
     before(:create) do |team|
       team.current_date = team.start_date

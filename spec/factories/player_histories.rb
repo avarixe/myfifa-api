@@ -18,10 +18,10 @@
 
 FactoryBot.define do
   factory :player_history do
-    datestamp Faker::Date.backward(365)
-    age Faker::Number.between(18, 40)
+    datestamp Date.new
     ovr Faker::Number.between(50, 90)
     value Faker::Number.between(50_000, 200_000_000)
+    kit_no Faker::Number.between(1, 99)
     player
   end
 end

@@ -24,16 +24,13 @@
 require 'rails_helper'
 
 RSpec.describe ContractHistory, type: :model do
+  let(:contract) { FactoryBot.create(:contract) }
   let(:perf_bonus) { Faker::Number.between(10_000, 1_000_000) }
   let(:bonus_req) { Faker::Number.between(1, 25) }
   let(:bonus_req_type) { Contract::BONUS_REQUIREMENT_TYPES.sample }
 
   it "has a valid factory" do
-    expect(FactoryBot.create(:contract_history)).to be_valid
-  end
-
-  it 'requires a datestamp' do
-    expect(FactoryBot.build(:contract_history, datestamp: nil)).to_not be_valid
+    expect(contract.contract_histories.first).to be_valid
   end
 
   it 'requires an end date' do

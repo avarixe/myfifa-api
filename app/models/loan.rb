@@ -43,12 +43,12 @@ class Loan < ApplicationRecord
   #  CALLBACKS  #
   ###############
 
-  after_initialize :set_start_date
+  before_validation :set_start_date
   after_create :end_pending_injuries
   after_save :update_status
 
   def set_start_date
-    self.start_date = team.current_date
+    self.start_date ||= team.current_date
   end
 
   def end_pending_injuries

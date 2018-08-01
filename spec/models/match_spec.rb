@@ -22,5 +22,41 @@
 require 'rails_helper'
 
 RSpec.describe Match, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:match) { FactoryBot.create(:match) }
+
+  it 'has a valid factory' do
+    expect(match).to be_valid
+  end
+
+  it 'requires a home team' do
+    expect(FactoryBot.build(:match, home: nil)).to_not be_valid
+  end
+
+  it 'requires an away team' do
+    expect(FactoryBot.build(:match, away: nil)).to_not be_valid
+  end
+
+  it 'requires a competition' do
+    expect(FactoryBot.build(:match, competition: nil)).to_not be_valid
+  end
+
+  it 'cannot have duplicate home and away teams' do
+    team = Faker::Team.name
+    expect(FactoryBot.build(:match, home: team, away: team)).to_not be_valid
+  end
+
+  it 'occurs on the Team current date' do
+    expect(match.date_played).to be == match.team.current_date
+  end
+
+  it 'detects when user team is playing' do
+    team_name = match.team.title
+    expect(FactoryBot.build(:match).team_played?).to be false
+    expect(FactoryBot.build(:match, home: team_name).team_played?).to be true
+    expect(FactoryBot.build(:match, away: team_name).team_played?).to be true
+  end
+
+  it 'starts off 0 - 0' do
+    expect(match.score).to be == '0 - 0'
+  end
 end

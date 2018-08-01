@@ -20,5 +20,24 @@
 require 'rails_helper'
 
 RSpec.describe Booking, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:booking) { FactoryBot.create(:booking) }
+
+  it "has a valid factory" do
+    expect(booking).to be_valid
+  end
+
+  it 'requires a valid minute' do
+    expect(FactoryBot.build(:booking, minute: nil)).to_not be_valid
+    expect(FactoryBot.build(:booking, minute: -1)).to_not be_valid
+  end
+
+  it 'requires a valid player name' do
+    expect(FactoryBot.build(:booking, player_name: nil)).to_not be_valid
+  end
+
+  it 'automatically sets player name if player_id set' do
+    player = FactoryBot.create(:player)
+    player_booking = FactoryBot.create(:booking, player_id: player.id)
+    expect(player_booking.player_name).to be == player.name
+  end
 end

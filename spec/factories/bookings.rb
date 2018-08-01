@@ -19,6 +19,12 @@
 
 FactoryBot.define do
   factory :booking do
-    
+    minute Faker::Number.between(1, 120)
+    player
+    match
+
+    before :create do |booking|
+      booking.player_name = booking.player.name
+    end
   end
 end
