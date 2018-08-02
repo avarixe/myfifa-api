@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: match_logs
+# Table name: performances
 #
 #  id         :bigint(8)        not null, primary key
 #  match_id   :bigint(8)
@@ -11,14 +11,15 @@
 #  updated_at :datetime         not null
 #  stop       :integer
 #  subbed_out :boolean          default(FALSE)
+#  rating     :integer
 #
 # Indexes
 #
-#  index_match_logs_on_match_id   (match_id)
-#  index_match_logs_on_player_id  (player_id)
+#  index_performances_on_match_id   (match_id)
+#  index_performances_on_player_id  (player_id)
 #
 
-class MatchLog < ApplicationRecord
+class Performance < ApplicationRecord
   belongs_to :match
   belongs_to :player
 
@@ -50,6 +51,7 @@ class MatchLog < ApplicationRecord
 
   PERMITTED_ATTRIBUTES = %i[
     player_id
+    rating
     pos
   ].freeze
 
@@ -63,11 +65,13 @@ class MatchLog < ApplicationRecord
             numericality: { greater_than: :start },
             if: :start
   validates :pos, inclusion: { in: POSITIONS }
+  validates :rating, inclusion: 1..5
 
   after_initialize :set_defaults
   after_destroy :remove_events
 
   def set_defaults
+    self.rating ||= 3
     self.start ||= 0
     self.stop ||= 90
   end

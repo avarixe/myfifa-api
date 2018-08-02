@@ -28,7 +28,7 @@ class Ability
 
   def match_permissions
     [
-      MatchLog,
+      Performance,
       Goal,
       Booking,
       Substitution,

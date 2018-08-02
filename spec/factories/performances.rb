@@ -1,6 +1,6 @@
 # == Schema Information
 #
-# Table name: match_logs
+# Table name: performances
 #
 #  id         :bigint(8)        not null, primary key
 #  match_id   :bigint(8)
@@ -11,18 +11,20 @@
 #  updated_at :datetime         not null
 #  stop       :integer
 #  subbed_out :boolean          default(FALSE)
+#  rating     :integer
 #
 # Indexes
 #
-#  index_match_logs_on_match_id   (match_id)
-#  index_match_logs_on_player_id  (player_id)
+#  index_performances_on_match_id   (match_id)
+#  index_performances_on_player_id  (player_id)
 #
 
 FactoryBot.define do
-  factory :match_log do
-    pos MatchLog::POSITIONS.sample
-    start Faker::Number.between(0, 90)
+  factory :performance do
+    pos Performance::POSITIONS.sample
+    start Faker::Number.between(0, 89)
     stop Faker::Number.between(90, 120)
+    rating Faker::Number.between(1, 5)
     player
     match
   end

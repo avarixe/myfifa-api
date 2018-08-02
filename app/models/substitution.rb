@@ -44,21 +44,21 @@ class Substitution < ApplicationRecord
   after_destroy :delete_sub_log
 
   def create_sub_log
-    replaced_log = match.match_logs.find_by(player_id: player_id)
+    replaced_log = match.performances.find_by(player_id: player_id)
     return unless replaced_log
     replaced_log.update(stop: minute, subbed_out: true)
-    match.match_logs.create player_id: replacement_id,
-                            pos:       replaced_log.pos,
-                            start:     minute
+    match.performances.create player_id: replacement_id,
+                              pos:       replaced_log.pos,
+                              start:     minute
   end
 
   def delete_sub_log
     match
-      .match_logs
+      .performances
       .find_by(player_id: replacement_id)
       .destroy
     match
-      .match_logs
+      .performances
       .find_by(player_id: player_id)
       .update(stop: 90, subbed_out: false)
   end

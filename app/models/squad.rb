@@ -39,6 +39,6 @@ class Squad < ApplicationRecord
   end
 
   def valid_pos?(pos)
-    MatchLog::POSITIONS.include? pos
+    Performance::POSITIONS.include? pos
   end
 end

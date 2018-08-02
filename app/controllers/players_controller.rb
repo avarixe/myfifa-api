@@ -9,7 +9,7 @@ class PlayersController < APIController
   end
 
   def show
-    render json: @player
+    render json: @player.as_json(include: :player_histories)
   end
 
   def create

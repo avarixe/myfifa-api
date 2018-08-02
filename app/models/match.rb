@@ -26,8 +26,8 @@ class Match < ApplicationRecord
   has_many :substitutions, dependent: :destroy
   has_many :bookings, dependent: :destroy
 
-  has_many :match_logs, dependent: :destroy
-  has_many :players, through: :match_logs
+  has_many :performances, dependent: :destroy
+  has_many :players, through: :performances
 
   PERMITTED_ATTRIBUTES = %i[
     home
@@ -69,19 +69,19 @@ class Match < ApplicationRecord
   ##############
 
   def apply(squad)
-    MatchLog.transaction do
-      # Remove existing Match Logs
-      match_logs.clear
+    Performance.transaction do
+      # Remove existing Performances
+      performances.clear
 
-      # Add new Match Logs from Squad player list
+      # Add new Performances from Squad player list
       squad.players_list.each_with_index do |player_id, i|
-        match_logs.create player_id: player_id,
-                          pos: squad.positions_list[i]
+        performances.create player_id: player_id,
+                            pos: squad.positions_list[i]
       end
     end
 
-    # Reload association to include new MatchLogs
-    match_logs.reload
+    # Reload association to include new Performances
+    performances.reload
   end
 
   def reset_score
@@ -161,6 +161,6 @@ class Match < ApplicationRecord
   end
 
   def full_json
-    as_json methods: %i[events match_logs]
+    as_json methods: %i[events performances]
   end
 end

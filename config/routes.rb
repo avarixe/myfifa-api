@@ -34,7 +34,7 @@ Rails.application.routes.draw do
           post 'apply_squad'
         end
 
-        resources :logs, controller: :match_logs
+        resources :performances
         resources :goals
         resources :substitutions
         resources :bookings
