@@ -40,13 +40,4 @@ class User < ApplicationRecord
   end
 
   has_many :teams, dependent: :destroy
-
-  def as_json(options = {})
-    super(methods: :current_team).merge(options)
-  end
-
-  def current_team
-    user_teams = teams.order('updated_at DESC')
-    user_teams && user_teams.last.id
-  end
 end
