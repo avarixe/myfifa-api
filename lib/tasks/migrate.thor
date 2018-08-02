@@ -38,7 +38,7 @@ class Migrate < Thor
                                                   loans,
                                                   squads,
                                                   matches,
-                                                  match_logs,
+                                                  performances,
                                                   goals,
                                                   bookings,
                                                   substitutions,
@@ -411,14 +411,14 @@ class Migrate < Thor
         Match.import matches, validate: false
         Goal.import goals, validate: false
         PenaltyShootout.import penalty_shootouts, validate: false
-        MatchLog.import logs, validate: false
+        Performance.import logs, validate: false
         Substitution.import substitutions, validate: false
         Booking.import bookings, validate: false
 
         correct_sequence Match
         correct_sequence Goal
         correct_sequence PenaltyShootout
-        correct_sequence MatchLog
+        correct_sequence Performance
         correct_sequence Substitution
         correct_sequence Booking
       end

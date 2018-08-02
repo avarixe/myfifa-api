@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_07_14_175633) do
+ActiveRecord::Schema.define(version: 2018_08_01_230316) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -96,19 +96,6 @@ ActiveRecord::Schema.define(version: 2018_07_14_175633) do
     t.index ["player_id"], name: "index_loans_on_player_id"
   end
 
-  create_table "match_logs", force: :cascade do |t|
-    t.bigint "match_id"
-    t.bigint "player_id"
-    t.string "pos"
-    t.integer "start"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.integer "stop"
-    t.boolean "subbed_out", default: false
-    t.index ["match_id"], name: "index_match_logs_on_match_id"
-    t.index ["player_id"], name: "index_match_logs_on_player_id"
-  end
-
   create_table "matches", force: :cascade do |t|
     t.bigint "team_id"
     t.string "home"
@@ -170,6 +157,20 @@ ActiveRecord::Schema.define(version: 2018_07_14_175633) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["match_id"], name: "index_penalty_shootouts_on_match_id"
+  end
+
+  create_table "performances", force: :cascade do |t|
+    t.bigint "match_id"
+    t.bigint "player_id"
+    t.string "pos"
+    t.integer "start"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.integer "stop"
+    t.boolean "subbed_out", default: false
+    t.integer "rating"
+    t.index ["match_id"], name: "index_performances_on_match_id"
+    t.index ["player_id"], name: "index_performances_on_player_id"
   end
 
   create_table "player_histories", force: :cascade do |t|

@@ -49,6 +49,7 @@ group :development, :test do
 
   gem 'annotate', require: false
   gem 'brakeman', require: false
+  gem 'bullet'
   gem 'rails-erd'
   gem 'rubocop', require: false
 end

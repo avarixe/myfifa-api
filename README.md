@@ -1,5 +1,7 @@
 # README
 
+![Build Status](<project_url>/badges/<branch_name>/build.svg)
+
 This README would normally document whatever steps are necessary to get the
 application up and running.
 

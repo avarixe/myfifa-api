@@ -30,8 +30,8 @@ class Player < ApplicationRecord
   has_many :contracts, dependent: :destroy
   has_many :transfers, dependent: :destroy
 
-  has_many :match_logs, dependent: :destroy
-  has_many :matches, through: :match_logs
+  has_many :performances, dependent: :destroy
+  has_many :matches, through: :performances
 
   has_many :goals, dependent: :destroy
   has_many :assists,
@@ -150,12 +150,6 @@ class Player < ApplicationRecord
     end
   end
 
-  def as_json(options = {})
-    options[:methods] ||= []
-    options[:methods] += %i[age pos_idx active_contract]
-    super
-  end
-
   %w[contract injury loan transfer].each do |record|
     define_method "active_#{record}" do
       last_record = public_send(record.pluralize).last
@@ -169,5 +163,11 @@ class Player < ApplicationRecord
 
   def pos_idx
     POSITIONS.index pos
+  end
+
+  def as_json(options = {})
+    options[:methods] ||= []
+    options[:methods] += %i[age pos_idx active_contract]
+    super
   end
 end
