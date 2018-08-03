@@ -1,6 +1,6 @@
 # README
 
-![Build Status](<project_url>/badges/<branch_name>/build.svg)
+![Build Status](https://gitlab.com/l33j00n325/myfifa-api/badges/master/build.svg)
 
 This README would normally document whatever steps are necessary to get the
 application up and running.
