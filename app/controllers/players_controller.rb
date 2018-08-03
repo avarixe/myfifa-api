@@ -30,12 +30,12 @@ class PlayersController < APIController
     render json: @team.players.preload(:contracts, :injuries, :loans)
   end
 
-  def active_loan
-    render json: @player.active_loan
+  def current_loan
+    render json: @player.current_loan
   end
 
-  def active_injury
-    render json: @player.active_injury
+  def current_injury
+    render json: @player.current_injury
   end
 
   private

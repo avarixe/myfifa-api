@@ -128,12 +128,12 @@ class Player < ApplicationRecord
 
   def update_status
     self.status =
-      if active_loan
+      if current_loan
         'Loaned'
-      elsif active_injury
+      elsif current_injury
         'Injured'
-      elsif active_contract
-        active_contract.pending? ? 'Pending' : 'Active'
+      elsif current_contract
+        current_contract.pending? ? 'Pending' : 'Active'
       end
     save!
   end
@@ -151,9 +151,9 @@ class Player < ApplicationRecord
   end
 
   %w[contract injury loan transfer].each do |record|
-    define_method "active_#{record}" do
+    define_method "current_#{record}" do
       last_record = public_send(record.pluralize).last
-      last_record if last_record && last_record.active?
+      last_record if last_record && last_record.current?
     end
   end
 
@@ -167,7 +167,7 @@ class Player < ApplicationRecord
 
   def as_json(options = {})
     options[:methods] ||= []
-    options[:methods] += %i[age pos_idx active_contract]
+    options[:methods] += %i[age pos_idx current_contract]
     super
   end
 end

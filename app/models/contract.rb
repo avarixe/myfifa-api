@@ -114,11 +114,15 @@ class Contract < ApplicationRecord
   delegate :youth?, to: :player
   delegate :loaned?, to: :player
 
+  def current?
+    pending? || active?
+  end
+
   def active?
-    player.pending? || current_date.between?(effective_date, end_date)
+    effective_date <= current_date && current_date < end_date
   end
 
   def pending?
-    current_date.between?(signed_date, effective_date)
+    signed_date <= current_date && current_date < effective_date
   end
 end

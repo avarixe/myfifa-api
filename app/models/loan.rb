@@ -72,7 +72,7 @@ class Loan < ApplicationRecord
 
   delegate :team, to: :player
 
-  def active?
+  def current?
     start_date <= team.current_date &&
       (end_date.nil? || team.current_date < end_date)
   end

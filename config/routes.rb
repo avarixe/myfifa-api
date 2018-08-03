@@ -18,8 +18,8 @@ Rails.application.routes.draw do
           patch :update_multiple
         end
         member do
-          get 'active_loan'
-          get 'active_injury'
+          get 'current_loan'
+          get 'current_injury'
         end
 
         resources :loans
