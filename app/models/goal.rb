@@ -50,12 +50,12 @@ class Goal < ApplicationRecord
   validates :player_name, presence: true
 
   def player_id=(val)
-    self.player_name = Player.find(val).name
+    self.player_name = Player.find(val).name if val.present?
     super
   end
 
   def assist_id=(val)
-    self.assisted_by = Player.find(val).name
+    self.assisted_by = Player.find(val).name if val.present?
     super
   end
 
