@@ -24,7 +24,7 @@
 
 FactoryBot.define do
   factory :player do
-    name Faker::Name.name
+    name Faker::Name.unique.name
     pos Player::POSITIONS.sample
     nationality Faker::Address.country
     sec_pos []
