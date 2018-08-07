@@ -10,6 +10,7 @@ class Ability
       can :read, :all
       can :manage, Team, user: user
       can :manage, team_permissions, team: { user: user }
+      can :manage, player_permissions, player: { team: { user: user } }
       can :manage, match_permissions, match: { team: { user: user } }
     end
   end
@@ -17,12 +18,17 @@ class Ability
   def team_permissions
     [
       Player,
+      Squad,
+      Match
+    ]
+  end
+
+  def player_permissions
+    [
       Injury,
       Contract,
       Loan,
-      Transfer,
-      Squad,
-      Match
+      Transfer
     ]
   end
 
