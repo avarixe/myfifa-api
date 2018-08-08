@@ -25,16 +25,18 @@ require 'rails_helper'
 RSpec.describe Substitution, type: :model do
   before :each do |test|
     unless test.metadata[:skip_before]
-      @match = FactoryBot.create(:match)
-      @player = FactoryBot.create(:player)
+      @team = FactoryBot.create :team
+      @match = FactoryBot.create :match, team: @team
+      @player = FactoryBot.create :player, team: @team
+      @replacement = FactoryBot.create :player, team: @team
       FactoryBot.create :performance,
                         start: 0,
                         match: @match,
                         player: @player
       @sub = FactoryBot.create :substitution,
                                player: @player,
+                               replacement: @replacement,
                                match: @match
-      @replacement = @sub.replacement
     end
   end
 
@@ -59,11 +61,11 @@ RSpec.describe Substitution, type: :model do
   end
 
   it 'automatically sets player name' do
-    expect(@sub.player_name).to_not be_nil
+    expect(@sub.player_name).to be == @sub.player.name
   end
 
   it 'automatically sets replaced by' do
-    expect(@sub.replaced_by).to_not be_nil
+    expect(@sub.replaced_by).to be == @sub.replacement.name
   end
 
   it 'creates a Performance record upon creation' do

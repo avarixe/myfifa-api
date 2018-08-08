@@ -107,6 +107,7 @@ class Player < ApplicationRecord
 
   after_create :save_history
   after_update :update_history
+  after_update :end_pending_injuries, unless: :injured?
 
   def save_history
     player_histories.create ovr: ovr,
@@ -122,20 +123,25 @@ class Player < ApplicationRecord
     end
   end
 
+  def end_pending_injuries
+    injuries.where(end_date: nil).update(end_date: current_date)
+  end
+
   ##############
   #  MUTATORS  #
   ##############
 
   def update_status
-    self.status =
-      if current_loan
+    update status:
+      if current_contract.nil?
+        nil
+      elsif current_loan
         'Loaned'
       elsif current_injury
         'Injured'
-      elsif current_contract
+      else
         current_contract.pending? ? 'Pending' : 'Active'
       end
-    save!
   end
 
   ###############

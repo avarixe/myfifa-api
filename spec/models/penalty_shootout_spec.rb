@@ -28,4 +28,23 @@ RSpec.describe PenaltyShootout, type: :model do
   it 'requires an away score' do
     expect(FactoryBot.build(:penalty_shootout, away_score: nil)).to_not be_valid
   end
+
+  it 'must have a winner' do
+    score = Faker::Number.between(0, 20)
+    expect(
+      FactoryBot.build(:penalty_shootout, home_score: score, away_score: score)
+    ).to_not be_valid
+  end
+
+  it 'can only be created for drawn ties' do
+    @match = FactoryBot.create :match
+    @player = FactoryBot.create :player, team: @match.team
+    FactoryBot.create :performance,
+                      match: @match,
+                      player: @player
+    FactoryBot.create :goal,
+                      match: @match,
+                      player: @player
+    expect(FactoryBot.build(:penalty_shootout, match: @match)).to_not be_valid
+  end
 end

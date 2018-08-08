@@ -49,14 +49,11 @@ class Goal < ApplicationRecord
   validates :minute, inclusion: 1..120
   validates :player_name, presence: true
 
-  def player_id=(val)
-    self.player_name = Player.find(val).name if val.present?
-    super
-  end
+  before_create :set_names
 
-  def assist_id=(val)
-    self.assisted_by = Player.find(val).name if val.present?
-    super
+  def set_names
+    self.player_name = player.name if player_id.present?
+    self.assisted_by = assisting_player.name if assist_id.present?
   end
 
   def away?

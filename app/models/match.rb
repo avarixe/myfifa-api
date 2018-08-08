@@ -85,6 +85,7 @@ class Match < ApplicationRecord
   end
 
   def reset_score
+    goals.reload
     @home_score = nil
     @away_score = nil
   end

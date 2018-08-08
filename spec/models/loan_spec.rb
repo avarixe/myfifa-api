@@ -18,7 +18,7 @@
 require 'rails_helper'
 
 RSpec.describe Loan, type: :model do
-  let(:contracted_player) { FactoryBot.create(:contracted_player)}
+  let(:player) { FactoryBot.create(:player)}
 
   it "has a valid factory" do
     expect(FactoryBot.create(:loan)).to be_valid
@@ -41,13 +41,20 @@ RSpec.describe Loan, type: :model do
   end
 
   it 'changes status to loaned when loaned out' do
-    contracted_player.loans.create(FactoryBot.attributes_for(:loan))
-    expect(contracted_player.loaned?).to be true
+    FactoryBot.create(:loan, player: player)
+    expect(player.loaned?).to be true
   end
   
   it 'changes status when loan returns' do
-    contracted_player.loans.create(FactoryBot.attributes_for(:loan))
-    contracted_player.loans.last.update(returned: true)
-    expect(contracted_player.active?).to be true
+    FactoryBot.create(:loan, player: player)
+    player.loans.last.update(returned: true)
+    expect(player.active?).to be true
+  end
+
+  it 'ends tracking of any injuries upon creation' do
+    FactoryBot.create(:injury, player: player)
+    FactoryBot.create(:loan, player: player)
+    expect(player.injured?).to be false
+    expect(player.injuries.last.end_date).to be == player.current_date
   end
 end

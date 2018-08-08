@@ -59,4 +59,13 @@ RSpec.describe Match, type: :model do
   it 'starts off 0 - 0' do
     expect(match.score).to be == '0 - 0'
   end
+
+  it 'cannot have two Performance records for the same player' do
+    @match = FactoryBot.create :match
+    @player = FactoryBot.create :player, team: @match.team
+    FactoryBot.create :performance,
+                      match: @match,
+                      player: @player
+    expect(FactoryBot.build(:performance, match: @match, player: @player)).to_not be_valid
+  end
 end

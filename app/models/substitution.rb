@@ -45,8 +45,8 @@ class Substitution < ApplicationRecord
   after_destroy :delete_sub_log
 
   def set_names
-    self.player_name = Player.find(player_id).name
-    self.replaced_by = Player.find(replacement_id).name
+    self.player_name = player.name
+    self.replaced_by = replacement.name
   end
 
   def create_sub_log

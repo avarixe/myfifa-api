@@ -34,10 +34,12 @@ FactoryBot.define do
     kit_no Faker::Number.between(1, 99)
     team
 
-    factory :contracted_player do
-      after :create do |player|
-        player.contracts.create(FactoryBot.attributes_for(:contract))
-      end
+    transient do
+      contracts_count 1
+    end
+
+    after :create do |player, evaluator|
+      create_list(:contract, evaluator.contracts_count, player: player)
     end
   end
 end
