@@ -91,9 +91,6 @@ RSpec.describe Performance, type: :model do
     # FactoryBot.create :substitution,
     #                   match: @match,
     #                   replacement: @player
-
-
-
   end
 
 end
