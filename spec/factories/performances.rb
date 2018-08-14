@@ -26,6 +26,6 @@ FactoryBot.define do
     stop Faker::Number.between(90, 120)
     rating Faker::Number.between(1, 5)
     player
-    match
+    match { Match.new(attributes_for(:match, team_id: player.team_id)) }
   end
 end

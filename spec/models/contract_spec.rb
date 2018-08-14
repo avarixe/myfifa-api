@@ -87,4 +87,17 @@ RSpec.describe Contract, type: :model do
     expect(contract.contract_histories.last.performance_bonus).to be == contract.performance_bonus
     expect(contract.contract_histories.last.bonus_req_type).to be == contract.bonus_req_type
   end
+
+  it 'ends tracking of any injuries upon expiration' do
+    @player = FactoryBot.create(:player)
+    FactoryBot.create :contract,
+                      player: @player,
+                      effective_date: @player.current_date,
+                      end_date: @player.current_date + 1.week
+    FactoryBot.create :injury, player: @player
+    @player.team.increment_date 1.week
+    @player.reload
+    expect(@player.injured?).to be false
+    expect(@player.injuries.last.end_date).to be == @player.current_date
+  end
 end

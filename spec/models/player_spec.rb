@@ -26,7 +26,6 @@ require 'rails_helper'
 
 RSpec.describe Player, type: :model do
   let(:player) { FactoryBot.create(:player) }
-  let(:contracted_player) { FactoryBot.create(:contracted_player)}
 
   it "has a valid factory" do
     expect(player).to be_valid
@@ -72,14 +71,15 @@ RSpec.describe Player, type: :model do
   end 
 
   it 'is eligible to play after signing a new contract' do
-    player.contracts.create(FactoryBot.attributes_for(:contract))
-    expect(player.active?).to be true
+    @player = FactoryBot.create :player, contracts_count: 0
+    FactoryBot.create :contract, player: @player
+    expect(@player.active?).to be true
   end
 
   it 'is not eligible to play if contract expires' do
-    contracted_player.contracts.last.update(end_date: 1.day.from_now)
-    contracted_player.team.increment_date(1.week)
-    contracted_player.reload
-    expect(contracted_player.active?).to be_falsey
+    player.contracts.last.update(end_date: 1.day.from_now)
+    player.team.increment_date(1.week)
+    player.reload
+    expect(player.active?).to be_falsey
   end
 end

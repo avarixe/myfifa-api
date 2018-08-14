@@ -41,35 +41,34 @@ RSpec.describe Goal, type: :model do
   end
 
   it 'increments appropriate score' do
-    home_goal = FactoryBot.create(:home_goal)
-    match = home_goal.match
-    expect(match.score).to be == '1 - 0'
+    @match = FactoryBot.create :match
+    home_goal = FactoryBot.create :home_goal, match: @match
+    expect(@match.score).to be == '1 - 0'
 
-    match.goals.create(FactoryBot.attributes_for(:away_goal))
-    match.reset_score
-    expect(match.score).to be == '1 - 1'
+    FactoryBot.create :away_goal, match: @match
+    @match.reset_score
+    expect(@match.score).to be == '1 - 1'
   end
 
   it 'increments opposite score if own goal' do
-    home_goal = FactoryBot.create(:own_home_goal)
-    match = home_goal.match
-    expect(match.score).to be == '0 - 1'
+    @match = FactoryBot.create :match
+    home_goal = FactoryBot.create :own_home_goal, match: @match
+    expect(@match.score).to be == '0 - 1'
 
-    match.goals.create(FactoryBot.attributes_for(:own_away_goal))
-    match.reset_score
-    expect(match.score).to be == '1 - 1'
+    FactoryBot.create :own_away_goal, match: @match
+    @match.reset_score
+    expect(@match.score).to be == '1 - 1'
   end
 
   it 'automatically sets player name if player_id set' do
-    player = FactoryBot.create(:player)
-    player_goal = FactoryBot.create(:goal, player_id: player.id)
+    player = FactoryBot.create :player
+    player_goal = FactoryBot.create :goal, player_id: player.id
     expect(player_goal.player_name).to be == player.name
   end
 
   it 'automatically sets assisted by if assist_id set' do
-    player = FactoryBot.create(:player)
-    player_assist = FactoryBot.create(:goal, assist_id: player.id)
-
+    player = FactoryBot.create :player
+    player_assist = FactoryBot.create :goal, assisting_player: player
     expect(player_assist.assisted_by).to be == player.name
   end
 

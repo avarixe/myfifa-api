@@ -18,7 +18,7 @@
 require 'rails_helper'
 
 RSpec.describe Injury, type: :model do
-  let(:contracted_player) { FactoryBot.create(:contracted_player)}
+  let(:player) { FactoryBot.create(:player)}
 
   it "has a valid factory" do
     expect(FactoryBot.create(:injury)).to be_valid
@@ -41,13 +41,13 @@ RSpec.describe Injury, type: :model do
   end
 
   it 'changes Player status to injured when injured' do
-    contracted_player.injuries.create(FactoryBot.attributes_for(:injury))
-    expect(contracted_player.injured?).to be true
+    player.injuries.create(FactoryBot.attributes_for(:injury))
+    expect(player.injured?).to be true
   end
   
   it 'changes Player status when no longer injured' do
-    contracted_player.injuries.create(FactoryBot.attributes_for(:injury))
-    contracted_player.injuries.last.update(recovered: true)
-    expect(contracted_player.active?).to be true
+    player.injuries.create(FactoryBot.attributes_for(:injury))
+    player.injuries.last.update(recovered: true)
+    expect(player.active?).to be true
   end
 end

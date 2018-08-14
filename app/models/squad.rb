@@ -30,12 +30,25 @@ class Squad < ApplicationRecord
 
   validates :name, presence: true
   validate :eleven_players?
+  validate :unique_players?
+  validate :valid_players?
 
   def eleven_players?
     return if players_list.length == 11 &&
               positions_list.length == 11 &&
               positions_list.all? { |pos| valid_pos? pos }
-    errors.add(:players_list, 'needs to have eleven Players.')
+    errors.add :players_list, 'needs to have eleven Players.'
+  end
+
+  def unique_players?
+    return if players_list.uniq.length == 11
+    errors.add :players_list, 'can\'t assign a Player to multiple Positions.'
+  end
+
+  def valid_players?
+    valid_ids = team.players.pluck(:id).map(&:to_s)
+    return if (players_list & valid_ids) == players_list
+    errors.add :players_list, 'contains invalid Players'
   end
 
   def valid_pos?(pos)

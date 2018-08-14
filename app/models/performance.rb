@@ -64,8 +64,23 @@ class Performance < ApplicationRecord
             inclusion: 0..120,
             numericality: { greater_than: :start },
             if: :start
+  validates :player_id, uniqueness: { scope: :match_id }
   validates :pos, inclusion: { in: POSITIONS }
   validates :rating, inclusion: 1..5
+  validate :one_team?
+  validate :active_player?, if: :player_id
+
+  def one_team?
+    return if match_id.nil? ||
+              player_id.nil? ||
+              match.team_id == player.team_id
+    errors.add(:base, 'Player Team does not match Match Team')
+  end
+
+  def active_player?
+    return if player.active?
+    errors.add(:player, 'must be active')
+  end
 
   after_initialize :set_defaults
   after_destroy :remove_events
