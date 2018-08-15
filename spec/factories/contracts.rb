@@ -28,13 +28,5 @@ FactoryBot.define do
     end_date Faker::Date.between(365.days.from_now, 1000.days.from_now)
     wage Faker::Number.between(1_000, 10_000_000)
     player
-
-    transient do
-      histories_count 0
-    end
-
-    after :create do |contract, evaluator|
-      create_list :contract_history, evaluator.histories_count, contract: contract
-    end
   end
 end

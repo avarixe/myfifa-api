@@ -3,7 +3,7 @@ class ContractsController < APIController
   load_and_authorize_resource through: :player, shallow: true
 
   def index
-    render json: @contracts.as_json(include: :contract_histories)
+    render json: @contracts
   end
 
   def show
