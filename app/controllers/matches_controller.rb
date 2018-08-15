@@ -4,7 +4,7 @@ class MatchesController < APIController
   skip_authorize_resource only: :events
 
   def index
-    @matches = @matches.preload(:goals, :penalty_shootout)
+    @matches = @matches.preload(:penalty_shootout)
     render json: @matches
   end
 
