@@ -40,6 +40,8 @@ Rails.application.routes.draw do
         resources :bookings
         resources :penalty_shootouts
       end
+
+      post 'statistics', to: 'statistics#index'
     end
   end
 end
