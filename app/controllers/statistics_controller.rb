@@ -5,6 +5,7 @@ class StatisticsController < APIController
 
   def index
     render json: {
+      player_ids:  @player_ids,
       num_games:   num_games,
       num_goals:   num_goals,
       num_assists: num_assists,
