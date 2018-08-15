@@ -7,11 +7,11 @@
 #  player_id  :bigint(8)
 #  pos        :string
 #  start      :integer
+#  stop       :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  stop       :integer
 #  subbed_out :boolean          default(FALSE)
-#  rating     :integer
+#  rating     :integer          default(3)
 #
 # Indexes
 #

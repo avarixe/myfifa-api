@@ -50,10 +50,30 @@ class Goal < ApplicationRecord
   validates :player_name, presence: true
 
   before_create :set_names
+  after_create :increment_score
+  after_destroy :decrement_score
 
   def set_names
     self.player_name = player.name if player_id.present?
     self.assisted_by = assisting_player.name if assist_id.present?
+  end
+
+  def increment_score
+    if home? ^ own_goal?
+      match.home_score += 1
+    else
+      match.away_score += 1
+    end
+    match.save!
+  end
+
+  def decrement_score
+    if home? ^ own_goal?
+      match.home_score -= 1
+    else
+      match.away_score -= 1
+    end
+    match.save!
   end
 
   def away?
