@@ -2,17 +2,17 @@
 #
 # Table name: matches
 #
-#  id                  :bigint(8)        not null, primary key
-#  team_id             :bigint(8)
-#  home                :string
-#  away                :string
-#  competition         :string
-#  date_played         :date
-#  created_at          :datetime         not null
-#  updated_at          :datetime         not null
-#  extra_time          :boolean          default(FALSE)
-#  home_score_override :integer
-#  away_score_override :integer
+#  id          :bigint(8)        not null, primary key
+#  team_id     :bigint(8)
+#  home        :string
+#  away        :string
+#  competition :string
+#  date_played :date
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  extra_time  :boolean          default(FALSE)
+#  home_score  :integer
+#  away_score  :integer
 #
 # Indexes
 #
@@ -62,6 +62,8 @@ class Match < ApplicationRecord
 
   def set_defaults
     self.date_played ||= team.current_date
+    self.home_score ||= 0
+    self.away_score ||= 0
   end
 
   ##############
@@ -84,25 +86,9 @@ class Match < ApplicationRecord
     performances.reload
   end
 
-  def reset_score
-    goals.reload
-    @home_score = nil
-    @away_score = nil
-  end
-
   ###############
   #  ACCESSORS  #
   ###############
-
-  def home_score
-    @home_score ||= home_score_override ||
-                    goals.count { |goal| goal.home? ^ goal.own_goal? }
-  end
-
-  def away_score
-    @away_score ||= away_score_override ||
-                    goals.count { |goal| goal.away? ^ goal.own_goal? }
-  end
 
   def team_played?
     [home, away].include? team.title
@@ -152,8 +138,6 @@ class Match < ApplicationRecord
   def as_json(options = {})
     options[:methods] ||= []
     options[:methods] += %i[
-      home_score
-      away_score
       score
       team_result
       penalty_shootout

@@ -46,7 +46,6 @@ RSpec.describe Goal, type: :model do
     expect(@match.score).to be == '1 - 0'
 
     FactoryBot.create :away_goal, match: @match
-    @match.reset_score
     expect(@match.score).to be == '1 - 1'
   end
 
@@ -56,7 +55,6 @@ RSpec.describe Goal, type: :model do
     expect(@match.score).to be == '0 - 1'
 
     FactoryBot.create :own_away_goal, match: @match
-    @match.reset_score
     expect(@match.score).to be == '1 - 1'
   end
 
