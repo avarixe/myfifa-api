@@ -9,7 +9,7 @@ class StatisticsController < APIController
       num_games:   num_games,
       num_goals:   num_goals,
       num_assists: num_assists,
-      # num_cs:      num_cs,
+      num_cs:      num_cs,
     }
   end
 
@@ -53,15 +53,12 @@ class StatisticsController < APIController
     end
 
     def num_cs
-      # TODO: add when match score caching implemented
-    end
-
-    def stat_query(table, pluck_string, group, condition)
-      table
-        .where(condition)
+      Performance
+        .clean_sheets(@team)
+        .where(match_id: @match_ids, player_id: @player_ids)
         .unscope(:order)
-        .group(group)
-        .pluck(Arel.sql(pluck_string))
+        .group(:player_id)
+        .pluck(Arel.sql('player_id, COUNT(performances.id) AS num_cs'))
         .to_h
     end
 

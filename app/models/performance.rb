@@ -59,6 +59,15 @@ class Performance < ApplicationRecord
     PERMITTED_ATTRIBUTES
   end
 
+  scope :clean_sheets, lambda { |team|
+    left_outer_joins(:match)
+      .where(
+        '(home = ? AND away_score = 0) OR (away = ? AND home_score = 0)',
+        team.title,
+        team.title
+      )
+  }
+
   validates :start, inclusion: 0..120
   validates :stop,
             inclusion: 0..120,
