@@ -1,4 +1,5 @@
 class PenaltyShootoutsController < APIController
+  before_action :set_match, only: %i[create]
   load_and_authorize_resource :match
   load_and_authorize_resource through: :match, shallow: true, singleton: true
 
@@ -12,17 +13,21 @@ class PenaltyShootoutsController < APIController
 
   def update
     @penalty_shootout.attributes = penalty_shootout_params
-    save_record @penalty_shootout, json: @penalty_shootout.match.full_json
+    @match = Match.with_players.find(@penalty_shootout.match_id)
+    save_record @penalty_shootout, json: @match.full_json
   end
 
   def destroy
-    @match = @penalty_shootout.match
+    @match = Match.with_players.find(@penalty_shootout.match_id)
     @penalty_shootout.destroy
-    @match.reload
     render json: @match.full_json
   end
 
   private
+
+    def set_match
+      @match = Match.with_players.find(params[:match_id])
+    end
 
     def penalty_shootout_params
       params

@@ -11,17 +11,21 @@ class SubstitutionsController < APIController
   end
 
   def create
-    save_record @substitution, json: @match.full_json
+    save_record @substitution, json: proc {
+      Match.with_players.find(params[:match_id]).full_json
+    }
   end
 
   def update
     @substitution.attributes = substitution_params
-    save_record @substitution, json: @substitution.match.full_json
+    @match = Match.with_players.find(@substitution.match_id)
+    save_record @substitution, json: @match.full_json
   end
 
   def destroy
     @substitution.destroy
-    render json: @substitution.match.full_json
+    @match = Match.with_players.find(@substitution.match_id)
+    render json: @match.full_json
   end
 
   private

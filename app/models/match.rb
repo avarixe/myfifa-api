@@ -40,6 +40,8 @@ class Match < ApplicationRecord
     PERMITTED_ATTRIBUTES
   end
 
+  scope :with_players, -> { includes(performances: :player) }
+
   ################
   #  VALIDATION  #
   ################

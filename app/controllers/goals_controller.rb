@@ -1,4 +1,5 @@
 class GoalsController < APIController
+  before_action :set_match, only: %i[create]
   load_and_authorize_resource :match
   load_and_authorize_resource through: :match, shallow: true
 
@@ -11,20 +12,26 @@ class GoalsController < APIController
   end
 
   def create
-    save_record @goal, json: @match.full_json
+    save_record @goal, json: proc { @match.full_json }
   end
 
   def update
     @goal.attributes = goal_params
-    save_record @goal, json: @goal.match.full_json
+    @match = Match.with_players.find(@goal.match_id)
+    save_record @goal, json: @match.full_json
   end
 
   def destroy
     @goal.destroy
-    render json: @goal.match.full_json
+    @match = Match.with_players.find(@goal.match_id)
+    render json: @match.full_json
   end
 
   private
+
+    def set_match
+      @match = Match.with_players.find(params[:match_id])
+    end
 
     def goal_params
       params.require(:goal).permit Goal.permitted_attributes

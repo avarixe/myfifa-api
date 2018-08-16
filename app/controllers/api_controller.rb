@@ -50,6 +50,7 @@ class APIController < ApplicationController
         render json: { errors: record.errors.full_messages },
                status: :unprocessable_entity
       elsif record.save
+        options[:json] = options[:json].call if options[:json].class == Proc
         render json: options[:json] || record
       else
         render_server_error
