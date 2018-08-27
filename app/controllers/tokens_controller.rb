@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TokensController < Doorkeeper::TokensController
   # Overriding create action
   # POST /oauth/token

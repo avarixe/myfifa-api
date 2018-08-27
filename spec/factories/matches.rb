@@ -21,9 +21,9 @@
 
 FactoryBot.define do
   factory :match do
-    home Faker::Team.unique.name
-    away Faker::Team.unique.name
-    competition Faker::Lorem.word
+    home { Faker::Team.unique.name }
+    away { Faker::Team.unique.name }
+    competition { Faker::Lorem.word }
     team
   end
 end

@@ -24,14 +24,13 @@
 
 FactoryBot.define do
   factory :player do
-    name Faker::Name.unique.name
-    pos Player::POSITIONS.sample
-    nationality Faker::Address.country
-    sec_pos []
-    birth_year Faker::Number.between(1980, 2000)
-    ovr Faker::Number.between(50, 90)
-    value Faker::Number.between(50_000, 200_000_000)
-    kit_no Faker::Number.between(1, 99)
+    name { Faker::Name.unique.name }
+    pos { Player::POSITIONS.sample }
+    nationality { Faker::Address.country }
+    birth_year { Faker::Number.between(1980, 2000) }
+    ovr { Faker::Number.between(50, 90) }
+    value { Faker::Number.between(50_000, 200_000_000) }
+    kit_no { Faker::Number.between(1, 99) }
     team
 
     transient do

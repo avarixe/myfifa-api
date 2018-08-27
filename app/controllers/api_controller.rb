@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class APIController < ApplicationController
   include CanCan::ControllerAdditions
 
@@ -18,10 +20,8 @@ class APIController < ApplicationController
   private
 
     def authenticate_user!
-      if doorkeeper_token
-        user = User.find(doorkeeper_token.resource_owner_id)
-        Thread.current[:current_user] = user
-      end
+      user = User.find_by(id: doorkeeper_token&.resource_owner_id)
+      Thread.current[:current_user] = user
 
       return if current_user
 

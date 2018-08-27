@@ -22,8 +22,8 @@
 
 FactoryBot.define do
   factory :transfer do
-    origin Faker::Team.unique.name
-    destination Faker::Team.unique.name
+    origin { Faker::Team.unique.name }
+    destination { Faker::Team.unique.name }
     player
   end
 end

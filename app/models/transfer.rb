@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: transfers
@@ -61,7 +63,8 @@ class Transfer < ApplicationRecord
   end
 
   def end_current_contract
-    player.contracts && player.contracts.last.update(end_date: signed_date)
+    return if player.contracts.none?
+    player.contracts.last.update(end_date: signed_date)
     player.update(status: nil)
   end
 

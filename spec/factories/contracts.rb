@@ -23,10 +23,9 @@
 
 FactoryBot.define do
   factory :contract do
-    signed_date Faker::Date.between(500.days.ago, 365.days.ago)
-    effective_date Faker::Date.between(365.days.ago, 100.days.ago)
-    end_date Faker::Date.between(365.days.from_now, 1000.days.from_now)
-    wage Faker::Number.between(1_000, 10_000_000)
+    effective_date { Time.now }
+    end_date { Faker::Date.between(365.days.from_now, 1000.days.from_now) }
+    wage { Faker::Number.between(1_000, 10_000_000) }
     player
 
     transient do

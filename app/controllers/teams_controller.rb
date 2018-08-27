@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class TeamsController < APIController
   load_and_authorize_resource except: %i[create]
 

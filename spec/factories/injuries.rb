@@ -17,7 +17,7 @@
 
 FactoryBot.define do
   factory :injury do
-    description Faker::Lorem.word
+    description { Faker::Lorem.word }
     player
   end
 end

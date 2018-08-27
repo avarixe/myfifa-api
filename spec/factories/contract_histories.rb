@@ -23,9 +23,9 @@
 
 FactoryBot.define do
   factory :contract_history do
-    datestamp Faker::Date.backward(365)
-    end_date  Faker::Date.forward(365)
-    wage Faker::Number.between(1_000, 10_000_000)
+    datestamp { Faker::Date.backward(365) }
+    end_date  { Faker::Date.forward(365) }
+    wage { Faker::Number.between(1_000, 10_000_000) }
     contract
   end
 end

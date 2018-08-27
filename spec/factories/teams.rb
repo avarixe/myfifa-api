@@ -19,8 +19,9 @@
 
 FactoryBot.define do
   factory :team do
-    title Faker::Team.name
+    title { Faker::Team.name }
     start_date Time.now
+    user
 
     before(:create) do |team|
       team.current_date = team.start_date
