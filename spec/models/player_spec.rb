@@ -55,6 +55,15 @@ RSpec.describe Player, type: :model do
     expect(FactoryBot.build(:player, value: -1)).to_not be_valid
   end
 
+  it 'requires all secondary positions to be valid' do
+    sec_pos = []
+    3.times do
+      sec_pos << Player::POSITIONS.sample
+    end
+    expect(FactoryBot.build(:player, sec_pos: [''])).to_not be_valid
+    expect(FactoryBot.build(:player, sec_pos: sec_pos)).to be_valid
+  end
+
   it 'starts with a history record' do
     expect(player.player_histories.length).to be == 1
   end
@@ -69,17 +78,4 @@ RSpec.describe Player, type: :model do
     player.save!
     expect(player.player_histories.last.value).to be == player.value
   end 
-
-  it 'is eligible to play after signing a new contract' do
-    @player = FactoryBot.create :player, contracts_count: 0
-    FactoryBot.create :contract, player: @player
-    expect(@player.active?).to be true
-  end
-
-  it 'is not eligible to play if contract expires' do
-    player.contracts.last.update(end_date: 1.day.from_now)
-    player.team.increment_date(1.week)
-    player.reload
-    expect(player.active?).to be_falsey
-  end
 end

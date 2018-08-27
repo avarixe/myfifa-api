@@ -17,7 +17,7 @@
 
 FactoryBot.define do
   factory :loan do
-    destination Faker::Team.name
+    destination { Faker::Team.name }
     player
   end
 end

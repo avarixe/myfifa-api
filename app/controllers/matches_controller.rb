@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class MatchesController < APIController
   load_and_authorize_resource :team
   load_and_authorize_resource through: :team, shallow: true
@@ -18,7 +20,7 @@ class MatchesController < APIController
 
   def update
     @match.attributes = match_params
-    save_record @match.full_json
+    save_record @match, json: @match.full_json
   end
 
   def destroy

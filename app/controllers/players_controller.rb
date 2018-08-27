@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PlayersController < APIController
   load_and_authorize_resource :team
   load_and_authorize_resource through: :team, shallow: true

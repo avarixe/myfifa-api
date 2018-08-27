@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class StatisticsController < APIController
   load_and_authorize_resource :team
   before_action :set_player_ids

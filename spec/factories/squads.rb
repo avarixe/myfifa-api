@@ -17,9 +17,9 @@
 
 FactoryBot.define do
   factory :squad do
-    name Faker::Lorem.word
+    name { Faker::Lorem.word }
     players_list { team.players.pluck(:id) }
-    positions_list (1..11).map { |i| Performance::POSITIONS.sample }
+    positions_list { (1..11).map { |i| Performance::POSITIONS.sample } }
     association :team, factory: :team_with_players
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: players
@@ -159,7 +161,7 @@ class Player < ApplicationRecord
   %w[contract injury loan transfer].each do |record|
     define_method "current_#{record}" do
       last_record = public_send(record.pluralize).last
-      last_record if last_record && last_record.current?
+      last_record if last_record&.current?
     end
   end
 

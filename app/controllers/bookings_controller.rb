@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class BookingsController < APIController
   before_action :set_match, only: %i[create]
   load_and_authorize_resource :match

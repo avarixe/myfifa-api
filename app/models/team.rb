@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: teams
@@ -18,7 +20,7 @@
 #
 
 class Team < ApplicationRecord
-  belongs_to :user, optional: true
+  belongs_to :user
   has_many :players, dependent: :destroy
   has_many :squads, dependent: :destroy
   has_many :matches, dependent: :destroy
