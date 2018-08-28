@@ -32,7 +32,7 @@ RSpec.describe ContractsController, type: :request do
       get player_contracts_url(player),
           headers: { 'Authorization' => "Bearer #{token.token}" }
       assert_response :success
-      expect(json).to be == JSON.parse(player.contracts.to_json(include: :contract_histories))
+      expect(json).to be == JSON.parse(player.contracts.to_json)
     end
   end
 
