@@ -25,8 +25,6 @@
 
 class Contract < ApplicationRecord
   belongs_to :player
-  has_many :contract_histories, dependent: :destroy
-  # has_many :costs, dependent: :destroy
 
   BONUS_REQUIREMENT_TYPES = [
     'Appearances',
@@ -83,22 +81,10 @@ class Contract < ApplicationRecord
   ##############
 
   before_validation :set_signed_date
-  after_save :save_history
   after_create :update_status
 
   def set_signed_date
     self.signed_date ||= team.current_date
-  end
-
-  def save_history
-    contract_histories.create wage:              wage,
-                              signing_bonus:     signing_bonus,
-                              release_clause:    release_clause,
-                              performance_bonus: performance_bonus,
-                              bonus_req:         bonus_req,
-                              bonus_req_type:    bonus_req_type,
-                              effective_date:    effective_date,
-                              end_date:          end_date
   end
 
   ##############
