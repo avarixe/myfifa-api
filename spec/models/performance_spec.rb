@@ -11,7 +11,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  subbed_out :boolean          default(FALSE)
-#  rating     :integer          default(3)
+#  rating     :integer
 #
 # Indexes
 #
@@ -53,8 +53,7 @@ RSpec.describe Performance, type: :model do
     expect(FactoryBot.build(:performance, stop: nil)).to_not be_valid
   end
 
-  it 'requires a valid rating', skip_before: true do
-    expect(FactoryBot.build(:performance, rating: nil)).to_not be_valid
+  it 'requires a valid rating if any', skip_before: true do
     expect(FactoryBot.build(:performance, rating: 0)).to_not be_valid
     expect(FactoryBot.build(:performance, rating: 6)).to_not be_valid
   end

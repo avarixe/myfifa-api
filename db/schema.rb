@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_08_15_215341) do
+ActiveRecord::Schema.define(version: 2018_08_29_165554) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -25,22 +25,6 @@ ActiveRecord::Schema.define(version: 2018_08_15_215341) do
     t.string "player_name"
     t.index ["match_id"], name: "index_bookings_on_match_id"
     t.index ["player_id"], name: "index_bookings_on_player_id"
-  end
-
-  create_table "contract_histories", force: :cascade do |t|
-    t.bigint "contract_id"
-    t.date "datestamp"
-    t.integer "wage"
-    t.integer "signing_bonus"
-    t.integer "release_clause"
-    t.integer "performance_bonus"
-    t.integer "bonus_req"
-    t.string "bonus_req_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.date "end_date"
-    t.date "effective_date"
-    t.index ["contract_id"], name: "index_contract_histories_on_contract_id"
   end
 
   create_table "contracts", force: :cascade do |t|
@@ -168,7 +152,7 @@ ActiveRecord::Schema.define(version: 2018_08_15_215341) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "subbed_out", default: false
-    t.integer "rating", default: 3
+    t.integer "rating"
     t.index ["match_id"], name: "index_performances_on_match_id"
     t.index ["player_id"], name: "index_performances_on_player_id"
   end

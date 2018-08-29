@@ -11,7 +11,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  subbed_out :boolean          default(FALSE)
-#  rating     :integer          default(3)
+#  rating     :integer
 #
 # Indexes
 #
@@ -24,7 +24,6 @@ FactoryBot.define do
     pos { Performance::POSITIONS.sample }
     start { Faker::Number.between(0, 89) }
     stop { Faker::Number.between(90, 120) }
-    rating { Faker::Number.between(1, 5) }
     player
     match { Match.new(attributes_for(:match, team_id: player.team_id)) }
   end

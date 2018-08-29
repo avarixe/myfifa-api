@@ -13,7 +13,7 @@
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  subbed_out :boolean          default(FALSE)
-#  rating     :integer          default(3)
+#  rating     :integer
 #
 # Indexes
 #
@@ -77,7 +77,7 @@ class Performance < ApplicationRecord
             if: :start
   validates :player_id, uniqueness: { scope: :match_id }
   validates :pos, inclusion: { in: POSITIONS }
-  validates :rating, inclusion: 1..5
+  validates :rating, inclusion: 1..5, allow_nil: true
   validate :one_team?
   validate :active_player?, if: :player_id
 
@@ -97,7 +97,6 @@ class Performance < ApplicationRecord
   after_destroy :remove_events
 
   def set_defaults
-    self.rating ||= 3
     self.start ||= 0
     self.stop ||= 90
   end
