@@ -51,7 +51,7 @@ class Goal < ApplicationRecord
   validates :minute, inclusion: 1..120
   validates :player_name, presence: true
 
-  before_create :set_names
+  before_validation :set_names
   after_create :increment_score
   after_destroy :decrement_score
 
