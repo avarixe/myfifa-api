@@ -65,7 +65,7 @@ class Transfer < ApplicationRecord
   def end_current_contract
     return if player.contracts.none?
     player.contracts.last.update(end_date: signed_date)
-    player.update(status: nil)
+    player.update_status
   end
 
   ###############
