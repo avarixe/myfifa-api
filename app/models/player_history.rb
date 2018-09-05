@@ -34,7 +34,14 @@ class PlayerHistory < ApplicationRecord
 
   delegate :current_date, to: :player
 
+  before_create :remove_duplicates
   before_validation :set_datestamp
+
+  def remove_duplicates
+    PlayerHistory
+      .where(player_id: player_id, datestamp: current_date)
+      .delete_all
+  end
 
   def set_datestamp
     self.datestamp ||= current_date
