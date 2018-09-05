@@ -69,13 +69,18 @@ RSpec.describe Player, type: :model do
   end
 
   it 'records attribute changes in history' do
+    player.team.increment_date(1.day)
+
     player.ovr += 1
     player.save!
+    player.player_histories.reload
     expect(player.player_histories.length).to be == 2
     expect(player.player_histories.last.ovr).to be == player.ovr
 
     player.value += 1_000_000
     player.save!
+    player.player_histories.reload
+    expect(player.player_histories.length).to be == 2
     expect(player.player_histories.last.value).to be == player.value
   end 
 end
