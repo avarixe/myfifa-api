@@ -54,6 +54,7 @@ group :development, :test do
   gem 'bullet'
   gem 'rails-erd'
   gem 'rubocop', require: false
+  gem 'simplecov', require: false
 end
 
 group :development do
