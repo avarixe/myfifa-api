@@ -31,10 +31,6 @@ RSpec.describe Booking, type: :model do
     expect(FactoryBot.build(:booking, minute: -1)).to_not be_valid
   end
 
-  it 'requires a valid player name' do
-    expect(FactoryBot.build(:booking, player_name: nil)).to_not be_valid
-  end
-
   it 'automatically sets player name if player_id set' do
     player = FactoryBot.create(:player)
     player_booking = FactoryBot.create :booking, player: player

@@ -44,18 +44,10 @@ RSpec.describe Transfer, type: :model do
     expect(transfer.signed_date).to be == transfer.team.current_date
   end
 
-  it 'ends the current contract if out' do
+  it 'ends the current contract if signed date == effective date' do
     @player = FactoryBot.create(:player)
-    FactoryBot.create(:transfer, player: @player, origin: @player.team.title)
+    FactoryBot.create(:transfer, player: @player, origin: @player.team.title, effective_date: @player.team.current_date)
     expect(@player.status).to be_nil
     expect(@player.contracts.last.end_date).to be == @player.current_date
-  end
-
-  it 'ends tracking of any injuries upon creation' do
-    @player = FactoryBot.create(:player)
-    FactoryBot.create(:injury, player: @player)
-    FactoryBot.create(:transfer, player: @player, origin: @player.team.title)
-    expect(@player.injured?).to be false
-    expect(@player.injuries.last.end_date).to be == @player.current_date
   end
 end
