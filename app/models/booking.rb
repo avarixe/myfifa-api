@@ -41,7 +41,7 @@ class Booking < ApplicationRecord
     match.team_home?
   end
 
-  before_create :set_names
+  before_validation :set_names
 
   def set_names
     self.player_name = player.name if player_id.present?
