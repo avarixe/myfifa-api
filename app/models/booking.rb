@@ -25,7 +25,6 @@ class Booking < ApplicationRecord
 
   PERMITTED_ATTRIBUTES = %i[
     minute
-    player_name
     player_id
     red_card
   ].freeze

@@ -20,7 +20,6 @@
 FactoryBot.define do
   factory :booking do
     minute { Faker::Number.between(1, 120) }
-    player_name { Faker::Name.unique.name }
     player
     match
   end

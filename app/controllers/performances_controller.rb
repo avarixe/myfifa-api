@@ -22,6 +22,10 @@ class PerformancesController < APIController
     save_record @performance
   end
 
+  def destroy
+    render json: @performance.destroy
+  end
+
   private
 
     def performance_params

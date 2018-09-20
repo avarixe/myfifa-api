@@ -25,8 +25,7 @@ RSpec.describe MatchesController, type: :request do
     it 'returns all Matches of select Team' do
       FactoryBot.create_list :match, 10, team: team
 
-      another_team = FactoryBot.create(:team, user: user)
-      FactoryBot.create :match, team: another_team
+      FactoryBot.create :match
 
       get team_matches_url(team),
           headers: { 'Authorization' => "Bearer #{token.token}" }
@@ -65,11 +64,11 @@ RSpec.describe MatchesController, type: :request do
       assert_response 401
     end
 
-    it 'creates a new Player' do
+    it 'creates a new Match' do
       expect(Match.count).to be == 1
     end
 
-    it 'returns Player JSON' do
+    it 'returns Match JSON' do
       @match = Match.last
       expect(json).to be == JSON.parse(@match.to_json)
     end
@@ -114,7 +113,7 @@ RSpec.describe MatchesController, type: :request do
       assert_response 403
     end
 
-    it 'removes the Player' do
+    it 'removes the Match' do
       @match = FactoryBot.create :match, team: team
       delete match_url(@match),
              headers: { 'Authorization' => "Bearer #{token.token}" }
