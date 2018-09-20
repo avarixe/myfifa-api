@@ -73,4 +73,15 @@ class Team < ApplicationRecord
   def time_period
     "#{start_date.year} - #{current_date.year}"
   end
+
+  def seasons
+    date = start_date
+    {}.tap do |seasons|
+      while date < current_date
+        season_label = "#{date.year} - #{date.year + 1}"
+        seasons[season_label] = (date...date + 1.year)
+        date += 1.year
+      end
+    end
+  end
 end

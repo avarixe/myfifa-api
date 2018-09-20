@@ -28,6 +28,10 @@ FactoryBot.define do
     player_name { Faker::Name.name }
     match
 
+    factory :player_goal do
+      player
+    end
+
     factory :home_goal do
       home true
 

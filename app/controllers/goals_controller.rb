@@ -19,8 +19,9 @@ class GoalsController < APIController
 
   def update
     @goal.attributes = goal_params
-    @match = Match.with_players.find(@goal.match_id)
-    save_record @goal, json: @match.full_json
+    save_record @goal, json: proc {
+      Match.with_players.find(@goal.match_id).full_json
+    }
   end
 
   def destroy

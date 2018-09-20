@@ -10,13 +10,14 @@ class PenaltyShootoutsController < APIController
   end
 
   def create
-    save_record @penalty_shootout, json: @match.full_json
+    save_record @penalty_shootout, json: proc { @match.full_json }
   end
 
   def update
     @penalty_shootout.attributes = penalty_shootout_params
-    @match = Match.with_players.find(@penalty_shootout.match_id)
-    save_record @penalty_shootout, json: @match.full_json
+    save_record @penalty_shootout, json: proc {
+      Match.with_players.find(@penalty_shootout.match_id).full_json
+    }
   end
 
   def destroy

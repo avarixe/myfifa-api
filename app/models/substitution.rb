@@ -43,15 +43,15 @@ class Substitution < ApplicationRecord
   validates :minute, inclusion: 1..120
 
   before_create :set_names
-  after_create :create_sub_log
-  after_destroy :delete_sub_log
+  after_create :create_performance
+  after_destroy :delete_performance
 
   def set_names
     self.player_name = player.name
     self.replaced_by = replacement.name
   end
 
-  def create_sub_log
+  def create_performance
     replaced_log = match.performances.find_by(player_id: player_id)
     return unless replaced_log
     replaced_log.update(stop: minute, subbed_out: true)
@@ -60,7 +60,7 @@ class Substitution < ApplicationRecord
                               start:     minute
   end
 
-  def delete_sub_log
+  def delete_performance
     match
       .performances
       .find_by(player_id: replacement_id)
