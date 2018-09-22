@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: teams
@@ -20,7 +22,7 @@
 FactoryBot.define do
   factory :team do
     title { Faker::Team.name }
-    start_date Time.now
+    start_date { Time.now }
     user
 
     before(:create) do |team|
@@ -29,7 +31,7 @@ FactoryBot.define do
 
     factory :team_with_players do
       transient do
-        players_count 11
+        players_count { 11 }
       end
 
       after :create do |team, evaluator|

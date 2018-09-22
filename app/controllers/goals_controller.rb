@@ -14,20 +14,16 @@ class GoalsController < APIController
   end
 
   def create
-    save_record @goal, json: proc { @match.full_json }
+    save_record @goal
   end
 
   def update
     @goal.attributes = goal_params
-    save_record @goal, json: proc {
-      Match.with_players.find(@goal.match_id).full_json
-    }
+    save_record @goal
   end
 
   def destroy
-    @goal.destroy
-    @match = Match.with_players.find(@goal.match_id)
-    render json: @match.full_json
+    render json: @goal.destroy
   end
 
   private

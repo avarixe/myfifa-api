@@ -10,4 +10,16 @@ class ApplicationRecord < ActiveRecord::Base
     options[:except] += %i[created_at updated_at]
     super
   end
+
+  after_save :broadcast
+
+  def broadcast
+    return unless respond_to?(:team) && previous_changes.any?
+
+    TeamChannel.broadcast_to(
+      team,
+      type: self.class.name,
+      data: as_json
+    )
+  end
 end

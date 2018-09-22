@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # spec/support/request_helpers.rb
 
 module Requests

@@ -13,12 +13,12 @@ class LoansController < APIController
   end
 
   def create
-    save_record @loan, json: @player
+    save_record @loan
   end
 
   def update
     @loan.attributes = loan_params
-    save_record @loan, json: @loan.player
+    save_record @loan
   end
 
   def destroy

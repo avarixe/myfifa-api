@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe InjuriesController, type: :request do
@@ -57,7 +59,7 @@ RSpec.describe InjuriesController, type: :request do
   end
 
   describe 'POST #create' do
-    before :each do |test|
+    before do |test|
       unless test.metadata[:skip_before]
         post player_injuries_url(player),
              headers: { 'Authorization' => "Bearer #{token.token}" },
@@ -75,57 +77,55 @@ RSpec.describe InjuriesController, type: :request do
       expect(Injury.count).to be == 1
     end
 
-    it 'returns Player JSON' do
-      player.reload
-      expect(json).to be == JSON.parse(player.to_json)
+    it 'returns Injury JSON' do
+      expect(json).to be == JSON.parse(Injury.last.to_json)
     end
   end
 
   describe 'PATCH #update' do
     it 'requires a valid token', skip_before: true do
-      @injury = FactoryBot.create :injury, player: player
-      patch injury_url(@injury),
+      injury = FactoryBot.create :injury, player: player
+      patch injury_url(injury),
             params: { injury: FactoryBot.attributes_for(:injury) }
       assert_response 401
     end
 
     it 'rejects requests from other Users', skip_before: true do
-      @injury = FactoryBot.create :injury
-      patch injury_url(@injury),
+      injury = FactoryBot.create :injury
+      patch injury_url(injury),
             headers: { 'Authorization' => "Bearer #{token.token}" },
             params: { injury: FactoryBot.attributes_for(:injury) }
       assert_response 403
     end
 
     it 'returns updated Player JSON' do
-      @injury = FactoryBot.create :injury, player: player
-      patch injury_url(@injury),
+      injury = FactoryBot.create :injury, player: player
+      patch injury_url(injury),
             headers: { 'Authorization' => "Bearer #{token.token}" },
             params: { injury: FactoryBot.attributes_for(:injury) }
-      @injury.reload
-      expect(json).to be == JSON.parse(player.to_json)
+      expect(json).to be == JSON.parse(injury.reload.to_json)
     end
   end
 
   describe 'DELETE #destroy' do
     it 'requires a valid token', skip_before: true do
-      @injury = FactoryBot.create :injury, player: player
-      delete injury_url(@injury)
+      injury = FactoryBot.create :injury, player: player
+      delete injury_url(injury)
       assert_response 401
     end
 
     it 'rejects requests from other Users', skip_before: true do
-      @injury = FactoryBot.create :injury
-      delete injury_url(@injury),
+      injury = FactoryBot.create :injury
+      delete injury_url(injury),
              headers: { 'Authorization' => "Bearer #{token.token}" }
       assert_response 403
     end
 
     it 'removes the Player' do
-      @injury = FactoryBot.create :injury, player: player
-      delete injury_url(@injury),
+      injury = FactoryBot.create :injury, player: player
+      delete injury_url(injury),
              headers: { 'Authorization' => "Bearer #{token.token}" }
-      expect { @injury.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { injury.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

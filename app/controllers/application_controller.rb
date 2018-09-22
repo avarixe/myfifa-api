@@ -6,6 +6,7 @@ class ApplicationController < ActionController::API
 
   def cors_preflight_check
     return unless request.method == 'OPTIONS'
+
     headers['Access-Control-Allow-Origin'] = '*'
     headers['Access-Control-Allow-Methods'] = 'POST, GET, PUT, DELETE, OPTIONS'
     headers['Access-Control-Allow-Headers'] = 'X-Requested-With, '\

@@ -104,6 +104,7 @@ class Match < ApplicationRecord
 
   def team_result
     return unless team_played?
+
     team_score = team_home? ? home_score : away_score
     other_score = team_home? ? away_score : home_score
 

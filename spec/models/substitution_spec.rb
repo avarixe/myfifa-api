@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: substitutions
@@ -23,7 +25,7 @@
 require 'rails_helper'
 
 RSpec.describe Substitution, type: :model do
-  before :each do |test|
+  before do |test|
     unless test.metadata[:skip_before]
       @team = FactoryBot.create :team
       @match = FactoryBot.create :match, team: @team

@@ -29,6 +29,7 @@ class PlayerHistory < ApplicationRecord
 
   def player_changed?
     return unless ovr.blank? && value.blank?
+
     errors.add(:base, :invalid)
   end
 

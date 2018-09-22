@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: performances
@@ -22,7 +24,7 @@
 require 'rails_helper'
 
 RSpec.describe Performance, type: :model do
-  before :each do |test|
+  before do |test|
     unless test.metadata[:skip_before]
       @team = FactoryBot.create :team
       @player = FactoryBot.create :player, team: @team

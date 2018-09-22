@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe ContractsController, type: :request do
@@ -54,7 +56,7 @@ RSpec.describe ContractsController, type: :request do
   end
 
   describe 'POST #create' do
-    before :each do |test|
+    before do |test|
       unless test.metadata[:skip_before]
         post player_contracts_url(player),
              headers: { 'Authorization' => "Bearer #{token.token}" },
@@ -73,57 +75,55 @@ RSpec.describe ContractsController, type: :request do
       expect(Contract.count).to be == 2
     end
 
-    it 'returns Player JSON' do
-      player.reload
-      expect(json).to be == JSON.parse(player.to_json)
+    it 'returns Contract JSON' do
+      expect(json).to be == JSON.parse(Contract.last.to_json)
     end
   end
 
   describe 'PATCH #update' do
     it 'requires a valid token' do
-      @contract = FactoryBot.create :contract, player: player
-      patch contract_url(@contract),
+      contract = FactoryBot.create :contract, player: player
+      patch contract_url(contract),
             params: { contract: FactoryBot.attributes_for(:contract) }
       assert_response 401
     end
 
     it 'rejects requests from other Users' do
-      @contract = FactoryBot.create :contract
-      patch contract_url(@contract),
+      contract = FactoryBot.create :contract
+      patch contract_url(contract),
             headers: { 'Authorization' => "Bearer #{token.token}" },
             params: { contract: FactoryBot.attributes_for(:contract) }
       assert_response 403
     end
 
-    it 'returns updated Player JSON' do
-      @contract = FactoryBot.create :contract, player: player
-      patch contract_url(@contract),
+    it 'returns updated Contract JSON' do
+      contract = FactoryBot.create :contract, player: player
+      patch contract_url(contract),
             headers: { 'Authorization' => "Bearer #{token.token}" },
             params: { contract: FactoryBot.attributes_for(:contract) }
-      @contract.reload
-      expect(json).to be == JSON.parse(player.to_json)
+      expect(json).to be == JSON.parse(contract.reload.to_json)
     end
   end
 
   describe 'DELETE #destroy' do
     it 'requires a valid token' do
-      @contract = FactoryBot.create :contract, player: player
-      delete contract_url(@contract)
+      contract = FactoryBot.create :contract, player: player
+      delete contract_url(contract)
       assert_response 401
     end
 
     it 'rejects requests from other Users' do
-      @contract = FactoryBot.create :contract
-      delete contract_url(@contract),
+      contract = FactoryBot.create :contract
+      delete contract_url(contract),
              headers: { 'Authorization' => "Bearer #{token.token}" }
       assert_response 403
     end
 
     it 'removes the Player' do
-      @contract = FactoryBot.create :contract, player: player
-      delete contract_url(@contract),
+      contract = FactoryBot.create :contract, player: player
+      delete contract_url(contract),
              headers: { 'Authorization' => "Bearer #{token.token}" }
-      expect { @contract.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { contract.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

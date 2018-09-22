@@ -85,11 +85,13 @@ class Performance < ApplicationRecord
     return if match_id.nil? ||
               player_id.nil? ||
               match.team_id == player.team_id
+
     errors.add(:base, 'Player Team does not match Match Team')
   end
 
   def active_player?
     return if player.active?
+
     errors.add(:player, 'must be active')
   end
 

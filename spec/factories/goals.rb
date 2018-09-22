@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: goals
@@ -33,18 +35,18 @@ FactoryBot.define do
     end
 
     factory :home_goal do
-      home true
+      home { true }
 
       factory :own_home_goal do
-        own_goal true
+        own_goal { true }
       end
     end
 
     factory :away_goal do
-      home false
+      home { false }
 
       factory :own_away_goal do
-        own_goal true
+        own_goal { true }
       end
     end
   end
