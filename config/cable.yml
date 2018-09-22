@@ -7,8 +7,7 @@ development:
   channel_prefix: development
 
 test:
-  <<: *redis
-  channel_prefix: test
+  adapter: async
 
 production:
   <<: *redis
