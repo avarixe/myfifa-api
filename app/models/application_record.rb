@@ -25,7 +25,7 @@ class ApplicationRecord < ActiveRecord::Base
   end
 
   def broadcast_destroy
-    return unless respond_to?(:team) && previous_changes.any?
+    return unless respond_to?(:team)
 
     TeamChannel.broadcast_to(
       team,

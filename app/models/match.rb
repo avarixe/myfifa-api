@@ -77,7 +77,7 @@ class Match < ApplicationRecord
   def apply(squad)
     Performance.transaction do
       # Remove existing Performances
-      performances.clear
+      performances.map(&:destroy)
 
       # Add new Performances from Squad player list
       squad.players_list.each_with_index do |player_id, i|
