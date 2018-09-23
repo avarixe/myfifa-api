@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: players
@@ -34,7 +36,7 @@ FactoryBot.define do
     team
 
     transient do
-      contracts_count 1
+      contracts_count { 1 }
     end
 
     after :create do |player, evaluator|

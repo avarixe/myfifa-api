@@ -1,14 +1,15 @@
+require: rubocop-rspec
 Rails:
   Enabled: true
 AllCops:
   TargetRubyVersion: 2.5
   Exclude:
     - 'bin/*'
-    - 'db/**/*'
     - 'config/**/*'
-    - 'script/**/*'
-    - 'spec/**/*'
+    - 'db/**/*'
     - 'lib/tasks/*'
+    - 'script/**/*'
+    - 'spec/**/*.rb'
 
 Layout/IndentationConsistency:
   EnforcedStyle: rails
@@ -30,3 +31,6 @@ Metrics/ClassLength:
   Enabled: false
 # Metrics/MethodLength:
 #   Enabled: false
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*.rb'

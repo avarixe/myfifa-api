@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe LoansController, type: :request do
@@ -57,7 +59,7 @@ RSpec.describe LoansController, type: :request do
   end
 
   describe 'POST #create' do
-    before :each do |test|
+    before do |test|
       unless test.metadata[:skip_before]
         post player_loans_url(player),
              headers: { 'Authorization' => "Bearer #{token.token}" },
@@ -75,57 +77,55 @@ RSpec.describe LoansController, type: :request do
       expect(Loan.count).to be == 1
     end
 
-    it 'returns Player JSON' do
-      player.reload
-      expect(json).to be == JSON.parse(player.to_json)
+    it 'returns Loan JSON' do
+      expect(json).to be == JSON.parse(Loan.last.to_json)
     end
   end
 
   describe 'PATCH #update' do
     it 'requires a valid token' do
-      @loan = FactoryBot.create :loan, player: player
-      patch loan_url(@loan),
+      loan = FactoryBot.create :loan, player: player
+      patch loan_url(loan),
             params: { loan: FactoryBot.attributes_for(:loan) }
       assert_response 401
     end
 
     it 'rejects requests from other Users' do
-      @loan = FactoryBot.create :loan
-      patch loan_url(@loan),
+      loan = FactoryBot.create :loan
+      patch loan_url(loan),
             headers: { 'Authorization' => "Bearer #{token.token}" },
             params: { loan: FactoryBot.attributes_for(:loan) }
       assert_response 403
     end
 
-    it 'returns updated Player JSON' do
-      @loan = FactoryBot.create :loan, player: player
-      patch loan_url(@loan),
+    it 'returns updated Loan JSON' do
+      loan = FactoryBot.create :loan, player: player
+      patch loan_url(loan),
             headers: { 'Authorization' => "Bearer #{token.token}" },
             params: { loan: FactoryBot.attributes_for(:loan) }
-      @loan.reload
-      expect(json).to be == JSON.parse(player.to_json)
+      expect(json).to be == JSON.parse(loan.reload.to_json)
     end
   end
 
   describe 'DELETE #destroy' do
     it 'requires a valid token' do
-      @loan = FactoryBot.create :loan, player: player
-      delete loan_url(@loan)
+      loan = FactoryBot.create :loan, player: player
+      delete loan_url(loan)
       assert_response 401
     end
 
     it 'rejects requests from other Users' do
-      @loan = FactoryBot.create :loan
-      delete loan_url(@loan),
+      loan = FactoryBot.create :loan
+      delete loan_url(loan),
              headers: { 'Authorization' => "Bearer #{token.token}" }
       assert_response 403
     end
 
     it 'removes the Player' do
-      @loan = FactoryBot.create :loan, player: player
-      delete loan_url(@loan),
+      loan = FactoryBot.create :loan, player: player
+      delete loan_url(loan),
              headers: { 'Authorization' => "Bearer #{token.token}" }
-      expect { @loan.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { loan.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

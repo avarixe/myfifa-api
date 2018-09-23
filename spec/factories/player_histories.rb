@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: player_histories
@@ -18,7 +20,7 @@
 
 FactoryBot.define do
   factory :player_history do
-    datestamp Date.new
+    datestamp { Date.new }
     ovr { Faker::Number.between(50, 90) }
     value { Faker::Number.between(50_000, 200_000_000) }
     kit_no { Faker::Number.between(1, 99) }

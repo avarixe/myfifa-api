@@ -13,16 +13,17 @@ class ContractsController < APIController
   end
 
   def create
-    save_record @contract, json: @player
+    save_record @contract
   end
 
   def update
     @contract.attributes = contract_params
-    save_record @contract, json: @contract.player
+    save_record @contract
   end
 
   def destroy
-    render json: @contract.destroy
+    @contract.destroy
+    render json: @contract
   end
 
   private

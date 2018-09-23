@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe TransfersController, type: :request do
@@ -42,7 +44,7 @@ RSpec.describe TransfersController, type: :request do
       assert_response 401
     end
 
-    it 'returns Player JSON with History' do
+    it 'returns Transfer JSON' do
       transfer = FactoryBot.create :transfer, player: player
 
       get transfer_url(transfer),
@@ -53,7 +55,7 @@ RSpec.describe TransfersController, type: :request do
   end
 
   describe 'POST #create' do
-    before :each do |test|
+    before do |test|
       unless test.metadata[:skip_before]
         post player_transfers_url(player),
              headers: { 'Authorization' => "Bearer #{token.token}" },
@@ -71,57 +73,57 @@ RSpec.describe TransfersController, type: :request do
       expect(Transfer.count).to be == 1
     end
 
-    it 'returns Player JSON' do
+    it 'returns Transfer JSON' do
       player.reload
-      expect(json).to be == JSON.parse(player.to_json)
+      expect(json).to be == JSON.parse(Transfer.last.to_json)
     end
   end
 
   describe 'PATCH #update' do
     it 'requires a valid token' do
-      @transfer = FactoryBot.create :transfer, player: player
-      patch transfer_url(@transfer),
+      transfer = FactoryBot.create :transfer, player: player
+      patch transfer_url(transfer),
             params: { transfer: FactoryBot.attributes_for(:transfer) }
       assert_response 401
     end
 
     it 'rejects requests from other Users' do
-      @transfer = FactoryBot.create :transfer
-      patch transfer_url(@transfer),
+      transfer = FactoryBot.create :transfer
+      patch transfer_url(transfer),
             headers: { 'Authorization' => "Bearer #{token.token}" },
             params: { transfer: FactoryBot.attributes_for(:transfer) }
       assert_response 403
     end
 
-    it 'returns updated Player JSON' do
-      @transfer = FactoryBot.create :transfer, player: player
-      patch transfer_url(@transfer),
+    it 'returns updated Transfer JSON' do
+      transfer = FactoryBot.create :transfer, player: player
+      patch transfer_url(transfer),
             headers: { 'Authorization' => "Bearer #{token.token}" },
             params: { transfer: FactoryBot.attributes_for(:transfer) }
-      @transfer.reload
-      expect(json).to be == JSON.parse(player.to_json)
+      transfer.reload
+      expect(json).to be == JSON.parse(transfer.to_json)
     end
   end
 
   describe 'DELETE #destroy' do
     it 'requires a valid token' do
-      @transfer = FactoryBot.create :transfer, player: player
-      delete transfer_url(@transfer)
+      transfer = FactoryBot.create :transfer, player: player
+      delete transfer_url(transfer)
       assert_response 401
     end
 
     it 'rejects requests from other Users' do
-      @transfer = FactoryBot.create :transfer
-      delete transfer_url(@transfer),
+      transfer = FactoryBot.create :transfer
+      delete transfer_url(transfer),
              headers: { 'Authorization' => "Bearer #{token.token}" }
       assert_response 403
     end
 
-    it 'removes the Player' do
-      @transfer = FactoryBot.create :transfer, player: player
-      delete transfer_url(@transfer),
+    it 'removes the Transfer' do
+      transfer = FactoryBot.create :transfer, player: player
+      delete transfer_url(transfer),
              headers: { 'Authorization' => "Bearer #{token.token}" }
-      expect { @transfer.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { transfer.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

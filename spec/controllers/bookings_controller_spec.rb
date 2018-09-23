@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe BookingsController, type: :request do
@@ -26,7 +28,6 @@ RSpec.describe BookingsController, type: :request do
 
     it 'returns all Bookings of select Match' do
       FactoryBot.create_list :booking, 3, match: match
-
       FactoryBot.create :booking
 
       get match_bookings_url(match),
@@ -52,7 +53,7 @@ RSpec.describe BookingsController, type: :request do
   end
 
   describe 'POST #create' do
-    before :each do |test|
+    before do |test|
       unless test.metadata[:skip_before]
         post match_bookings_url(match),
              headers: { 'Authorization' => "Bearer #{token.token}" },
@@ -71,7 +72,7 @@ RSpec.describe BookingsController, type: :request do
     end
 
     it 'returns Match JSON' do
-      expect(json).to be == JSON.parse(match.to_json(methods: %i[events performances]))
+      expect(json).to be == Booking.last.as_json
     end
   end
 
@@ -82,7 +83,7 @@ RSpec.describe BookingsController, type: :request do
             params: { booking: FactoryBot.attributes_for(:booking) }
       assert_response 401
     end
-    
+
     it 'rejects requests from other Users' do
       booking = FactoryBot.create :booking
       patch booking_url(booking),
@@ -96,7 +97,7 @@ RSpec.describe BookingsController, type: :request do
       patch booking_url(booking),
             headers: { 'Authorization' => "Bearer #{token.token}" },
             params: { booking: FactoryBot.attributes_for(:booking) }
-      expect(json).to be == JSON.parse(match.to_json(methods: %i[events performances]))
+      expect(json).to be == booking.reload.as_json
     end
   end
 

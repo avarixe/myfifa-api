@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe PenaltyShootoutsController, type: :request do
@@ -17,7 +19,7 @@ RSpec.describe PenaltyShootoutsController, type: :request do
     )
   }
 
-  before :each do
+  before do
     Faker::UniqueGenerator.clear
   end
 
@@ -37,7 +39,7 @@ RSpec.describe PenaltyShootoutsController, type: :request do
   end
 
   describe 'POST #create' do
-    before :each do |test|
+    before do |test|
       unless test.metadata[:skip_before]
         post match_penalty_shootouts_url(match),
              headers: { 'Authorization' => "Bearer #{token.token}" },
@@ -55,8 +57,8 @@ RSpec.describe PenaltyShootoutsController, type: :request do
       expect(PenaltyShootout.count).to be == 1
     end
 
-    it 'returns Match JSON' do
-      expect(json).to be == JSON.parse(match.reload.to_json(methods: %i[events performances]))
+    it 'returns Penalty Shootout JSON' do
+      expect(json).to be == PenaltyShootout.last.as_json
     end
   end
 
@@ -81,7 +83,7 @@ RSpec.describe PenaltyShootoutsController, type: :request do
       patch penalty_shootout_url(ps),
             headers: { 'Authorization' => "Bearer #{token.token}" },
             params: { penalty_shootout: FactoryBot.attributes_for(:penalty_shootout) }
-      expect(json).to be == JSON.parse(match.reload.to_json(methods: %i[events performances]))
+      expect(json).to be == ps.reload.as_json
     end
   end
 

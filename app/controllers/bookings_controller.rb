@@ -14,20 +14,17 @@ class BookingsController < APIController
   end
 
   def create
-    save_record @booking, json: @match.full_json
+    save_record @booking
   end
 
   def update
     @booking.attributes = booking_params
-    save_record @booking, json: proc {
-      Match.with_players.find(@booking.match_id).full_json
-    }
+    save_record @booking
   end
 
   def destroy
     @booking.destroy
-    @match = Match.with_players.find(@booking.match_id)
-    render json: @match.full_json
+    render json: @booking
   end
 
   private

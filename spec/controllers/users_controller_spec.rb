@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe UsersController, type: :request do
@@ -16,7 +18,7 @@ RSpec.describe UsersController, type: :request do
   }
 
   describe 'POST users/registrations#create' do
-    before :each do
+    before do
       user_attributes = FactoryBot.attributes_for :user
       post user_registration_url(format: :json),
            params: { user: user_attributes }

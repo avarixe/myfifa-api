@@ -24,7 +24,8 @@ class PlayersController < APIController
   end
 
   def destroy
-    render json: @player.destroy
+    @player.destroy
+    render json: @player
   end
 
   def update_multiple

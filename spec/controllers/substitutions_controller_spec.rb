@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe SubstitutionsController, type: :request do
@@ -57,7 +59,7 @@ RSpec.describe SubstitutionsController, type: :request do
   end
 
   describe 'POST #create' do
-    before :each do |test|
+    before do |test|
       unless test.metadata[:skip_before]
         post match_substitutions_url(match),
              headers: { 'Authorization' => "Bearer #{token.token}" },
@@ -75,8 +77,8 @@ RSpec.describe SubstitutionsController, type: :request do
       expect(Substitution.count).to be == 1
     end
 
-    it 'returns Match JSON' do
-      expect(json).to be == JSON.parse(match.reload.to_json(methods: %i[events performances]))
+    it 'returns Substitution JSON' do
+      expect(json).to be == Substitution.last.as_json
     end
   end
 
@@ -96,12 +98,12 @@ RSpec.describe SubstitutionsController, type: :request do
       assert_response 403
     end
 
-    it 'returns updated Match JSON' do
+    it 'returns updated Substitution JSON' do
       substitution = FactoryBot.create :substitution, match: match, player: player1, replacement: player2
       patch substitution_url(substitution),
             headers: { 'Authorization' => "Bearer #{token.token}" },
             params: { substitution: FactoryBot.attributes_for(:substitution) }
-      expect(json).to be == JSON.parse(match.reload.to_json(methods: %i[events performances]))
+      expect(json).to be == substitution.reload.as_json
     end
   end
 

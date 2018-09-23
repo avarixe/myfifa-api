@@ -35,11 +35,13 @@ class PenaltyShootout < ApplicationRecord
 
   def drawn_match?
     return if match.home_score == match.away_score
+
     errors.add :match, 'Result must be a draw'
   end
 
   def no_draw?
     return if home_score != away_score
+
     errors.add :base, 'Penalty Shootout must have a winner'
   end
 

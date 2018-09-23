@@ -1,10 +1,14 @@
+redis: &redis
+  adapter: redis
+  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
+
 development:
-  adapter: async
+  <<: *redis
+  channel_prefix: development
 
 test:
   adapter: async
 
 production:
-  adapter: redis
-  url: <%= ENV.fetch("REDIS_URL") { "redis://localhost:6379/1" } %>
-  channel_prefix: myfifa_api_production
+  <<: *redis
+  channel_prefix: production

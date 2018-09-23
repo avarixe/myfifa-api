@@ -13,16 +13,17 @@ class InjuriesController < APIController
   end
 
   def create
-    save_record @injury, json: @player
+    save_record @injury
   end
 
   def update
     @injury.attributes = injury_params
-    save_record @injury, json: @injury.player
+    save_record @injury
   end
 
   def destroy
-    render json: @injury.destroy
+    @injury.destroy
+    render json: @injury
   end
 
   private

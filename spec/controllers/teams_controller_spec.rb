@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe TeamsController, type: :request do
@@ -51,7 +53,7 @@ RSpec.describe TeamsController, type: :request do
   end
 
   describe 'POST #create' do
-    before :each do |test|
+    before do |test|
       unless test.metadata[:skip_before]
         post teams_url,
              headers: { 'Authorization' => "Bearer #{token.token}" },
@@ -77,49 +79,49 @@ RSpec.describe TeamsController, type: :request do
 
   describe 'PATCH #update' do
     it 'requires a valid token' do
-      @team = FactoryBot.create :team, user: user
-      patch team_url(@team),
+      team = FactoryBot.create :team, user: user
+      patch team_url(team),
             params: { team: FactoryBot.attributes_for(:team) }
       assert_response 401
     end
 
     it 'rejects requests from other Users' do
-      @team = FactoryBot.create :team
-      patch team_url(@team),
+      team = FactoryBot.create :team
+      patch team_url(team),
             headers: { 'Authorization' => "Bearer #{token.token}" },
             params: { team: FactoryBot.attributes_for(:team) }
       assert_response 403
     end
 
     it 'returns updated Team JSON' do
-      @team = FactoryBot.create :team, user: user
-      patch team_url(@team),
+      team = FactoryBot.create :team, user: user
+      patch team_url(team),
             headers: { 'Authorization' => "Bearer #{token.token}" },
             params: { team: FactoryBot.attributes_for(:team) }
-      @team.reload
-      expect(json).to be == JSON.parse(@team.to_json)
+      team.reload
+      expect(json).to be == JSON.parse(team.to_json)
     end
   end
 
   describe 'DELETE #destroy' do
     it 'requires a valid token' do
-      @team = FactoryBot.create :team, user: user
-      delete team_url(@team)
+      team = FactoryBot.create :team, user: user
+      delete team_url(team)
       assert_response 401
     end
 
     it 'rejects requests from other Users' do
-      @team = FactoryBot.create :team
-      delete team_url(@team),
+      team = FactoryBot.create :team
+      delete team_url(team),
              headers: { 'Authorization' => "Bearer #{token.token}" }
       assert_response 403
     end
 
     it 'removes the Team' do
-      @team = FactoryBot.create :team, user: user
-      delete team_url(@team),
+      team = FactoryBot.create :team, user: user
+      delete team_url(team),
              headers: { 'Authorization' => "Bearer #{token.token}" }
-      expect { @team.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { team.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

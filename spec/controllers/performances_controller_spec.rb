@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe PerformancesController, type: :request do
@@ -55,7 +57,7 @@ RSpec.describe PerformancesController, type: :request do
   end
 
   describe 'POST #create' do
-    before :each do |test|
+    before do |test|
       unless test.metadata[:skip_before]
         post match_performances_url(match),
              headers: { 'Authorization' => "Bearer #{token.token}" },

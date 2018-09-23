@@ -85,11 +85,13 @@ class Performance < ApplicationRecord
     return if match_id.nil? ||
               player_id.nil? ||
               match.team_id == player.team_id
+
     errors.add(:base, 'Player Team does not match Match Team')
   end
 
   def active_player?
     return if player.active?
+
     errors.add(:player, 'must be active')
   end
 
@@ -131,7 +133,7 @@ class Performance < ApplicationRecord
     Substitution.where(match_id: match_id, replacement_id: player_id)
   end
 
-  delegate :name, to: :player
+  delegate :team, :name, to: :player
 
   def as_json(options = {})
     options[:methods] ||= []

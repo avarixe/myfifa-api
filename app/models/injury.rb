@@ -42,6 +42,7 @@ class Injury < ApplicationRecord
 
   def no_double_injury
     return unless player.injured?
+
     errors.add(:base, 'Player can not be injured when already injured.')
   end
 
@@ -64,6 +65,7 @@ class Injury < ApplicationRecord
 
   def recovered=(val)
     return unless player_id && val
+
     self.end_date = team.current_date
   end
 

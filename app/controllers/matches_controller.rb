@@ -24,7 +24,8 @@ class MatchesController < APIController
   end
 
   def destroy
-    render json: @match.destroy
+    @match.destroy
+    render json: @match
   end
 
   def events

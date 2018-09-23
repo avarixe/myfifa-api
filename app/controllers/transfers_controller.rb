@@ -13,16 +13,17 @@ class TransfersController < APIController
   end
 
   def create
-    save_record @transfer, json: @player
+    save_record @transfer
   end
 
   def update
     @transfer.attributes = transfer_params
-    save_record @transfer, json: @transfer.player
+    save_record @transfer
   end
 
   def destroy
-    render json: @transfer.destroy
+    @transfer.destroy
+    render json: @transfer
   end
 
   private

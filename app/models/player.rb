@@ -97,8 +97,10 @@ class Player < ApplicationRecord
 
   def valid_sec_pos
     return if sec_pos.nil?
+
     sec_pos.each do |pos|
       next if POSITIONS.include?(pos)
+
       errors.add(:sec_pos, "#{pos} is not a valid Position")
     end
   end

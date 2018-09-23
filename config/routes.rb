@@ -1,4 +1,6 @@
 Rails.application.routes.draw do
+  mount ActionCable.server => '/cable'
+
   use_doorkeeper do
     controllers tokens: 'tokens'
   end

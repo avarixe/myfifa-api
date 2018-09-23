@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'rails_helper'
 
 RSpec.describe GoalsController, type: :request do
@@ -26,7 +28,6 @@ RSpec.describe GoalsController, type: :request do
 
     it 'returns all Goals of select Match' do
       FactoryBot.create_list :goal, 3, match: match
-
       FactoryBot.create :goal
 
       get match_goals_url(match),
@@ -52,7 +53,7 @@ RSpec.describe GoalsController, type: :request do
   end
 
   describe 'POST #create' do
-    before :each do |test|
+    before do |test|
       unless test.metadata[:skip_before]
         post match_goals_url(match),
              headers: { 'Authorization' => "Bearer #{token.token}" },
@@ -70,8 +71,8 @@ RSpec.describe GoalsController, type: :request do
       expect(Goal.count).to be == 1
     end
 
-    it 'returns Match JSON' do
-      expect(json).to be == JSON.parse(match.reload.to_json(methods: %i[events performances]))
+    it 'returns Goal JSON' do
+      expect(json).to be == Goal.last.as_json
     end
   end
 
@@ -91,12 +92,12 @@ RSpec.describe GoalsController, type: :request do
       assert_response 403
     end
 
-    it 'returns updated Match JSON' do
+    it 'returns updated Goal JSON' do
       goal = FactoryBot.create :goal, match: match
       patch goal_url(goal),
             headers: { 'Authorization' => "Bearer #{token.token}" },
             params: { goal: FactoryBot.attributes_for(:away_goal) }
-      expect(json).to be == JSON.parse(match.reload.to_json(methods: %i[events performances]))
+      expect(json).to be == goal.reload.as_json
     end
   end
 

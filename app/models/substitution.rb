@@ -54,6 +54,7 @@ class Substitution < ApplicationRecord
   def create_performance
     replaced_log = match.performances.find_by(player_id: player_id)
     return unless replaced_log
+
     replaced_log.update(stop: minute, subbed_out: true)
     match.performances.create player_id: replacement_id,
                               pos:       replaced_log.pos,
@@ -70,6 +71,8 @@ class Substitution < ApplicationRecord
       .find_by(player_id: player_id)
       .update(stop: 90, subbed_out: false)
   end
+
+  delegate :team, to: :match
 
   def home
     match.team_home?

@@ -36,16 +36,16 @@ RSpec.describe SquadsController, type: :request do
 
   describe 'GET #show' do
     it 'requires a valid token' do
-      @squad = FactoryBot.create :squad, team: team
-      get squad_url(@squad)
+      squad = FactoryBot.create :squad, team: team
+      get squad_url(squad)
       assert_response 401
     end
 
     it 'returns Squad JSON' do
-      @squad = FactoryBot.create :squad, team: team
-      get squad_url(@squad),
+      squad = FactoryBot.create :squad, team: team
+      get squad_url(squad),
           headers: { 'Authorization' => "Bearer #{token.token}" }
-      expect(json).to be == JSON.parse(@squad.to_json)
+      expect(json).to be == JSON.parse(squad.to_json)
     end
   end
 
@@ -69,55 +69,55 @@ RSpec.describe SquadsController, type: :request do
     end
 
     it 'returns Squad JSON' do
-      @squad = Squad.last
-      expect(json).to be == JSON.parse(@squad.to_json)
+      squad = Squad.last
+      expect(json).to be == JSON.parse(squad.to_json)
     end
   end
 
   describe 'PATCH #update' do
     it 'requires a valid token' do
-      @squad = FactoryBot.create :squad, team: team
-      patch squad_url(@squad),
+      squad = FactoryBot.create :squad, team: team
+      patch squad_url(squad),
             params: { squad: FactoryBot.attributes_for(:squad, team: team) }
       assert_response 401
     end
 
     it 'rejects requests from other Users' do
-      @squad = FactoryBot.create :squad
-      patch squad_url(@squad),
+      squad = FactoryBot.create :squad
+      patch squad_url(squad),
             headers: { 'Authorization' => "Bearer #{token.token}" },
             params: { squad: FactoryBot.attributes_for(:squad, team: team) }
       assert_response 403
     end
 
     it 'returns updated Squad JSON' do
-      @squad = FactoryBot.create :squad, team: team
-      patch squad_url(@squad),
+      squad = FactoryBot.create :squad, team: team
+      patch squad_url(squad),
             headers: { 'Authorization' => "Bearer #{token.token}" },
             params: { squad: FactoryBot.attributes_for(:squad, team: team) }
-      expect(json).to be == JSON.parse(@squad.reload.to_json)
+      expect(json).to be == JSON.parse(squad.reload.to_json)
     end
   end
 
   describe 'DELETE #destroy' do
     it 'requires a valid token' do
-      @squad = FactoryBot.create :squad, team: team
-      delete squad_url(@squad)
+      squad = FactoryBot.create :squad, team: team
+      delete squad_url(squad)
       assert_response 401
     end
 
     it 'rejects requests from other Users' do
-      @squad = FactoryBot.create :squad
-      delete squad_url(@squad),
+      squad = FactoryBot.create :squad
+      delete squad_url(squad),
              headers: { 'Authorization' => "Bearer #{token.token}" }
       assert_response 403
     end
 
     it 'removes the Squad' do
-      @squad = FactoryBot.create :squad, team: team
-      delete squad_url(@squad),
+      squad = FactoryBot.create :squad, team: team
+      delete squad_url(squad),
              headers: { 'Authorization' => "Bearer #{token.token}" }
-      expect { @squad.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      expect { squad.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
 end

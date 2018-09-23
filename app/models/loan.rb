@@ -60,6 +60,7 @@ class Loan < ApplicationRecord
 
   def returned=(val)
     return unless player_id && val
+
     self.end_date = team.current_date
   end
 
