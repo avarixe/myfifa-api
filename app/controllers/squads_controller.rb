@@ -22,7 +22,8 @@ class SquadsController < APIController
   end
 
   def destroy
-    render json: @squad.destroy
+    @squad.destroy
+    render json: @squad
   end
 
   private

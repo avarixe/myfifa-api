@@ -46,6 +46,8 @@ class Booking < ApplicationRecord
     self.player_name = player.name if player_id.present?
   end
 
+  delegate :team, to: :match
+
   def event_type
     'Booking'
   end

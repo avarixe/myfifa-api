@@ -23,7 +23,8 @@ class GoalsController < APIController
   end
 
   def destroy
-    render json: @goal.destroy
+    @goal.destroy
+    render json: @goal
   end
 
   private

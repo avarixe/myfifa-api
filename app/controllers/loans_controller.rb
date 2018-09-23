@@ -22,7 +22,8 @@ class LoansController < APIController
   end
 
   def destroy
-    render json: @loan.destroy
+    @loan.destroy
+    render json: @loan
   end
 
   private

@@ -72,6 +72,8 @@ class Substitution < ApplicationRecord
       .update(stop: 90, subbed_out: false)
   end
 
+  delegate :team, to: :match
+
   def home
     match.team_home?
   end

@@ -133,7 +133,7 @@ class Performance < ApplicationRecord
     Substitution.where(match_id: match_id, replacement_id: player_id)
   end
 
-  delegate :name, to: :player
+  delegate :team, :name, to: :player
 
   def as_json(options = {})
     options[:methods] ||= []

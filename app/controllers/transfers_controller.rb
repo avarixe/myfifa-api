@@ -22,7 +22,8 @@ class TransfersController < APIController
   end
 
   def destroy
-    render json: @transfer.destroy
+    @transfer.destroy
+    render json: @transfer
   end
 
   private

@@ -23,7 +23,8 @@ class PerformancesController < APIController
   end
 
   def destroy
-    render json: @performance.destroy
+    @performance.destroy
+    render json: @performance
   end
 
   private

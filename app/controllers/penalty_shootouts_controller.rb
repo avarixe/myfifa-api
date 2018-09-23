@@ -19,7 +19,8 @@ class PenaltyShootoutsController < APIController
   end
 
   def destroy
-    render json: @penalty_shootout.destroy
+    @penalty_shootout.destroy
+    render json: @penalty_shootout
   end
 
   private

@@ -22,7 +22,8 @@ class InjuriesController < APIController
   end
 
   def destroy
-    render json: @injury.destroy
+    @injury.destroy
+    render json: @injury
   end
 
   private

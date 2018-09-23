@@ -22,7 +22,8 @@ class SubstitutionsController < APIController
   end
 
   def destroy
-    render json: @substitution.destroy
+    @substitution.destroy
+    render json: @substitution
   end
 
   private

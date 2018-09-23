@@ -22,7 +22,8 @@ class ContractsController < APIController
   end
 
   def destroy
-    render json: @contract.destroy
+    @contract.destroy
+    render json: @contract
   end
 
   private

@@ -23,7 +23,8 @@ class BookingsController < APIController
   end
 
   def destroy
-    render json: @booking.destroy
+    @booking.destroy
+    render json: @booking
   end
 
   private
