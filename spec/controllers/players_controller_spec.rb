@@ -50,7 +50,7 @@ RSpec.describe PlayersController, type: :request do
       get player_url(player),
           headers: { 'Authorization' => "Bearer #{token.token}" }
       assert_response :success
-      expect(json).to be == JSON.parse(player.to_json(include: :player_histories))
+      expect(json).to be == JSON.parse(player.to_json)
     end
   end
 
@@ -152,6 +152,21 @@ RSpec.describe PlayersController, type: :request do
     it 'returns Team Players JSON' do
       team.players.reload
       expect(json).to be == JSON.parse(team.players.to_json)
+    end
+  end
+
+  describe 'GET #history' do
+    let(:player) { FactoryBot.create(:player, team: team) }
+
+    it 'requires a valid token' do
+      get history_player_url(player)
+      assert_response 401
+    end
+
+    it 'returns history JSON' do
+      get history_player_url(player),
+          headers: { 'Authorization' => "Bearer #{token.token}" }
+      expect(json).to be == JSON.parse(player.player_histories.to_json)
     end
   end
 

@@ -20,6 +20,7 @@ Rails.application.routes.draw do
           patch :update_multiple
         end
         member do
+          get 'history'
           get 'current_loan'
           get 'current_injury'
         end

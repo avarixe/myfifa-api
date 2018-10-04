@@ -11,7 +11,7 @@ class PlayersController < APIController
   end
 
   def show
-    render json: @player.as_json(include: :player_histories)
+    render json: @player
   end
 
   def create
@@ -31,6 +31,10 @@ class PlayersController < APIController
   def update_multiple
     Player.update(params[:players].keys, params[:players].values)
     render json: @team.players.preload(:contracts, :injuries, :loans)
+  end
+
+  def history
+    render json: @player.player_histories
   end
 
   def current_loan
