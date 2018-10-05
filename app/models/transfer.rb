@@ -32,6 +32,7 @@ class Transfer < ApplicationRecord
     destination
     fee
     traded_player
+    addon_clause
     loan
   ].freeze
 
