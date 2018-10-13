@@ -31,9 +31,16 @@ class Squad < ApplicationRecord
   end
 
   validates :name, presence: true
+  validate :unique_positions?
   validate :eleven_players?
   validate :unique_players?
   validate :valid_players?
+
+  def unique_positions?
+    return if positions_list.uniq.length == 11
+
+    errors.add :positions_list, 'must have eleven unique Positions.'
+  end
 
   def eleven_players?
     return if players_list.length == 11 &&

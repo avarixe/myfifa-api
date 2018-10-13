@@ -49,6 +49,8 @@ class Performance < ApplicationRecord
     RW
     CF
     ST
+    LS
+    RS
   ].freeze
 
   PERMITTED_ATTRIBUTES = %i[
@@ -76,7 +78,9 @@ class Performance < ApplicationRecord
             numericality: { greater_than: :start },
             if: :start
   validates :player_id, uniqueness: { scope: :match_id }
-  validates :pos, inclusion: { in: POSITIONS }
+  validates :pos,
+            inclusion: { in: POSITIONS },
+            uniqueness: { scope: %i[match_id start] }
   validates :rating, inclusion: 1..5, allow_nil: true
   validate :one_team?
   validate :active_player?, if: :player_id
