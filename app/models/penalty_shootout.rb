@@ -49,5 +49,5 @@ class PenaltyShootout < ApplicationRecord
     home_score > away_score ? home : away
   end
 
-  delegate :home, :away, to: :match
+  delegate :team, :home, :away, to: :match
 end
