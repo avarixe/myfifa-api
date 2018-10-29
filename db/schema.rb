@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_09_22_165803) do
+ActiveRecord::Schema.define(version: 2018_10_29_022325) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,17 @@ ActiveRecord::Schema.define(version: 2018_09_22_165803) do
     t.index ["player_id"], name: "index_bookings_on_player_id"
   end
 
+  create_table "competitions", force: :cascade do |t|
+    t.bigint "team_id"
+    t.integer "season"
+    t.string "name"
+    t.string "champion"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["season"], name: "index_competitions_on_season"
+    t.index ["team_id"], name: "index_competitions_on_team_id"
+  end
+
   create_table "contracts", force: :cascade do |t|
     t.bigint "player_id"
     t.date "signed_date"
@@ -41,6 +52,17 @@ ActiveRecord::Schema.define(version: 2018_09_22_165803) do
     t.date "end_date"
     t.date "effective_date"
     t.index ["player_id"], name: "index_contracts_on_player_id"
+  end
+
+  create_table "fixtures", force: :cascade do |t|
+    t.bigint "stage_id"
+    t.string "home_team"
+    t.string "away_team"
+    t.string "home_score"
+    t.string "away_score"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["stage_id"], name: "index_fixtures_on_stage_id"
   end
 
   create_table "goals", force: :cascade do |t|
@@ -196,6 +218,16 @@ ActiveRecord::Schema.define(version: 2018_09_22_165803) do
     t.index ["team_id"], name: "index_squads_on_team_id"
   end
 
+  create_table "stages", force: :cascade do |t|
+    t.bigint "competition_id"
+    t.string "name"
+    t.string "num_fixtures"
+    t.boolean "table", default: false
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["competition_id"], name: "index_stages_on_competition_id"
+  end
+
   create_table "substitutions", force: :cascade do |t|
     t.bigint "match_id"
     t.integer "minute"
@@ -209,6 +241,19 @@ ActiveRecord::Schema.define(version: 2018_09_22_165803) do
     t.index ["match_id"], name: "index_substitutions_on_match_id"
     t.index ["player_id"], name: "index_substitutions_on_player_id"
     t.index ["replacement_id"], name: "index_substitutions_on_replacement_id"
+  end
+
+  create_table "table_rows", force: :cascade do |t|
+    t.bigint "stage_id"
+    t.string "name"
+    t.integer "wins"
+    t.integer "draws"
+    t.integer "losses"
+    t.integer "goals_for"
+    t.integer "goals_against"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["stage_id"], name: "index_table_rows_on_stage_id"
   end
 
   create_table "teams", force: :cascade do |t|
