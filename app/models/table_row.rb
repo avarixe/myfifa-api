@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: table_rows
@@ -20,4 +22,17 @@
 
 class TableRow < ApplicationRecord
   belongs_to :stage
+
+  PERMITTED_ATTRIBUTES = %i[
+    name
+    wins
+    draws
+    losses
+    goals_for
+    goals_against
+  ].freeze
+
+  def self.permitted_attributes
+    PERMITTED_ATTRIBUTES
+  end
 end

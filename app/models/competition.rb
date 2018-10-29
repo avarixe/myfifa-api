@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: competitions
@@ -18,5 +20,15 @@
 
 class Competition < ApplicationRecord
   belongs_to :team
-  has_many :stages
+  has_many :stages, dependent: :destroy
+
+  PERMITTED_ATTRIBUTES = %i[
+    season
+    name
+    champion
+  ].freeze
+
+  def self.permitted_attributes
+    PERMITTED_ATTRIBUTES
+  end
 end

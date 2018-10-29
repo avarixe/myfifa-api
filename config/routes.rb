@@ -41,6 +41,13 @@ Rails.application.routes.draw do
         resources :penalty_shootouts
       end
 
+      resources :competitions do
+        resources :stages do
+          resources :table_rows
+          resources :fixtures
+        end
+      end
+
       post 'statistics', to: 'statistics#index'
     end
   end

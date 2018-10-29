@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: stages
@@ -17,6 +19,16 @@
 
 class Stage < ApplicationRecord
   belongs_to :competition
-  has_many :table_rows
-  has_many :fixtures
+  has_many :table_rows, dependent: :destroy
+  has_many :fixtures, dependent: :destroy
+
+  PERMITTED_ATTRIBUTES = %i[
+    name
+    num_fixtures
+    table
+  ].freeze
+
+  def self.permitted_attributes
+    PERMITTED_ATTRIBUTES
+  end
 end
