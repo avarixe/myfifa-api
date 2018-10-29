@@ -3,7 +3,6 @@
 class PlayersController < APIController
   load_and_authorize_resource :team
   load_and_authorize_resource through: :team, shallow: true
-  skip_load_and_authorize_resource only: :update_multiple
 
   def index
     @players = @players.preload(:contracts)
@@ -26,11 +25,6 @@ class PlayersController < APIController
   def destroy
     @player.destroy
     render json: @player
-  end
-
-  def update_multiple
-    Player.update(params[:players].keys, params[:players].values)
-    render json: @team.players.preload(:contracts, :injuries, :loans)
   end
 
   def history
