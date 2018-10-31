@@ -221,7 +221,8 @@ ActiveRecord::Schema.define(version: 2018_10_29_022325) do
   create_table "stages", force: :cascade do |t|
     t.bigint "competition_id"
     t.string "name"
-    t.string "num_fixtures"
+    t.integer "num_teams"
+    t.integer "num_fixtures"
     t.boolean "table", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -246,11 +247,11 @@ ActiveRecord::Schema.define(version: 2018_10_29_022325) do
   create_table "table_rows", force: :cascade do |t|
     t.bigint "stage_id"
     t.string "name"
-    t.integer "wins"
-    t.integer "draws"
-    t.integer "losses"
-    t.integer "goals_for"
-    t.integer "goals_against"
+    t.integer "wins", default: 0
+    t.integer "draws", default: 0
+    t.integer "losses", default: 0
+    t.integer "goals_for", default: 0
+    t.integer "goals_against", default: 0
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["stage_id"], name: "index_table_rows_on_stage_id"

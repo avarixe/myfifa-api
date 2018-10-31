@@ -127,34 +127,6 @@ RSpec.describe PlayersController, type: :request do
     end
   end
 
-  describe 'PATCH #update_multiple' do
-    before do |test|
-      FactoryBot.create_list(:player, 10, team: team)
-      players = {}
-      team.players.each do |player|
-        players[player.id] = {
-          ovr: Faker::Number.between(50, 90),
-          value: Faker::Number.between(50_000, 200_000_000)
-        }
-      end
-      unless test.metadata[:skip_request]
-        patch update_multiple_team_players_url(team),
-              headers: { 'Authorization' => "Bearer #{token.token}" },
-              params: { players: players }
-      end
-    end
-
-    it 'requires a valid token', skip_request: true do
-      patch update_multiple_team_players_url(team)
-      assert_response 401
-    end
-
-    it 'returns Team Players JSON' do
-      team.players.reload
-      expect(json).to be == JSON.parse(team.players.to_json)
-    end
-  end
-
   describe 'GET #history' do
     let(:player) { FactoryBot.create(:player, team: team) }
 

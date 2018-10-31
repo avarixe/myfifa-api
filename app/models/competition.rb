@@ -31,4 +31,7 @@ class Competition < ApplicationRecord
   def self.permitted_attributes
     PERMITTED_ATTRIBUTES
   end
+
+  validates :season, presence: true
+  validates :name, presence: true
 end

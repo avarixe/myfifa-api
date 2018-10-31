@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class CompetitionsController < APIController
-  before_action :set_competition
   load_and_authorize_resource :team
   load_and_authorize_resource through: :team, shallow: true
 
@@ -28,10 +27,6 @@ class CompetitionsController < APIController
   end
 
   private
-
-    def set_competition
-      @competition = Competition.find(params[:id])
-    end
 
     def competition_params
       params.require(:competition).permit Competition.permitted_attributes

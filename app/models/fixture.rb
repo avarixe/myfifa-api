@@ -31,4 +31,12 @@ class Fixture < ApplicationRecord
   def self.permitted_attributes
     PERMITTED_ATTRIBUTES
   end
+
+  delegate :team, :competition_id, to: :stage
+
+  def as_json(options = {})
+    options[:methods] ||= []
+    options[:methods] += %i[competition_id]
+    super
+  end
 end

@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-class StagesController < ApplicationController
-  before_action :set_stage
+class StagesController < APIController
   load_and_authorize_resource :competition
   load_and_authorize_resource through: :competition, shallow: true
 
   def index
+    @stages = @stages.includes(:table_rows, :fixtures)
     render json: @stages
   end
 
@@ -28,10 +28,6 @@ class StagesController < ApplicationController
   end
 
   private
-
-    def set_stage
-      @stage = stage.find(params[:id])
-    end
 
     def stage_params
       params.require(:stage).permit Stage.permitted_attributes

@@ -5,11 +5,11 @@
 #  id            :bigint(8)        not null, primary key
 #  stage_id      :bigint(8)
 #  name          :string
-#  wins          :integer
-#  draws         :integer
-#  losses        :integer
-#  goals_for     :integer
-#  goals_against :integer
+#  wins          :integer          default(0)
+#  draws         :integer          default(0)
+#  losses        :integer          default(0)
+#  goals_for     :integer          default(0)
+#  goals_against :integer          default(0)
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #

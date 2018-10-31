@@ -4,7 +4,9 @@ class CreateStages < ActiveRecord::Migration[5.2]
       t.belongs_to :competition
 
       t.string :name
-      t.string :num_fixtures
+
+      t.integer :num_teams
+      t.integer :num_fixtures
 
       t.boolean :table, default: false
 

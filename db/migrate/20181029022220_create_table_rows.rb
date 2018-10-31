@@ -4,11 +4,11 @@ class CreateTableRows < ActiveRecord::Migration[5.2]
       t.belongs_to :stage
 
       t.string :name
-      t.integer :wins
-      t.integer :draws
-      t.integer :losses
-      t.integer :goals_for
-      t.integer :goals_against
+      t.integer :wins, default: 0
+      t.integer :draws, default: 0
+      t.integer :losses, default: 0
+      t.integer :goals_for, default: 0
+      t.integer :goals_against, default: 0
 
       t.timestamps
     end

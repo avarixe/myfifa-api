@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-class FixturesController < ApplicationController
-  before_action :set_fixture
+class FixturesController < APIController
   load_and_authorize_resource :stage
   load_and_authorize_resource through: :stage, shallow: true
 
@@ -28,10 +27,6 @@ class FixturesController < ApplicationController
   end
 
   private
-
-    def set_fixture
-      @fixture = Fixture.find(params[:id])
-    end
 
     def fixture_params
       params.require(:fixture).permit Fixture.permitted_attributes

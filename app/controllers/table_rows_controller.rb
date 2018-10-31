@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-class TableRowsController < ApplicationController
-  before_action :set_table_row
+class TableRowsController < APIController
   load_and_authorize_resource :stage
   load_and_authorize_resource through: :stage, shallow: true
 
@@ -28,10 +27,6 @@ class TableRowsController < ApplicationController
   end
 
   private
-
-    def set_table_row
-      @table_row = TableRow.find(params[:id])
-    end
 
     def table_row_params
       params.require(:table_row).permit TableRow.permitted_attributes

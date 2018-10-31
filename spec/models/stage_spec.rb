@@ -5,7 +5,8 @@
 #  id             :bigint(8)        not null, primary key
 #  competition_id :bigint(8)
 #  name           :string
-#  num_fixtures   :string
+#  num_teams      :integer
+#  num_fixtures   :integer
 #  table          :boolean          default(FALSE)
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
