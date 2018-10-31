@@ -19,6 +19,7 @@
 #
 
 class Stage < ApplicationRecord
+  default_scope { order(num_teams: :desc, id: :asc) }
   belongs_to :competition
   has_many :table_rows, dependent: :destroy
   has_many :fixtures, dependent: :destroy
@@ -36,9 +37,20 @@ class Stage < ApplicationRecord
 
   validates :name, presence: true
   validates :num_teams, numericality: { greater_than: 0 }
-  validates :num_fixtures, numericality: { greater_than: 0 }
+  validates :num_fixtures, numericality: { greater_than: 0 }, unless: :table?
 
+  after_initialize :set_default_name
   after_create :create_items
+
+  def set_default_name
+    self.name ||=
+      case num_teams
+      when 8 then 'Quarter-Finals'
+      when 4 then 'Semi-Finals'
+      when 2 then 'Final'
+      else        "Round of #{num_teams}"
+      end
+  end
 
   def create_items
     if table?
@@ -51,8 +63,8 @@ class Stage < ApplicationRecord
   delegate :team, to: :competition
 
   def as_json(options = {})
-    options[:methods] ||= []
-    options[:methods] += %i[fixtures table_rows]
+    options[:include] ||= []
+    options[:include] += %i[fixtures table_rows]
     super
   end
 end

@@ -2,7 +2,7 @@
 
 class CompetitionsController < APIController
   load_and_authorize_resource :team
-  load_and_authorize_resource through: :team, shallow: true
+  load_and_authorize_resource through: :team, shallow: true, except: [:destroy]
 
   def index
     render json: @competitions
@@ -22,6 +22,10 @@ class CompetitionsController < APIController
   end
 
   def destroy
+    @competition = Competition
+                   .includes(stages: %i[fixtures table_rows])
+                   .find(params[:id])
+    authorize! :destroy, @competition
     @competition.destroy
     render json: @competition
   end
