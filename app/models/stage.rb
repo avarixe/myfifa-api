@@ -64,7 +64,10 @@ class Stage < ApplicationRecord
 
   def as_json(options = {})
     options[:include] ||= []
-    options[:include] += %i[fixtures table_rows]
+    options[:include] += [
+      :fixtures,
+      table_rows: { methods: %i[goal_difference points] }
+    ]
     super
   end
 end
