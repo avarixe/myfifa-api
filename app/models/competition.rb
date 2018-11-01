@@ -153,7 +153,12 @@ class Competition < ApplicationRecord
   end
 
   def num_knockout_teams
-    @num_knockout_teams ||= num_advances_from_group ? num_advances : num_teams
+    @num_knockout_teams ||=
+      if num_advances_from_group.zero?
+        num_teams
+      else
+        num_advances
+      end
   end
 
   def num_rounds
