@@ -24,6 +24,7 @@ class Team < ApplicationRecord
   has_many :players, dependent: :destroy
   has_many :squads, dependent: :destroy
   has_many :matches, dependent: :destroy
+  has_many :competitions, dependent: :destroy
 
   PERMITTED_ATTRIBUTES = %i[
     start_date

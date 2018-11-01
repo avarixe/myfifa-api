@@ -16,9 +16,6 @@ Rails.application.routes.draw do
 
     resources :teams, shallow: true do
       resources :players do
-        collection do
-          patch :update_multiple
-        end
         member do
           get 'history'
           get 'current_loan'
@@ -42,6 +39,13 @@ Rails.application.routes.draw do
         resources :substitutions
         resources :bookings
         resources :penalty_shootouts
+      end
+
+      resources :competitions do
+        resources :stages do
+          resources :table_rows
+          resources :fixtures
+        end
       end
 
       post 'statistics', to: 'statistics#index'
