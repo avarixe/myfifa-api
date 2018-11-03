@@ -94,14 +94,19 @@ class Contract < ApplicationRecord
 
   delegate :update_status, to: :player
 
+  def terminate!
+    update(end_date: current_date)
+  end
+
+  def retire!
+    update(end_date: team.end_of_season)
+  end
+
   ###############
   #  ACCESSORS  #
   ###############
 
-  delegate :team, to: :player
-  delegate :current_date, to: :player
-  delegate :youth?, to: :player
-  delegate :loaned?, to: :player
+  delegate :team, :current_date, :youth?, :loaned?, to: :player
 
   def current?
     pending? || active?

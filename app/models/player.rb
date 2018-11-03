@@ -109,9 +109,14 @@ class Player < ApplicationRecord
   #  CALLBACK  #
   ##############
 
+  before_save :set_kit_no, if: :status_changed?
   after_create :save_history
   after_update :update_history
   after_update :end_pending_injuries, unless: :injured?
+
+  def set_kit_no
+    self.kit_no = nil if status.blank? || loaned?
+  end
 
   def save_history
     player_histories.create ovr: ovr,
@@ -137,14 +142,11 @@ class Player < ApplicationRecord
 
   def update_status
     update status:
-      if current_contract.nil?
-        nil
-      elsif current_loan
-        'Loaned'
-      elsif current_injury
-        'Injured'
-      else
-        current_contract.pending? ? 'Pending' : 'Active'
+      if current_contract.nil?        then nil
+      elsif current_loan              then 'Loaned'
+      elsif current_injury            then 'Injured'
+      elsif current_contract.pending? then 'Pending'
+      else 'Active'
       end
   end
 

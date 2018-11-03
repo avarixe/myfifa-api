@@ -17,6 +17,8 @@ Rails.application.routes.draw do
     resources :teams, shallow: true do
       resources :players do
         member do
+          post 'release'
+          post 'retire'
           get 'history'
           get 'current_loan'
           get 'current_injury'

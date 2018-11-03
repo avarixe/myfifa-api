@@ -108,12 +108,9 @@ class Match < ApplicationRecord
     team_score = team_home? ? home_score : away_score
     other_score = team_home? ? away_score : home_score
 
-    if team_score > other_score
-      'win'
-    elsif team_score == other_score
-      'draw'
-    else
-      'loss'
+    if team_score > other_score     then 'win'
+    elsif team_score == other_score then 'draw'
+    else 'loss'
     end
   end
 
@@ -127,12 +124,9 @@ class Match < ApplicationRecord
   end
 
   def winner
-    if home_score > away_score
-      home
-    elsif home_score < away_score
-      away
-    elsif penalty_shootout.present?
-      penalty_shootout.winner
+    if home_score > away_score    then home
+    elsif home_score < away_score then away
+    elsif penalty_shootout        then penalty_shootout.winner
     end
   end
 
