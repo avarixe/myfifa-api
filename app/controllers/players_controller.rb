@@ -27,6 +27,16 @@ class PlayersController < APIController
     render json: @player
   end
 
+  def release
+    @player.current_contract&.terminate!
+    render json: @player
+  end
+
+  def retire
+    @player.current_contract&.retire!
+    render json: @player
+  end
+
   def history
     render json: @player.player_histories
   end

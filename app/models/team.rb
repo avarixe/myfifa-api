@@ -75,6 +75,14 @@ class Team < ApplicationRecord
     "#{start_date.year} - #{current_date.year}"
   end
 
+  def current_season
+    ((current_date - start_date) / 365).to_i
+  end
+
+  def end_of_season
+    start_date + (current_season + 1).years
+  end
+
   def seasons
     date = start_date
     {}.tap do |seasons|
