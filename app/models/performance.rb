@@ -27,30 +27,30 @@ class Performance < ApplicationRecord
 
   POSITIONS = %w[
     GK
-    CB
     LB
     LWB
     LCB
+    CB
     RCB
     RB
     RWB
-    LDM
-    CDM
-    RDM
     LM
+    LDM
     LCM
+    CDM
     CM
+    RDM
     RCM
     RM
     LAM
     CAM
     RAM
     LW
-    RW
     CF
-    ST
     LS
+    ST
     RS
+    RW
   ].freeze
 
   PERMITTED_ATTRIBUTES = %i[

@@ -52,20 +52,20 @@ class Player < ApplicationRecord
 
   POSITIONS = %w[
     GK
+    RB
+    RWB
     CB
     LB
     LWB
-    RB
-    RWB
+    RM
     CDM
     CM
-    LM
-    RM
-    LW
-    RW
     CAM
+    LM
+    RW
     CF
     ST
+    LW
   ].freeze
 
   PERMITTED_ATTRIBUTES = %i[
