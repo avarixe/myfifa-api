@@ -9,14 +9,11 @@ module Analyze
     before_action :set_match_ids
 
     def index
-      render json: {
-        player_ids:  @player_ids,
-        num_games:   num_games,
-        num_goals:   num_goals,
-        num_assists: num_assists,
-        num_cs:      num_cs,
-        num_minutes: num_minutes
-      }
+      stats = [
+        player_stats,
+        match_stats
+      ]
+      render json: stats.reduce(&:merge)
     end
 
     private
@@ -36,10 +33,30 @@ module Analyze
       end
 
       def set_match_ids
-        @match_ids = Match
+        @match_ids = @team
+                     .matches
                      .where(date_played: @season[:start]..@season[:end])
                      .pluck(:id)
                      .map(&:to_s)
+      end
+
+      def player_stats
+        {
+          player_ids:  @player_ids,
+          records:     season_players,
+          num_games:   num_games,
+          num_subs:    num_subs,
+          num_goals:   num_goals,
+          num_assists: num_assists,
+          num_cs:      num_cs,
+          num_minutes: num_minutes
+        }
+      end
+
+      def match_stats
+        {
+          results: match_results
+        }
       end
   end
 end
