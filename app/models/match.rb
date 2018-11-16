@@ -102,11 +102,16 @@ class Match < ApplicationRecord
     team.title == home
   end
 
+  def team_score
+    team_home? ? home_score : away_score
+  end
+
+  def other_score
+    team_home? ? away_score : home_score
+  end
+
   def team_result
     return unless team_played?
-
-    team_score = team_home? ? home_score : away_score
-    other_score = team_home? ? away_score : home_score
 
     if team_score > other_score     then 'win'
     elsif team_score == other_score then 'draw'

@@ -50,7 +50,10 @@ Rails.application.routes.draw do
         end
       end
 
-      post 'statistics', to: 'statistics#index'
+      namespace :analyze do
+        post 'players', to: 'players#index'
+        post 'season/:id',  to: 'season#index'
+      end
     end
   end
 end

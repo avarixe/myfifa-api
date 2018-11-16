@@ -99,7 +99,7 @@ class Contract < ApplicationRecord
   end
 
   def retire!
-    update(end_date: team.end_of_season)
+    update(end_date: team.end_of_season + 1.day)
   end
 
   ###############

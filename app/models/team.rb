@@ -80,17 +80,15 @@ class Team < ApplicationRecord
   end
 
   def end_of_season
-    start_date + (current_season + 1).years
+    start_date + (current_season + 1).years - 1.day
   end
 
-  def seasons
-    date = start_date
-    {}.tap do |seasons|
-      while date < current_date
-        season_label = "#{date.year} - #{date.year + 1}"
-        seasons[season_label] = (date...date + 1.year)
-        date += 1.year
-      end
-    end
+  def season_data(season)
+    season_start = start_date + season.years
+    {
+      label: "#{season_start.year} - #{season_start.year + 1}",
+      start: season_start,
+      end:   season_start + 1.year - 1.day
+    }
   end
 end
