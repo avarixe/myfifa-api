@@ -1,8 +1,7 @@
 # frozen_string_literal: true
-
 # == Schema Information
 #
-# Table name: performances
+# Table name: caps
 #
 #  id         :bigint(8)        not null, primary key
 #  match_id   :bigint(8)
@@ -17,63 +16,61 @@
 #
 # Indexes
 #
-#  index_performances_on_match_id   (match_id)
-#  index_performances_on_player_id  (player_id)
+#  index_caps_on_match_id   (match_id)
+#  index_caps_on_player_id  (player_id)
 #
 
 require 'rails_helper'
 
-RSpec.describe Performance, type: :model do
+RSpec.describe Cap, type: :model do
   before do |test|
     unless test.metadata[:skip_before]
       @team = FactoryBot.create :team
       @player = FactoryBot.create :player, team: @team
       @match = FactoryBot.create :match, team: @team
-      @performance = FactoryBot.create :performance,
-                                       player: @player,
-                                       match: @match
+      @cap = FactoryBot.create :cap, player: @player, match: @match
     end
   end
 
   it 'has a valid factory', skip_before: true do
-    expect(FactoryBot.create(:performance)).to be_valid
+    expect(FactoryBot.create(:cap)).to be_valid
   end
 
   it 'requires a position', skip_before: true do
-    expect(FactoryBot.build(:performance, pos: nil)).to_not be_valid
+    expect(FactoryBot.build(:cap, pos: nil)).to_not be_valid
   end
 
   it 'requires a player', skip_before: true do
-    expect(FactoryBot.build(:performance, player_id: nil)).to_not be_valid
+    expect(FactoryBot.build(:cap, player_id: nil)).to_not be_valid
   end
 
   it 'requires a start minute', skip_before: true do
-    expect(FactoryBot.build(:performance, start: nil)).to_not be_valid
+    expect(FactoryBot.build(:cap, start: nil)).to_not be_valid
   end
 
   it 'requires a stop minute', skip_before: true do
-    expect(FactoryBot.build(:performance, stop: nil)).to_not be_valid
+    expect(FactoryBot.build(:cap, stop: nil)).to_not be_valid
   end
 
   it 'requires a valid rating if any', skip_before: true do
-    expect(FactoryBot.build(:performance, rating: 0)).to_not be_valid
-    expect(FactoryBot.build(:performance, rating: 6)).to_not be_valid
+    expect(FactoryBot.build(:cap, rating: 0)).to_not be_valid
+    expect(FactoryBot.build(:cap, rating: 6)).to_not be_valid
   end
 
   it 'can not have a stop minute before the start minute' do
-    expect(FactoryBot.build(:performance, start: 46, stop: 45)).to_not be_valid
+    expect(FactoryBot.build(:cap, start: 46, stop: 45)).to_not be_valid
   end
 
   it 'only accepts Active players' do
     @player = FactoryBot.create :player, contracts_count: 0
-    expect(FactoryBot.build(:performance, player: @player)).to_not be_valid
+    expect(FactoryBot.build(:cap, player: @player)).to_not be_valid
   end
 
   it 'must be associated with a Player and Match of the same team' do
     @other_team = FactoryBot.create :team
     @player = FactoryBot.create :player, team: @team
     @match = FactoryBot.create :match, team: @other_team
-    expect(FactoryBot.build(:performance, player: @player, match: @match)).to_not be_valid
+    expect(FactoryBot.build(:cap, player: @player, match: @match)).to_not be_valid
   end
 
   it 'removes all Match events concerning the player upon destruction' do

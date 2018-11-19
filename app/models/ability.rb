@@ -29,7 +29,7 @@ class Ability
 
     def can_manage_match(user)
       can :manage, Match,           for_team?(user)
-      can :manage, Performance,     for_match?(user)
+      can :manage, Cap,             for_match?(user)
       can :manage, Goal,            for_match?(user)
       can :manage, Booking,         for_match?(user)
       can :manage, Substitution,    for_match?(user)

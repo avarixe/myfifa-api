@@ -28,8 +28,8 @@ class Match < ApplicationRecord
   has_many :substitutions, dependent: :destroy
   has_many :bookings, dependent: :destroy
 
-  has_many :performances, dependent: :destroy
-  has_many :players, through: :performances
+  has_many :caps, dependent: :destroy
+  has_many :players, through: :caps
 
   PERMITTED_ATTRIBUTES = %i[
     home
@@ -42,7 +42,7 @@ class Match < ApplicationRecord
     PERMITTED_ATTRIBUTES
   end
 
-  scope :with_players, -> { includes(performances: :player) }
+  scope :with_players, -> { includes(caps: :player) }
 
   ################
   #  VALIDATION  #
@@ -75,19 +75,19 @@ class Match < ApplicationRecord
   ##############
 
   def apply(squad)
-    Performance.transaction do
-      # Remove existing Performances
-      performances.map(&:destroy)
+    Cap.transaction do
+      # Remove existing Caps
+      caps.map(&:destroy)
 
-      # Add new Performances from Squad player list
+      # Add new Caps from Squad player list
       squad.players_list.each_with_index do |player_id, i|
-        performances.create player_id: player_id,
-                            pos: squad.positions_list[i]
+        caps.create player_id: player_id,
+                    pos: squad.positions_list[i]
       end
     end
 
-    # Reload association to include new Performances
-    performances.reload
+    # Reload association to include new Caps
+    caps.reload
   end
 
   ###############
@@ -150,6 +150,6 @@ class Match < ApplicationRecord
   end
 
   def full_json
-    as_json methods: %i[events performances]
+    as_json methods: %i[events caps]
   end
 end

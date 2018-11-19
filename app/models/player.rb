@@ -32,8 +32,8 @@ class Player < ApplicationRecord
   has_many :contracts, dependent: :destroy
   has_many :transfers, dependent: :destroy
 
-  has_many :performances, dependent: :destroy
-  has_many :matches, through: :performances
+  has_many :caps, dependent: :destroy
+  has_many :matches, through: :caps
 
   has_many :goals, dependent: :destroy
   has_many :assists,

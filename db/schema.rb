@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_10_29_022325) do
+ActiveRecord::Schema.define(version: 2018_11_19_055327) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -27,6 +27,20 @@ ActiveRecord::Schema.define(version: 2018_10_29_022325) do
     t.index ["player_id"], name: "index_bookings_on_player_id"
   end
 
+  create_table "caps", force: :cascade do |t|
+    t.bigint "match_id"
+    t.bigint "player_id"
+    t.string "pos"
+    t.integer "start"
+    t.integer "stop"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.boolean "subbed_out", default: false
+    t.integer "rating"
+    t.index ["match_id"], name: "index_caps_on_match_id"
+    t.index ["player_id"], name: "index_caps_on_player_id"
+  end
+
   create_table "competitions", force: :cascade do |t|
     t.bigint "team_id"
     t.integer "season"
@@ -36,6 +50,22 @@ ActiveRecord::Schema.define(version: 2018_10_29_022325) do
     t.datetime "updated_at", null: false
     t.index ["season"], name: "index_competitions_on_season"
     t.index ["team_id"], name: "index_competitions_on_team_id"
+  end
+
+  create_table "contract_histories", force: :cascade do |t|
+    t.bigint "contract_id"
+    t.date "datestamp"
+    t.integer "wage"
+    t.integer "signing_bonus"
+    t.integer "release_clause"
+    t.integer "performance_bonus"
+    t.integer "bonus_req"
+    t.string "bonus_req_type"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.date "end_date"
+    t.date "effective_date"
+    t.index ["contract_id"], name: "index_contract_histories_on_contract_id"
   end
 
   create_table "contracts", force: :cascade do |t|
@@ -164,20 +194,6 @@ ActiveRecord::Schema.define(version: 2018_10_29_022325) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["match_id"], name: "index_penalty_shootouts_on_match_id"
-  end
-
-  create_table "performances", force: :cascade do |t|
-    t.bigint "match_id"
-    t.bigint "player_id"
-    t.string "pos"
-    t.integer "start"
-    t.integer "stop"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.boolean "subbed_out", default: false
-    t.integer "rating"
-    t.index ["match_id"], name: "index_performances_on_match_id"
-    t.index ["player_id"], name: "index_performances_on_player_id"
   end
 
   create_table "player_histories", force: :cascade do |t|
