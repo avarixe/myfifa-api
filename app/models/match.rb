@@ -63,11 +63,18 @@ class Match < ApplicationRecord
   ##############
 
   before_validation :set_defaults
+  after_save :set_cap_stop_times, if: :extra_time_changed?
 
   def set_defaults
     self.date_played ||= team.current_date
     self.home_score ||= 0
     self.away_score ||= 0
+  end
+
+  def set_cap_stop_times
+    caps
+      .where(subbed_out: false)
+      .update_all(extra_time? ? 120 : 90)
   end
 
   ##############
