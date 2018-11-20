@@ -96,7 +96,7 @@ RSpec.describe MatchesController, type: :request do
       patch match_url(game),
             headers: { 'Authorization' => "Bearer #{token.token}" },
             params: { match: FactoryBot.attributes_for(:match) }
-      expect(json).to be == JSON.parse(game.reload.to_json(methods: %i[events caps]))
+      expect(json).to be == JSON.parse(game.reload.to_json)
     end
   end
 
@@ -181,7 +181,7 @@ RSpec.describe MatchesController, type: :request do
       post apply_squad_match_url(game),
            headers: { 'Authorization' => "Bearer #{token.token}" },
            params: { squad_id: squad.id }
-      expect(json).to be == JSON.parse(game.caps.to_json)
+      expect(json).to be == JSON.parse(game.reload.to_json)
     end
   end
 end

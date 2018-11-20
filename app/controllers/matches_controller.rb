@@ -20,7 +20,7 @@ class MatchesController < APIController
 
   def update
     @match.attributes = match_params
-    save_record @match, json: @match.full_json
+    save_record @match, json: @match
   end
 
   def destroy
@@ -35,7 +35,7 @@ class MatchesController < APIController
   def apply_squad
     @squad = Squad.find(params[:squad_id])
     @match.apply(@squad)
-    render json: @match.caps
+    render json: @match
   end
 
   private

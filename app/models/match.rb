@@ -63,7 +63,7 @@ class Match < ApplicationRecord
   ##############
 
   before_validation :set_defaults
-  after_save :set_cap_stop_times, if: :extra_time_changed?
+  after_save :set_cap_stop_times, if: :saved_change_to_extra_time?
 
   def set_defaults
     self.date_played ||= team.current_date
@@ -74,7 +74,7 @@ class Match < ApplicationRecord
   def set_cap_stop_times
     caps
       .where(subbed_out: false)
-      .update_all(extra_time? ? 120 : 90)
+      .update_all(stop: extra_time? ? 120 : 90)
   end
 
   ##############
