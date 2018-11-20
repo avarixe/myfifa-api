@@ -31,10 +31,7 @@ RSpec.describe Substitution, type: :model do
       @match = FactoryBot.create :match, team: @team
       @player = FactoryBot.create :player, team: @team
       @replacement = FactoryBot.create :player, team: @team
-      FactoryBot.create :performance,
-                        start: 0,
-                        match: @match,
-                        player: @player
+      FactoryBot.create :cap, start: 0, match: @match, player: @player
       @sub = FactoryBot.create :substitution,
                                player: @player,
                                replacement: @replacement,
@@ -71,22 +68,22 @@ RSpec.describe Substitution, type: :model do
   end
 
   it 'creates a Performance record upon creation' do
-    expect(@replacement.performances.count).to be == 1
-    expect(@match.performances.count).to be == 2
+    expect(@replacement.caps.count).to be == 1
+    expect(@match.caps.count).to be == 2
   end
 
   it 'marks replaced Performance record as subbed_out' do
-    expect(@player.performances.last.subbed_out).to be true
+    expect(@player.caps.last.subbed_out).to be true
   end
 
   it 'removes the Performance record upon destruction' do
     @sub.destroy
-    expect(@replacement.performances.count).to be == 0
-    expect(@match.performances.count).to be == 1
+    expect(@replacement.caps.count).to be == 0
+    expect(@match.caps.count).to be == 1
   end
 
   it 'marks replaced Performance record as not subbed_out upon destruction' do
     @sub.destroy
-    expect(@player.performances.last.subbed_out).to be false
+    expect(@player.caps.last.subbed_out).to be false
   end
 end

@@ -6,7 +6,7 @@ module Analyzer
   private
 
     def num_games
-      Performance
+      Cap
         .where(match_id: @match_ids, player_id: @player_ids)
         .unscope(:order)
         .group(:player_id)
@@ -42,18 +42,18 @@ module Analyzer
     end
 
     def num_cs
-      Performance
+      Cap
         .clean_sheets(@team)
         .where(match_id: @match_ids, player_id: @player_ids)
         .unscope(:order)
         .group(:player_id)
-        .pluck(Arel.sql('player_id, COUNT(performances.id)'))
+        .pluck(Arel.sql('player_id, COUNT(caps.id)'))
         .to_h
     end
 
     def num_minutes
-      num_minutes_query = 'SUM(performances.stop - performances.start)'
-      Performance
+      num_minutes_query = 'SUM(caps.stop - caps.start)'
+      Cap
         .where(match_id: @match_ids, player_id: @player_ids)
         .unscope(:order)
         .group(:player_id)

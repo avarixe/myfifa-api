@@ -2,9 +2,11 @@
 
 module Users
   class RegistrationsController < Devise::RegistrationsController
+    include CanCan::ControllerAdditions
+    include Authentication
+
+    clear_respond_to
     respond_to :json
-    respond_to :html, only: []
-    respond_to :xml, only: []
 
     before_action :not_allowed, only: %i[new edit cancel]
 
@@ -26,12 +28,21 @@ module Users
         raise MethodNotAllowed
       end
 
+      def update_resource(resource, params)
+        if params.include?(:password)
+          super
+        else
+          resource.update_without_password(params)
+        end
+      end
+
       def sign_up_params
         params.require(:user).permit %i[
           email
           password
           password_confirmation
           full_name
+          username
         ]
       end
 
@@ -39,6 +50,7 @@ module Users
         params.require(:user).permit %i[
           email
           full_name
+          username
         ]
       end
   end

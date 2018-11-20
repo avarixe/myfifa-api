@@ -42,7 +42,7 @@ RSpec.describe Squad, type: :model do
       Faker::Number.between(0, 10),
       Faker::Number.between(12, 20)
     ].each do |i|
-      squad = FactoryBot.build(:squad, positions_list: (1..i).map { |j| Performance::POSITIONS.sample })
+      squad = FactoryBot.build(:squad, positions_list: (1..i).map { |j| Cap::POSITIONS.sample })
       expect(squad).to_not be_valid
     end
   end

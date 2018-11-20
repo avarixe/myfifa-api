@@ -41,12 +41,8 @@ RSpec.describe PenaltyShootout, type: :model do
   it 'can only be created for drawn ties' do
     @match = FactoryBot.create :match
     @player = FactoryBot.create :player, team: @match.team
-    FactoryBot.create :performance,
-                      match: @match,
-                      player: @player
-    FactoryBot.create :goal,
-                      match: @match,
-                      player: @player
+    FactoryBot.create :cap, match: @match, player: @player
+    FactoryBot.create :goal, match: @match, player: @player
     expect(FactoryBot.build(:penalty_shootout, match: @match)).to_not be_valid
   end
 end

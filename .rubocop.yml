@@ -25,6 +25,8 @@ Style/RescueStandardError:
   Enabled: false
 Rails/FindEach:
   Enabled: false
+Rails/SkipsModelValidations:
+  Enabled: false
 # Metrics/AbcSize:
 #   Enabled: false
 Metrics/ClassLength:

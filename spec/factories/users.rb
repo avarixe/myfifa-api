@@ -1,5 +1,4 @@
 # frozen_string_literal: true
-
 # == Schema Information
 #
 # Table name: users
@@ -19,6 +18,7 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  admin                  :boolean          default(FALSE)
+#  username               :string
 #
 # Indexes
 #
@@ -29,6 +29,7 @@
 FactoryBot.define do
   factory :user do
     full_name { Faker::Name.name }
+    username { Faker::Internet.unique.username(6..20) }
     email { Faker::Internet.unique.email }
     password { Faker::Internet.password }
   end

@@ -2,6 +2,7 @@
 
 class APIController < ApplicationController
   include CanCan::ControllerAdditions
+  include Authentication
 
   clear_respond_to
   respond_to :json
@@ -19,29 +20,13 @@ class APIController < ApplicationController
 
   private
 
-    def authenticate_user!
-      user = User.find_by(id: doorkeeper_token&.resource_owner_id)
-      Thread.current[:current_user] = user
-
-      return if current_user
-
-      render json: { errors: ['User is not authenticated!'] },
-             status: :unauthorized
-    end
-
-    def current_user
-      Thread.current[:current_user]
-    end
-
     def errors_json(messages)
       { errors: [*messages] }
     end
 
     def render_server_error
       render json: {
-        errors: [
-          'An error occurred while processing this request.'
-        ]
+        errors: ['An error occurred while processing this request.']
       }, status: :interval_server_error
     end
 

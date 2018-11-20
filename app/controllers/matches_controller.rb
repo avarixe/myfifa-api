@@ -35,7 +35,7 @@ class MatchesController < APIController
   def apply_squad
     @squad = Squad.find(params[:squad_id])
     @match.apply(@squad)
-    render json: @match.performances
+    render json: @match.caps
   end
 
   private

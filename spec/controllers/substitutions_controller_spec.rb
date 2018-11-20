@@ -122,7 +122,7 @@ RSpec.describe SubstitutionsController, type: :request do
     end
 
     it 'removes Substitution' do
-      FactoryBot.create :performance, match: match, player: player1
+      FactoryBot.create :cap, match: match, player: player1
       substitution = FactoryBot.create :substitution, match: match, player: player1, replacement: player2
       delete substitution_url(substitution),
              headers: { 'Authorization' => "Bearer #{token.token}" }

@@ -2,7 +2,7 @@
 
 # == Schema Information
 #
-# Table name: performances
+# Table name: caps
 #
 #  id         :bigint(8)        not null, primary key
 #  match_id   :bigint(8)
@@ -17,11 +17,11 @@
 #
 # Indexes
 #
-#  index_performances_on_match_id   (match_id)
-#  index_performances_on_player_id  (player_id)
+#  index_caps_on_match_id   (match_id)
+#  index_caps_on_player_id  (player_id)
 #
 
-class Performance < ApplicationRecord
+class Cap < ApplicationRecord
   belongs_to :match
   belongs_to :player
 

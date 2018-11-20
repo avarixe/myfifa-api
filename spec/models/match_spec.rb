@@ -65,9 +65,7 @@ RSpec.describe Match, type: :model do
   it 'cannot have two Performance records for the same player' do
     @match = FactoryBot.create :match
     @player = FactoryBot.create :player, team: @match.team
-    FactoryBot.create :performance,
-                      match: @match,
-                      player: @player
-    expect(FactoryBot.build(:performance, match: @match, player: @player)).to_not be_valid
+    FactoryBot.create :cap, match: @match, player: @player
+    expect(FactoryBot.build(:cap, match: @match, player: @player)).to_not be_valid
   end
 end

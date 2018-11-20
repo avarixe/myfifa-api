@@ -96,7 +96,7 @@ RSpec.describe MatchesController, type: :request do
       patch match_url(game),
             headers: { 'Authorization' => "Bearer #{token.token}" },
             params: { match: FactoryBot.attributes_for(:match) }
-      expect(json).to be == JSON.parse(game.reload.to_json(methods: %i[events performances]))
+      expect(json).to be == JSON.parse(game.reload.to_json(methods: %i[events caps]))
     end
   end
 
@@ -128,8 +128,11 @@ RSpec.describe MatchesController, type: :request do
     before do
       FactoryBot.create_list :home_goal, Faker::Number.between(0, 3), match: game
       FactoryBot.create_list :away_goal, Faker::Number.between(0, 3), match: game
-      team.players.each do |player|
-        FactoryBot.create :performance, match: game, player: player
+      team.players.each_with_index do |player, i|
+        FactoryBot.create :cap,
+                          match: game,
+                          player: player,
+                          pos: Cap::POSITIONS[i]
       end
       player_ids = game.players.pluck(:id)
       Faker::Number.between(0, 2).times do
@@ -178,7 +181,7 @@ RSpec.describe MatchesController, type: :request do
       post apply_squad_match_url(game),
            headers: { 'Authorization' => "Bearer #{token.token}" },
            params: { squad_id: squad.id }
-      expect(json).to be == JSON.parse(game.performances.to_json)
+      expect(json).to be == JSON.parse(game.caps.to_json)
     end
   end
 end

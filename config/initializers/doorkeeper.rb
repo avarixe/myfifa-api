@@ -7,7 +7,8 @@ Doorkeeper.configure do
   end
 
   resource_owner_from_credentials do
-    p = User.find_for_database_authentication(email: params[:email])
+    p = User.find_for_database_authentication(username: params[:username])
+    # p ||= User.find_for_database_authentication(email: params[:email])
     p if p && p.valid_password?(params[:password])
   end
 

@@ -33,9 +33,11 @@ en:
   activerecord:
     attributes:
       team:
-        start_date: 'Start Date'
-        current_date: 'Current Date'
+        start_date: Start Date
+        current_date: Current Date
       player:
-        ovr: 'Overall Rating'
-        pos: 'Position'
-        sec_pos: 'Secondary Positions'
+        ovr: Overall Rating
+        pos: Position
+        sec_pos: Secondary Positions
+      user:
+        username: Username

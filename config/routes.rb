@@ -36,7 +36,7 @@ Rails.application.routes.draw do
           post 'apply_squad'
         end
 
-        resources :performances
+        resources :caps
         resources :goals
         resources :substitutions
         resources :bookings

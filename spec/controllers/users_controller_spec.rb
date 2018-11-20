@@ -38,7 +38,7 @@ RSpec.describe UsersController, type: :request do
       post oauth_token_url,
            params: {
              grant_type: 'password',
-             email:      user.email,
+             username:   user.username,
              password:   user.password
            }
       assert_response :success

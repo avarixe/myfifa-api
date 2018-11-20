@@ -19,6 +19,7 @@
 #  created_at             :datetime         not null
 #  updated_at             :datetime         not null
 #  admin                  :boolean          default(FALSE)
+#  username               :string
 #
 # Indexes
 #
@@ -35,6 +36,7 @@ class User < ApplicationRecord
   PERMITTED_ATTRIBUTES = %i[
     email
     full_name
+    username
   ].freeze
 
   def self.permitted_attributes
@@ -42,4 +44,8 @@ class User < ApplicationRecord
   end
 
   has_many :teams, dependent: :destroy
+
+  validates :username,
+            length: { minimum: 6 },
+            uniqueness: { case_sensitive: false }
 end

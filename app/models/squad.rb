@@ -64,6 +64,6 @@ class Squad < ApplicationRecord
   end
 
   def valid_pos?(pos)
-    Performance::POSITIONS.include? pos
+    Cap::POSITIONS.include? pos
   end
 end
