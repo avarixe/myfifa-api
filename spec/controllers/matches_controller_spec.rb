@@ -128,8 +128,11 @@ RSpec.describe MatchesController, type: :request do
     before do
       FactoryBot.create_list :home_goal, Faker::Number.between(0, 3), match: game
       FactoryBot.create_list :away_goal, Faker::Number.between(0, 3), match: game
-      team.players.each do |player|
-        FactoryBot.create :cap, match: game, player: player
+      team.players.each_with_index do |player, i|
+        FactoryBot.create :cap,
+                          match: game,
+                          player: player,
+                          pos: Cap::POSITIONS[i]
       end
       player_ids = game.players.pluck(:id)
       Faker::Number.between(0, 2).times do
