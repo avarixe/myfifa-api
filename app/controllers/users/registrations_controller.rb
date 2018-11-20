@@ -32,6 +32,7 @@ module Users
           password
           password_confirmation
           full_name
+          username
         ]
       end
 
@@ -39,6 +40,7 @@ module Users
         params.require(:user).permit %i[
           email
           full_name
+          username
         ]
       end
   end
