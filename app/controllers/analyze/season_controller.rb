@@ -42,13 +42,13 @@ module Analyze
 
       def player_stats
         {
-          player_ids:  @player_ids,
-          records:     season_players,
-          num_games:   num_games,
-          num_subs:    num_subs,
-          num_goals:   num_goals,
+          player_ids: @player_ids,
+          records: season_players,
+          num_games: num_games,
+          num_subs: num_subs,
+          num_goals: num_goals,
           num_assists: num_assists,
-          num_cs:      num_cs,
+          num_cs: num_cs,
           num_minutes: num_minutes
         }
       end

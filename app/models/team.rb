@@ -88,7 +88,7 @@ class Team < ApplicationRecord
     {
       label: "#{season_start.year} - #{season_start.year + 1}",
       start: season_start,
-      end:   season_start + 1.year - 1.day
+      end: season_start + 1.year - 1.day
     }
   end
 end

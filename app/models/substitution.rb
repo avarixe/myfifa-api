@@ -57,8 +57,8 @@ class Substitution < ApplicationRecord
 
     replaced_log.update(stop: minute, subbed_out: true)
     match.caps.create player_id: replacement_id,
-                      pos:       replaced_log.pos,
-                      start:     minute
+                      pos: replaced_log.pos,
+                      start: minute
   end
 
   def delete_cap
