@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
-class PenaltyShootoutsController < APIController
-  before_action :set_match, only: %i[create]
+class PenaltyShootoutController < APIController
   load_and_authorize_resource :match
   load_and_authorize_resource through: :match, shallow: true, singleton: true
 
@@ -24,10 +23,6 @@ class PenaltyShootoutsController < APIController
   end
 
   private
-
-    def set_match
-      @match = Match.with_players.find(params[:match_id])
-    end
 
     def penalty_shootout_params
       params

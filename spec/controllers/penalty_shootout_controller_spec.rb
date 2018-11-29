@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe PenaltyShootoutsController, type: :request do
+RSpec.describe PenaltyShootoutController, type: :request do
   let(:user) { FactoryBot.create(:user) }
   let(:team) { FactoryBot.create(:team_with_players, user: user) }
   let(:match) { FactoryBot.create(:match, team: team) }
@@ -25,14 +25,14 @@ RSpec.describe PenaltyShootoutsController, type: :request do
 
   describe 'GET #show' do
     it 'requires a valid token' do
-      ps = FactoryBot.create :penalty_shootout, match: match
-      get penalty_shootout_url(ps)
+      FactoryBot.create :penalty_shootout, match: match
+      get match_penalty_shootout_url(match)
       assert_response 401
     end
 
     it 'returns Penalty Shootout JSON' do
       ps = FactoryBot.create :penalty_shootout, match: match
-      get penalty_shootout_url(ps),
+      get match_penalty_shootout_url(match),
           headers: { 'Authorization' => "Bearer #{token.token}" }
       expect(json).to be == JSON.parse(ps.to_json)
     end
@@ -41,14 +41,14 @@ RSpec.describe PenaltyShootoutsController, type: :request do
   describe 'POST #create' do
     before do |test|
       unless test.metadata[:skip_before]
-        post match_penalty_shootouts_url(match),
+        post match_penalty_shootout_url(match),
              headers: { 'Authorization' => "Bearer #{token.token}" },
              params: { penalty_shootout: FactoryBot.attributes_for(:penalty_shootout) }
       end
     end
 
     it 'requires a valid token', skip_before: true do
-      post match_penalty_shootouts_url(match),
+      post match_penalty_shootout_url(match),
            params: { penalty_shootout: FactoryBot.attributes_for(:penalty_shootout) }
       assert_response 401
     end
@@ -65,14 +65,15 @@ RSpec.describe PenaltyShootoutsController, type: :request do
   describe 'PATCH #update' do
     it 'requires a valid token' do
       ps = FactoryBot.create :penalty_shootout, match: match
-      patch penalty_shootout_url(ps),
+      patch match_penalty_shootout_url(match),
             params: { penalty_shootout: FactoryBot.attributes_for(:penalty_shootout) }
       assert_response 401
     end
 
     it 'rejects requests from other Users' do
-      ps = FactoryBot.create :penalty_shootout
-      patch penalty_shootout_url(ps),
+      match = FactoryBot.create :match
+      ps = FactoryBot.create :penalty_shootout, match: match
+      patch match_penalty_shootout_url(match),
             headers: { 'Authorization' => "Bearer #{token.token}" },
             params: { penalty_shootout: FactoryBot.attributes_for(:penalty_shootout) }
       assert_response 403
@@ -80,7 +81,7 @@ RSpec.describe PenaltyShootoutsController, type: :request do
 
     it 'returns updated Match JSON' do
       ps = FactoryBot.create :penalty_shootout, match: match
-      patch penalty_shootout_url(ps),
+      patch match_penalty_shootout_url(match),
             headers: { 'Authorization' => "Bearer #{token.token}" },
             params: { penalty_shootout: FactoryBot.attributes_for(:penalty_shootout) }
       expect(json).to be == ps.reload.as_json
@@ -90,20 +91,21 @@ RSpec.describe PenaltyShootoutsController, type: :request do
   describe 'DELETE #destroy' do
     it 'requires a valid token' do
       ps = FactoryBot.create :penalty_shootout, match: match
-      delete penalty_shootout_url(ps)
+      delete match_penalty_shootout_url(match)
       assert_response 401
     end
 
     it 'rejects requests from other Users' do
-      ps = FactoryBot.create :penalty_shootout
-      delete penalty_shootout_url(ps),
+      match = FactoryBot.create :match
+      ps = FactoryBot.create :penalty_shootout, match: match
+      delete match_penalty_shootout_url(match),
              headers: { 'Authorization' => "Bearer #{token.token}" }
       assert_response 403
     end
 
     it 'removes Penalty Shootout' do
       ps = FactoryBot.create :penalty_shootout, match: match
-      delete penalty_shootout_url(ps),
+      delete match_penalty_shootout_url(match),
              headers: { 'Authorization' => "Bearer #{token.token}" }
       expect { ps.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
