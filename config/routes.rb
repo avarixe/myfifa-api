@@ -40,7 +40,7 @@ Rails.application.routes.draw do
         resources :goals
         resources :substitutions
         resources :bookings
-        resources :penalty_shootouts
+        resource :penalty_shootout, controller: :penalty_shootout
       end
 
       resources :competitions do
