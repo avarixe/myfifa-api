@@ -1,6 +1,8 @@
 # README
 
-![Build Status](https://gitlab.com/l33j00n325/myfifa-api/badges/master/build.svg)
+[![Build Status](https://travis-ci.com/l33j00n325/myfifa-api.svg?branch=master)](https://travis-ci.com/l33j00n325/myfifa-api)
+[![Maintainability](https://api.codeclimate.com/v1/badges/59317b38d79678780205/maintainability)](https://codeclimate.com/github/l33j00n325/myfifa-api/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/59317b38d79678780205/test_coverage)](https://codeclimate.com/github/l33j00n325/myfifa-api/test_coverage)
 
 This README would normally document whatever steps are necessary to get the
 application up and running.

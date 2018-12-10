@@ -10,6 +10,7 @@ AllCops:
     - 'lib/tasks/*'
     - 'script/**/*'
     - 'spec/**/*.rb'
+    - 'vendor/**/*'
 
 Layout/IndentationConsistency:
   EnforcedStyle: rails
