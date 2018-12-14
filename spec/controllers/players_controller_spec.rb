@@ -25,7 +25,7 @@ RSpec.describe PlayersController, type: :request do
     end
 
     it 'returns all Players of select Team' do
-      FactoryBot.create_list :player, 10, team: team
+      FactoryBot.create_list :player, 3, team: team
 
       another_team = FactoryBot.create(:team, user: user)
       FactoryBot.create :player, team: another_team

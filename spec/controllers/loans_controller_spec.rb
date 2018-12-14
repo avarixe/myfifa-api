@@ -26,7 +26,7 @@ RSpec.describe LoansController, type: :request do
     end
 
     it 'returns all Loans of select Player' do
-      10.times do
+      3.times do
         loan = FactoryBot.create :loan, player: player
         loan.update(returned: true)
       end

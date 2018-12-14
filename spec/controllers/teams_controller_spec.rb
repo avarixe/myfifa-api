@@ -25,7 +25,7 @@ RSpec.describe TeamsController, type: :request do
 
     it 'returns all User Teams' do
       another_user = FactoryBot.create :user, email: Faker::Internet.unique.email
-      FactoryBot.create_list :team, 10, user: user
+      FactoryBot.create_list :team, 3, user: user
       FactoryBot.create :team, user: another_user
 
       get teams_url,

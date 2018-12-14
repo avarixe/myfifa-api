@@ -5,8 +5,7 @@ class StagesController < APIController
   load_and_authorize_resource through: :competition, shallow: true
 
   def index
-    @stages = @stages.includes(:table_rows, :fixtures)
-    render json: @stages
+    render json: @stages.preload(:table_rows, :fixtures)
   end
 
   def show

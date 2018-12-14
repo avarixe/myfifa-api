@@ -26,7 +26,7 @@ RSpec.describe InjuriesController, type: :request do
     end
 
     it 'returns all Injuries of select Player' do
-      10.times do
+      3.times do
         injury = FactoryBot.create :injury, player: player
         injury.update(recovered: true)
       end

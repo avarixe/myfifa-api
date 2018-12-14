@@ -24,17 +24,14 @@ RSpec.describe StagesController, type: :request do
     end
 
     it 'returns all Stages of select Competition' do
-      10.times do
-        FactoryBot.create :stage, competition: competition
-      end
-
-      another_competition = FactoryBot.create :competition, team: team
-      FactoryBot.create :stage, competition: another_competition
+      FactoryBot.create_list :stage, 3, competition: competition
+      FactoryBot.create :stage
 
       get competition_stages_url(competition),
           headers: { 'Authorization' => "Bearer #{token.token}" }
       assert_response :success
-      expect(json).to be == JSON.parse(competition.stages.reload.to_json)
+      stages = competition.stages.preload(:table_rows, :fixtures)
+      expect(json).to be == JSON.parse(stages.to_json)
     end
   end
 

@@ -25,7 +25,7 @@ RSpec.describe CompetitionsController, type: :request do
     end
 
     it 'returns all Competitions of select Team' do
-      FactoryBot.create_list :competition, 10, team: team
+      FactoryBot.create_list :competition, 3, team: team
       FactoryBot.create :competition
 
       get team_competitions_url(team),

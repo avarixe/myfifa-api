@@ -26,7 +26,7 @@ RSpec.describe ContractsController, type: :request do
     end
 
     it 'returns all Contracts of select Player' do
-      FactoryBot.create_list :contract, 10, player: player
+      FactoryBot.create_list :contract, 3, player: player
 
       another_player = FactoryBot.create :player, team: team
       FactoryBot.create :contract, player: another_player

@@ -65,7 +65,7 @@ class Stage < ApplicationRecord
   def as_json(options = {})
     options[:include] ||= []
     options[:include] += [
-      :fixtures,
+      fixtures: { except: %i[created_at updated_at] },
       table_rows: { methods: %i[goal_difference points] }
     ]
     super

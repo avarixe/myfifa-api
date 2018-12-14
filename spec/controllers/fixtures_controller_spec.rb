@@ -26,12 +26,8 @@ RSpec.describe FixturesController, type: :request do
     end
 
     it 'returns all Fixtures of select Stage' do
-      10.times do
-        FactoryBot.create :fixture, stage: stage
-      end
-
-      another_stage = FactoryBot.create :stage, competition: competition
-      FactoryBot.create :fixture, stage: another_stage
+      FactoryBot.create_list :fixture, 3, stage: stage
+      FactoryBot.create :fixture
 
       get stage_fixtures_url(stage),
           headers: { 'Authorization' => "Bearer #{token.token}" }

@@ -26,12 +26,8 @@ RSpec.describe TableRowsController, type: :request do
     end
 
     it 'returns all Table Rows of select Stage' do
-      10.times do
-        FactoryBot.create :table_row, stage: stage
-      end
-
-      another_stage = FactoryBot.create :stage, competition: competition
-      FactoryBot.create :table_row, stage: another_stage
+      FactoryBot.create_list :table_row, 3, stage: stage
+      FactoryBot.create :table_row
 
       get stage_table_rows_url(stage),
           headers: { 'Authorization' => "Bearer #{token.token}" }
