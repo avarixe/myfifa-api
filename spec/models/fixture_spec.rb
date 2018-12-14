@@ -19,5 +19,9 @@
 require 'rails_helper'
 
 RSpec.describe Fixture, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:fixture) { FactoryBot.create(:fixture) }
+
+  it 'has a valid factory' do
+    expect(fixture).to be_valid
+  end
 end

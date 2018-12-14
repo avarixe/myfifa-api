@@ -20,6 +20,7 @@
 
 FactoryBot.define do
   factory :table_row do
-    
+    name { Faker::Team.name }
+    stage
   end
 end

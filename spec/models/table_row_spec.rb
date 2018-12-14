@@ -21,5 +21,50 @@
 require 'rails_helper'
 
 RSpec.describe TableRow, type: :model do
-  pending "add some examples to (or delete) #{__FILE__}"
+  let(:row) { FactoryBot.create(:table_row) }
+
+  it 'has a valid factory' do
+    expect(row).to be_valid
+  end
+
+  it 'requires wins' do
+    expect(FactoryBot.build(:table_row, wins: nil)).to_not be_valid
+  end
+
+  it 'requires draws' do
+    expect(FactoryBot.build(:table_row, draws: nil)).to_not be_valid
+  end
+
+  it 'requires losses' do
+    expect(FactoryBot.build(:table_row, losses: nil)).to_not be_valid
+  end
+
+  it 'requires goals_for' do
+    expect(FactoryBot.build(:table_row, goals_for: nil)).to_not be_valid
+  end
+
+  it 'requires goals_against' do
+    expect(FactoryBot.build(:table_row, goals_against: nil)).to_not be_valid
+  end
+
+  it 'requires name when updating' do
+    row.name = nil
+    expect(row.valid?).to be_falsey
+  end
+
+  it 'correctly calculates goal_difference' do
+    gf = Faker::Number.between(0, 100).to_i
+    ga = Faker::Number.between(0, 100).to_i
+    row.goals_for = gf
+    row.goals_against = ga
+    expect(row.goal_difference == gf - ga).to be true
+  end
+
+  it 'correctly calculates points' do
+    wins = Faker::Number.number(2).to_i
+    draws = Faker::Number.number(2).to_i
+    row.wins = wins
+    row.draws = draws
+    expect(row.points == 3 * wins + draws).to be true    
+  end
 end

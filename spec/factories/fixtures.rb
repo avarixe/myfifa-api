@@ -18,6 +18,6 @@
 
 FactoryBot.define do
   factory :fixture do
-    
+    stage
   end
 end
