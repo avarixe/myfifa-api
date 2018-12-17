@@ -100,4 +100,18 @@ RSpec.describe Contract, type: :model do
     expect(@player.injured?).to be false
     expect(@player.injuries.last.end_date).to be == @player.current_date
   end
+
+  it 'ends contract immediately when terminated' do
+    team = contract.team
+    contract.update(end_date: team.current_date + 2.year)
+    contract.terminate!
+    expect(contract.active?).to be_falsey
+  end
+
+  it 'end contract at the end of the season when retired' do
+    team = contract.team
+    contract.update(end_date: team.current_date + 2.year)
+    contract.retire!
+    expect(contract.end_date).to be == team.end_of_season + 1.day
+  end
 end

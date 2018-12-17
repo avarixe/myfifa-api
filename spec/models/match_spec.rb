@@ -68,4 +68,13 @@ RSpec.describe Match, type: :model do
     FactoryBot.create :cap, match: @match, player: @player
     expect(FactoryBot.build(:cap, match: @match, player: @player)).to_not be_valid
   end
+
+  it 'sets Match times to 120 minutes if extra time' do
+    @player = FactoryBot.create :player, team: match.team
+    cap = FactoryBot.create :cap, match: match, player: @player
+    match.update(extra_time: true)
+    expect(cap.reload.stop).to be == 120
+    match.update(extra_time: false)
+    expect(cap.reload.stop).to be == 90
+  end
 end

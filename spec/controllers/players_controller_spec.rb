@@ -127,6 +127,50 @@ RSpec.describe PlayersController, type: :request do
     end
   end
 
+  describe 'POST #release' do
+    it 'requires a valid token' do
+      player = FactoryBot.create :player, team: team
+      post release_player_url(player)
+      assert_response 401
+    end
+
+    it 'rejects requests from other Users' do
+      player = FactoryBot.create :player
+      post release_player_url(player),
+           headers: { 'Authorization' => "Bearer #{token.token}" }
+      assert_response 403
+    end
+
+    it 'returns updated Player JSON' do
+      player = FactoryBot.create :player, team: team
+      post release_player_url(player),
+           headers: { 'Authorization' => "Bearer #{token.token}" }
+      expect(json).to be == JSON.parse(player.reload.to_json)
+    end
+  end
+
+  describe 'POST #retire' do
+    it 'requires a valid token' do
+      player = FactoryBot.create :player, team: team
+      post retire_player_url(player)
+      assert_response 401
+    end
+
+    it 'rejects requests from other Users' do
+      player = FactoryBot.create :player
+      post retire_player_url(player),
+           headers: { 'Authorization' => "Bearer #{token.token}" }
+      assert_response 403
+    end
+
+    it 'returns updated Player JSON' do
+      player = FactoryBot.create :player, team: team
+      post retire_player_url(player),
+           headers: { 'Authorization' => "Bearer #{token.token}" }
+      expect(json).to be == JSON.parse(player.reload.to_json)
+    end
+  end
+
   describe 'GET #history' do
     let(:player) { FactoryBot.create(:player, team: team) }
 

@@ -52,7 +52,7 @@ Rails.application.routes.draw do
 
       namespace :analyze do
         post 'players', to: 'players#index'
-        post 'season/:id',  to: 'season#index'
+        post 'season/:id',  to: 'season#index', as: :season
       end
     end
   end
