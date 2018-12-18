@@ -135,13 +135,6 @@ class Match < ApplicationRecord
     score
   end
 
-  def winner
-    if home_score > away_score    then home
-    elsif home_score < away_score then away
-    elsif penalty_shootout        then penalty_shootout.winner
-    end
-  end
-
   def events
     [*goals, *substitutions, *bookings].sort_by(&:minute)
   end
@@ -154,9 +147,5 @@ class Match < ApplicationRecord
       penalty_shootout
     ]
     super
-  end
-
-  def full_json
-    as_json methods: %i[events caps]
   end
 end

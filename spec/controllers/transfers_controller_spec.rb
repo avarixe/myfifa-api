@@ -26,7 +26,7 @@ RSpec.describe TransfersController, type: :request do
     end
 
     it 'returns all Transfers of select Player' do
-      transfer = FactoryBot.create_list :transfer, 10, player: player
+      transfer = FactoryBot.create_list :transfer, 3, player: player
       another_player = FactoryBot.create :player, team: team
       FactoryBot.create :transfer, player: another_player
 

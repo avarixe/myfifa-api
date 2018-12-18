@@ -25,7 +25,7 @@ RSpec.describe MatchesController, type: :request do
     end
 
     it 'returns all Matches of select Team' do
-      FactoryBot.create_list :match, 10, team: team
+      FactoryBot.create_list :match, 3, team: team
       FactoryBot.create :match
 
       get team_matches_url(team),

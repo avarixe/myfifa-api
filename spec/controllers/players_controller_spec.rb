@@ -25,7 +25,7 @@ RSpec.describe PlayersController, type: :request do
     end
 
     it 'returns all Players of select Team' do
-      FactoryBot.create_list :player, 10, team: team
+      FactoryBot.create_list :player, 3, team: team
 
       another_team = FactoryBot.create(:team, user: user)
       FactoryBot.create :player, team: another_team
@@ -124,6 +124,50 @@ RSpec.describe PlayersController, type: :request do
       delete player_url(player),
              headers: { 'Authorization' => "Bearer #{token.token}" }
       expect { player.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+  end
+
+  describe 'POST #release' do
+    it 'requires a valid token' do
+      player = FactoryBot.create :player, team: team
+      post release_player_url(player)
+      assert_response 401
+    end
+
+    it 'rejects requests from other Users' do
+      player = FactoryBot.create :player
+      post release_player_url(player),
+           headers: { 'Authorization' => "Bearer #{token.token}" }
+      assert_response 403
+    end
+
+    it 'returns updated Player JSON' do
+      player = FactoryBot.create :player, team: team
+      post release_player_url(player),
+           headers: { 'Authorization' => "Bearer #{token.token}" }
+      expect(json).to be == JSON.parse(player.reload.to_json)
+    end
+  end
+
+  describe 'POST #retire' do
+    it 'requires a valid token' do
+      player = FactoryBot.create :player, team: team
+      post retire_player_url(player)
+      assert_response 401
+    end
+
+    it 'rejects requests from other Users' do
+      player = FactoryBot.create :player
+      post retire_player_url(player),
+           headers: { 'Authorization' => "Bearer #{token.token}" }
+      assert_response 403
+    end
+
+    it 'returns updated Player JSON' do
+      player = FactoryBot.create :player, team: team
+      post retire_player_url(player),
+           headers: { 'Authorization' => "Bearer #{token.token}" }
+      expect(json).to be == JSON.parse(player.reload.to_json)
     end
   end
 

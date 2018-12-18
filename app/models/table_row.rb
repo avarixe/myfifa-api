@@ -42,6 +42,7 @@ class TableRow < ApplicationRecord
     PERMITTED_ATTRIBUTES
   end
 
+  validates :name, presence: true, on: :update
   validates :wins, presence: true
   validates :draws, presence: true
   validates :losses, presence: true

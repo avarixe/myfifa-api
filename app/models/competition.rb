@@ -54,7 +54,7 @@ class Competition < ApplicationRecord
   def valid_preset_format?
     return if
       case preset_format
-      when 'League'           then valid_league?
+      when 'League'           then valid_preset?
       when 'Knockout'         then valid_knockout_stage?
       when 'Group + Knockout' then valid_group_knockout_stages?
       end
@@ -62,23 +62,21 @@ class Competition < ApplicationRecord
     errors.add(:base, 'Preset Format parameters are invalid')
   end
 
-  def valid_league?
+  def valid_preset?
     num_teams.to_i > 1
   end
 
   def valid_knockout_stage?
-    num_teams &&
+    valid_preset? &&
       num_matches_per_fixture.positive? &&
       2**num_rounds == num_knockout_teams
   end
 
   def valid_group_knockout_stages?
-    num_teams &&
-      num_teams_per_group &&
-      num_advances_from_group &&
-      num_matches_per_fixture.positive? &&
-      num_groups * num_teams_per_group == num_teams &&
-      2**num_rounds == num_knockout_teams
+    valid_knockout_stage? &&
+      num_teams_per_group > 1 &&
+      num_advances_from_group.positive? &&
+      num_groups * num_teams_per_group == num_teams
   end
 
   ##############
@@ -154,7 +152,7 @@ class Competition < ApplicationRecord
 
   def num_knockout_teams
     @num_knockout_teams ||=
-      if num_advances_from_group.zero?
+      if num_advances_from_group.to_i.zero?
         num_teams
       else
         num_advances

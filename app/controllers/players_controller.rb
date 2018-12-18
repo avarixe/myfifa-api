@@ -5,7 +5,6 @@ class PlayersController < APIController
   load_and_authorize_resource through: :team, shallow: true
 
   def index
-    @players = @players.preload(:contracts)
     render json: @players
   end
 

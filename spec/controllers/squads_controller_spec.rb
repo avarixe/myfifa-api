@@ -23,8 +23,7 @@ RSpec.describe SquadsController, type: :request do
     end
 
     it 'returns all Squads of select Team' do
-      FactoryBot.create_list :squad, 10, team: team
-
+      FactoryBot.create_list :squad, 3, team: team
       FactoryBot.create :squad
 
       get team_squads_url(team),

@@ -18,6 +18,13 @@
 
 FactoryBot.define do
   factory :fixture do
-    
+    stage
+
+    factory :completed_fixture do
+      home_team { Faker::Team.name }
+      away_team { Faker::Team.name }
+      home_score { Faker::Number.between(0, 3) }
+      away_score { Faker::Number.between(0, 3) }
+    end
   end
 end

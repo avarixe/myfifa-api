@@ -26,7 +26,7 @@ RSpec.describe InjuriesController, type: :request do
     end
 
     it 'returns all Injuries of select Player' do
-      10.times do
+      3.times do
         injury = FactoryBot.create :injury, player: player
         injury.update(recovered: true)
       end
@@ -98,7 +98,7 @@ RSpec.describe InjuriesController, type: :request do
       assert_response 403
     end
 
-    it 'returns updated Player JSON' do
+    it 'returns updated Injury JSON' do
       injury = FactoryBot.create :injury, player: player
       patch injury_url(injury),
             headers: { 'Authorization' => "Bearer #{token.token}" },
@@ -121,7 +121,7 @@ RSpec.describe InjuriesController, type: :request do
       assert_response 403
     end
 
-    it 'removes the Player' do
+    it 'removes the Injury' do
       injury = FactoryBot.create :injury, player: player
       delete injury_url(injury),
              headers: { 'Authorization' => "Bearer #{token.token}" }

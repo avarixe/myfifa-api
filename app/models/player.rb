@@ -179,7 +179,7 @@ class Player < ApplicationRecord
 
   def as_json(options = {})
     options[:methods] ||= []
-    options[:methods] += %i[age pos_idx current_contract]
+    options[:methods] += %i[age pos_idx]
     super
   end
 end
