@@ -29,6 +29,12 @@ Rails.application.routes.draw do
         resources :contracts
         resources :transfers
       end
+
+      get 'loans', to: 'loans#team_index'
+      get 'injuries', to: 'injuries#team_index'
+      get 'contracts', to: 'contracts#team_index'
+      get 'transfers', to: 'transfers#team_index'
+
       resources :squads
       resources :matches do
         member do
