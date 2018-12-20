@@ -19,6 +19,26 @@ RSpec.describe TransfersController, type: :request do
     )
   }
 
+  describe 'GET #team_index' do
+    it 'requires a valid token' do
+      get team_transfers_url(team)
+      assert_response 401
+    end
+
+    it 'returns all Transfers of select Team' do
+      3.times do
+        player = FactoryBot.create :player, team: team
+        FactoryBot.create :transfer, player: player
+      end
+
+      get team_transfers_url(team),
+          headers: { 'Authorization' => "Bearer #{token.token}" }
+      assert_response :success
+      transfers = Transfer.where(player_id: team.players.pluck(:id))
+      expect(json).to be == JSON.parse(transfers.to_json)
+    end
+  end
+
   describe 'GET #index' do
     it 'requires a valid token' do
       get player_transfers_url(player)

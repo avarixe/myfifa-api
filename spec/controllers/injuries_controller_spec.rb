@@ -19,6 +19,26 @@ RSpec.describe InjuriesController, type: :request do
     )
   }
 
+  describe 'GET #team_index' do
+    it 'requires a valid token' do
+      get team_injuries_url(team)
+      assert_response 401
+    end
+
+    it 'returns all Injuries of select Team' do
+      3.times do
+        player = FactoryBot.create :player, team: team
+        FactoryBot.create :injury, player: player
+      end
+
+      get team_injuries_url(team),
+          headers: { 'Authorization' => "Bearer #{token.token}" }
+      assert_response :success
+      injuries = Injury.where(player_id: team.players.pluck(:id))
+      expect(json).to be == JSON.parse(injuries.to_json)
+    end
+  end
+
   describe 'GET #index' do
     it 'requires a valid token' do
       get player_injuries_url(player)

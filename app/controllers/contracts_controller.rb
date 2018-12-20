@@ -4,6 +4,13 @@ class ContractsController < APIController
   load_and_authorize_resource :player
   load_and_authorize_resource through: :player, shallow: true
 
+  def team_index
+    @team = Team.find(params[:team_id])
+    authorize! :show, @team
+    @contracts = Contract.where(player_id: @team.players.pluck(:id))
+    render json: @contracts
+  end
+
   def index
     render json: @contracts
   end

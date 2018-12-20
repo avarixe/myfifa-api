@@ -4,6 +4,13 @@ class InjuriesController < APIController
   load_and_authorize_resource :player
   load_and_authorize_resource through: :player, shallow: true
 
+  def team_index
+    @team = Team.find(params[:team_id])
+    authorize! :show, @team
+    @injuries = Injury.where(player_id: @team.players.pluck(:id))
+    render json: @injuries
+  end
+
   def index
     render json: @injuries
   end
