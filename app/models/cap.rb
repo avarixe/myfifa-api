@@ -75,7 +75,7 @@ class Cap < ApplicationRecord
   validates :start, inclusion: 0..120
   validates :stop,
             inclusion: 0..120,
-            numericality: { greater_than: :start },
+            numericality: { greater_than_or_equal_to: :start },
             if: :start
   validates :player_id, uniqueness: { scope: :match_id }
   validates :pos,
