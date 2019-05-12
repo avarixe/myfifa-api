@@ -13,7 +13,7 @@ Doorkeeper.configure do
   end
 
   # Access token expiration time (default 2 hours)
-  access_token_expires_in 24.hours
+  access_token_expires_in 2.weeks
 
   # Define access token scopes for your provider
   # For more information go to https://github.com/applicake/doorkeeper/wiki/Using-Scopes
