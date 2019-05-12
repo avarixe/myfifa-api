@@ -1,3 +1,3 @@
 filename: myfifa_erd
 orientation: vertical
-exclude: Doorkeeper::Application,Doorkeeper::AccessToken,Doorkeeper::AccessGrant
+exclude: Doorkeeper::Application,Doorkeeper::AccessToken,Doorkeeper::AccessGrant,,ActiveRecord::SchemaMigration,ActiveRecord::InternalMetadata

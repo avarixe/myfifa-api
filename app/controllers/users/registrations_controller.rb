@@ -51,6 +51,9 @@ module Users
           email
           full_name
           username
+          password
+          password_confirmation
+          current_password
         ]
       end
   end

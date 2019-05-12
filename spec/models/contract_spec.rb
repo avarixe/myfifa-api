@@ -85,7 +85,7 @@ RSpec.describe Contract, type: :model do
     expect(FactoryBot.build(:contract, performance_bonus: perf_bonus, bonus_req: bonus_req)).to_not be_valid
     expect(FactoryBot.build(:contract, performance_bonus: perf_bonus, bonus_req_type: bonus_req_type)).to_not be_valid
     expect(FactoryBot.build(:contract, bonus_req: bonus_req, bonus_req_type: bonus_req_type)).to_not be_valid
-    expect(FactoryBot.build(:contract, bonus_req: bonus_req, performance_bonus: perf_bonus, bonus_req_type: bonus_req_type)).to be_valid
+    expect(FactoryBot.create(:contract, bonus_req: bonus_req, performance_bonus: perf_bonus, bonus_req_type: bonus_req_type)).to be_valid
   end
 
   it 'ends tracking of any injuries upon expiration' do
