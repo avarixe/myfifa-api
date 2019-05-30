@@ -37,6 +37,7 @@ class Match < ApplicationRecord
     away
     date_played
     competition
+    stage
     extra_time
   ].freeze
 
