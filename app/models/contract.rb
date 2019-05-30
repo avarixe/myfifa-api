@@ -82,10 +82,21 @@ class Contract < ApplicationRecord
   ##############
 
   before_validation :set_signed_date
+  after_create :close_previous_contract
   after_create :update_status
 
   def set_signed_date
     self.signed_date ||= team.current_date
+  end
+
+  def close_previous_contract
+    Contract
+      .where(player_id: player_id)
+      .where('end_date > ?', effective_date)
+      .where.not(id: id)
+      .each do |contract|
+        contract.update!(end_date: effective_date)
+      end
   end
 
   ##############
