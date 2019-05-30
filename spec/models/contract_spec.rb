@@ -114,4 +114,16 @@ RSpec.describe Contract, type: :model do
     contract.retire!
     expect(contract.end_date).to be == team.end_of_season + 1.day
   end
+
+  it 'terminates the previous contract' do
+    contract.team.increment_date(1.month)
+    player = contract.player
+
+    new_contract = player.contracts.create(
+      FactoryBot.attributes_for :contract, effective_date: player.current_date
+    )
+
+    expect(player.reload.active?).to be_truthy
+    expect(contract.reload.end_date).to be == contract.current_date
+  end
 end
