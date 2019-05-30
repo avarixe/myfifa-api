@@ -15,6 +15,7 @@
 #  extra_time  :boolean          default(FALSE)
 #  home_score  :integer
 #  away_score  :integer
+#  stage       :string
 #
 # Indexes
 #
