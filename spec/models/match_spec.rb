@@ -78,4 +78,14 @@ RSpec.describe Match, type: :model do
     match.update(extra_time: false)
     expect(cap.reload.stop).to be == 90
   end
+
+  it 'does not move current_date forward if date is behind current_date' do
+    match.update(date_played: match.current_date - 1.day)
+    expect(match.team.reload.current_date).to_not be == match.date_played
+  end
+
+  it 'moves current_date forward if date is ahead of current_date' do
+    match.update(date_played: match.current_date + 1.day)
+    expect(match.team.reload.current_date).to be == match.date_played
+  end
 end
