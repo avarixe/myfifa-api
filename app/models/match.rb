@@ -15,6 +15,7 @@
 #  extra_time  :boolean          default(FALSE)
 #  home_score  :integer
 #  away_score  :integer
+#  stage       :string
 #
 # Indexes
 #
@@ -34,7 +35,9 @@ class Match < ApplicationRecord
   PERMITTED_ATTRIBUTES = %i[
     home
     away
+    date_played
     competition
+    stage
     extra_time
   ].freeze
 
@@ -63,12 +66,19 @@ class Match < ApplicationRecord
   ##############
 
   before_validation :set_defaults
+  after_save :increment_current_date, if: :saved_change_to_date_played?
   after_save :set_cap_stop_times, if: :saved_change_to_extra_time?
 
   def set_defaults
-    self.date_played ||= team.current_date
+    self.date_played ||= current_date
     self.home_score ||= 0
     self.away_score ||= 0
+  end
+
+  def increment_current_date
+    return if current_date >= date_played
+
+    team.update(current_date: date_played)
   end
 
   def set_cap_stop_times
@@ -100,6 +110,8 @@ class Match < ApplicationRecord
   ###############
   #  ACCESSORS  #
   ###############
+
+  delegate :current_date, to: :team
 
   def team_played?
     [home, away].include? team.title
