@@ -17,6 +17,28 @@ RSpec.describe StagesController, type: :request do
     )
   }
 
+  describe 'GET #team_index' do
+    it 'requires a valid token' do
+      get team_stages_url(team)
+      assert_response 401
+    end
+
+    it 'returns all Stages of select Team' do
+      3.times do
+        competition = FactoryBot.create :competition, team: team
+        FactoryBot.create :stage, competition: competition
+      end
+
+      get team_stages_url(team),
+          headers: { 'Authorization' => "Bearer #{token.token}" }
+      assert_response :success
+      stages = Stage
+               .includes(:table_rows, :fixtures)
+               .where(competition_id: team.competitions.pluck(:id))
+      expect(json).to be == JSON.parse(stages.to_json)
+    end
+  end
+
   describe 'GET #index' do
     it 'requires a valid token' do
       get competition_stages_url(competition)
@@ -30,7 +52,7 @@ RSpec.describe StagesController, type: :request do
       get competition_stages_url(competition),
           headers: { 'Authorization' => "Bearer #{token.token}" }
       assert_response :success
-      stages = competition.stages.preload(:table_rows, :fixtures)
+      stages = competition.stages.includes(:table_rows, :fixtures)
       expect(json).to be == JSON.parse(stages.to_json)
     end
   end

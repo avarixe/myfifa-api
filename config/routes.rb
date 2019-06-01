@@ -30,10 +30,15 @@ Rails.application.routes.draw do
         resources :transfers
       end
 
-      get 'loans', to: 'loans#team_index'
-      get 'injuries', to: 'injuries#team_index'
-      get 'contracts', to: 'contracts#team_index'
-      get 'transfers', to: 'transfers#team_index'
+      %w[
+        loans
+        injuries
+        contracts
+        transfers
+        stages
+      ].each do |controller|
+        get controller, to: "#{controller}#team_index"
+      end
 
       resources :squads
       resources :matches do

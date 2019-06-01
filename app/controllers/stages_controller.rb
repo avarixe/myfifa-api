@@ -4,8 +4,17 @@ class StagesController < APIController
   load_and_authorize_resource :competition
   load_and_authorize_resource through: :competition, shallow: true
 
+  def team_index
+    @team = Team.find(params[:team_id])
+    authorize! :show, @team
+    @stages = Stage
+              .includes(:table_rows, :fixtures)
+              .where(competition_id: @team.competitions.pluck(:id))
+    render json: @stages
+  end
+
   def index
-    render json: @stages.preload(:table_rows, :fixtures)
+    render json: @stages.includes(:table_rows, :fixtures)
   end
 
   def show
