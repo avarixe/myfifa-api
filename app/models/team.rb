@@ -53,6 +53,10 @@ class Team < ApplicationRecord
     self.current_date ||= start_date
   end
 
+  def team
+    self
+  end
+
   def update_player_statuses
     Player.transaction do
       players
