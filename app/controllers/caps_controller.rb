@@ -1,8 +1,19 @@
 # frozen_string_literal: true
 
 class CapsController < APIController
+  include Searchable
   load_and_authorize_resource :match
   load_and_authorize_resource through: :match, shallow: true
+
+  def search
+    @team = Team.find(params[:team_id])
+    authorize! :show, @team
+    @caps = Cap
+            .joins(:player)
+            .includes(:player)
+            .where(players: { team_id: params[:team_id] })
+    render json: filter(@caps)
+  end
 
   def index
     @caps = @caps.includes(:player)

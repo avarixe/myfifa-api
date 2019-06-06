@@ -1,8 +1,19 @@
 # frozen_string_literal: true
 
 class SubstitutionsController < APIController
+  include Searchable
   load_and_authorize_resource :match
   load_and_authorize_resource through: :match, shallow: true
+
+  def search
+    @team = Team.find(params[:team_id])
+    authorize! :show, @team
+    @substitutions = Substitution
+                     .joins(:player)
+                     .includes(match: :team)
+                     .where(players: { team_id: params[:team_id] })
+    render json: filter(@substitutions)
+  end
 
   def index
     render json: @substitutions
