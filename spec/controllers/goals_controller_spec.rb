@@ -20,6 +20,28 @@ RSpec.describe GoalsController, type: :request do
     )
   }
 
+  describe 'POST #search' do
+    it 'requires a valid token' do
+      post team_goals_search_url(team)
+      assert_response 401
+    end
+
+    it 'returns all Goals of select Team' do
+      3.times do
+        player = FactoryBot.create :player, team: team
+        FactoryBot.create :goal, player: player
+      end
+
+      post team_goals_search_url(team),
+          headers: { 'Authorization' => "Bearer #{token.token}" }
+      assert_response :success
+      goals = Goal.where(player_id: team.players.pluck(:id))
+      expect(json).to be == JSON.parse(goals.to_json)
+    end
+
+    it 'filters Goal results by filter params'
+  end
+
   describe 'GET #index' do
     it 'requires a valid token' do
       get match_goals_url(match)

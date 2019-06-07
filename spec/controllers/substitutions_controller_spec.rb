@@ -21,6 +21,28 @@ RSpec.describe SubstitutionsController, type: :request do
     )
   }
 
+  describe 'POST #search' do
+    it 'requires a valid token' do
+      post team_substitutions_search_url(team)
+      assert_response 401
+    end
+
+    it 'returns all Substitutions of select Team' do
+      3.times do
+        player = FactoryBot.create :player, team: team
+        FactoryBot.create :substitution, player: player
+      end
+
+      post team_substitutions_search_url(team),
+          headers: { 'Authorization' => "Bearer #{token.token}" }
+      assert_response :success
+      substitutions = Substitution.where(player_id: team.players.pluck(:id))
+      expect(json).to be == JSON.parse(substitutions.to_json)
+    end
+
+    it 'filters Substitution results by filter params'
+  end
+
   describe 'GET #index' do
     it 'requires a valid token' do
       get match_substitutions_url(match)
