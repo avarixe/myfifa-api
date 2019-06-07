@@ -32,12 +32,91 @@
 en:
   activerecord:
     attributes:
-      team:
+      booking:
+        red_card: Red Card
+        player_name: Player Name
+      cap:
+        pos: Position
+        start: Start Minute
+        stop: Stop Minute
+        subbed_out: Subbed Out
+      contract_history:
+        signing_bonus: Signing Bonus
+        release_clause: Release Clause
+        performance_bonus: Performance Bonus
+        bonus_req: Bonus Requirement
+        bonus_req_type: Bonus Requirement Type
+        end_date: Expiration Date
+        effective_date: Effective Date
+      contract:
+        signed_date: Signed Date
+        signing_bonus: Signing Bonus
+        release_clause: Release Clause
+        performance_bonus: Performance Bonus
+        bonus_req: Bonus Requirement
+        bonus_req_type: Bonus Requirement Type
+        end_date: Expiration Date
+        effective_date: Effective Date
+      fixture:
+        home_team: Home Team
+        away_team: Away Team
+        home_score: Home Score
+        away_score: Away Score
+      goal:
+        player_name: Player Name
+        own_goal: Own Goal
+        assisted_by: Assisted By
+      injury:
         start_date: Start Date
-        current_date: Current Date
+        end_date: End Date
+      loan:
+        start_date: Start Date
+        end_date: End Date
+      match:
+        date_played: Date Played
+        home: Home Team
+        away: Away Team
+        extra_time: Extra Time
+        home_score: Home Score
+        away_score: Away Score
+      penalty_shootout:
+        home_score: Home Score
+        away_score: Away Score
+      player_history:
+        ovr: Overall Rating
+        kit_no: Kit Number
       player:
         ovr: Overall Rating
         pos: Position
         sec_pos: Secondary Positions
+        birth_year: Year of Birth
+        kit_no: Kit Number
+      squad:
+        players_list: Player List
+        positions_list: Positions
+      stage:
+        num_teams: Number of Teams
+        num_fixtures: Number of Fixtures
+      substitution:
+        player_name: Player Name
+        replaced_by: Replaced By
+      table_row:
+        goals_for: Goals For
+        goals_against: Goals Against
+      team:
+        start_date: Start Date
+        current_date: Current Date
+      transfers:
+        signed_date: Signed Date
+        effective_date: Effective Date
+        traded_player: Traded Player
+        addon_clause: Add-on Clause
       user:
+        full_name: Full Name
         username: Username
+    errors:
+      models:
+        cap:
+          attributes:
+            player_id:
+              taken: is already in this Match.
