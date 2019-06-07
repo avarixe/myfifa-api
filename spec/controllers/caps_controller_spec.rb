@@ -20,6 +20,28 @@ RSpec.describe CapsController, type: :request do
     )
   }
 
+  describe 'POST #search' do
+    it 'requires a valid token' do
+      post team_caps_search_url(team)
+      assert_response 401
+    end
+
+    it 'returns all Caps of select Team' do
+      3.times do
+        player = FactoryBot.create :player, team: team
+        FactoryBot.create :cap, player: player
+      end
+
+      post team_caps_search_url(team),
+          headers: { 'Authorization' => "Bearer #{token.token}" }
+      assert_response :success
+      caps = Cap.where(player_id: team.players.pluck(:id))
+      expect(json).to be == JSON.parse(caps.to_json)
+    end
+
+    it 'filters Cap results by filter params'
+  end
+
   describe 'GET #index' do
     it 'requires a valid token' do
       get match_caps_url(match)

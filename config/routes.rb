@@ -40,6 +40,15 @@ Rails.application.routes.draw do
         get controller, to: "#{controller}#team_index"
       end
 
+      %w[
+        caps
+        goals
+        bookings
+        substitutions
+      ].each do |controller|
+        post "#{controller}/search", to: "#{controller}#search"
+      end
+
       resources :squads
       resources :matches do
         member do

@@ -1,9 +1,20 @@
 # frozen_string_literal: true
 
 class BookingsController < APIController
+  include Searchable
   before_action :set_match, only: %i[create]
   load_and_authorize_resource :match
   load_and_authorize_resource through: :match, shallow: true
+
+  def search
+    @team = Team.find(params[:team_id])
+    authorize! :show, @team
+    @bookings = Booking
+                .joins(:player)
+                .includes(match: :team)
+                .where(players: { team_id: params[:team_id] })
+    render json: filter(@bookings)
+  end
 
   def index
     render json: @bookings
