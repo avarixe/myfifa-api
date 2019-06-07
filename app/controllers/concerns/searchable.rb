@@ -5,9 +5,9 @@ module Searchable
 
   private
 
-    def filter(data, filters = {})
+    def filter(data)
       @results = data
-      filters.each do |k, v|
+      (params[:filters] || {}).each do |k, v|
         @results = @results.where(k => v)
       end
       @results
