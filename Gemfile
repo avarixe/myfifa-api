@@ -25,6 +25,8 @@ gem 'redis'
 
 gem 'figaro'
 
+gem 'oj'
+
 # Devise authentication
 gem 'devise'
 gem 'doorkeeper'
