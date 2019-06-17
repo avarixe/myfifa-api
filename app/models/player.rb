@@ -26,7 +26,10 @@
 
 class Player < ApplicationRecord
   belongs_to :team
-  has_many :player_histories, dependent: :destroy
+  has_many :histories,
+           class_name: 'PlayerHistory',
+           inverse_of: :player,
+           dependent: :destroy
   has_many :injuries, dependent: :destroy
   has_many :loans, dependent: :destroy
   has_many :contracts, dependent: :destroy
@@ -119,15 +122,14 @@ class Player < ApplicationRecord
   end
 
   def save_history
-    player_histories.create ovr: ovr,
-                            value: value,
-                            kit_no: kit_no
+    histories.create ovr: ovr,
+                     value: value,
+                     kit_no: kit_no
   end
 
   def update_history
     if saved_change_to_ovr? ||
-       saved_change_to_value? ||
-       saved_change_to_kit_no?
+       saved_change_to_value?
       save_history
     end
   end

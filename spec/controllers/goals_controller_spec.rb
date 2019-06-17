@@ -33,7 +33,7 @@ RSpec.describe GoalsController, type: :request do
       end
 
       post team_goals_search_url(team),
-          headers: { 'Authorization' => "Bearer #{token.token}" }
+           headers: { 'Authorization' => "Bearer #{token.token}" }
       assert_response :success
       goals = Goal.where(player_id: team.players.pluck(:id))
       expect(json).to be == JSON.parse(goals.to_json)

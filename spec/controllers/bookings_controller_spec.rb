@@ -33,7 +33,7 @@ RSpec.describe BookingsController, type: :request do
       end
 
       post team_bookings_search_url(team),
-          headers: { 'Authorization' => "Bearer #{token.token}" }
+           headers: { 'Authorization' => "Bearer #{token.token}" }
       assert_response :success
       bookings = Booking.where(player_id: team.players.pluck(:id))
       expect(json).to be == JSON.parse(bookings.to_json)

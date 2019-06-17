@@ -33,7 +33,7 @@ RSpec.describe CapsController, type: :request do
       end
 
       post team_caps_search_url(team),
-          headers: { 'Authorization' => "Bearer #{token.token}" }
+           headers: { 'Authorization' => "Bearer #{token.token}" }
       assert_response :success
       caps = Cap.where(player_id: team.players.pluck(:id))
       expect(json).to be == JSON.parse(caps.to_json)

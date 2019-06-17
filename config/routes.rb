@@ -45,6 +45,7 @@ Rails.application.routes.draw do
         goals
         bookings
         substitutions
+        player_histories
       ].each do |controller|
         post "#{controller}/search", to: "#{controller}#search"
       end
