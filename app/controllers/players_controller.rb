@@ -37,7 +37,7 @@ class PlayersController < APIController
   end
 
   def history
-    render json: @player.player_histories
+    render json: @player.histories
   end
 
   def current_loan

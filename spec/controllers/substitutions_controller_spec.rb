@@ -34,7 +34,7 @@ RSpec.describe SubstitutionsController, type: :request do
       end
 
       post team_substitutions_search_url(team),
-          headers: { 'Authorization' => "Bearer #{token.token}" }
+           headers: { 'Authorization' => "Bearer #{token.token}" }
       assert_response :success
       substitutions = Substitution.where(player_id: team.players.pluck(:id))
       expect(json).to be == JSON.parse(substitutions.to_json)

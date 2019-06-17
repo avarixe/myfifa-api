@@ -182,7 +182,7 @@ RSpec.describe PlayersController, type: :request do
     it 'returns history JSON' do
       get history_player_url(player),
           headers: { 'Authorization' => "Bearer #{token.token}" }
-      expect(json).to be == JSON.parse(player.player_histories.to_json)
+      expect(json).to be == JSON.parse(player.histories.to_json)
     end
   end
 

@@ -32,26 +32,26 @@ RSpec.describe Player, type: :model do
   it "has a valid factory" do
     expect(player).to be_valid
   end
-  
+
   it 'requires a name' do
     expect(FactoryBot.build(:player, name: nil)).to_not be_valid
   end
-    
+
   it 'requires a valid position' do
     expect(FactoryBot.build(:player, pos: nil)).to_not be_valid
     expect(FactoryBot.build(:player, pos: 'GKK')).to_not be_valid
   end
-  
+
   it 'requires an valid OVR' do
     expect(FactoryBot.build(:player, ovr: nil)).to_not be_valid
     expect(FactoryBot.build(:player, ovr: -1)).to_not be_valid
   end
-  
+
   it 'requires a valid value' do
     expect(FactoryBot.build(:player, value: nil)).to_not be_valid
     expect(FactoryBot.build(:player, value: -1)).to_not be_valid
   end
-  
+
   it 'requires a birth year' do
     expect(FactoryBot.build(:player, birth_year: nil)).to_not be_valid
     expect(FactoryBot.build(:player, value: -1)).to_not be_valid
@@ -67,7 +67,7 @@ RSpec.describe Player, type: :model do
   end
 
   it 'starts with a history record' do
-    expect(player.player_histories.length).to be == 1
+    expect(player.histories.length).to be == 1
   end
 
   it 'records attribute changes in history' do
@@ -75,14 +75,14 @@ RSpec.describe Player, type: :model do
 
     player.ovr += 1
     player.save!
-    player.player_histories.reload
-    expect(player.player_histories.length).to be == 2
-    expect(player.player_histories.last.ovr).to be == player.ovr
+    player.histories.reload
+    expect(player.histories.length).to be == 2
+    expect(player.histories.last.ovr).to be == player.ovr
 
     player.value += 1_000_000
     player.save!
-    player.player_histories.reload
-    expect(player.player_histories.length).to be == 2
-    expect(player.player_histories.last.value).to be == player.value
-  end 
+    player.histories.reload
+    expect(player.histories.length).to be == 2
+    expect(player.histories.last.value).to be == player.value
+  end
 end
