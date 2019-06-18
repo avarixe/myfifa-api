@@ -28,14 +28,14 @@ RSpec.describe GoalsController, type: :request do
 
     it 'returns all Goals of select Team' do
       3.times do
-        player = FactoryBot.create :player, team: team
-        FactoryBot.create :goal, player: player
+        match = FactoryBot.create :match, team: team
+        FactoryBot.create :goal, match: match
       end
 
       post team_goals_search_url(team),
            headers: { 'Authorization' => "Bearer #{token.token}" }
       assert_response :success
-      goals = Goal.where(player_id: team.players.pluck(:id))
+      goals = Goal.where(match_id: team.matches.pluck(:id))
       expect(json).to be == JSON.parse(goals.to_json)
     end
 
