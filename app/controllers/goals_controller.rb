@@ -10,8 +10,8 @@ class GoalsController < APIController
     @team = Team.find(params[:team_id])
     authorize! :show, @team
     @goals = Goal
-             .joins(:player)
-             .where(players: { team_id: params[:team_id] })
+             .joins(:match)
+             .where(matches: { team_id: params[:team_id] })
     render json: filter(@goals)
   end
 
