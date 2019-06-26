@@ -82,10 +82,10 @@ class Cap < ApplicationRecord
             inclusion: { in: POSITIONS },
             uniqueness: { scope: %i[match_id start] }
   validates :rating, inclusion: 1..5, allow_nil: true
-  validate :one_team?
+  validate :same_team?
   validate :active_player?, if: :player_id
 
-  def one_team?
+  def same_team?
     return if match_id.nil? ||
               player_id.nil? ||
               match.team_id == player.team_id

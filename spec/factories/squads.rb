@@ -20,8 +20,17 @@
 FactoryBot.define do
   factory :squad do
     name { Faker::Lorem.word }
-    players_list { team.players.pluck(:id) }
-    positions_list { Cap::POSITIONS.dup.sample(11) }
     association :team, factory: :team_with_players
+
+    transient do
+      players_count { 11 }
+    end
+
+    before :create do |squad, evaluator|
+      Cap::POSITIONS.dup.sample(evaluator.players_count).each do |pos|
+        player = create :player, team: squad.team
+        squad.squad_players << create(:squad_player, squad: squad, player: player, pos: pos)
+      end
+    end
   end
 end
