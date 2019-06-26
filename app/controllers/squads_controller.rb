@@ -33,7 +33,7 @@ class SquadsController < APIController
         .require(:squad)
         .permit(
           *Squad.permitted_attributes,
-          squad_players_attributes: []
+          squad_players_attributes: SquadPlayer.permitted_attributes
         )
     end
 end

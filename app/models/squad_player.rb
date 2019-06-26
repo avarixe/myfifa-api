@@ -21,11 +21,17 @@ class SquadPlayer < ApplicationRecord
   belongs_to :squad
   belongs_to :player
 
-  validates :pos,
-            inclusion: { in: Cap::POSITIONS },
-            uniqueness: { scope: :squad }
-  validates :player_id,
-            uniqueness: { scope: :squad }
+  PERMITTED_ATTRIBUTES = %i[
+    id
+    pos
+    player_id
+  ].freeze
+
+  def self.permitted_attributes
+    PERMITTED_ATTRIBUTES
+  end
+
+  validates :pos, inclusion: { in: Cap::POSITIONS }
   validate :same_team?
 
   def same_team?

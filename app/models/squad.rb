@@ -32,6 +32,26 @@ class Squad < ApplicationRecord
 
   validates :name, presence: true
   validates :squad_players, length: { is: 11 }
+  validate :unique_positions?
+  validate :unique_players?
+
+  def unique_positions?
+    return if squad_players.map(&:pos).uniq.size == 11
+
+    errors.add :squad, 'includes at least one Position multiple times'
+  end
+
+  def unique_players?
+    return if squad_players.map(&:player_id).uniq.size == 11
+
+    errors.add :base, 'includes at least one Player multiple times'
+  end
 
   accepts_nested_attributes_for :squad_players
+
+  def as_json(options = {})
+    options[:include] ||= []
+    options[:include] += [:squad_players]
+    super
+  end
 end
