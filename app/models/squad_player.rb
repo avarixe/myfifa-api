@@ -41,4 +41,6 @@ class SquadPlayer < ApplicationRecord
 
     errors.add :base, 'Squad and Player are not of the same Team'
   end
+
+  delegate :team, to: :squad
 end
