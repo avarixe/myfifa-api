@@ -4,13 +4,11 @@
 #
 # Table name: squads
 #
-#  id             :bigint(8)        not null, primary key
-#  team_id        :bigint(8)
-#  name           :string
-#  players_list   :text             default([]), is an Array
-#  positions_list :text             default([]), is an Array
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
+#  id         :bigint(8)        not null, primary key
+#  team_id    :bigint(8)
+#  name       :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 # Indexes
 #
