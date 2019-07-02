@@ -23,6 +23,8 @@
 #
 
 class Match < ApplicationRecord
+  include Broadcastable
+
   belongs_to :team
   has_one :penalty_shootout, dependent: :destroy
   has_many :goals, dependent: :destroy

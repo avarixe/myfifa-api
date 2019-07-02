@@ -25,6 +25,8 @@
 #
 
 class Goal < ApplicationRecord
+  include Broadcastable
+
   belongs_to :match
   belongs_to :player, optional: true
   belongs_to :assisting_player,

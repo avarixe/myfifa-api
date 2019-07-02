@@ -18,6 +18,8 @@
 #
 
 class Squad < ApplicationRecord
+  include Broadcastable
+
   belongs_to :team
 
   PERMITTED_ATTRIBUTES = %i[

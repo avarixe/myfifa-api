@@ -19,6 +19,8 @@
 #
 
 class Competition < ApplicationRecord
+  include Broadcastable
+
   belongs_to :team
   has_many :stages, dependent: :destroy
 

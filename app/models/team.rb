@@ -20,6 +20,8 @@
 #
 
 class Team < ApplicationRecord
+  include Broadcastable
+
   belongs_to :user
   has_many :players, dependent: :destroy
   has_many :squads, dependent: :destroy

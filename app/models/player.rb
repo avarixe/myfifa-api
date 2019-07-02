@@ -25,6 +25,8 @@
 #
 
 class Player < ApplicationRecord
+  include Broadcastable
+
   belongs_to :team
   has_many :histories,
            class_name: 'PlayerHistory',
