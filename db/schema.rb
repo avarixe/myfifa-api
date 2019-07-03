@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_05_30_223652) do
+ActiveRecord::Schema.define(version: 2019_07_03_170233) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -129,6 +129,8 @@ ActiveRecord::Schema.define(version: 2019_05_30_223652) do
     t.string "destination"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "origin"
+    t.date "signed_date"
     t.index ["player_id"], name: "index_loans_on_player_id"
   end
 
@@ -225,13 +227,23 @@ ActiveRecord::Schema.define(version: 2019_05_30_223652) do
     t.index ["team_id"], name: "index_players_on_team_id"
   end
 
+  create_table "squad_players", force: :cascade do |t|
+    t.bigint "squad_id"
+    t.bigint "player_id"
+    t.string "pos"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["player_id"], name: "index_squad_players_on_player_id"
+    t.index ["squad_id"], name: "index_squad_players_on_squad_id"
+  end
+
   create_table "squads", force: :cascade do |t|
     t.bigint "team_id"
     t.string "name"
-    t.text "players_list", default: [], array: true
-    t.text "positions_list", default: [], array: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.text "players_list", default: [], array: true
+    t.text "positions_list", default: [], array: true
     t.index ["team_id"], name: "index_squads_on_team_id"
   end
 

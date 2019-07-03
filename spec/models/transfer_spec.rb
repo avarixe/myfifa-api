@@ -52,4 +52,13 @@ RSpec.describe Transfer, type: :model do
     expect(@player.status).to be_nil
     expect(@player.contracts.last.end_date).to be == @player.current_date
   end
+
+  it 'ends the current contract when current date == effective date' do
+    @player = FactoryBot.create(:player)
+    FactoryBot.create(:transfer, player: @player, origin: @player.team.title, effective_date: @player.team.current_date + 1.week)
+    expect(@player.status).to_not be_nil
+    @player.team.increment_date(1.week)
+    expect(@player.status).to be_nil
+    expect(@player.contracts.last.end_date).to be == @player.current_date
+  end
 end

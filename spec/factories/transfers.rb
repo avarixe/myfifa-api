@@ -26,6 +26,7 @@ FactoryBot.define do
   factory :transfer do
     origin { Faker::Team.unique.name }
     destination { Faker::Team.unique.name }
+    effective_date { Faker::Date.between(Date.today, 60.days.from_now) }
     player
   end
 end

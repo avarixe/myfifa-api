@@ -40,14 +40,13 @@ class Transfer < ApplicationRecord
     PERMITTED_ATTRIBUTES
   end
 
-  scope :active, -> { where.not(signed_date: nil) }
-
   ################
   #  VALIDATION  #
   ################
 
   validates :origin, presence: true
   validates :destination, presence: true
+  validates :effective_date, presence: true
   validates :addon_clause,
             inclusion: { in: 0..100 },
             allow_nil: true
@@ -75,10 +74,6 @@ class Transfer < ApplicationRecord
   ###############
 
   delegate :team, to: :player
-
-  def active?
-    true
-  end
 
   def out?
     team.title == origin

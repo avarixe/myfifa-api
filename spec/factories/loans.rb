@@ -11,6 +11,8 @@
 #  destination :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  origin      :string
+#  signed_date :date
 #
 # Indexes
 #
@@ -19,7 +21,9 @@
 
 FactoryBot.define do
   factory :loan do
-    destination { Faker::Team.name }
+    origin { Faker::Team.unique.name }
+    destination { Faker::Team.unique.name }
+    start_date { Faker::Date.between(Date.today, 60.days.from_now) }
     player
   end
 end

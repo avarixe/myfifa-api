@@ -11,6 +11,8 @@
 #  destination :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  origin      :string
+#  signed_date :date
 #
 # Indexes
 #
@@ -21,7 +23,9 @@ class Loan < ApplicationRecord
   belongs_to :player
 
   PERMITTED_ATTRIBUTES = %i[
+    origin
     destination
+    start_date
     returned
   ].freeze
 
@@ -36,6 +40,7 @@ class Loan < ApplicationRecord
   ################
 
   validates :start_date, presence: true
+  validates :origin, presence: true
   validates :destination, presence: true
   validates :end_date,
             date: { after_or_equal_to: :start_date },
@@ -45,11 +50,19 @@ class Loan < ApplicationRecord
   #  CALLBACKS  #
   ###############
 
-  before_validation :set_start_date
+  before_validation :set_signed_date
   after_save :update_status
+  after_update :end_current_contract, if: :loaned_in?
 
-  def set_start_date
-    self.start_date ||= team.current_date
+  def set_signed_date
+    self.signed_date ||= team.current_date
+  end
+
+  def end_current_contract
+    return if !returned? && player.contracts.none?
+
+    player.contracts.last.update(end_date: end_date)
+    player.update_status
   end
 
   ##############
@@ -81,6 +94,10 @@ class Loan < ApplicationRecord
 
   def returned
     returned?
+  end
+
+  def loaned_in?
+    team.title == destination
   end
 
   def as_json(options = {})
