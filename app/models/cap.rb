@@ -108,13 +108,11 @@ class Cap < ApplicationRecord
   end
 
   def remove_events
-    [
-      goals,
-      assists,
-      bookings,
-      sub_outs,
-      sub_ins
-    ].map(&:delete_all)
+    goals.destroy_all
+    assists.destroy_all
+    bookings.delete_all
+    sub_outs.destroy_all
+    sub_ins.destroy_all
   end
 
   def goals

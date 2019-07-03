@@ -68,7 +68,6 @@ RSpec.describe Cap, type: :model do
 
   it 'must be associated with a Player and Match of the same team' do
     @other_team = FactoryBot.create :team
-    @player = FactoryBot.create :player, team: @team
     @match = FactoryBot.create :match, team: @other_team
     expect(FactoryBot.build(:cap, player: @player, match: @match)).to_not be_valid
   end

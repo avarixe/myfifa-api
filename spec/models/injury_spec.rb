@@ -6,8 +6,8 @@
 #
 #  id          :bigint(8)        not null, primary key
 #  player_id   :bigint(8)
-#  start_date  :date
-#  end_date    :date
+#  started_on  :date
+#  ended_on    :date
 #  description :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
@@ -31,22 +31,26 @@ RSpec.describe Injury, type: :model do
   end
 
   it 'has an end date after start date' do
-    expect(FactoryBot.build(:injury, start_date: Faker::Date.forward(1), end_date: Faker::Date.backward(1))).to_not be_valid
+    expect(
+      FactoryBot.build :injury,
+                       started_on: Faker::Date.forward(1),
+                       ended_on: Faker::Date.backward(1)
+    ).to_not be_valid
   end
 
   it 'occurs on the Team current date' do
     injury = FactoryBot.create(:injury)
-    expect(injury.start_date).to be == injury.team.current_date
+    expect(injury.started_on).to be == injury.team.currently_on
     injury.team.increment_date(2.days)
     injury.update(recovered: true)
-    expect(injury.end_date).to be == injury.team.current_date
+    expect(injury.ended_on).to be == injury.team.currently_on
   end
 
   it 'changes Player status to injured when injured' do
     player.injuries.create(FactoryBot.attributes_for(:injury))
     expect(player.injured?).to be true
   end
-  
+
   it 'changes Player status when no longer injured' do
     player.injuries.create(FactoryBot.attributes_for(:injury))
     player.injuries.last.update(recovered: true)

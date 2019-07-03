@@ -4,14 +4,14 @@
 #
 # Table name: player_histories
 #
-#  id         :bigint(8)        not null, primary key
-#  player_id  :bigint(8)
-#  datestamp  :date
-#  ovr        :integer
-#  value      :integer
-#  created_at :datetime         not null
-#  updated_at :datetime         not null
-#  kit_no     :integer
+#  id          :bigint(8)        not null, primary key
+#  player_id   :bigint(8)
+#  recorded_on :date
+#  ovr         :integer
+#  value       :integer
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  kit_no      :integer
 #
 # Indexes
 #
@@ -21,7 +21,7 @@
 class PlayerHistory < ApplicationRecord
   belongs_to :player
 
-  validates :datestamp, presence: true
+  validates :recorded_on, presence: true
   validates :ovr, numericality: { only_integer: true }
   validates :value, numericality: { only_integer: true }
   validates :kit_no, numericality: { only_integer: true }, allow_nil: true
@@ -33,18 +33,18 @@ class PlayerHistory < ApplicationRecord
     errors.add(:base, :invalid)
   end
 
-  delegate :current_date, to: :player
+  delegate :currently_on, to: :player
 
   before_create :remove_duplicates
-  before_validation :set_datestamp
+  before_validation :set_recorded_on
 
   def remove_duplicates
     PlayerHistory
-      .where(player_id: player_id, datestamp: current_date)
+      .where(player_id: player_id, recorded_on: currently_on)
       .delete_all
   end
 
-  def set_datestamp
-    self.datestamp ||= current_date
+  def set_recorded_on
+    self.recorded_on ||= currently_on
   end
 end

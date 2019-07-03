@@ -64,7 +64,7 @@ module Analyzer
     def season_players
       PlayerHistory
         .where(player_id: @player_ids)
-        .order(:datestamp)
+        .order(:recorded_on)
         .group_by(&:player_id)
         .to_h
     end

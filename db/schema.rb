@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_03_170233) do
+ActiveRecord::Schema.define(version: 2019_07_03_204653) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -70,7 +70,7 @@ ActiveRecord::Schema.define(version: 2019_07_03_170233) do
 
   create_table "contracts", force: :cascade do |t|
     t.bigint "player_id"
-    t.date "signed_date"
+    t.date "signed_on"
     t.integer "wage"
     t.integer "signing_bonus"
     t.integer "release_clause"
@@ -79,8 +79,8 @@ ActiveRecord::Schema.define(version: 2019_07_03_170233) do
     t.string "bonus_req_type"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.date "end_date"
-    t.date "effective_date"
+    t.date "ended_on"
+    t.date "started_on"
     t.index ["player_id"], name: "index_contracts_on_player_id"
   end
 
@@ -114,8 +114,8 @@ ActiveRecord::Schema.define(version: 2019_07_03_170233) do
 
   create_table "injuries", force: :cascade do |t|
     t.bigint "player_id"
-    t.date "start_date"
-    t.date "end_date"
+    t.date "started_on"
+    t.date "ended_on"
     t.string "description"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -124,13 +124,13 @@ ActiveRecord::Schema.define(version: 2019_07_03_170233) do
 
   create_table "loans", force: :cascade do |t|
     t.bigint "player_id"
-    t.date "start_date"
-    t.date "end_date"
+    t.date "started_on"
+    t.date "ended_on"
     t.string "destination"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "origin"
-    t.date "signed_date"
+    t.date "signed_on"
     t.index ["player_id"], name: "index_loans_on_player_id"
   end
 
@@ -139,7 +139,7 @@ ActiveRecord::Schema.define(version: 2019_07_03_170233) do
     t.string "home"
     t.string "away"
     t.string "competition"
-    t.date "date_played"
+    t.date "played_on"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "extra_time", default: false
@@ -201,7 +201,7 @@ ActiveRecord::Schema.define(version: 2019_07_03_170233) do
 
   create_table "player_histories", force: :cascade do |t|
     t.bigint "player_id"
-    t.date "datestamp"
+    t.date "recorded_on"
     t.integer "ovr"
     t.integer "value"
     t.datetime "created_at", null: false
@@ -289,8 +289,8 @@ ActiveRecord::Schema.define(version: 2019_07_03_170233) do
   create_table "teams", force: :cascade do |t|
     t.bigint "user_id"
     t.string "title"
-    t.date "start_date"
-    t.date "current_date"
+    t.date "started_on"
+    t.date "currently_on"
     t.boolean "active", default: true
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -300,8 +300,8 @@ ActiveRecord::Schema.define(version: 2019_07_03_170233) do
 
   create_table "transfers", force: :cascade do |t|
     t.bigint "player_id"
-    t.date "signed_date"
-    t.date "effective_date"
+    t.date "signed_on"
+    t.date "moved_on"
     t.string "origin"
     t.string "destination"
     t.integer "fee"

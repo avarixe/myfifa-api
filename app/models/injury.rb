@@ -6,8 +6,8 @@
 #
 #  id          :bigint(8)        not null, primary key
 #  player_id   :bigint(8)
-#  start_date  :date
-#  end_date    :date
+#  started_on  :date
+#  ended_on    :date
 #  description :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
@@ -29,15 +29,17 @@ class Injury < ApplicationRecord
     PERMITTED_ATTRIBUTES
   end
 
-  scope :active, -> { where(end_date: nil) }
+  scope :active, -> { where(ended_on: nil) }
 
   #################
   #  VALIDATIONS  #
   #################
 
   validates :description, presence: true
-  validates :start_date, presence: true
-  validates :end_date, date: { after_or_equal_to: :start_date }, allow_nil: true
+  validates :started_on, presence: true
+  validates :ended_on,
+            date: { after_or_equal_to: :started_on },
+            allow_nil: true
   validate :no_double_injury, on: :create
 
   def no_double_injury
@@ -50,11 +52,11 @@ class Injury < ApplicationRecord
   #  CALLBACKS  #
   ###############
 
-  before_validation :set_start_date
+  before_validation :set_started_on
   after_save :update_status
 
-  def set_start_date
-    self.start_date ||= team.current_date
+  def set_started_on
+    self.started_on ||= team.currently_on
   end
 
   ##############
@@ -66,7 +68,7 @@ class Injury < ApplicationRecord
   def recovered=(val)
     return unless player_id && val
 
-    self.end_date = team.current_date
+    self.ended_on = team.currently_on
   end
 
   ###############
@@ -76,17 +78,15 @@ class Injury < ApplicationRecord
   delegate :team, to: :player
 
   def current?
-    start_date <= team.current_date &&
-      (end_date.nil? || team.current_date < end_date)
+    started_on <= team.currently_on &&
+      (ended_on.nil? || team.currently_on < ended_on)
   end
 
   def recovered?
-    end_date.present?
+    ended_on.present?
   end
 
-  def recovered
-    recovered?
-  end
+  alias recovered recovered?
 
   def as_json(options = {})
     options[:methods] ||= []

@@ -7,8 +7,8 @@
 #  id           :bigint(8)        not null, primary key
 #  user_id      :bigint(8)
 #  title        :string
-#  start_date   :date
-#  current_date :date
+#  started_on   :date
+#  currently_on :date
 #  active       :boolean          default(TRUE)
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
@@ -27,13 +27,13 @@ RSpec.describe Team, type: :model do
   it "has a valid factory" do
     expect(team).to be_valid
   end
-  
+
   it 'requires a title' do
     expect(FactoryBot.build(:team, title: nil)).to_not be_valid
   end
 
   it 'requires a start date' do
-    expect(FactoryBot.build(:team, start_date: nil)).to_not be_valid
+    expect(FactoryBot.build(:team, started_on: nil)).to_not be_valid
   end
 
   it 'requires a currency' do

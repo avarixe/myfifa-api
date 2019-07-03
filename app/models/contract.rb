@@ -6,7 +6,7 @@
 #
 #  id                :bigint(8)        not null, primary key
 #  player_id         :bigint(8)
-#  signed_date       :date
+#  signed_on         :date
 #  wage              :integer
 #  signing_bonus     :integer
 #  release_clause    :integer
@@ -15,8 +15,8 @@
 #  bonus_req_type    :string
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
-#  end_date          :date
-#  effective_date    :date
+#  ended_on          :date
+#  started_on        :date
 #
 # Indexes
 #
@@ -40,8 +40,8 @@ class Contract < ApplicationRecord
     performance_bonus
     bonus_req
     bonus_req_type
-    end_date
-    effective_date
+    ended_on
+    started_on
   ].freeze
 
   def self.permitted_attributes
@@ -49,21 +49,21 @@ class Contract < ApplicationRecord
   end
 
   scope :active, lambda { |player|
-    where('effective_date >= ?', player.current_date)
-      .where('? <= end_date', player.current_date)
+    where('started_on >= ?', player.currently_on)
+      .where('? <= ended_on', player.currently_on)
   }
 
   ################
   #  VALIDATION  #
   ################
 
-  validates :signed_date, presence: true
-  validates :effective_date,
+  validates :signed_on, presence: true
+  validates :started_on,
             date: {
-              after_or_equal_to: :signed_date,
-              before_or_equal_to: :end_date
+              after_or_equal_to: :signed_on,
+              before_or_equal_to: :ended_on
             }
-  validates :end_date, presence: true
+  validates :ended_on, presence: true
   validates :wage, numericality: { only_integer: true }
   validates :bonus_req_type,
             inclusion: { in: BONUS_REQUIREMENT_TYPES },
@@ -81,21 +81,21 @@ class Contract < ApplicationRecord
   #  CALLBACK  #
   ##############
 
-  before_validation :set_signed_date
+  before_validation :set_signed_on
   after_create :close_previous_contract
   after_create :update_status
 
-  def set_signed_date
-    self.signed_date ||= team.current_date
+  def set_signed_on
+    self.signed_on ||= currently_on
   end
 
   def close_previous_contract
     Contract
       .where(player_id: player_id)
-      .where('end_date > ?', effective_date)
+      .where('ended_on > ?', started_on)
       .where.not(id: id)
       .each do |contract|
-        contract.update!(end_date: effective_date)
+        contract.update!(ended_on: started_on)
       end
   end
 
@@ -106,28 +106,28 @@ class Contract < ApplicationRecord
   delegate :update_status, to: :player
 
   def terminate!
-    update(end_date: current_date)
+    update(ended_on: currently_on)
   end
 
   def retire!
-    update(end_date: team.end_of_season + 1.day)
+    update(ended_on: team.end_of_season + 1.day)
   end
 
   ###############
   #  ACCESSORS  #
   ###############
 
-  delegate :team, :current_date, :youth?, :loaned?, to: :player
+  delegate :team, :currently_on, :youth?, :loaned?, to: :player
 
   def current?
     pending? || active?
   end
 
   def active?
-    effective_date <= current_date && current_date < end_date
+    started_on <= currently_on && currently_on < ended_on
   end
 
   def pending?
-    signed_date <= current_date && current_date < effective_date
+    signed_on <= currently_on && currently_on < started_on
   end
 end

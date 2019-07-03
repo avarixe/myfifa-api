@@ -4,18 +4,18 @@
 #
 # Table name: transfers
 #
-#  id             :bigint(8)        not null, primary key
-#  player_id      :bigint(8)
-#  signed_date    :date
-#  effective_date :date
-#  origin         :string
-#  destination    :string
-#  fee            :integer
-#  traded_player  :string
-#  addon_clause   :integer
-#  loan           :boolean          default(FALSE)
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
+#  id            :bigint(8)        not null, primary key
+#  player_id     :bigint(8)
+#  signed_on     :date
+#  moved_on      :date
+#  origin        :string
+#  destination   :string
+#  fee           :integer
+#  traded_player :string
+#  addon_clause  :integer
+#  loan          :boolean          default(FALSE)
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
 #
 # Indexes
 #
@@ -43,7 +43,7 @@ RSpec.describe Transfer, type: :model do
 
   it 'is signed on the team current date' do
     transfer = FactoryBot.create :transfer
-    expect(transfer.signed_date).to be == transfer.team.current_date
+    expect(transfer.signed_on).to be == transfer.team.currently_on
   end
 
   it 'ends the current contract if signed date == effective date' do
@@ -51,9 +51,9 @@ RSpec.describe Transfer, type: :model do
     FactoryBot.create :transfer,
                       player: @player,
                       origin: @player.team.title,
-                      effective_date: @player.current_date
+                      moved_on: @player.currently_on
     expect(@player.status).to be_nil
-    expect(@player.contracts.last.end_date).to be == @player.current_date
+    expect(@player.contracts.last.ended_on).to be == @player.currently_on
   end
 
   it 'ends the current contract when current date == effective date' do
@@ -61,10 +61,10 @@ RSpec.describe Transfer, type: :model do
     FactoryBot.create :transfer,
                       player: @player,
                       origin: @player.team.title,
-                      effective_date: @player.current_date + 1.week
+                      moved_on: @player.currently_on + 1.week
     expect(@player.status).to_not be_nil
     @player.team.increment_date 1.week
     expect(@player.reload.status).to be_nil
-    expect(@player.contracts.last.end_date).to be == @player.current_date
+    expect(@player.contracts.last.ended_on).to be == @player.currently_on
   end
 end

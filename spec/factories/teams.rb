@@ -7,8 +7,8 @@
 #  id           :bigint(8)        not null, primary key
 #  user_id      :bigint(8)
 #  title        :string
-#  start_date   :date
-#  current_date :date
+#  started_on   :date
+#  currently_on :date
 #  active       :boolean          default(TRUE)
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
@@ -22,11 +22,11 @@
 FactoryBot.define do
   factory :team do
     title { Faker::Team.name }
-    start_date { Time.now }
+    started_on { Time.now }
     user
 
     before(:create) do |team|
-      team.current_date = team.start_date
+      team.currently_on = team.started_on
     end
 
     factory :team_with_players do

@@ -4,18 +4,18 @@
 #
 # Table name: transfers
 #
-#  id             :bigint(8)        not null, primary key
-#  player_id      :bigint(8)
-#  signed_date    :date
-#  effective_date :date
-#  origin         :string
-#  destination    :string
-#  fee            :integer
-#  traded_player  :string
-#  addon_clause   :integer
-#  loan           :boolean          default(FALSE)
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
+#  id            :bigint(8)        not null, primary key
+#  player_id     :bigint(8)
+#  signed_on     :date
+#  moved_on      :date
+#  origin        :string
+#  destination   :string
+#  fee           :integer
+#  traded_player :string
+#  addon_clause  :integer
+#  loan          :boolean          default(FALSE)
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
 #
 # Indexes
 #
@@ -26,14 +26,13 @@ class Transfer < ApplicationRecord
   belongs_to :player
 
   PERMITTED_ATTRIBUTES = %i[
-    signed_date
-    effective_date
+    signed_on
+    moved_on
     origin
     destination
     fee
     traded_player
     addon_clause
-    loan
   ].freeze
 
   def self.permitted_attributes
@@ -46,7 +45,7 @@ class Transfer < ApplicationRecord
 
   validates :origin, presence: true
   validates :destination, presence: true
-  validates :effective_date, presence: true
+  validates :moved_on, presence: true
   validates :addon_clause,
             inclusion: { in: 0..100 },
             allow_nil: true
@@ -55,17 +54,17 @@ class Transfer < ApplicationRecord
   #  CALLBACKS  #
   ###############
 
-  before_validation :set_signed_date
+  before_validation :set_signed_on
   after_create :end_current_contract, if: :out?
 
-  def set_signed_date
-    self.signed_date ||= team.current_date
+  def set_signed_on
+    self.signed_on ||= team.currently_on
   end
 
   def end_current_contract
     return if player.contracts.none?
 
-    player.contracts.last.update(end_date: effective_date)
+    player.contracts.last.update(ended_on: moved_on)
     player.update_status
   end
 

@@ -9,7 +9,7 @@
 #  home        :string
 #  away        :string
 #  competition :string
-#  date_played :date
+#  played_on   :date
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  extra_time  :boolean          default(FALSE)
@@ -27,6 +27,7 @@ FactoryBot.define do
     home { Faker::Team.unique.name }
     away { Faker::Team.unique.name }
     competition { Faker::Lorem.word }
+    played_on { Faker::Date.between(Date.today, 60.days.from_now) }
     team
   end
 end

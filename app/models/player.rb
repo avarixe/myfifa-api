@@ -135,7 +135,7 @@ class Player < ApplicationRecord
   end
 
   def end_pending_injuries
-    injuries.where(end_date: nil).update(end_date: current_date)
+    injuries.where(ended_on: nil).update(ended_on: currently_on)
   end
 
   ##############
@@ -156,7 +156,7 @@ class Player < ApplicationRecord
   #  ACCESSORS  #
   ###############
 
-  delegate :current_date, to: :team
+  delegate :currently_on, to: :team
 
   %w[active pending injured loaned].each do |condition|
     define_method "#{condition}?" do
@@ -172,7 +172,7 @@ class Player < ApplicationRecord
   end
 
   def age
-    current_date.year - birth_year
+    currently_on.year - birth_year
   end
 
   def pos_idx

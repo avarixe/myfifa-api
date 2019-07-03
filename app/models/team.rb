@@ -7,8 +7,8 @@
 #  id           :bigint(8)        not null, primary key
 #  user_id      :bigint(8)
 #  title        :string
-#  start_date   :date
-#  current_date :date
+#  started_on   :date
+#  currently_on :date
 #  active       :boolean          default(TRUE)
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
@@ -27,9 +27,9 @@ class Team < ApplicationRecord
   has_many :competitions, dependent: :destroy
 
   PERMITTED_ATTRIBUTES = %i[
-    start_date
+    started_on
     title
-    current_date
+    currently_on
     currency
   ].freeze
 
@@ -42,15 +42,15 @@ class Team < ApplicationRecord
   end
 
   validates :title, presence: true
-  validates :start_date, presence: true
-  validates :current_date, presence: true
+  validates :started_on, presence: true
+  validates :currently_on, presence: true
   validates :currency, presence: true
 
-  before_validation :set_start_date
+  before_validation :set_started_on
   after_save :update_player_statuses
 
-  def set_start_date
-    self.current_date ||= start_date
+  def set_started_on
+    self.currently_on ||= started_on
   end
 
   def team
@@ -72,23 +72,23 @@ class Team < ApplicationRecord
   end
 
   def increment_date(amount)
-    update(current_date: current_date + amount)
+    update(currently_on: currently_on + amount)
   end
 
   def time_period
-    "#{start_date.year} - #{current_date.year}"
+    "#{started_on.year} - #{currently_on.year}"
   end
 
   def current_season
-    ((current_date - start_date) / 365).to_i
+    ((currently_on - started_on) / 365).to_i
   end
 
   def end_of_season
-    start_date + (current_season + 1).years - 1.day
+    started_on + (current_season + 1).years - 1.day
   end
 
   def season_data(season)
-    season_start = start_date + season.years
+    season_start = started_on + season.years
     {
       label: "#{season_start.year} - #{season_start.year + 1}",
       start: season_start,

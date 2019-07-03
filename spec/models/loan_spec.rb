@@ -6,13 +6,13 @@
 #
 #  id          :bigint(8)        not null, primary key
 #  player_id   :bigint(8)
-#  start_date  :date
-#  end_date    :date
+#  started_on  :date
+#  ended_on    :date
 #  destination :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  origin      :string
-#  signed_date :date
+#  signed_on   :date
 #
 # Indexes
 #
@@ -40,27 +40,27 @@ RSpec.describe Loan, type: :model do
   it 'has an end date after start date' do
     expect(
       FactoryBot.build :loan,
-                       start_date: Faker::Date.forward(1),
-                       end_date: Faker::Date.backward(1)
+                       started_on: Faker::Date.forward(1),
+                       ended_on: Faker::Date.backward(1)
     ).to_not be_valid
   end
 
-  it 'sets signed_date to the Team current date' do
+  it 'sets signed date to the Team current date' do
     loan = FactoryBot.create(:loan)
-    expect(loan.signed_date).to be == loan.team.current_date
+    expect(loan.signed_on).to be == loan.team.currently_on
   end
 
-  it 'sets end_date to the Team current date' do
+  it 'sets end date to the Team current date' do
     loan = FactoryBot.create :loan
     loan.team.increment_date 2.days
     loan.update returned: true
-    expect(loan.end_date).to be == loan.team.current_date
+    expect(loan.ended_on).to be == loan.team.currently_on
   end
 
   it 'changes status to loaned when loaned out' do
     FactoryBot.create :loan,
                       player: player,
-                      start_date: player.current_date,
+                      started_on: player.currently_on,
                       origin: player.team.title
     expect(player.loaned?).to be true
   end
@@ -83,15 +83,15 @@ RSpec.describe Loan, type: :model do
     loan.update returned: true
 
     expect(player.status).to be_nil
-    expect(player.contracts.last.end_date).to be == player.current_date
+    expect(player.contracts.last.ended_on).to be == player.currently_on
   end
 
   it 'ends tracking of any injuries upon creation' do
     FactoryBot.create :injury, player: player
     FactoryBot.create :loan,
                       player: player,
-                      start_date: player.current_date
+                      started_on: player.currently_on
     expect(player.injured?).to be false
-    expect(player.injuries.last.end_date).to be == player.current_date
+    expect(player.injuries.last.ended_on).to be == player.currently_on
   end
 end
