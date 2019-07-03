@@ -185,42 +185,4 @@ RSpec.describe PlayersController, type: :request do
       expect(json).to be == JSON.parse(player.histories.to_json)
     end
   end
-
-  describe 'GET #current_loan' do
-    let(:player) { FactoryBot.create(:player, team: team) }
-
-    before do
-      FactoryBot.create(:loan, player: player)
-      get current_loan_player_url(player),
-          headers: { 'Authorization' => "Bearer #{token.token}" }
-    end
-
-    it 'requires a valid token', skip_request: true do
-      get current_loan_player_url(player)
-      assert_response 401
-    end
-
-    it 'returns Loan JSON' do
-      expect(json).to be == JSON.parse(player.loans.last.to_json)
-    end
-  end
-
-  describe 'GET #current_injury' do
-    let(:player) { FactoryBot.create(:player, team: team) }
-
-    before do
-      FactoryBot.create(:injury, player: player)
-      get current_injury_player_url(player),
-          headers: { 'Authorization' => "Bearer #{token.token}" }
-    end
-
-    it 'requires a valid token', skip_request: true do
-      get current_injury_player_url(player)
-      assert_response 401
-    end
-
-    it 'returns Injury JSON' do
-      expect(json).to be == JSON.parse(player.injuries.last.to_json)
-    end
-  end
 end

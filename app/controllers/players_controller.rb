@@ -40,14 +40,6 @@ class PlayersController < APIController
     render json: @player.histories
   end
 
-  def current_loan
-    render json: @player.current_loan
-  end
-
-  def current_injury
-    render json: @player.current_injury
-  end
-
   private
 
     def player_params
