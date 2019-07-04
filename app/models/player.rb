@@ -48,6 +48,9 @@ class Player < ApplicationRecord
            dependent: :destroy
   has_many :bookings, dependent: :destroy
 
+  has_many :squad_players, dependent: :destroy
+  has_many :squads, through: :squad_players
+
   STATUSES = %w[
     Pending
     Active

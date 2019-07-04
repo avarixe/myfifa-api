@@ -98,10 +98,9 @@ class Match < ApplicationRecord
       # Remove existing Caps
       caps.map(&:destroy)
 
-      # Add new Caps from Squad player list
-      squad.players_list.each_with_index do |player_id, i|
-        caps.create player_id: player_id,
-                    pos: squad.positions_list[i]
+      # Add new Caps from Squad Players
+      squad.squad_players.each do |item|
+        caps.create player_id: item.player_id, pos: item.pos
       end
     end
 

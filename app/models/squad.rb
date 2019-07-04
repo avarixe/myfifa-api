@@ -4,13 +4,11 @@
 #
 # Table name: squads
 #
-#  id             :bigint(8)        not null, primary key
-#  team_id        :bigint(8)
-#  name           :string
-#  players_list   :text             default([]), is an Array
-#  positions_list :text             default([]), is an Array
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
+#  id         :bigint(8)        not null, primary key
+#  team_id    :bigint(8)
+#  name       :string
+#  created_at :datetime         not null
+#  updated_at :datetime         not null
 #
 # Indexes
 #
@@ -21,11 +19,11 @@ class Squad < ApplicationRecord
   include Broadcastable
 
   belongs_to :team
+  has_many :squad_players, dependent: :destroy
+  has_many :players, through: :squad_players
 
   PERMITTED_ATTRIBUTES = %i[
     name
-    players_list
-    positions_list
   ].freeze
 
   def self.permitted_attributes
@@ -33,39 +31,27 @@ class Squad < ApplicationRecord
   end
 
   validates :name, presence: true
+  validates :squad_players, length: { is: 11 }
   validate :unique_positions?
-  validate :eleven_players?
   validate :unique_players?
-  validate :valid_players?
 
   def unique_positions?
-    return if positions_list.uniq.length == 11
+    return if squad_players.map(&:pos).uniq.size == 11
 
-    errors.add :positions_list, 'must have eleven unique Positions.'
-  end
-
-  def eleven_players?
-    return if players_list.length == 11 &&
-              positions_list.length == 11 &&
-              positions_list.all? { |pos| valid_pos? pos }
-
-    errors.add :players_list, 'needs to have eleven Players.'
+    errors.add :squad, 'includes at least one Position multiple times'
   end
 
   def unique_players?
-    return if players_list.uniq.length == 11
+    return if squad_players.map(&:player_id).uniq.size == 11
 
-    errors.add :players_list, 'can\'t assign a Player to multiple Positions.'
+    errors.add :base, 'includes at least one Player multiple times'
   end
 
-  def valid_players?
-    valid_ids = team.players.pluck(:id).map(&:to_s)
-    return if (players_list & valid_ids) == players_list
+  accepts_nested_attributes_for :squad_players
 
-    errors.add :players_list, 'contains invalid Players'
-  end
-
-  def valid_pos?(pos)
-    Cap::POSITIONS.include? pos
+  def as_json(options = {})
+    options[:include] ||= []
+    options[:include] += [:squad_players]
+    super
   end
 end
