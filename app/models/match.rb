@@ -9,7 +9,7 @@
 #  home        :string
 #  away        :string
 #  competition :string
-#  date_played :date
+#  played_on   :date
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  extra_time  :boolean          default(FALSE)
@@ -37,7 +37,7 @@ class Match < ApplicationRecord
   PERMITTED_ATTRIBUTES = %i[
     home
     away
-    date_played
+    played_on
     competition
     stage
     extra_time
@@ -56,7 +56,7 @@ class Match < ApplicationRecord
   validates :home, presence: true
   validates :away, presence: true
   validates :competition, presence: true
-  validates :date_played, presence: true
+  validates :played_on, presence: true
   validate :different_teams
 
   def different_teams
@@ -68,19 +68,19 @@ class Match < ApplicationRecord
   ##############
 
   before_validation :set_defaults
-  after_save :increment_current_date, if: :saved_change_to_date_played?
+  after_save :increment_currently_on, if: :saved_change_to_played_on?
   after_save :set_cap_stop_times, if: :saved_change_to_extra_time?
 
   def set_defaults
-    self.date_played ||= current_date
+    self.played_on ||= currently_on
     self.home_score ||= 0
     self.away_score ||= 0
   end
 
-  def increment_current_date
-    return if current_date >= date_played
+  def increment_currently_on
+    return if currently_on >= played_on
 
-    team.update(current_date: date_played)
+    team.update(currently_on: played_on)
   end
 
   def set_cap_stop_times
@@ -112,7 +112,7 @@ class Match < ApplicationRecord
   #  ACCESSORS  #
   ###############
 
-  delegate :current_date, to: :team
+  delegate :currently_on, to: :team
 
   def team_played?
     [home, away].include? team.title

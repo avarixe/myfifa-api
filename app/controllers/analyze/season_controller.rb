@@ -25,7 +25,7 @@ module Analyze
       def set_player_ids
         @player_ids = @team.players.pluck(:id)
         @player_ids &= Contract.where(
-          'effective_date <= ? AND ? < end_date',
+          'started_on <= ? AND ? < ended_on',
           @season[:end],
           @season[:start]
         ).pluck(:player_id)
@@ -35,7 +35,7 @@ module Analyze
       def set_match_ids
         @match_ids = @team
                      .matches
-                     .where(date_played: @season[:start]..@season[:end])
+                     .where(played_on: @season[:start]..@season[:end])
                      .pluck(:id)
                      .map(&:to_s)
       end

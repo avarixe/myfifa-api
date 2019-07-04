@@ -6,8 +6,8 @@
 #
 #  id          :bigint(8)        not null, primary key
 #  player_id   :bigint(8)
-#  start_date  :date
-#  end_date    :date
+#  started_on  :date
+#  ended_on    :date
 #  description :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null

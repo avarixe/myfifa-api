@@ -9,7 +9,7 @@
 #  home        :string
 #  away        :string
 #  competition :string
-#  date_played :date
+#  played_on   :date
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  extra_time  :boolean          default(FALSE)
@@ -25,7 +25,7 @@
 require 'rails_helper'
 
 RSpec.describe Match, type: :model do
-  let(:match) { FactoryBot.create(:match) }
+  let(:match) { FactoryBot.create :match }
 
   it 'has a valid factory' do
     expect(match).to be_valid
@@ -48,15 +48,18 @@ RSpec.describe Match, type: :model do
     expect(FactoryBot.build(:match, home: team, away: team)).to_not be_valid
   end
 
-  it 'occurs on the Team current date' do
-    expect(match.date_played).to be == match.team.current_date
+  it 'defaults date to the Team current date' do
+    @match = FactoryBot.create :match, played_on: nil
+    expect(match.played_on).to be == match.team.currently_on
   end
 
   it 'detects when user team is playing' do
     team = FactoryBot.create(:team)
     expect(FactoryBot.build(:match).team_played?).to be false
-    expect(FactoryBot.build(:match, team: team, home: team.title).team_played?).to be true
-    expect(FactoryBot.build(:match, team: team, away: team.title).team_played?).to be true
+    match1 = FactoryBot.build :match, team: team, home: team.title
+    expect(match1.team_played?).to be true
+    match2 = FactoryBot.build :match, team: team, away: team.title
+    expect(match2.team_played?).to be true
   end
 
   it 'starts off 0 - 0' do
@@ -67,7 +70,11 @@ RSpec.describe Match, type: :model do
     @match = FactoryBot.create :match
     @player = FactoryBot.create :player, team: @match.team
     FactoryBot.create :cap, match: @match, player: @player
-    expect(FactoryBot.build(:cap, match: @match, player: @player)).to_not be_valid
+    expect(
+      FactoryBot.build :cap,
+                       match: @match,
+                       player: @player
+    ).to_not be_valid
   end
 
   it 'sets Match times to 120 minutes if extra time' do
@@ -79,13 +86,13 @@ RSpec.describe Match, type: :model do
     expect(cap.reload.stop).to be == 90
   end
 
-  it 'does not move current_date forward if date is behind current_date' do
-    match.update(date_played: match.current_date - 1.day)
-    expect(match.team.reload.current_date).to_not be == match.date_played
+  it 'does not move current date forward if date is behind current date' do
+    match.update(played_on: match.currently_on - 1.day)
+    expect(match.team.reload.currently_on).to_not be == match.played_on
   end
 
-  it 'moves current_date forward if date is ahead of current_date' do
-    match.update(date_played: match.current_date + 1.day)
-    expect(match.team.reload.current_date).to be == match.date_played
+  it 'moves current date forward if date is ahead of current date' do
+    match.update(played_on: match.currently_on + 1.day)
+    expect(match.team.reload.currently_on).to be == match.played_on
   end
 end

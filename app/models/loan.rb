@@ -6,11 +6,13 @@
 #
 #  id          :bigint(8)        not null, primary key
 #  player_id   :bigint(8)
-#  start_date  :date
-#  end_date    :date
+#  started_on  :date
+#  ended_on    :date
 #  destination :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  origin      :string
+#  signed_on   :date
 #
 # Indexes
 #
@@ -23,7 +25,9 @@ class Loan < ApplicationRecord
   belongs_to :player
 
   PERMITTED_ATTRIBUTES = %i[
+    origin
     destination
+    started_on
     returned
   ].freeze
 
@@ -31,27 +35,36 @@ class Loan < ApplicationRecord
     PERMITTED_ATTRIBUTES
   end
 
-  scope :active, -> { where(end_date: nil) }
+  scope :active, -> { where(ended_on: nil) }
 
   ################
   #  VALIDATION  #
   ################
 
-  validates :start_date, presence: true
+  validates :started_on, presence: true
+  validates :origin, presence: true
   validates :destination, presence: true
-  validates :end_date,
-            date: { after_or_equal_to: :start_date },
+  validates :ended_on,
+            date: { after_or_equal_to: :started_on },
             allow_nil: true
 
   ###############
   #  CALLBACKS  #
   ###############
 
-  before_validation :set_start_date
+  before_validation :set_signed_on
   after_save :update_status
+  after_update :end_current_contract, if: :loaned_in?
 
-  def set_start_date
-    self.start_date ||= team.current_date
+  def set_signed_on
+    self.signed_on ||= team.currently_on
+  end
+
+  def end_current_contract
+    return if !returned? && player.contracts.none?
+
+    player.contracts.last.update(ended_on: ended_on)
+    player.update_status
   end
 
   ##############
@@ -63,7 +76,7 @@ class Loan < ApplicationRecord
   def returned=(val)
     return unless player_id && val
 
-    self.end_date = team.current_date
+    self.ended_on = team.currently_on
   end
 
   ###############
@@ -73,16 +86,18 @@ class Loan < ApplicationRecord
   delegate :team, to: :player
 
   def current?
-    start_date <= team.current_date &&
-      (end_date.nil? || team.current_date < end_date)
+    started_on <= team.currently_on &&
+      (ended_on.nil? || team.currently_on < ended_on)
   end
 
   def returned?
-    end_date.present?
+    ended_on.present?
   end
 
-  def returned
-    returned?
+  alias returned returned?
+
+  def loaned_in?
+    team.title == destination
   end
 
   def as_json(options = {})

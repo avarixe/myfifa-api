@@ -6,7 +6,7 @@
 #
 #  id                :bigint(8)        not null, primary key
 #  player_id         :bigint(8)
-#  signed_date       :date
+#  signed_on         :date
 #  wage              :integer
 #  signing_bonus     :integer
 #  release_clause    :integer
@@ -15,8 +15,8 @@
 #  bonus_req_type    :string
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
-#  end_date          :date
-#  effective_date    :date
+#  ended_on          :date
+#  started_on        :date
 #
 # Indexes
 #
@@ -36,11 +36,11 @@ RSpec.describe Contract, type: :model do
   end
 
   it 'requires an effective date' do
-    expect(FactoryBot.build(:contract, effective_date: nil)).to_not be_valid
+    expect(FactoryBot.build(:contract, started_on: nil)).to_not be_valid
   end
 
   it 'requires an end date' do
-    expect(FactoryBot.build(:contract, end_date: nil)).to_not be_valid
+    expect(FactoryBot.build(:contract, ended_on: nil)).to_not be_valid
   end
 
   it 'requires a wage' do
@@ -51,16 +51,16 @@ RSpec.describe Contract, type: :model do
     expect(FactoryBot.build(:contract, bonus_req: bonus_req, performance_bonus: perf_bonus, bonus_req_type: Faker::Lorem.word)).to_not be_valid
   end
 
-  it 'sets Player as Pending if effective_date > current date' do
+  it 'sets Player as Pending if started_on > current date' do
     future_date = Faker::Date.between(1.days.from_now, 365.days.from_now)
-    contract = FactoryBot.create :contract, effective_date: future_date
+    contract = FactoryBot.create :contract, started_on: future_date
     expect(contract.player.status).to be == 'Pending'
   end
 
   it 'sets Pending Player as Active once current date reaches effective date' do
     future_date = Faker::Date.between(1.days.from_now, 365.days.from_now)
-    contract = FactoryBot.create :contract, effective_date: future_date
-    contract.player.team.update(current_date: future_date)
+    contract = FactoryBot.create :contract, started_on: future_date
+    contract.player.team.update(currently_on: future_date)
     expect(contract.player.reload.active?).to be == true
   end
 
@@ -72,7 +72,7 @@ RSpec.describe Contract, type: :model do
 
   it 'sets Active Player as Inactive once contract expires' do
     player = FactoryBot.create :player
-    player.contracts.last.update(end_date: 1.day.from_now)
+    player.contracts.last.update(ended_on: 1.day.from_now)
     player.team.increment_date(1.week)
     player.reload
     expect(player.active?).to be_falsey
@@ -92,27 +92,27 @@ RSpec.describe Contract, type: :model do
     @player = FactoryBot.create(:player)
     FactoryBot.create :contract,
                       player: @player,
-                      effective_date: @player.current_date,
-                      end_date: @player.current_date + 1.week
+                      started_on: @player.currently_on,
+                      ended_on: @player.currently_on + 1.week
     FactoryBot.create :injury, player: @player
     @player.team.increment_date 1.week
     @player.reload
     expect(@player.injured?).to be false
-    expect(@player.injuries.last.end_date).to be == @player.current_date
+    expect(@player.injuries.last.ended_on).to be == @player.currently_on
   end
 
   it 'ends contract immediately when terminated' do
     team = contract.team
-    contract.update(end_date: team.current_date + 2.year)
+    contract.update(ended_on: team.currently_on + 2.year)
     contract.terminate!
     expect(contract.active?).to be_falsey
   end
 
   it 'end contract at the end of the season when retired' do
     team = contract.team
-    contract.update(end_date: team.current_date + 2.year)
+    contract.update(ended_on: team.currently_on + 2.year)
     contract.retire!
-    expect(contract.end_date).to be == team.end_of_season + 1.day
+    expect(contract.ended_on).to be == team.end_of_season + 1.day
   end
 
   it 'terminates the previous contract' do
@@ -120,10 +120,10 @@ RSpec.describe Contract, type: :model do
     player = contract.player
 
     new_contract = player.contracts.create(
-      FactoryBot.attributes_for :contract, effective_date: player.current_date
+      FactoryBot.attributes_for :contract, started_on: player.currently_on
     )
 
     expect(player.reload.active?).to be_truthy
-    expect(contract.reload.end_date).to be == contract.current_date
+    expect(contract.reload.ended_on).to be == contract.currently_on
   end
 end
