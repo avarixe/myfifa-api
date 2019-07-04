@@ -19,6 +19,8 @@
 #
 
 class Stage < ApplicationRecord
+  include Broadcastable
+
   default_scope { order(num_teams: :desc, id: :asc) }
   belongs_to :competition
   has_many :table_rows, dependent: :destroy

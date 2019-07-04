@@ -21,6 +21,8 @@
 #
 
 class TableRow < ApplicationRecord
+  include Broadcastable
+
   default_scope do
     order Arel.sql('(3 * wins + draws) DESC,'\
                    '(goals_for - goals_against) DESC,'\

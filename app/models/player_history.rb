@@ -19,6 +19,8 @@
 #
 
 class PlayerHistory < ApplicationRecord
+  include Broadcastable
+
   belongs_to :player
 
   validates :recorded_on, presence: true

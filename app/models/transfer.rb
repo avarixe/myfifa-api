@@ -23,6 +23,8 @@
 #
 
 class Transfer < ApplicationRecord
+  include Broadcastable
+
   belongs_to :player
 
   PERMITTED_ATTRIBUTES = %i[

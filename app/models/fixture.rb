@@ -19,6 +19,8 @@
 #
 
 class Fixture < ApplicationRecord
+  include Broadcastable
+
   belongs_to :stage
 
   PERMITTED_ATTRIBUTES = %i[

@@ -51,9 +51,23 @@ RSpec.describe SquadsController, type: :request do
   describe 'POST #create' do
     before :each do |test|
       unless test.metadata[:skip_before]
+        squad_params = FactoryBot.attributes_for(:squad, team: team)
+        squad_params[:squad_players_attributes] = []
+
+        positions = Cap::POSITIONS.sample(11)
+        11.times do |i|
+          player = FactoryBot.create :player, team: team
+          squad_params[:squad_players_attributes] << FactoryBot.attributes_for(
+            :squad_player,
+            player_id: player.id,
+            pos: positions[i],
+            squad: nil
+          ).except(:squad)
+        end
+
         post team_squads_url(team),
              headers: { 'Authorization' => "Bearer #{token.token}" },
-             params: { squad: FactoryBot.attributes_for(:squad, team: team) }
+             params: { squad: squad_params }
       end
     end
 
@@ -74,10 +88,26 @@ RSpec.describe SquadsController, type: :request do
   end
 
   describe 'PATCH #update' do
+    before :each do |test|
+      @squad = FactoryBot.create :squad, team: team
+      @squad_params = FactoryBot.attributes_for(:squad, team: team)
+      @squad_params[:squad_players_attributes] = []
+
+      positions = Cap::POSITIONS.sample(11)
+      @squad.squad_players.each_with_index do |item, i|
+        player = FactoryBot.create :player, team: team
+        @squad_params[:squad_players_attributes] << FactoryBot.attributes_for(
+          :squad_player,
+          player_id: player.id,
+          pos: positions[i],
+          squad: nil
+        ).except(:squad).merge(id: item.id)
+      end
+    end
+
     it 'requires a valid token' do
-      squad = FactoryBot.create :squad, team: team
-      patch squad_url(squad),
-            params: { squad: FactoryBot.attributes_for(:squad, team: team) }
+      patch squad_url(@squad),
+            params: { squad: @squad_params }
       assert_response 401
     end
 
@@ -85,16 +115,15 @@ RSpec.describe SquadsController, type: :request do
       squad = FactoryBot.create :squad
       patch squad_url(squad),
             headers: { 'Authorization' => "Bearer #{token.token}" },
-            params: { squad: FactoryBot.attributes_for(:squad, team: team) }
+            params: { squad: @squad_params }
       assert_response 403
     end
 
     it 'returns updated Squad JSON' do
-      squad = FactoryBot.create :squad, team: team
-      patch squad_url(squad),
+      patch squad_url(@squad),
             headers: { 'Authorization' => "Bearer #{token.token}" },
-            params: { squad: FactoryBot.attributes_for(:squad, team: team) }
-      expect(json).to be == JSON.parse(squad.reload.to_json)
+            params: { squad: @squad_params }
+      expect(json).to be == JSON.parse(@squad.reload.to_json)
     end
   end
 

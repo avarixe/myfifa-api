@@ -23,6 +23,8 @@
 #
 
 class Substitution < ApplicationRecord
+  include Broadcastable
+
   belongs_to :match
   belongs_to :player
   belongs_to :replacement, class_name: 'Player'

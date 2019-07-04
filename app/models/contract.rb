@@ -24,6 +24,8 @@
 #
 
 class Contract < ApplicationRecord
+  include Broadcastable
+
   belongs_to :player
 
   BONUS_REQUIREMENT_TYPES = [
