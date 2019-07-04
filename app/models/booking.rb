@@ -20,6 +20,8 @@
 #
 
 class Booking < ApplicationRecord
+  include Broadcastable
+
   belongs_to :match
   belongs_to :player, optional: true
 

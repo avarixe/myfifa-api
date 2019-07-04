@@ -22,6 +22,8 @@
 #
 
 class Cap < ApplicationRecord
+  include Broadcastable
+
   belongs_to :match
   belongs_to :player
 

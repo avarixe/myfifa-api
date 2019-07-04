@@ -19,6 +19,8 @@
 #
 
 class PlayerHistory < ApplicationRecord
+  include Broadcastable
+
   belongs_to :player
 
   validates :datestamp, presence: true

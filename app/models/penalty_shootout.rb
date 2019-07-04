@@ -17,6 +17,8 @@
 #
 
 class PenaltyShootout < ApplicationRecord
+  include Broadcastable
+
   belongs_to :match
 
   PERMITTED_ATTRIBUTES = %i[
