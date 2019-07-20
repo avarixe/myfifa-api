@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_03_204653) do
+ActiveRecord::Schema.define(version: 2019_07_20_212649) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,22 +50,6 @@ ActiveRecord::Schema.define(version: 2019_07_03_204653) do
     t.datetime "updated_at", null: false
     t.index ["season"], name: "index_competitions_on_season"
     t.index ["team_id"], name: "index_competitions_on_team_id"
-  end
-
-  create_table "contract_histories", force: :cascade do |t|
-    t.bigint "contract_id"
-    t.date "datestamp"
-    t.integer "wage"
-    t.integer "signing_bonus"
-    t.integer "release_clause"
-    t.integer "performance_bonus"
-    t.integer "bonus_req"
-    t.string "bonus_req_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.date "end_date"
-    t.date "effective_date"
-    t.index ["contract_id"], name: "index_contract_histories_on_contract_id"
   end
 
   create_table "contracts", force: :cascade do |t|
@@ -242,8 +226,6 @@ ActiveRecord::Schema.define(version: 2019_07_03_204653) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.text "players_list", default: [], array: true
-    t.text "positions_list", default: [], array: true
     t.index ["team_id"], name: "index_squads_on_team_id"
   end
 
@@ -307,7 +289,6 @@ ActiveRecord::Schema.define(version: 2019_07_03_204653) do
     t.integer "fee"
     t.string "traded_player"
     t.integer "addon_clause"
-    t.boolean "loan", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["player_id"], name: "index_transfers_on_player_id"
