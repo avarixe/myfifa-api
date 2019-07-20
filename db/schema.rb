@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_20_212033) do
+ActiveRecord::Schema.define(version: 2019_07_20_212649) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -52,22 +52,6 @@ ActiveRecord::Schema.define(version: 2019_07_20_212033) do
     t.index ["team_id"], name: "index_competitions_on_team_id"
   end
 
-  create_table "contract_histories", force: :cascade do |t|
-    t.bigint "contract_id"
-    t.date "datestamp"
-    t.integer "wage"
-    t.integer "signing_bonus"
-    t.integer "release_clause"
-    t.integer "performance_bonus"
-    t.integer "bonus_req"
-    t.string "bonus_req_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
-    t.date "end_date"
-    t.date "effective_date"
-    t.index ["contract_id"], name: "index_contract_histories_on_contract_id"
-  end
-
   create_table "contracts", force: :cascade do |t|
     t.bigint "player_id"
     t.date "signed_on"
@@ -82,13 +66,6 @@ ActiveRecord::Schema.define(version: 2019_07_20_212033) do
     t.date "ended_on"
     t.date "started_on"
     t.index ["player_id"], name: "index_contracts_on_player_id"
-  end
-
-  create_table "fixture_legs", force: :cascade do |t|
-    t.string "home_score"
-    t.string "away_score"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "fixtures", force: :cascade do |t|
