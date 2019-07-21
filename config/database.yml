@@ -9,12 +9,12 @@ default: &default
 
 test:
   <<: *default
-  database: myfifa_api_test
+  database: myfifa_test
 
 development:
   <<: *default
-  database: myfifa_api_dev
+  database: myfifa_dev
 
 production:
   <<: *default
-  database: myfifa_api_pro
+  database: myfifa_pro
