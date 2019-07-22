@@ -22,6 +22,12 @@ class Fixture < ApplicationRecord
   include Broadcastable
 
   belongs_to :stage
+  has_many :legs,
+           class_name: 'FixtureLeg',
+           inverse_of: :fixture,
+           dependent: :destroy
+
+  accepts_nested_attributes_for :legs
 
   PERMITTED_ATTRIBUTES = %i[
     home_team
