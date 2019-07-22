@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_07_20_213620) do
+ActiveRecord::Schema.define(version: 2019_07_22_064147) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -81,8 +81,6 @@ ActiveRecord::Schema.define(version: 2019_07_20_213620) do
     t.bigint "stage_id"
     t.string "home_team"
     t.string "away_team"
-    t.string "home_score"
-    t.string "away_score"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["stage_id"], name: "index_fixtures_on_stage_id"

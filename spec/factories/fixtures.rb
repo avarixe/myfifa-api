@@ -25,7 +25,9 @@ FactoryBot.define do
     end
 
     before :create do |fixture, evaluator|
-      create_list :fixture_leg, evaluator.legs_count, fixture: fixture
+      evaluator.legs_count.times do
+        fixture.legs.build
+      end
     end
 
     factory :completed_fixture do
