@@ -29,6 +29,11 @@ class FixturesController < APIController
   private
 
     def fixture_params
-      params.require(:fixture).permit Fixture.permitted_attributes
+      params
+        .require(:fixture)
+        .permit(
+          *Fixture.permitted_attributes,
+          legs_attributes: FixtureLeg.permitted_attributes
+        )
     end
 end

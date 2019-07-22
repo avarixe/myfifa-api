@@ -6,8 +6,6 @@
 #  stage_id   :bigint(8)
 #  home_team  :string
 #  away_team  :string
-#  home_score :string
-#  away_score :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #
@@ -23,5 +21,9 @@ RSpec.describe Fixture, type: :model do
 
   it 'has a valid factory' do
     expect(fixture).to be_valid
+  end
+
+  it 'requires at least one FixtureLeg' do
+    expect(FactoryBot.build(:fixture, legs_count: 0)).to_not be_valid
   end
 end

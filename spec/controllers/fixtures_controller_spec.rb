@@ -56,9 +56,15 @@ RSpec.describe FixturesController, type: :request do
   describe 'POST #create' do
     before do |test|
       unless test.metadata[:skip_before]
+        fixture_params = FactoryBot.attributes_for :completed_fixture,
+                                                   legs_count: 0
+        fixture_params[:legs_attributes] = [
+          FactoryBot.attributes_for(:fixture_leg).except(:fixture)
+        ]
+
         post stage_fixtures_url(stage),
              headers: { 'Authorization' => "Bearer #{token.token}" },
-             params: { fixture: FactoryBot.attributes_for(:completed_fixture) }
+             params: { fixture: fixture_params }
       end
     end
 
@@ -71,13 +77,27 @@ RSpec.describe FixturesController, type: :request do
     it 'returns Fixture JSON' do
       expect(json).to be == JSON.parse(Fixture.last.to_json)
     end
+
+    it 'creates nested attribute FixtureLegs' do
+      expect(Fixture.last.legs.count).to be == 1
+    end
   end
 
   describe 'PATCH #update' do
     it 'requires a valid token', skip_before: true do
       fixture = FactoryBot.create :fixture, stage: stage
+
+      fixture_params = FactoryBot.attributes_for :completed_fixture,
+                                                 legs_count: 0
+      fixture_params[:legs_attributes] = []
+      fixture.legs.each do |leg|
+        fixture_params[:legs_attributes] << FactoryBot.attributes_for(:fixture_leg)
+                                            .except(:fixture)
+                                            .merge(id: leg.id)
+      end
+
       patch fixture_url(fixture),
-            params: { fixture: FactoryBot.attributes_for(:completed_fixture) }
+            params: { fixture: fixture_params }
       assert_response 401
     end
 

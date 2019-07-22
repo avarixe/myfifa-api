@@ -58,7 +58,11 @@ class Stage < ApplicationRecord
     if table?
       num_teams.times { table_rows.create! }
     else
-      num_fixtures.times { fixtures.create! }
+      num_fixtures.times do
+        fixture = fixtures.new
+        fixture.legs << FixtureLeg.new
+        fixture.save!
+      end
     end
   end
 

@@ -22,23 +22,30 @@ class Fixture < ApplicationRecord
   include Broadcastable
 
   belongs_to :stage
+  has_many :legs,
+           class_name: 'FixtureLeg',
+           inverse_of: :fixture,
+           dependent: :destroy
+
+  accepts_nested_attributes_for :legs
 
   PERMITTED_ATTRIBUTES = %i[
     home_team
     away_team
-    home_score
-    away_score
   ].freeze
 
   def self.permitted_attributes
     PERMITTED_ATTRIBUTES
   end
 
+  validates :legs,
+            length: { minimum: 1, message: 'are missing for Fixture' }
+
   delegate :team, :competition_id, to: :stage
 
   def as_json(options = {})
     options[:methods] ||= []
-    options[:methods] += %i[competition_id]
+    options[:methods] += %i[competition_id legs]
     super
   end
 end

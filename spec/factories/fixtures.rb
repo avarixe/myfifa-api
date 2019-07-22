@@ -20,11 +20,21 @@ FactoryBot.define do
   factory :fixture do
     stage
 
+    transient do
+      legs_count { 1 }
+    end
+
+    before :create do |fixture, evaluator|
+      evaluator.legs_count.times do
+        fixture.legs.build
+      end
+    end
+
     factory :completed_fixture do
       home_team { Faker::Team.name }
       away_team { Faker::Team.name }
-      home_score { Faker::Number.between(0, 3) }
-      away_score { Faker::Number.between(0, 3) }
+      # home_score { Faker::Number.between(0, 3) }
+      # away_score { Faker::Number.between(0, 3) }
     end
   end
 end

@@ -22,6 +22,8 @@ class Squad < ApplicationRecord
   has_many :squad_players, dependent: :destroy
   has_many :players, through: :squad_players
 
+  accepts_nested_attributes_for :squad_players
+
   PERMITTED_ATTRIBUTES = %i[
     name
   ].freeze
@@ -46,8 +48,6 @@ class Squad < ApplicationRecord
 
     errors.add :base, 'includes at least one Player multiple times'
   end
-
-  accepts_nested_attributes_for :squad_players
 
   def as_json(options = {})
     options[:include] ||= []
