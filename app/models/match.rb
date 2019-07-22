@@ -156,6 +156,8 @@ class Match < ApplicationRecord
     options[:methods] ||= []
     options[:methods] += %i[
       score
+      team_score
+      other_score
       team_result
       penalty_shootout
     ]
