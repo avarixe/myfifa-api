@@ -27,7 +27,7 @@ class Fixture < ApplicationRecord
            inverse_of: :fixture,
            dependent: :destroy
 
-  accepts_nested_attributes_for :legs
+  accepts_nested_attributes_for :legs, allow_destroy: true
 
   PERMITTED_ATTRIBUTES = %i[
     home_team
