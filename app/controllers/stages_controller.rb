@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 class StagesController < APIController
+  before_action :set_stage, only: %i[show update destroy]
   load_and_authorize_resource :competition
   load_and_authorize_resource through: :competition, shallow: true
 
@@ -8,13 +9,13 @@ class StagesController < APIController
     @team = Team.find(params[:team_id])
     authorize! :show, @team
     @stages = Stage
-              .includes(:table_rows, :fixtures)
+              .includes(:table_rows, fixtures: :legs)
               .where(competition_id: @team.competitions.pluck(:id))
     render json: @stages
   end
 
   def index
-    render json: @stages.includes(:table_rows, :fixtures)
+    render json: @stages.includes(:table_rows, fixtures: :legs)
   end
 
   def show
@@ -36,6 +37,10 @@ class StagesController < APIController
   end
 
   private
+
+    def set_stage
+      @stage = Stage.includes(fixtures: :legs).find(params[:id])
+    end
 
     def stage_params
       params.require(:stage).permit Stage.permitted_attributes
