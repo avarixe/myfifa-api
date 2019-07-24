@@ -17,6 +17,8 @@
 #
 
 class FixtureLeg < ApplicationRecord
+  include Broadcastable
+
   belongs_to :fixture
 
   PERMITTED_ATTRIBUTES = %i[
