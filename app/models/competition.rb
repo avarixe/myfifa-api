@@ -29,7 +29,6 @@ class Competition < ApplicationRecord
     num_teams
     num_teams_per_group
     num_advances_from_group
-    num_matches_per_fixture
   ].freeze
 
   attr_accessor(*ATTR_ACCESSORS)
@@ -69,9 +68,7 @@ class Competition < ApplicationRecord
   end
 
   def valid_knockout_stage?
-    valid_preset? &&
-      num_matches_per_fixture.positive? &&
-      2**num_rounds == num_knockout_teams
+    valid_preset? && 2**num_rounds == num_knockout_teams
   end
 
   def valid_group_knockout_stages?
@@ -108,7 +105,7 @@ class Competition < ApplicationRecord
     num_rounds.times do |i|
       num_round_teams = num_knockout_teams / 2**i
       stages.create num_teams: num_round_teams,
-                    num_fixtures: num_round_teams * num_matches_per_fixture / 2
+                    num_fixtures: num_round_teams / 2
     end
   end
 
@@ -133,7 +130,6 @@ class Competition < ApplicationRecord
     num_teams
     num_teams_per_group
     num_advances_from_group
-    num_matches_per_fixture
   ].each do |var|
     define_method "#{var}=" do |val|
       instance_variable_set "@#{var}", val.to_i

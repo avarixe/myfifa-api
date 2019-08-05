@@ -30,7 +30,6 @@ FactoryBot.define do
     factory :cup do
       preset_format { 'Knockout' }
       num_teams { 2**Faker::Number.between(1, 6) }
-      num_matches_per_fixture { Faker::Number.between(1, 2) }
     end
 
     factory :tournament do
