@@ -71,7 +71,7 @@ class Substitution < ApplicationRecord
     match
       .caps
       .find_by(player_id: player_id)
-      .update(stop: 90, subbed_out: false)
+      .update(stop: match.extra_time? ? 120 : 90, subbed_out: false)
   end
 
   delegate :team, to: :match
