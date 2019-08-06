@@ -17,9 +17,9 @@ RSpec.describe StagesController, type: :request do
     )
   }
 
-  describe 'GET #team_index' do
+  describe 'POST #search' do
     it 'requires a valid token' do
-      get team_stages_url(team)
+      post team_stages_search_url(team)
       assert_response 401
     end
 
@@ -29,8 +29,8 @@ RSpec.describe StagesController, type: :request do
         FactoryBot.create :stage, competition: competition
       end
 
-      get team_stages_url(team),
-          headers: { 'Authorization' => "Bearer #{token.token}" }
+      post team_stages_search_url(team),
+           headers: { 'Authorization' => "Bearer #{token.token}" }
       assert_response :success
       stages = Stage
                .includes(:table_rows, :fixtures)

@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
 class ContractsController < APIController
+  include Searchable
   load_and_authorize_resource :player
   load_and_authorize_resource through: :player, shallow: true
 
-  def team_index
+  def search
     @team = Team.find(params[:team_id])
     authorize! :show, @team
     @contracts = Contract.where(player_id: @team.players.pluck(:id))
-    render json: @contracts
+    render json: filter(@contracts)
   end
 
   def index

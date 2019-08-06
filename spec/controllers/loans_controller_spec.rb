@@ -19,9 +19,9 @@ RSpec.describe LoansController, type: :request do
     )
   }
 
-  describe 'GET #team_index' do
+  describe 'POST #search' do
     it 'requires a valid token' do
-      get team_loans_url(team)
+      post team_loans_search_url(team)
       assert_response 401
     end
 
@@ -31,7 +31,7 @@ RSpec.describe LoansController, type: :request do
         FactoryBot.create :loan, player: player
       end
 
-      get team_loans_url(team),
+      post team_loans_search_url(team),
           headers: { 'Authorization' => "Bearer #{token.token}" }
       assert_response :success
       loans = Loan.where(player_id: team.players.pluck(:id))
