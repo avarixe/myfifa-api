@@ -1,17 +1,18 @@
 # frozen_string_literal: true
 
 class StagesController < APIController
+  include Searchable
   before_action :set_stage, only: %i[show update destroy]
   load_and_authorize_resource :competition
   load_and_authorize_resource through: :competition, shallow: true
 
-  def team_index
+  def search
     @team = Team.find(params[:team_id])
     authorize! :show, @team
     @stages = Stage
               .includes(:table_rows, fixtures: :legs)
               .where(competition_id: @team.competitions.pluck(:id))
-    render json: @stages
+    render json: filter(@stages)
   end
 
   def index

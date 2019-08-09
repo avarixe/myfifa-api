@@ -36,11 +36,6 @@ Rails.application.routes.draw do
         contracts
         transfers
         stages
-      ].each do |controller|
-        get controller, to: "#{controller}#team_index"
-      end
-
-      %w[
         caps
         goals
         bookings

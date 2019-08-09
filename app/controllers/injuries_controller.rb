@@ -1,14 +1,15 @@
 # frozen_string_literal: true
 
 class InjuriesController < APIController
+  include Searchable
   load_and_authorize_resource :player
   load_and_authorize_resource through: :player, shallow: true
 
-  def team_index
+  def search
     @team = Team.find(params[:team_id])
     authorize! :show, @team
     @injuries = Injury.where(player_id: @team.players.pluck(:id))
-    render json: @injuries
+    render json: filter(@injuries)
   end
 
   def index
