@@ -33,8 +33,8 @@ RSpec.describe Substitution, type: :model do
       @replacement = FactoryBot.create :player, team: @team
       FactoryBot.create :cap, start: 0, match: @match, player: @player
       @sub = FactoryBot.create :substitution,
-                               player: @player,
-                               replacement: @replacement,
+                               player_id: @player.id,
+                               replacement_id: @replacement.id,
                                match: @match
     end
   end
@@ -59,6 +59,8 @@ RSpec.describe Substitution, type: :model do
     expect(FactoryBot.build(:substitution, replacement: nil)).to_not be_valid
   end
 
+  it 'requires a Cap for the replaced player'
+
   it 'automatically sets player name' do
     expect(@sub.player_name).to be == @sub.player.name
   end
@@ -67,23 +69,72 @@ RSpec.describe Substitution, type: :model do
     expect(@sub.replaced_by).to be == @sub.replacement.name
   end
 
-  it 'creates a Performance record upon creation' do
+  it 'creates a Cap record upon creation' do
     expect(@replacement.caps.count).to be == 1
     expect(@match.caps.count).to be == 2
   end
 
-  it 'marks replaced Performance record as subbed_out' do
+  it 'marks replaced Cap record as subbed_out' do
     expect(@player.caps.last.subbed_out).to be true
   end
 
-  it 'removes the Performance record upon destruction' do
-    @sub.destroy
-    expect(@replacement.caps.count).to be == 0
-    expect(@match.caps.count).to be == 1
+  describe 'when destroyed' do
+    before :each do
+      @sub.destroy
+    end
+
+    it 'removes the Cap record' do
+      expect(@replacement.caps.count).to be == 0
+      expect(@match.caps.count).to be == 1
+    end
+
+    it 'marks replaced Cap record as not subbed_out' do
+      expect(@player.caps.last.subbed_out).to be false
+    end
   end
 
-  it 'marks replaced Performance record as not subbed_out upon destruction' do
-    @sub.destroy
-    expect(@player.caps.last.subbed_out).to be false
+  describe 'upon player_id change' do
+    before :each do
+      @player2 = FactoryBot.create :player, team: @team
+      pos2 = Cap::POSITIONS[Cap::POSITIONS.index(@player.pos) - 1]
+      FactoryBot.create :cap, start: 0, match: @match, player: @player2
+      @sub.update(player_id: @player2.id)
+    end
+
+    it 'automatically changes player name' do
+      expect(@sub.player_name).to be == @player2.name
+    end
+
+    it 'marks replaced Cap as not subbed_out' do
+      cap = Cap.find_by(match_id: @match.id, player_id: @player.id)
+      expect(cap.subbed_out?).to be_falsey
+    end
+
+    it 'marks new Player Cap as subbed_out' do
+      cap = Cap.find_by(match_id: @match.id, player_id: @player2.id)
+      expect(cap.subbed_out?).to be true
+    end
   end
+
+  describe 'upon replacement_id change' do
+    before :each do
+      @player2 = FactoryBot.create :player, team: @team
+      @sub.update(replacement_id: @player2.id)
+    end
+
+    it 'automatically changes replaced by' do
+      expect(@sub.replaced_by).to be == @player2.name
+    end
+
+    it 'detaches from old Player Cap' do
+      cap = Cap.find_by(match_id: @match.id, player_id: @replacement.id)
+      expect(cap).to be_nil
+    end
+
+    it 'attaches to new Player Cap' do
+      cap = Cap.find_by(match_id: @match.id, player_id: @player2.id)
+      expect(cap).to_not be_nil
+    end
+  end
+
 end

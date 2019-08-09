@@ -42,6 +42,8 @@ RSpec.describe Goal, type: :model do
     expect(FactoryBot.build(:goal, player_name: nil)).to_not be_valid
   end
 
+  it 'requires a Cap for the player if player_id is present'
+
   it 'increments appropriate score' do
     @match = FactoryBot.create :match
     home_goal = FactoryBot.create :home_goal, match: @match
