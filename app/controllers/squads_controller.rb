@@ -5,7 +5,7 @@ class SquadsController < APIController
   load_and_authorize_resource through: :team, shallow: true
 
   def index
-    render json: @squads
+    render json: @squads.includes(:squad_players)
   end
 
   def show
