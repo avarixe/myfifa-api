@@ -44,34 +44,44 @@ class Substitution < ApplicationRecord
 
   validates :minute, inclusion: 1..120
 
-  before_create :set_names
+  before_validation :set_names
   after_create :create_cap
+  after_update :update_replaced_cap, if: :saved_change_to_player_id?
+  after_update :update_replacement_cap, if: :saved_change_to_replacement_id?
   after_destroy :delete_cap
 
   def set_names
-    self.player_name = player.name
-    self.replaced_by = replacement.name
+    self.player_name = player.name if player_id.present?
+    self.replaced_by = replacement.name if replacement_id.present?
   end
 
   def create_cap
-    replaced_log = match.caps.find_by(player_id: player_id)
-    return unless replaced_log
+    return unless replaced_cap
 
-    replaced_log.update(stop: minute, subbed_out: true)
+    replaced_cap.update(stop: minute, subbed_out: true)
     match.caps.create player_id: replacement_id,
-                      pos: replaced_log.pos,
+                      pos: replaced_cap.pos,
                       start: minute
   end
 
-  def delete_cap
+  def update_replaced_cap
     match
       .caps
-      .find_by(player_id: replacement_id)
-      .destroy
-    match
-      .caps
-      .find_by(player_id: player_id)
+      .find_by(player_id: player_id_before_last_save)
       .update(stop: match.extra_time? ? 120 : 90, subbed_out: false)
+    replaced_cap.update(stop: minute, subbed_out: true)
+  end
+
+  def update_replacement_cap
+    match
+      .caps
+      .find_by(player_id: replacement_id_before_last_save)
+      .update(player_id: replacement_id)
+  end
+
+  def delete_cap
+    replacement_cap.destroy
+    replaced_cap.update(stop: match.extra_time? ? 120 : 90, subbed_out: false)
   end
 
   delegate :team, to: :match
@@ -82,6 +92,14 @@ class Substitution < ApplicationRecord
 
   def event_type
     'Substitution'
+  end
+
+  def replaced_cap
+    match.caps.find_by(player_id: player_id)
+  end
+
+  def replacement_cap
+    match.caps.find_by(player_id: replacement_id)
   end
 
   def as_json(options = {})

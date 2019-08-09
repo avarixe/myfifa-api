@@ -56,6 +56,7 @@ class Goal < ApplicationRecord
   before_validation :set_names
   after_create :increment_score
   after_destroy :decrement_score
+  after_update :update_score, if: :score_changed?
 
   def set_names
     self.player_name = player.name if player_id.present?
@@ -78,6 +79,22 @@ class Goal < ApplicationRecord
       match.away_score -= 1
     end
     match.save!
+  end
+
+  def update_score
+    if home? == own_goal?
+      match.home_score -= 1
+      match.away_score += 1
+    else
+      match.home_score += 1
+      match.away_score -= 1
+    end
+    match.save!
+  end
+
+  def score_changed?
+    saved_change_to_home? != saved_change_to_own_goal? &&
+      (saved_change_to_home? || saved_change_to_own_goal?)
   end
 
   delegate :team, to: :match
