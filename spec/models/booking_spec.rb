@@ -35,7 +35,15 @@ RSpec.describe Booking, type: :model do
 
   it 'automatically sets player name if player_id set' do
     player = FactoryBot.create(:player)
-    player_booking = FactoryBot.create :booking, player: player
+    player_booking = FactoryBot.create :booking, player_id: player.id
     expect(player_booking.player_name).to be == player.name
+  end
+
+  it 'changes player name if player_id changed' do
+    player = FactoryBot.create :player
+    player2 = FactoryBot.create :player, team: player.team
+    player_booking = FactoryBot.create :booking, player_id: player.id
+    player_booking.update(player_id: player2.id)
+    expect(player_booking.player_name).to be == player2.name
   end
 end
