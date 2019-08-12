@@ -28,6 +28,16 @@ class Substitution < ApplicationRecord
   belongs_to :match
   belongs_to :player
   belongs_to :replacement, class_name: 'Player'
+  belongs_to :subbed_cap,
+             class_name: 'Cap',
+             foreign_key: %i[match_id player_id],
+             inverse_of: :sub_out,
+             optional: true
+  belongs_to :sub_cap,
+             class_name: 'Cap',
+             foreign_key: %i[match_id replacement_id],
+             inverse_of: :sub_in,
+             optional: true
 
   PERMITTED_ATTRIBUTES = %i[
     minute
@@ -46,8 +56,8 @@ class Substitution < ApplicationRecord
 
   before_validation :set_names
   after_create :create_cap
-  after_update :update_replaced_cap, if: :saved_change_to_player_id?
-  after_update :update_replacement_cap, if: :saved_change_to_replacement_id?
+  after_update :update_subbed_cap, if: :saved_change_to_player_id?
+  after_update :update_sub_cap, if: :saved_change_to_replacement_id?
   after_destroy :delete_cap
 
   def set_names
@@ -56,23 +66,22 @@ class Substitution < ApplicationRecord
   end
 
   def create_cap
-    return unless replaced_cap
+    return unless subbed_cap
 
-    replaced_cap.update(stop: minute, subbed_out: true)
-    match.caps.create player_id: replacement_id,
-                      pos: replaced_cap.pos,
-                      start: minute
+    subbed_cap.update(stop: minute, subbed_out: true)
+    create_sub_cap pos: subbed_cap.pos,
+                   start: minute
   end
 
-  def update_replaced_cap
+  def update_subbed_cap
     match
       .caps
       .find_by(player_id: player_id_before_last_save)
       .update(stop: match.extra_time? ? 120 : 90, subbed_out: false)
-    replaced_cap.update(stop: minute, subbed_out: true)
+    subbed_cap.update(stop: minute, subbed_out: true)
   end
 
-  def update_replacement_cap
+  def update_sub_cap
     match
       .caps
       .find_by(player_id: replacement_id_before_last_save)
@@ -80,8 +89,8 @@ class Substitution < ApplicationRecord
   end
 
   def delete_cap
-    replacement_cap.destroy
-    replaced_cap.update(stop: match.extra_time? ? 120 : 90, subbed_out: false)
+    sub_cap.destroy
+    subbed_cap.update(stop: match.extra_time? ? 120 : 90, subbed_out: false)
   end
 
   delegate :team, to: :match
@@ -92,14 +101,6 @@ class Substitution < ApplicationRecord
 
   def event_type
     'Substitution'
-  end
-
-  def replaced_cap
-    match.caps.find_by(player_id: player_id)
-  end
-
-  def replacement_cap
-    match.caps.find_by(player_id: replacement_id)
   end
 
   def as_json(options = {})

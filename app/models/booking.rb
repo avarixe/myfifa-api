@@ -24,6 +24,10 @@ class Booking < ApplicationRecord
 
   belongs_to :match
   belongs_to :player, optional: true
+  belongs_to :cap,
+             foreign_key: %i[match_id player_id],
+             inverse_of: :bookings,
+             optional: true
 
   PERMITTED_ATTRIBUTES = %i[
     minute
