@@ -84,9 +84,9 @@ class Match < ApplicationRecord
   end
 
   def set_cap_stop_times
-    caps
-      .where(subbed_out: false)
-      .update_all(stop: extra_time? ? 120 : 90)
+    caps.where(subbed_out: false).each do |cap|
+      cap.update(stop: extra_time? ? 120 : 90)
+    end
   end
 
   ##############

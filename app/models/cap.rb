@@ -24,8 +24,34 @@
 class Cap < ApplicationRecord
   include Broadcastable
 
+  self.primary_keys = :match_id, :player_id
+
   belongs_to :match
   belongs_to :player
+
+  has_many :goals,
+           foreign_key: %i[match_id player_id],
+           inverse_of: :cap,
+           dependent: :destroy
+  has_many :assists,
+           class_name: 'Goal',
+           foreign_key: %i[match_id assist_id],
+           inverse_of: :assist_cap,
+           dependent: :destroy
+  has_many :bookings,
+           foreign_key: %i[match_id player_id],
+           inverse_of: :cap,
+           dependent: :destroy
+  has_one :sub_out,
+          class_name: 'Substitution',
+          foreign_key: %i[match_id player_id],
+          inverse_of: :subbed_cap,
+          dependent: :destroy
+  has_one :sub_in,
+          class_name: 'Substitution',
+          foreign_key: %i[match_id replacement_id],
+          inverse_of: :sub_cap,
+          dependent: :destroy
 
   POSITIONS = %w[
     GK
@@ -102,39 +128,11 @@ class Cap < ApplicationRecord
   end
 
   after_initialize :set_defaults
-  after_destroy :remove_events
+  # after_destroy :remove_events
 
   def set_defaults
     self.start ||= 0
     self.stop ||= 90
-  end
-
-  def remove_events
-    goals.destroy_all
-    assists.destroy_all
-    bookings.delete_all
-    sub_outs.destroy_all
-    sub_ins.destroy_all
-  end
-
-  def goals
-    Goal.where(match_id: match_id, player_id: player_id)
-  end
-
-  def assists
-    Goal.where(match_id: match_id, assist_id: player_id)
-  end
-
-  def bookings
-    Booking.where(match_id: match_id, player_id: player_id)
-  end
-
-  def sub_outs
-    Substitution.where(match_id: match_id, player_id: player_id)
-  end
-
-  def sub_ins
-    Substitution.where(match_id: match_id, replacement_id: player_id)
   end
 
   delegate :team, :name, to: :player

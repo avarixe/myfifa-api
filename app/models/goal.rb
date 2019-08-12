@@ -34,6 +34,15 @@ class Goal < ApplicationRecord
              class_name: 'Player',
              optional: true,
              inverse_of: :assists
+  belongs_to :cap,
+             foreign_key: %i[match_id player_id],
+             inverse_of: :goals,
+             optional: true
+  belongs_to :assist_cap,
+             class_name: 'Cap',
+             foreign_key: %i[match_id assist_id],
+             inverse_of: :assists,
+             optional: true
 
   PERMITTED_ATTRIBUTES = %i[
     minute
