@@ -97,7 +97,7 @@ RSpec.describe Substitution, type: :model do
     before :each do
       @player2 = FactoryBot.create :player, team: @team
       pos2 = Cap::POSITIONS[Cap::POSITIONS.index(@player.pos) - 1]
-      FactoryBot.create :cap, start: 0, match: @match, player: @player2
+      FactoryBot.create :cap, start: 0, match: @match, player: @player2, pos: pos2
       @sub.update(player_id: @player2.id)
     end
 
