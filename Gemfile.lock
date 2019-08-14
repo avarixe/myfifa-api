@@ -60,8 +60,6 @@ GEM
     byebug (11.0.1)
     cancancan (3.0.1)
     choice (0.2.0)
-    composite_primary_keys (11.2.0)
-      activerecord (~> 5.2.1)
     concurrent-ruby (1.1.5)
     crass (1.0.4)
     date_validator (0.9.0)
@@ -234,7 +232,6 @@ DEPENDENCIES
   bullet
   byebug
   cancancan
-  composite_primary_keys
   date_validator
   devise
   doorkeeper

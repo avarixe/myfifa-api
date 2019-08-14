@@ -28,16 +28,6 @@ class Substitution < ApplicationRecord
   belongs_to :match
   belongs_to :player
   belongs_to :replacement, class_name: 'Player'
-  belongs_to :subbed_cap,
-             class_name: 'Cap',
-             foreign_key: %i[match_id player_id],
-             inverse_of: :sub_out,
-             optional: true
-  belongs_to :sub_cap,
-             class_name: 'Cap',
-             foreign_key: %i[match_id replacement_id],
-             inverse_of: :sub_in,
-             optional: true
 
   PERMITTED_ATTRIBUTES = %i[
     minute
@@ -69,8 +59,9 @@ class Substitution < ApplicationRecord
     return unless subbed_cap
 
     subbed_cap.update(stop: minute, subbed_out: true)
-    create_sub_cap pos: subbed_cap.pos,
-                   start: minute
+    match.caps.create player_id: replacement_id,
+                      pos: subbed_cap.pos,
+                      start: minute
   end
 
   def update_subbed_cap
@@ -101,6 +92,14 @@ class Substitution < ApplicationRecord
 
   def event_type
     'Substitution'
+  end
+
+  def subbed_cap
+    match.caps.find_by(player_id: player_id)
+  end
+
+  def sub_cap
+    match.caps.find_by(player_id: replacement_id)
   end
 
   def as_json(options = {})
