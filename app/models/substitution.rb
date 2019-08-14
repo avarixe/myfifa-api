@@ -59,9 +59,9 @@ class Substitution < ApplicationRecord
     return unless subbed_cap
 
     subbed_cap.update(stop: minute, subbed_out: true)
-    map.caps.create player_id: replacement_id,
-                    pos: subbed_cap.pos,
-                    start: minute
+    match.caps.create player_id: replacement_id,
+                      pos: subbed_cap.pos,
+                      start: minute
   end
 
   def update_subbed_cap
