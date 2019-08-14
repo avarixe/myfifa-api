@@ -40,8 +40,6 @@ gem 'activerecord-import'
 
 gem 'date_validator'
 
-gem 'composite_primary_keys'
-
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS),
 # making cross-origin AJAX possible
 gem 'rack-cors'
