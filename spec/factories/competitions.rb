@@ -24,12 +24,12 @@ FactoryBot.define do
 
     factory :league do
       preset_format { 'League' }
-      num_teams { Faker::Number.between(2, 100) }
+      num_teams { Faker::Number.between(from: 2, to: 100) }
     end
 
     factory :cup do
       preset_format { 'Knockout' }
-      num_teams { 2**Faker::Number.between(1, 6) }
+      num_teams { 2**Faker::Number.between(from: 1, to: 6) }
     end
 
     factory :tournament do

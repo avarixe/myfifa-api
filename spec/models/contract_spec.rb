@@ -27,8 +27,8 @@ require 'rails_helper'
 
 RSpec.describe Contract, type: :model do
   let(:contract) { FactoryBot.create(:contract) }
-  let(:perf_bonus) { Faker::Number.between(10_000, 1_000_000) }
-  let(:bonus_req) { Faker::Number.between(1, 25) }
+  let(:perf_bonus) { Faker::Number.between(from: 10_000, to: 1_000_000) }
+  let(:bonus_req) { Faker::Number.between(from: 1, to: 25) }
   let(:bonus_req_type) { Contract::BONUS_REQUIREMENT_TYPES.sample }
 
   it "has a valid factory" do
@@ -52,13 +52,15 @@ RSpec.describe Contract, type: :model do
   end
 
   it 'sets Player as Pending if started_on > current date' do
-    future_date = Faker::Date.between(1.days.from_now, 365.days.from_now)
+    future_date = Faker::Date.between from: 1.days.from_now,
+                                      to: 365.days.from_now
     contract = FactoryBot.create :contract, started_on: future_date
     expect(contract.player.status).to be == 'Pending'
   end
 
   it 'sets Pending Player as Active once current date reaches effective date' do
-    future_date = Faker::Date.between(1.days.from_now, 365.days.from_now)
+    future_date = Faker::Date.between from: 1.days.from_now,
+                                      to: 365.days.from_now
     contract = FactoryBot.create :contract, started_on: future_date
     contract.player.team.update(currently_on: future_date)
     expect(contract.player.reload.active?).to be == true

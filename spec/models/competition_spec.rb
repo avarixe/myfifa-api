@@ -75,7 +75,7 @@ RSpec.describe Competition, type: :model do
   end
 
   it 'loads League Table' do
-    num_teams = Faker::Number.between(2, 30).to_i
+    num_teams = Faker::Number.between(from: 2, to: 30).to_i
     league = FactoryBot.create(:league, num_teams: num_teams)
     expect(league.stages.count).to be == 1
 
@@ -84,7 +84,7 @@ RSpec.describe Competition, type: :model do
   end
 
   it 'loads Knockout stages' do
-    num_rounds = Faker::Number.between(1, 6).to_i
+    num_rounds = Faker::Number.between(from: 1, to: 6).to_i
     num_teams = 2**num_rounds
 
     cup = FactoryBot.create(:cup, num_teams: num_teams)

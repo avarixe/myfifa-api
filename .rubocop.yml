@@ -15,7 +15,7 @@ AllCops:
     - 'vendor/**/*'
 
 Layout/IndentationConsistency:
-  EnforcedStyle: rails
+  EnforcedStyle: indented_internal_methods
 Style/Documentation:
   Enabled: false
 Style/TrailingCommaInArguments:
@@ -25,10 +25,6 @@ Style/TrailingCommaInArrayLiteral:
 Style/TrailingCommaInHashLiteral:
   Enabled: false
 Style/RescueStandardError:
-  Enabled: false
-Rails/FindEach:
-  Enabled: false
-Rails/SkipsModelValidations:
   Enabled: false
 # Metrics/AbcSize:
 #   Enabled: false

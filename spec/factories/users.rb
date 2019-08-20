@@ -29,7 +29,7 @@
 FactoryBot.define do
   factory :user do
     full_name { Faker::Name.name }
-    username { Faker::Internet.unique.username(6..20) }
+    username { Faker::Internet.unique.username(specifier: 6) }
     email { Faker::Internet.unique.email }
     password { Faker::Internet.password }
   end

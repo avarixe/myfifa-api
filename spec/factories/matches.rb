@@ -27,7 +27,7 @@ FactoryBot.define do
     home { Faker::Team.unique.name }
     away { Faker::Team.unique.name }
     competition { Faker::Lorem.word }
-    played_on { Faker::Date.between(Date.today, 60.days.from_now) }
+    played_on { Faker::Date.between(from: Date.today, to: 60.days.from_now) }
     team
   end
 end

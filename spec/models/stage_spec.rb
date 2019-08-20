@@ -20,7 +20,7 @@ require 'rails_helper'
 
 RSpec.describe Stage, type: :model do
   let(:stage) { FactoryBot.create(:stage) }
-  
+
   it 'has a valid factory' do
     expect(stage).to be_valid
   end
@@ -39,7 +39,7 @@ RSpec.describe Stage, type: :model do
     expect(Stage.new(num_teams: 8).name).to be == 'Quarter-Finals'
     expect(Stage.new(num_teams: 4).name).to be == 'Semi-Finals'
     expect(Stage.new(num_teams: 2).name).to be == 'Final'
-    num_teams = Faker::Number.between(9, 20)
+    num_teams = Faker::Number.between(from: 9, to: 20)
     expect(Stage.new(num_teams: num_teams).name).to be == "Round of #{num_teams}"
   end
 

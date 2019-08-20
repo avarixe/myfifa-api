@@ -21,9 +21,9 @@
 FactoryBot.define do
   factory :player_history do
     recorded_on { Date.new }
-    ovr { Faker::Number.between(50, 90) }
-    value { Faker::Number.between(50_000, 200_000_000) }
-    kit_no { Faker::Number.between(1, 99) }
+    ovr { Faker::Number.between(from: 50, to: 90) }
+    value { Faker::Number.between(from: 50_000, to: 200_000_000) }
+    kit_no { Faker::Number.between(from: 1, to: 99) }
     player
   end
 end

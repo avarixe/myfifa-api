@@ -53,18 +53,18 @@ RSpec.describe TableRow, type: :model do
   end
 
   it 'correctly calculates goal_difference' do
-    gf = Faker::Number.between(0, 100).to_i
-    ga = Faker::Number.between(0, 100).to_i
+    gf = Faker::Number.between(from: 0, to: 100).to_i
+    ga = Faker::Number.between(from: 0, to: 100).to_i
     row.goals_for = gf
     row.goals_against = ga
     expect(row.goal_difference == gf - ga).to be true
   end
 
   it 'correctly calculates points' do
-    wins = Faker::Number.number(2).to_i
-    draws = Faker::Number.number(2).to_i
+    wins = Faker::Number.number(digits: 2).to_i
+    draws = Faker::Number.number(digits: 2).to_i
     row.wins = wins
     row.draws = draws
-    expect(row.points == 3 * wins + draws).to be true    
+    expect(row.points == 3 * wins + draws).to be true
   end
 end

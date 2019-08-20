@@ -24,7 +24,7 @@
 
 FactoryBot.define do
   factory :substitution do
-    minute { Faker::Number.between(1, 89) }
+    minute { Faker::Number.between(from: 1, to: 89) }
     match
     player
     association :replacement, factory: :player
