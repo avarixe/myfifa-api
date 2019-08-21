@@ -29,10 +29,10 @@ FactoryBot.define do
     name { Faker::Name.unique.name }
     pos { Player::POSITIONS.sample }
     nationality { Faker::Address.country }
-    birth_year { Faker::Number.between(1980, 2000) }
-    ovr { Faker::Number.between(50, 90) }
-    value { Faker::Number.between(50_000, 200_000_000) }
-    kit_no { Faker::Number.between(1, 99) }
+    birth_year { Faker::Number.between(from: 1980, to: 2000) }
+    ovr { Faker::Number.between(from: 50, to: 90) }
+    value { Faker::Number.between(from: 50_000, to: 200_000_000) }
+    kit_no { Faker::Number.between(from: 1, to: 99) }
     team
 
     transient do

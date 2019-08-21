@@ -26,7 +26,7 @@
 
 FactoryBot.define do
   factory :goal do
-    minute { Faker::Number.between(1, 120) }
+    minute { Faker::Number.between(from: 1, to: 120) }
     player_name { Faker::Name.name }
     match
 

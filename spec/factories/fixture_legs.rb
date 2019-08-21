@@ -16,8 +16,8 @@
 
 FactoryBot.define do
   factory :fixture_leg do
-    home_score { Faker::Number.between(0, 3) }
-    away_score { Faker::Number.between(0, 3) }
+    home_score { Faker::Number.between(from: 0, to: 3) }
+    away_score { Faker::Number.between(from: 0, to: 3) }
     fixture
   end
 end

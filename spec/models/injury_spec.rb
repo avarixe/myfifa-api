@@ -33,8 +33,8 @@ RSpec.describe Injury, type: :model do
   it 'has an end date after start date' do
     expect(
       FactoryBot.build :injury,
-                       started_on: Faker::Date.forward(1),
-                       ended_on: Faker::Date.backward(1)
+                       started_on: Faker::Date.forward(days: 1),
+                       ended_on: Faker::Date.backward(days: 1)
     ).to_not be_valid
   end
 

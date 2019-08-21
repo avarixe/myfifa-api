@@ -23,7 +23,7 @@ FactoryBot.define do
   factory :loan do
     origin { Faker::Team.unique.name }
     destination { Faker::Team.unique.name }
-    started_on { Faker::Date.between(Date.today, 60.days.from_now) }
+    started_on { Faker::Date.between(from: Date.today, to: 60.days.from_now) }
     player
   end
 end

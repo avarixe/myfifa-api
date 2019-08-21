@@ -26,8 +26,8 @@ RSpec.describe Squad, type: :model do
 
   it 'requires 11 positions' do
     [
-      Faker::Number.between(0, 10),
-      Faker::Number.between(12, 20)
+      Faker::Number.between(from: 0, to: 10),
+      Faker::Number.between(from: 12, to: 20)
     ].each do |i|
       squad = FactoryBot.build :squad, players_count: i
       expect(squad).to_not be_valid

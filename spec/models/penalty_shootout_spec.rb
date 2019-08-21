@@ -32,7 +32,7 @@ RSpec.describe PenaltyShootout, type: :model do
   end
 
   it 'must have a winner' do
-    score = Faker::Number.between(0, 20)
+    score = Faker::Number.between(from: 0, to: 20)
     expect(
       FactoryBot.build(:penalty_shootout, home_score: score, away_score: score)
     ).to_not be_valid

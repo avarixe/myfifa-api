@@ -18,8 +18,8 @@
 
 FactoryBot.define do
   factory :stage do
-    num_teams { Faker::Number.between(1, 20) }
-    num_fixtures { 2**Faker::Number.between(1, 5) }
+    num_teams { Faker::Number.between(from: 1, to: 20) }
+    num_fixtures { 2**Faker::Number.between(from: 1, to: 5) }
     competition
   end
 end
