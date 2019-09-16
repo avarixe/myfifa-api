@@ -17,6 +17,8 @@
 /tmp
 .byebug_history
 coverage
+/storage/*
+!/storage/.keep
 
 public/assets/*
 *.dump
