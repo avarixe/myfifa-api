@@ -28,11 +28,14 @@ class Team < ApplicationRecord
   has_many :matches, dependent: :destroy
   has_many :competitions, dependent: :destroy
 
+  has_one_attached :badge
+
   PERMITTED_ATTRIBUTES = %i[
     started_on
     title
     currently_on
     currency
+    badge
   ].freeze
 
   def self.permitted_create_attributes
@@ -67,9 +70,15 @@ class Team < ApplicationRecord
     end
   end
 
+  def badge_path
+    return unless badge.attached?
+
+    Rails.application.routes.url_helpers.rails_blob_url(badge, only_path: true)
+  end
+
   def as_json(options = {})
     options[:methods] ||= []
-    options[:methods] << :time_period
+    options[:methods] += %i[time_period badge_path]
     super
   end
 
