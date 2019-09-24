@@ -65,6 +65,14 @@ RSpec.describe Loan, type: :model do
     expect(player.loaned?).to be true
   end
 
+  it 'does not change status to loaned when loaned in' do
+    FactoryBot.create :loan,
+                      player: player,
+                      started_on: player.currently_on,
+                      destination: player.team.title
+    expect(player.loaned?).to_not be true
+  end
+
   it 'changes status when loaned Player returns to team' do
     FactoryBot.create :loan,
                       player: player,
@@ -90,6 +98,7 @@ RSpec.describe Loan, type: :model do
     FactoryBot.create :injury, player: player
     FactoryBot.create :loan,
                       player: player,
+                      origin: player.team.title,
                       started_on: player.currently_on
     expect(player.injured?).to be false
     expect(player.injuries.last.ended_on).to be == player.currently_on
