@@ -100,6 +100,10 @@ class Loan < ApplicationRecord
     team.title == destination
   end
 
+  def loaned_out?
+    team.title == origin
+  end
+
   def as_json(options = {})
     options[:methods] ||= []
     options[:methods] << :returned

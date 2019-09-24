@@ -150,7 +150,7 @@ class Player < ApplicationRecord
   def update_status
     update status:
       if current_contract.nil?        then nil
-      elsif current_loan              then 'Loaned'
+      elsif current_loan&.loaned_out? then 'Loaned'
       elsif current_injury            then 'Injured'
       elsif current_contract.pending? then 'Pending'
       else 'Active'
