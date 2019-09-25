@@ -25,7 +25,7 @@ module Analyze
       def set_player_ids
         @player_ids = @team.players.pluck(:id)
         @player_ids &= Contract.where(
-          'started_on <= ? AND ? < ended_on',
+          'started_on < ? AND ? < ended_on',
           @season[:end],
           @season[:start]
         ).pluck(:player_id)
