@@ -78,6 +78,7 @@ class Player < ApplicationRecord
 
   PERMITTED_ATTRIBUTES = %i[
     name
+    nationality
     pos
     ovr
     value
