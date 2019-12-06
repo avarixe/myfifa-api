@@ -61,14 +61,15 @@ class Substitution < ApplicationRecord
     subbed_cap.update(stop: minute, subbed_out: true)
     match.caps.create player_id: replacement_id,
                       pos: subbed_cap.pos,
-                      start: minute
+                      start: minute,
+                      stop: match_stop
   end
 
   def update_subbed_cap
     match
       .caps
       .find_by(player_id: player_id_before_last_save)
-      .update(stop: match.extra_time? ? 120 : 90, subbed_out: false)
+      .update(stop: match_stop, subbed_out: false)
     subbed_cap.update(stop: minute, subbed_out: true)
   end
 
@@ -81,7 +82,7 @@ class Substitution < ApplicationRecord
 
   def delete_cap
     sub_cap.destroy
-    subbed_cap.update(stop: match.extra_time? ? 120 : 90, subbed_out: false)
+    subbed_cap.update(stop: match_stop, subbed_out: false)
   end
 
   delegate :team, to: :match
@@ -100,6 +101,10 @@ class Substitution < ApplicationRecord
 
   def sub_cap
     match.caps.find_by(player_id: replacement_id)
+  end
+
+  def match_stop
+    match.extra_time? ? 120 : 90
   end
 
   def as_json(options = {})

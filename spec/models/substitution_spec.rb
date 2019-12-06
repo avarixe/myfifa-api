@@ -78,6 +78,27 @@ RSpec.describe Substitution, type: :model do
     expect(@player.caps.last.subbed_out).to be true
   end
 
+  describe 'in extra time' do
+    before :each do
+      @match.substitutions.map(&:destroy)
+      @match.caps.delete_all
+      @match.update(extra_time: true)
+      @player = FactoryBot.create :player, team: @team
+      @replacement = FactoryBot.create :player, team: @team
+      FactoryBot.create :cap, start: 0, match: @match, player: @player
+      @sub = FactoryBot.create :substitution,
+                               player_id: @player.id,
+                               replacement_id: @replacement.id,
+                               match: @match,
+                               minute: Faker::Number.between(from: 91, to: 120)
+    end
+
+    it 'creates a Cap record upon creation' do
+      expect(@replacement.caps.count).to be == 1
+      expect(@match.caps.count).to be == 2
+    end
+  end
+
   describe 'when destroyed' do
     before :each do
       @sub.destroy
