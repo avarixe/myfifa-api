@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 class MatchesController < APIController
-  load_and_authorize_resource :team
-  load_and_authorize_resource through: :team, shallow: true
+  load_and_authorize_resource :team, except: %i[teams]
+  load_and_authorize_resource through: :team,
+                              shallow: true,
+                              except: %i[teams]
   skip_authorize_resource only: :events
 
   def index
@@ -36,6 +38,11 @@ class MatchesController < APIController
     @squad = Squad.find(params[:squad_id])
     @match.apply(@squad)
     render json: @match
+  end
+
+  def teams
+    @teams = Match.pluck(:home, :away).flatten.uniq.sort
+    render json: @teams
   end
 
   private
