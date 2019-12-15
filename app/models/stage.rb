@@ -4,14 +4,14 @@
 #
 # Table name: stages
 #
-#  id             :bigint(8)        not null, primary key
-#  competition_id :bigint(8)
+#  id             :bigint           not null, primary key
 #  name           :string
-#  num_teams      :integer
 #  num_fixtures   :integer
+#  num_teams      :integer
 #  table          :boolean          default(FALSE)
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  competition_id :bigint
 #
 # Indexes
 #

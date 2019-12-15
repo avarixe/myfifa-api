@@ -2,12 +2,12 @@
 #
 # Table name: fixture_legs
 #
-#  id         :bigint(8)        not null, primary key
-#  fixture_id :bigint(8)
-#  home_score :string
+#  id         :bigint           not null, primary key
 #  away_score :string
+#  home_score :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  fixture_id :bigint
 #
 # Indexes
 #

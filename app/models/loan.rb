@@ -4,15 +4,15 @@
 #
 # Table name: loans
 #
-#  id          :bigint(8)        not null, primary key
-#  player_id   :bigint(8)
-#  started_on  :date
-#  ended_on    :date
+#  id          :bigint           not null, primary key
 #  destination :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
+#  ended_on    :date
 #  origin      :string
 #  signed_on   :date
+#  started_on  :date
+#  created_at  :datetime         not null
+#  updated_at  :datetime         not null
+#  player_id   :bigint
 #
 # Indexes
 #

@@ -47,7 +47,8 @@ RSpec.describe UsersController, type: :request do
 
   describe 'POST tokens#revoke' do
     it 'removes a token' do
-      post oauth_revoke_url, params: { token: token }
+      post oauth_revoke_url,
+           headers: { 'Authorization' => "Bearer #{token.token}" }
       assert_response :success
     end
   end

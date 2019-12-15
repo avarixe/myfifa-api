@@ -4,15 +4,15 @@
 #
 # Table name: teams
 #
-#  id           :bigint(8)        not null, primary key
-#  user_id      :bigint(8)
-#  title        :string
-#  started_on   :date
-#  currently_on :date
+#  id           :bigint           not null, primary key
 #  active       :boolean          default(TRUE)
+#  currency     :string           default("$")
+#  currently_on :date
+#  started_on   :date
+#  title        :string
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
-#  currency     :string           default("$")
+#  user_id      :bigint
 #
 # Indexes
 #
