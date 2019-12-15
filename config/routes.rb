@@ -70,10 +70,8 @@ Rails.application.routes.draw do
         post 'players', to: 'players#index'
         post 'season/:id',  to: 'season#index', as: :season
       end
-
-      collection do
-        get 'names'
-      end
     end
+
+    get 'matches/teams', to: 'matches#teams'
   end
 end
