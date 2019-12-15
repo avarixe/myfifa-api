@@ -47,6 +47,10 @@ Rails.application.routes.draw do
 
       resources :squads
       resources :matches do
+        collection do
+          get 'team_options'
+        end
+
         member do
           get 'events'
           post 'apply_squad'
@@ -71,7 +75,5 @@ Rails.application.routes.draw do
         post 'season/:id',  to: 'season#index', as: :season
       end
     end
-
-    get 'matches/teams', to: 'matches#teams'
   end
 end
