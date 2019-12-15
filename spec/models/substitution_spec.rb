@@ -4,16 +4,16 @@
 #
 # Table name: substitutions
 #
-#  id             :bigint(8)        not null, primary key
-#  match_id       :bigint(8)
-#  minute         :integer
-#  player_id      :bigint(8)
-#  replacement_id :bigint(8)
+#  id             :bigint           not null, primary key
 #  injury         :boolean          default(FALSE)
-#  created_at     :datetime         not null
-#  updated_at     :datetime         not null
+#  minute         :integer
 #  player_name    :string
 #  replaced_by    :string
+#  created_at     :datetime         not null
+#  updated_at     :datetime         not null
+#  match_id       :bigint
+#  player_id      :bigint
+#  replacement_id :bigint
 #
 # Indexes
 #

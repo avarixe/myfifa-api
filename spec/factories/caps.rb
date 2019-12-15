@@ -3,16 +3,16 @@
 #
 # Table name: caps
 #
-#  id         :bigint(8)        not null, primary key
-#  match_id   :bigint(8)
-#  player_id  :bigint(8)
+#  id         :bigint           not null, primary key
 #  pos        :string
+#  rating     :integer
 #  start      :integer
 #  stop       :integer
+#  subbed_out :boolean          default(FALSE)
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
-#  subbed_out :boolean          default(FALSE)
-#  rating     :integer
+#  match_id   :bigint
+#  player_id  :bigint
 #
 # Indexes
 #

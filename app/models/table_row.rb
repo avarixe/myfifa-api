@@ -4,16 +4,16 @@
 #
 # Table name: table_rows
 #
-#  id            :bigint(8)        not null, primary key
-#  stage_id      :bigint(8)
+#  id            :bigint           not null, primary key
+#  draws         :integer          default(0)
+#  goals_against :integer          default(0)
+#  goals_for     :integer          default(0)
+#  losses        :integer          default(0)
 #  name          :string
 #  wins          :integer          default(0)
-#  draws         :integer          default(0)
-#  losses        :integer          default(0)
-#  goals_for     :integer          default(0)
-#  goals_against :integer          default(0)
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  stage_id      :bigint
 #
 # Indexes
 #

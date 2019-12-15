@@ -4,19 +4,19 @@
 #
 # Table name: contracts
 #
-#  id                :bigint(8)        not null, primary key
-#  player_id         :bigint(8)
-#  signed_on         :date
-#  wage              :integer
-#  signing_bonus     :integer
-#  release_clause    :integer
-#  performance_bonus :integer
+#  id                :bigint           not null, primary key
 #  bonus_req         :integer
 #  bonus_req_type    :string
+#  ended_on          :date
+#  performance_bonus :integer
+#  release_clause    :integer
+#  signed_on         :date
+#  signing_bonus     :integer
+#  started_on        :date
+#  wage              :integer
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
-#  ended_on          :date
-#  started_on        :date
+#  player_id         :bigint
 #
 # Indexes
 #

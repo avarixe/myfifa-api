@@ -4,17 +4,17 @@
 #
 # Table name: transfers
 #
-#  id            :bigint(8)        not null, primary key
-#  player_id     :bigint(8)
-#  signed_on     :date
-#  moved_on      :date
-#  origin        :string
+#  id            :bigint           not null, primary key
+#  addon_clause  :integer
 #  destination   :string
 #  fee           :integer
+#  moved_on      :date
+#  origin        :string
+#  signed_on     :date
 #  traded_player :string
-#  addon_clause  :integer
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
+#  player_id     :bigint
 #
 # Indexes
 #

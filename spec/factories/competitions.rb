@@ -2,13 +2,13 @@
 #
 # Table name: competitions
 #
-#  id         :bigint(8)        not null, primary key
-#  team_id    :bigint(8)
-#  season     :integer
-#  name       :string
+#  id         :bigint           not null, primary key
 #  champion   :string
+#  name       :string
+#  season     :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  team_id    :bigint
 #
 # Indexes
 #

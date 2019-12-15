@@ -4,18 +4,18 @@
 #
 # Table name: matches
 #
-#  id          :bigint(8)        not null, primary key
-#  team_id     :bigint(8)
-#  home        :string
+#  id          :bigint           not null, primary key
 #  away        :string
+#  away_score  :integer
 #  competition :string
+#  extra_time  :boolean          default(FALSE)
+#  home        :string
+#  home_score  :integer
 #  played_on   :date
+#  stage       :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  extra_time  :boolean          default(FALSE)
-#  home_score  :integer
-#  away_score  :integer
-#  stage       :string
+#  team_id     :bigint
 #
 # Indexes
 #

@@ -4,12 +4,12 @@
 #
 # Table name: penalty_shootouts
 #
-#  id         :bigint(8)        not null, primary key
-#  match_id   :bigint(8)
-#  home_score :integer
+#  id         :bigint           not null, primary key
 #  away_score :integer
+#  home_score :integer
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  match_id   :bigint
 #
 # Indexes
 #

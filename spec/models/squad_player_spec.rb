@@ -3,12 +3,12 @@
 #
 # Table name: squad_players
 #
-#  id         :bigint(8)        not null, primary key
-#  squad_id   :bigint(8)
-#  player_id  :bigint(8)
+#  id         :bigint           not null, primary key
 #  pos        :string
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
+#  player_id  :bigint
+#  squad_id   :bigint
 #
 # Indexes
 #

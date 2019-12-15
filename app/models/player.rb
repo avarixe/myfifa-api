@@ -4,20 +4,20 @@
 #
 # Table name: players
 #
-#  id          :bigint(8)        not null, primary key
-#  team_id     :bigint(8)
+#  id          :bigint           not null, primary key
+#  birth_year  :integer
+#  kit_no      :integer
 #  name        :string
 #  nationality :string
+#  ovr         :integer
 #  pos         :string
 #  sec_pos     :text             default([]), is an Array
-#  ovr         :integer
+#  status      :string
 #  value       :integer
-#  birth_year  :integer
+#  youth       :boolean          default(TRUE)
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  status      :string
-#  youth       :boolean          default(TRUE)
-#  kit_no      :integer
+#  team_id     :bigint
 #
 # Indexes
 #

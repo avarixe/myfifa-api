@@ -4,13 +4,13 @@
 #
 # Table name: injuries
 #
-#  id          :bigint(8)        not null, primary key
-#  player_id   :bigint(8)
-#  started_on  :date
-#  ended_on    :date
+#  id          :bigint           not null, primary key
 #  description :string
+#  ended_on    :date
+#  started_on  :date
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
+#  player_id   :bigint
 #
 # Indexes
 #

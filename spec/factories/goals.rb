@@ -4,18 +4,18 @@
 #
 # Table name: goals
 #
-#  id          :bigint(8)        not null, primary key
-#  match_id    :bigint(8)
-#  minute      :integer
-#  player_name :string
-#  player_id   :bigint(8)
-#  assist_id   :bigint(8)
+#  id          :bigint           not null, primary key
+#  assisted_by :string
 #  home        :boolean          default(FALSE)
+#  minute      :integer
 #  own_goal    :boolean          default(FALSE)
 #  penalty     :boolean          default(FALSE)
+#  player_name :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  assisted_by :string
+#  assist_id   :bigint
+#  match_id    :bigint
+#  player_id   :bigint
 #
 # Indexes
 #

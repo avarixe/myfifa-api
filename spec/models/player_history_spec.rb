@@ -4,14 +4,14 @@
 #
 # Table name: player_histories
 #
-#  id          :bigint(8)        not null, primary key
-#  player_id   :bigint(8)
-#  recorded_on :date
+#  id          :bigint           not null, primary key
+#  kit_no      :integer
 #  ovr         :integer
+#  recorded_on :date
 #  value       :integer
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
-#  kit_no      :integer
+#  player_id   :bigint
 #
 # Indexes
 #
