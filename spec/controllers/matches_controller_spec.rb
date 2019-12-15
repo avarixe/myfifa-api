@@ -163,6 +163,23 @@ RSpec.describe MatchesController, type: :request do
     end
   end
 
+  describe 'GET #team_options' do
+    it 'requires a valid token' do
+      get team_options_team_matches_url(team)
+      assert_response 401
+    end
+
+    it 'returns all Home/Away Teams from Matches' do
+      FactoryBot.create_list :match, 3, team: team
+
+      get team_options_team_matches_url(team),
+          headers: { 'Authorization' => "Bearer #{token.token}" }
+      assert_response :success
+      team_options = team.matches.pluck(:home, :away).flatten.uniq.sort
+      expect(json).to be == JSON.parse(team_options.to_json)
+    end
+  end
+
   describe 'POST #apply_squad' do
     let(:game) { FactoryBot.create(:match, team: team) }
     let(:squad) { FactoryBot.create(:squad, team: team) }
