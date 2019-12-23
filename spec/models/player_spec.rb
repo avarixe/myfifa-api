@@ -70,6 +70,12 @@ RSpec.describe Player, type: :model do
     expect(player.histories.length).to be == 1
   end
 
+  it 'sets birth_year automatically if age is provided' do
+    player.birth_year = nil
+    player.age = player.team.currently_on.year - player.birth_year_was
+    expect(player.birth_year_changed?).to be_falsey
+  end
+
   it 'records attribute changes in history' do
     player.team.increment_date(1.day)
 
