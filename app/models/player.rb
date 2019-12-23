@@ -85,6 +85,7 @@ class Player < ApplicationRecord
     kit_no
     birth_year
     youth
+    age
   ].freeze
 
   def self.permitted_attributes
@@ -156,6 +157,10 @@ class Player < ApplicationRecord
       elsif current_contract.pending? then 'Pending'
       else 'Active'
       end
+  end
+
+  def age=(val)
+    write_attribute :birth_year, team.currently_on.year - val.to_i
   end
 
   ###############
