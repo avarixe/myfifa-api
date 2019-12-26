@@ -47,7 +47,8 @@ class PlayersController < APIController
         .require(:player)
         .permit(
           *Player.permitted_attributes,
-          sec_pos: []
+          sec_pos: [],
+          contracts_attributes: Contract.permitted_attributes
         )
     end
 end
