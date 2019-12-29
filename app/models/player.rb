@@ -51,6 +51,8 @@ class Player < ApplicationRecord
   has_many :squad_players, dependent: :destroy
   has_many :squads, through: :squad_players
 
+  accepts_nested_attributes_for :contracts
+
   STATUSES = %w[
     Pending
     Active
@@ -160,6 +162,8 @@ class Player < ApplicationRecord
   end
 
   def age=(val)
+    return if team.nil?
+
     write_attribute :birth_year, team.currently_on.year - val.to_i
   end
 

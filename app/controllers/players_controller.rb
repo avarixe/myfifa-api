@@ -13,6 +13,8 @@ class PlayersController < APIController
   end
 
   def create
+    @player = @team.players.new
+    @player.attributes = player_params
     save_record @player
   end
 
@@ -47,7 +49,8 @@ class PlayersController < APIController
         .require(:player)
         .permit(
           *Player.permitted_attributes,
-          sec_pos: []
+          sec_pos: [],
+          contracts_attributes: Contract.permitted_attributes
         )
     end
 end
