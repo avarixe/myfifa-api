@@ -13,6 +13,8 @@ class PlayersController < APIController
   end
 
   def create
+    @player = @team.players.new
+    @player.attributes = player_params
     save_record @player
   end
 
