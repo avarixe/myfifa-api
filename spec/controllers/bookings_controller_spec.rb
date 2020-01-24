@@ -38,8 +38,6 @@ RSpec.describe BookingsController, type: :request do
       bookings = Booking.where(player_id: team.players.pluck(:id))
       expect(json).to be == JSON.parse(bookings.to_json)
     end
-
-    it 'filters Booking results by filter params'
   end
 
   describe 'GET #index' do

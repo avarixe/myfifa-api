@@ -38,8 +38,6 @@ RSpec.describe CapsController, type: :request do
       caps = Cap.where(player_id: team.players.pluck(:id))
       expect(json).to be == JSON.parse(caps.to_json)
     end
-
-    it 'filters Cap results by filter params'
   end
 
   describe 'GET #index' do

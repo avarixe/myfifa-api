@@ -5,6 +5,7 @@
 # Table name: bookings
 #
 #  id          :bigint           not null, primary key
+#  home        :boolean          default(FALSE)
 #  minute      :integer
 #  player_name :string
 #  red_card    :boolean          default(FALSE)
@@ -29,6 +30,7 @@ class Booking < ApplicationRecord
     minute
     player_id
     red_card
+    home
   ].freeze
 
   def self.permitted_attributes
@@ -37,10 +39,6 @@ class Booking < ApplicationRecord
 
   validates :minute, inclusion: 1..120
   validates :player_name, presence: true
-
-  def home
-    match.team_home?
-  end
 
   before_validation :set_names
 

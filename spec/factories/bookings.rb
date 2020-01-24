@@ -5,6 +5,7 @@
 # Table name: bookings
 #
 #  id          :bigint           not null, primary key
+#  home        :boolean          default(FALSE)
 #  minute      :integer
 #  player_name :string
 #  red_card    :boolean          default(FALSE)

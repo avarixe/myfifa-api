@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2019_09_10_002101) do
+ActiveRecord::Schema.define(version: 2020_01_24_162334) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -44,6 +44,7 @@ ActiveRecord::Schema.define(version: 2019_09_10_002101) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "player_name"
+    t.boolean "home", default: false
     t.index ["match_id"], name: "index_bookings_on_match_id"
     t.index ["player_id"], name: "index_bookings_on_player_id"
   end
