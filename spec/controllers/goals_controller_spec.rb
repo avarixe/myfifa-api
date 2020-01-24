@@ -38,8 +38,6 @@ RSpec.describe GoalsController, type: :request do
       goals = Goal.where(match_id: team.matches.pluck(:id))
       expect(json).to be == JSON.parse(goals.to_json)
     end
-
-    it 'filters Goal results by filter params'
   end
 
   describe 'GET #index' do

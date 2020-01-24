@@ -5,6 +5,7 @@
 # Table name: bookings
 #
 #  id          :bigint           not null, primary key
+#  home        :boolean          default(FALSE)
 #  minute      :integer
 #  player_name :string
 #  red_card    :boolean          default(FALSE)
@@ -33,7 +34,7 @@ RSpec.describe Booking, type: :model do
     expect(FactoryBot.build(:booking, minute: -1)).to_not be_valid
   end
 
-  it 'requires a Cap for the player'
+  it 'requires a Cap for the player if player_id is present'
 
   it 'automatically sets player name if player_id set' do
     player = FactoryBot.create(:player)

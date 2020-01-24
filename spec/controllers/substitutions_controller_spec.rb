@@ -39,8 +39,6 @@ RSpec.describe SubstitutionsController, type: :request do
       substitutions = Substitution.where(player_id: team.players.pluck(:id))
       expect(json).to be == JSON.parse(substitutions.to_json)
     end
-
-    it 'filters Substitution results by filter params'
   end
 
   describe 'GET #index' do
