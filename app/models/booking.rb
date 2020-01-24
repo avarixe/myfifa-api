@@ -28,6 +28,7 @@ class Booking < ApplicationRecord
 
   PERMITTED_ATTRIBUTES = %i[
     minute
+    player_name
     player_id
     red_card
     home
@@ -54,7 +55,7 @@ class Booking < ApplicationRecord
 
   def as_json(options = {})
     options[:methods] ||= []
-    options[:methods] += %i[event_type home]
+    options[:methods] << :event_type
     super
   end
 end
