@@ -7,7 +7,7 @@ class ApplicationRecord < ActiveRecord::Base
 
   def as_json(options = {})
     options[:except] ||= []
-    options[:except] += %i[created_at updated_at]
+    options[:except] += %i[updated_at]
     super
   end
 end
