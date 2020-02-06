@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PasswordController < APIController
   skip_before_action :authenticate_user!
 
@@ -16,7 +18,7 @@ class PasswordController < APIController
 
     else
       render json: errors_json(@user.errors.full_messages),
-              status: :unprocessable_entity
+             status: :unprocessable_entity
     end
   end
 
