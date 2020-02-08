@@ -45,7 +45,12 @@ Rails.application.routes.draw do
         post "#{controller}/search", to: "#{controller}#search"
       end
 
-      resources :squads
+      resources :squads do
+        member do
+          post 'store_lineup/:match_id', action: 'store_lineup'
+        end
+      end
+
       resources :matches do
         collection do
           get 'team_options'
@@ -53,7 +58,7 @@ Rails.application.routes.draw do
 
         member do
           get 'events'
-          post 'apply_squad'
+          post 'apply_squad/:squad_id', action: 'apply_squad'
         end
 
         resources :caps

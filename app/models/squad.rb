@@ -49,6 +49,13 @@ class Squad < ApplicationRecord
     errors.add :base, 'includes at least one Player multiple times'
   end
 
+  def store_lineup(match)
+    self.squad_players = match.caps.where(start: 0).map do |cap|
+      SquadPlayer.new(player_id: cap.player_id, pos: cap.pos)
+    end
+    save
+  end
+
   def as_json(options = {})
     options[:include] ||= []
     options[:include] += [:squad_players]
