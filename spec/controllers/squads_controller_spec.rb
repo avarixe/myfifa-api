@@ -148,4 +148,34 @@ RSpec.describe SquadsController, type: :request do
       expect { squad.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
   end
+
+  describe 'POST #store_lineup' do
+    let(:game) { FactoryBot.create(:match, team: team) }
+    let(:squad) { FactoryBot.create(:squad, team: team) }
+
+    before do
+      11.times do |i|
+        player = FactoryBot.create :player, team: game.team
+        FactoryBot.create :cap, match: game, player: player, start: 0, pos: Cap::POSITIONS[i]
+      end
+    end
+
+    it 'requires a valid token' do
+      post store_lineup_squad_path(squad, game)
+      assert_response 401
+    end
+
+    it 'rejects requests from other Users' do
+      other_squad = FactoryBot.create :squad
+      post store_lineup_squad_path(other_squad, game),
+           headers: { 'Authorization' => "Bearer #{token.token}" }
+      assert_response 403
+    end
+
+    it 'returns updated Match Performances JSON' do
+      post store_lineup_squad_path(squad, game),
+           headers: { 'Authorization' => "Bearer #{token.token}" }
+      expect(json).to be == JSON.parse(squad.reload.to_json)
+    end
+  end
 end

@@ -47,7 +47,9 @@ Rails.application.routes.draw do
 
       resources :squads do
         member do
-          post 'store_lineup/:match_id', action: 'store_lineup'
+          post 'store_lineup/:match_id',
+               action: :store_lineup,
+               as: :store_lineup
         end
       end
 
@@ -58,7 +60,9 @@ Rails.application.routes.draw do
 
         member do
           get 'events'
-          post 'apply_squad/:squad_id', action: 'apply_squad'
+          post 'apply_squad/:squad_id',
+               action: :apply_squad,
+               as: :apply_squad
         end
 
         resources :caps
