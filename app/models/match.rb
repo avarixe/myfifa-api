@@ -94,18 +94,10 @@ class Match < ApplicationRecord
   ##############
 
   def apply(squad)
-    Cap.transaction do
-      # Remove existing Caps
-      caps.map(&:destroy)
-
-      # Add new Caps from Squad Players
-      squad.squad_players.each do |item|
-        caps.create player_id: item.player_id, pos: item.pos
-      end
+    self.caps = squad.squad_players.map do |squad_player|
+      Cap.new(player_id: squad_player.player_id, pos: squad_player.pos)
     end
-
-    # Reload association to include new Caps
-    caps.reload
+    save
   end
 
   ###############

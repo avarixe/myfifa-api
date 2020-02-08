@@ -26,6 +26,12 @@ class SquadsController < APIController
     render json: @squad
   end
 
+  def store_lineup
+    @match = Match.find(params[:match_id])
+    @squad.store_lineup(@match)
+    render json: @squad
+  end
+
   private
 
     def squad_params

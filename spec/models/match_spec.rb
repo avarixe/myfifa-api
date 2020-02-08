@@ -95,4 +95,21 @@ RSpec.describe Match, type: :model do
     match.update(played_on: match.currently_on + 1.day)
     expect(match.team.reload.currently_on).to be == match.played_on
   end
+
+  describe 'when Squad is applied' do
+    let(:squad) { FactoryBot.create :squad, team: match.team }
+
+    it 'removes previous Caps' do
+      player = FactoryBot.create :player, team: match.team
+      cap = FactoryBot.create :cap, match: match, player: player
+      match.apply(squad)
+      expect { cap.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    it 'creates Caps matching SquadPlayers' do
+      match.apply(squad)
+      expect(match.caps.pluck(:player_id)).to be == squad.squad_players.pluck(:player_id)
+      expect(match.caps.pluck(:pos)).to be == squad.squad_players.pluck(:pos)
+    end
+  end
 end

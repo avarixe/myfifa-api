@@ -185,24 +185,21 @@ RSpec.describe MatchesController, type: :request do
     let(:squad) { FactoryBot.create(:squad, team: team) }
 
     it 'requires a valid token' do
-      post apply_squad_match_url(game),
-           params: { squad_id: squad.id }
+      post apply_squad_match_url(game, squad)
       assert_response 401
     end
 
     it 'rejects requests from other Users' do
       other_match = FactoryBot.create :match
-      post apply_squad_match_url(other_match),
-           headers: { 'Authorization' => "Bearer #{token.token}" },
-           params: { squad_id: squad.id }
+      post apply_squad_match_url(other_match, squad),
+           headers: { 'Authorization' => "Bearer #{token.token}" }
       assert_response 403
     end
 
     it 'returns updated Match Performances JSON' do
-      post apply_squad_match_url(game),
-           headers: { 'Authorization' => "Bearer #{token.token}" },
-           params: { squad_id: squad.id }
-      expect(json).to be == JSON.parse(game.reload.to_json)
+      post apply_squad_match_url(game, squad),
+           headers: { 'Authorization' => "Bearer #{token.token}" }
+      expect(json).to be == JSON.parse(game.to_json(include: :caps))
     end
   end
 end

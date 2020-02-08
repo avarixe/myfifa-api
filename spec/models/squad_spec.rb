@@ -47,4 +47,27 @@ RSpec.describe Squad, type: :model do
     squad.squad_players << FactoryBot.build(:squad_player, player_id: taken_player_ids[0])
     expect(squad).to_not be_valid
   end
+
+  describe 'when Match lineup is stored' do
+    let(:match) { FactoryBot.create :match, team: squad.team }
+
+    before do
+      11.times do |i|
+        player = FactoryBot.create :player, team: match.team
+        FactoryBot.create :cap, match: match, player: player, start: 0, pos: Cap::POSITIONS[i]
+      end
+    end
+
+    it 'removes previous SquadPlayers' do
+      old_record = squad.squad_players.first
+      squad.store_lineup(match)
+      expect { old_record.reload }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    it 'creates SquadPlayers matching Caps' do
+      squad.store_lineup(match)
+      expect(squad.squad_players.pluck(:player_id)).to be == match.caps.pluck(:player_id)
+      expect(squad.squad_players.pluck(:pos)).to be == match.caps.pluck(:pos)
+    end
+  end
 end
