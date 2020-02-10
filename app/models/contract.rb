@@ -7,6 +7,7 @@
 #  id                :bigint           not null, primary key
 #  bonus_req         :integer
 #  bonus_req_type    :string
+#  conclusion        :string
 #  ended_on          :date
 #  performance_bonus :integer
 #  release_clause    :integer
@@ -33,6 +34,14 @@ class Contract < ApplicationRecord
     'Goals',
     'Assists',
     'Clean Sheets'
+  ].freeze
+
+  CONCLUSION_TYPES = %w[
+    Renewed
+    Transferred
+    Expired
+    Released
+    Retired
   ].freeze
 
   PERMITTED_ATTRIBUTES = %i[
@@ -70,6 +79,9 @@ class Contract < ApplicationRecord
   validates :bonus_req_type,
             inclusion: { in: BONUS_REQUIREMENT_TYPES },
             allow_nil: true
+  validates :conclusion,
+            inclusion: { in: CONCLUSION_TYPES },
+            allow_nil: true
   validate  :valid_performance_bonus
 
   def valid_performance_bonus
@@ -97,7 +109,7 @@ class Contract < ApplicationRecord
       .where('ended_on > ?', started_on)
       .where.not(id: id)
       .each do |contract|
-        contract.update!(ended_on: started_on)
+        contract.update!(ended_on: started_on, conclusion: 'Renewed')
       end
   end
 
@@ -108,11 +120,11 @@ class Contract < ApplicationRecord
   delegate :update_status, to: :player
 
   def terminate!
-    update(ended_on: currently_on)
+    update(ended_on: currently_on, conclusion: 'Released')
   end
 
   def retire!
-    update(ended_on: team.end_of_season + 1.day)
+    update(ended_on: team.end_of_season + 1.day, conclusion: 'Retired')
   end
 
   ###############
