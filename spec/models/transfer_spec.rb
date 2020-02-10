@@ -52,7 +52,8 @@ RSpec.describe Transfer, type: :model do
                       origin: @player.team.title,
                       moved_on: @player.currently_on
     expect(@player.status).to be_nil
-    expect(@player.contracts.last.ended_on).to be == @player.currently_on
+    expect(@player.last_contract.ended_on).to be == @player.currently_on
+    expect(@player.last_contract.conclusion).to be == 'Transferred'
   end
 
   it 'ends the current contract when current date == effective date' do
@@ -64,6 +65,7 @@ RSpec.describe Transfer, type: :model do
     expect(@player.status).to_not be_nil
     @player.team.increment_date 1.week
     expect(@player.reload.status).to be_nil
-    expect(@player.contracts.last.ended_on).to be == @player.currently_on
+    expect(@player.last_contract.ended_on).to be == @player.currently_on
+    expect(@player.last_contract.conclusion).to be == 'Transferred'
   end
 end

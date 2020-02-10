@@ -125,6 +125,7 @@ class Player < ApplicationRecord
   after_create :save_history
   after_update :update_history
   after_update :end_pending_injuries, unless: :injured?
+  after_update :set_contract_conclusion, if: :saved_change_to_status?
 
   def set_kit_no
     self.kit_no = nil if status.blank? || loaned?
@@ -145,6 +146,12 @@ class Player < ApplicationRecord
 
   def end_pending_injuries
     injuries.where(ended_on: nil).update(ended_on: currently_on)
+  end
+
+  def set_contract_conclusion
+    return if status.present?
+
+    last_contract&.update(conclusion: last_contract.conclusion || 'Expired')
   end
 
   ##############
@@ -180,8 +187,12 @@ class Player < ApplicationRecord
   end
 
   %w[contract injury loan transfer].each do |record|
+    define_method "last_#{record}" do
+      public_send(record.pluralize).last
+    end
+
     define_method "current_#{record}" do
-      last_record = public_send(record.pluralize).last
+      last_record = public_send("last_#{record}")
       last_record if last_record&.current?
     end
   end

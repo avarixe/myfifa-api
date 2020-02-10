@@ -66,7 +66,7 @@ class Team < ApplicationRecord
     Player.transaction do
       players
         .preload(:contracts, :loans, :injuries)
-        .map(&:update_status)
+        .each(&:update_status)
     end
   end
 

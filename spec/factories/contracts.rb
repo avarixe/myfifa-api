@@ -7,6 +7,7 @@
 #  id                :bigint           not null, primary key
 #  bonus_req         :integer
 #  bonus_req_type    :string
+#  conclusion        :string
 #  ended_on          :date
 #  performance_bonus :integer
 #  release_clause    :integer

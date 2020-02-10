@@ -7,6 +7,7 @@
 #  id                :bigint           not null, primary key
 #  bonus_req         :integer
 #  bonus_req_type    :string
+#  conclusion        :string
 #  ended_on          :date
 #  performance_bonus :integer
 #  release_clause    :integer
@@ -74,10 +75,11 @@ RSpec.describe Contract, type: :model do
 
   it 'sets Active Player as Inactive once contract expires' do
     player = FactoryBot.create :player
-    player.contracts.last.update(ended_on: 1.day.from_now)
+    player.last_contract.update(ended_on: 1.day.from_now)
     player.team.increment_date(1.week)
     player.reload
     expect(player.active?).to be_falsey
+    expect(player.last_contract.conclusion).to be == 'Expired'
   end
 
   it 'provides all three fields for a performance bonus' do
@@ -108,6 +110,7 @@ RSpec.describe Contract, type: :model do
     contract.update(ended_on: team.currently_on + 2.year)
     contract.terminate!
     expect(contract.active?).to be_falsey
+    expect(contract.conclusion).to be == 'Released'
   end
 
   it 'end contract at the end of the season when retired' do
@@ -115,6 +118,7 @@ RSpec.describe Contract, type: :model do
     contract.update(ended_on: team.currently_on + 2.year)
     contract.retire!
     expect(contract.ended_on).to be == team.end_of_season + 1.day
+    expect(contract.conclusion).to be == 'Retired'
   end
 
   it 'terminates the previous contract' do
@@ -127,5 +131,6 @@ RSpec.describe Contract, type: :model do
 
     expect(player.reload.active?).to be_truthy
     expect(contract.reload.ended_on).to be == contract.currently_on
+    expect(contract.reload.conclusion).to be == 'Renewed'
   end
 end
