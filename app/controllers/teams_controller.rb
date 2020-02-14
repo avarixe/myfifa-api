@@ -4,7 +4,7 @@ class TeamsController < APIController
   load_and_authorize_resource except: %i[create]
 
   def index
-    render json: current_user.teams.includes(:badge_attachment).to_json
+    render json: current_user.teams.includes(badge_attachment: :blob).to_json
   end
 
   def show
