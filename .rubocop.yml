@@ -26,6 +26,12 @@ Style/TrailingCommaInHashLiteral:
   Enabled: false
 Style/RescueStandardError:
   Enabled: false
+Style/HashEachMethods:
+  Enabled: true
+Style/HashTransformKeys:
+  Enabled: true
+Style/HashTransformValues:
+  Enabled: true
 # Metrics/AbcSize:
 #   Enabled: false
 Metrics/ClassLength:
