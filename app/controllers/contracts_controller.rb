@@ -8,7 +8,7 @@ class ContractsController < APIController
   def search
     @team = Team.find(params[:team_id])
     authorize! :show, @team
-    @contracts = Contract.where(player_id: @team.players.pluck(:id))
+    @contracts = Contract.joins(:player).where(players: { team_id: @team.id })
     render json: filter(@contracts)
   end
 

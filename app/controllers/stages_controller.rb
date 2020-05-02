@@ -11,7 +11,8 @@ class StagesController < APIController
     authorize! :show, @team
     @stages = Stage
               .includes(:table_rows, fixtures: :legs)
-              .where(competition_id: @team.competitions.pluck(:id))
+              .joins(:competition)
+              .where(competitions: { team_id: @team.id })
     render json: filter(@stages)
   end
 

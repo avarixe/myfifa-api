@@ -8,7 +8,7 @@ class TransfersController < APIController
   def search
     @team = Team.find(params[:team_id])
     authorize! :show, @team
-    @transfers = Transfer.where(player_id: @team.players.pluck(:id))
+    @transfers = Transfer.joins(:player).where(players: { team_id: @team.id })
     render json: filter(@transfers)
   end
 

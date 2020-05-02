@@ -8,7 +8,7 @@ class LoansController < APIController
   def search
     @team = Team.find(params[:team_id])
     authorize! :show, @team
-    @loans = Loan.where(player_id: @team.players.pluck(:id))
+    @loans = Loan.joins(:player).where(players: { team_id: @team.id })
     render json: filter(@loans)
   end
 
