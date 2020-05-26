@@ -24,6 +24,8 @@ Layout/SpaceAroundMethodCallOperator:
   Enabled: true
 Lint/DeprecatedOpenSSLConstant:
   Enabled: true
+Lint/MixedRegexpCaptureTypes:
+  Enabled: true
 Lint/RaiseException:
   Enabled: true
 Lint/StructNewOverride:
@@ -31,6 +33,10 @@ Lint/StructNewOverride:
 Style/Documentation:
   Enabled: false
 Style/ExponentialNotation:
+  Enabled: true
+Style/RedundantRegexpCharacterClass:
+  Enabled: true
+Style/RedundantRegexpEscape:
   Enabled: true
 Style/SlicingWithRange:
   Enabled: true
