@@ -37,9 +37,11 @@ RSpec.describe UsersController, type: :request do
     it 'creates a token' do
       post oauth_token_url,
            params: {
-             grant_type: 'password',
-             username:   user.username,
-             password:   user.password
+             grant_type:    'password',
+             username:      user.username,
+             password:      user.password,
+             client_id:     application.uid,
+             client_secret: application.secret
            }
       assert_response :success
     end
@@ -49,7 +51,7 @@ RSpec.describe UsersController, type: :request do
     it 'removes a token' do
       post oauth_revoke_url,
            params: {
-             client_id: application.uid,
+             client_id:     application.uid,
              client_secret: application.secret
            },
            headers: { 'Authorization' => "Bearer #{token.token}" }
