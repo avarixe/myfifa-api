@@ -11,7 +11,7 @@ class CapsController < APIController
     @caps = Cap
             .joins(:player)
             .includes(:player)
-            .where(players: { team_id: params[:team_id] })
+            .where(players: { team_id: @team.id })
     render json: filter(@caps)
   end
 

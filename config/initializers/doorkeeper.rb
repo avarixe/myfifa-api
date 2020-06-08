@@ -1,4 +1,7 @@
 Doorkeeper.configure do
+  api_only
+  base_controller 'ActionController::API'
+
   orm :active_record
 
   # This block will be called to check whether the resource owner is authenticated or not.

@@ -11,7 +11,7 @@ class SubstitutionsController < APIController
     @substitutions = Substitution
                      .joins(:player)
                      .includes(match: :team)
-                     .where(players: { team_id: params[:team_id] })
+                     .where(players: { team_id: @team.id })
     render json: filter(@substitutions)
   end
 

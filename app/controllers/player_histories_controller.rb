@@ -8,7 +8,7 @@ class PlayerHistoriesController < APIController
     authorize! :show, @team
     @histories = PlayerHistory
                  .joins(:player)
-                 .where(players: { team_id: params[:team_id] })
+                 .where(players: { team_id: @team.id })
     render json: filter(@histories)
   end
 end

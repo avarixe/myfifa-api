@@ -8,7 +8,7 @@ class InjuriesController < APIController
   def search
     @team = Team.find(params[:team_id])
     authorize! :show, @team
-    @injuries = Injury.where(player_id: @team.players.pluck(:id))
+    @injuries = Injury.joins(:player).where(players: { team_id: @team.id })
     render json: filter(@injuries)
   end
 
