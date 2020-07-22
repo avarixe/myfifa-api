@@ -46,7 +46,9 @@ RSpec.describe MatchesController, type: :request do
       game = FactoryBot.create :match, team: team
       get match_url(game),
           headers: { 'Authorization' => "Bearer #{token.token}" }
-      expect(json).to be == JSON.parse(game.to_json)
+      expect(json).to be == JSON.parse(game.to_json(
+        include: %i[caps goals substitutions bookings penalty_shootout]
+      ))
     end
   end
 
@@ -119,47 +121,6 @@ RSpec.describe MatchesController, type: :request do
       delete match_url(game),
              headers: { 'Authorization' => "Bearer #{token.token}" }
       expect { game.reload }.to raise_error(ActiveRecord::RecordNotFound)
-    end
-  end
-
-  describe 'GET #events' do
-    let(:game) { FactoryBot.create(:match, team: team) }
-
-    before do
-      FactoryBot.create_list :home_goal,
-                             Faker::Number.between(from: 0, to: 3),
-                             match: game
-      FactoryBot.create_list :away_goal,
-                             Faker::Number.between(from: 0, to: 3),
-                             match: game
-      team.players.each_with_index do |player, i|
-        FactoryBot.create :cap,
-                          match: game,
-                          player: player,
-                          pos: Cap::POSITIONS[i]
-      end
-      player_ids = game.players.pluck(:id)
-      Faker::Number.between(from: 0, to: 2).times do
-        FactoryBot.create :booking,
-                          match: game,
-                          player_id: player_ids.sample
-      end
-      Faker::Number.between(from: 0, to: 2).times do
-        FactoryBot.create :substitution,
-                          match: game,
-                          player_id: player_ids.sample
-      end
-    end
-
-    it 'requires a valid token' do
-      get events_match_url(game)
-      assert_response 401
-    end
-
-    it 'returns Match Events JSON' do
-      get events_match_url(game),
-          headers: { 'Authorization' => "Bearer #{token.token}" }
-      expect(json).to be == JSON.parse(game.events.to_json)
     end
   end
 

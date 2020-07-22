@@ -11,7 +11,9 @@ class MatchesController < APIController
   end
 
   def show
-    render json: @match
+    render json: @match.to_json(
+      include: %i[caps goals substitutions bookings penalty_shootout]
+    )
   end
 
   def create
@@ -26,10 +28,6 @@ class MatchesController < APIController
   def destroy
     @match.destroy
     render json: @match
-  end
-
-  def events
-    render json: @match.events
   end
 
   def apply_squad
