@@ -59,7 +59,6 @@ Rails.application.routes.draw do
         end
 
         member do
-          get 'events'
           post 'apply_squad/:squad_id',
                action: :apply_squad,
                as: :apply_squad
