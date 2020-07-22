@@ -19,9 +19,6 @@ Rails.application.routes.draw do
         member do
           post 'release'
           post 'retire'
-          get 'history'
-          get 'current_loan'
-          get 'current_injury'
         end
 
         resources :loans
