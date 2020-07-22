@@ -9,7 +9,9 @@ class PlayersController < APIController
   end
 
   def show
-    render json: @player
+    render json: @player.to_json(
+      include: %i[histories contracts injuries loans transfers]
+    )
   end
 
   def create
@@ -36,10 +38,6 @@ class PlayersController < APIController
   def retire
     @player.current_contract&.retire!
     render json: @player
-  end
-
-  def history
-    render json: @player.histories
   end
 
   private
