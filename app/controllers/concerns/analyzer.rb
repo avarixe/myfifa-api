@@ -72,7 +72,7 @@ module Analyzer
     def expired_players(ended_by:)
       Contract
         .where(player_id: @player_ids)
-        .where(ended_on: ..ended_by)
+        .where(Contract.arel_table[:ended_on].lteq(ended_by))
         .where
         .not(conclusion: 'Renewed')
         .pluck(:player_id)

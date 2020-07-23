@@ -66,12 +66,9 @@ class Cap < ApplicationRecord
   end
 
   scope :clean_sheets, lambda { |team|
-    left_outer_joins(:match)
-      .where(
-        '(home = ? AND away_score = 0) OR (away = ? AND home_score = 0)',
-        team.title,
-        team.title
-      )
+    joins(:match)
+      .where(matches: { away_score: 0, home: team.title })
+      .or(joins(:match).where(matches: { home_score: 0, away: team.title }))
   }
 
   validates :start, inclusion: 0..120

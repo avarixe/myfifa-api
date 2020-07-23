@@ -59,9 +59,9 @@ class Contract < ApplicationRecord
     PERMITTED_ATTRIBUTES
   end
 
-  scope :active, lambda { |player|
-    where('started_on >= ?', player.currently_on)
-      .where('? <= ended_on', player.currently_on)
+  scope :active, lambda { |date|
+    where(arel_table[:started_on].lteq(date))
+      .where(arel_table[:ended_on].gt(date))
   }
 
   ################
@@ -106,7 +106,7 @@ class Contract < ApplicationRecord
   def close_previous_contract
     Contract
       .where(player_id: player_id)
-      .where('ended_on > ?', started_on)
+      .where(Contract.arel_table[:ended_on].gt(started_on))
       .where.not(id: id)
       .each do |contract|
         contract.update!(ended_on: started_on, conclusion: 'Renewed')

@@ -24,12 +24,13 @@ module Analyze
       end
 
       def set_player_ids
-        @player_ids = @team.players.joins(:contracts).where(
-          contracts: {
-            started_on: ..@season[:end],
-            ended_on: (@season[:start] + 1.day)...
-          }
-        ).pluck(:id)
+        contract_table = Contract.arel_table
+        @player_ids = @team
+                      .players
+                      .joins(:contracts)
+                      .where(contract_table[:started_on].lteq(@season[:end]))
+                      .where(contract_table[:ended_on].gt(@season[:start]))
+                      .pluck(:id)
       end
 
       def set_match_ids
