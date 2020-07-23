@@ -11,8 +11,15 @@ class MatchesController < APIController
   end
 
   def show
+    @match = Match.with_players.find(params[:id])
     render json: @match.to_json(
-      include: %i[caps goals substitutions bookings penalty_shootout]
+      include: [
+        :goals,
+        :bookings,
+        :penalty_shootout,
+        caps: { methods: :name },
+        substitutions: { methods: :home }
+      ]
     )
   end
 

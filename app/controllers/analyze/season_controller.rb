@@ -10,6 +10,7 @@ module Analyze
 
     def index
       stats = [
+        player_data,
         player_stats,
         match_stats
       ]
@@ -23,13 +24,13 @@ module Analyze
       end
 
       def set_player_ids
-        @player_ids = @team.players.pluck(:id)
-        @player_ids &= Contract.where(
-          'started_on <= ? AND ? < ended_on',
-          @season[:end],
-          @season[:start]
-        ).pluck(:player_id)
-        @player_ids.map!(&:to_s)
+        contract_table = Contract.arel_table
+        @player_ids = @team
+                      .players
+                      .joins(:contracts)
+                      .where(contract_table[:started_on].lteq(@season[:end]))
+                      .where(contract_table[:ended_on].gt(@season[:start]))
+                      .pluck(:id)
       end
 
       def set_match_ids
@@ -37,13 +38,18 @@ module Analyze
                      .matches
                      .where(played_on: @season[:start]..@season[:end])
                      .pluck(:id)
-                     .map(&:to_s)
+      end
+
+      def player_data
+        {
+          player_ids: @player_ids,
+          expired_players: expired_players(ended_by: @season[:end]),
+          records: player_histories
+        }
       end
 
       def player_stats
         {
-          player_ids: @player_ids,
-          records: season_players,
           num_games: num_games,
           num_subs: num_subs,
           num_goals: num_goals,

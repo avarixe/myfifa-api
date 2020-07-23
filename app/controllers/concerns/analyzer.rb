@@ -61,12 +61,21 @@ module Analyzer
         .to_h
     end
 
-    def season_players
+    def player_histories
       PlayerHistory
         .where(player_id: @player_ids)
         .order(:recorded_on)
         .group_by(&:player_id)
         .to_h
+    end
+
+    def expired_players(ended_by:)
+      Contract
+        .where(player_id: @player_ids)
+        .where(Contract.arel_table[:ended_on].lteq(ended_by))
+        .where
+        .not(conclusion: 'Renewed')
+        .pluck(:player_id)
     end
 
     def match_results

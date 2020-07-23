@@ -102,14 +102,4 @@ class Goal < ApplicationRecord
   def away?
     !home?
   end
-
-  def event_type
-    'Goal'
-  end
-
-  def as_json(options = {})
-    options[:methods] ||= []
-    options[:methods] << :event_type
-    super
-  end
 end
