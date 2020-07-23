@@ -48,14 +48,4 @@ class Booking < ApplicationRecord
   end
 
   delegate :team, to: :match
-
-  def event_type
-    'Booking'
-  end
-
-  def as_json(options = {})
-    options[:methods] ||= []
-    options[:methods] << :event_type
-    super
-  end
 end

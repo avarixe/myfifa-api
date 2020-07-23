@@ -91,10 +91,6 @@ class Substitution < ApplicationRecord
     match.team_home?
   end
 
-  def event_type
-    'Substitution'
-  end
-
   def subbed_cap
     match.caps.find_by(player_id: player_id)
   end
@@ -109,7 +105,7 @@ class Substitution < ApplicationRecord
 
   def as_json(options = {})
     options[:methods] ||= []
-    options[:methods] += %i[event_type home]
+    options[:methods] += %i[home]
     super
   end
 end
