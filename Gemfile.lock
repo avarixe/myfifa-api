@@ -274,7 +274,6 @@ DEPENDENCIES
   simplecov
   spring
   spring-watcher-listen (~> 2.0.0)
-  tzinfo-data
 
 BUNDLED WITH
    2.1.4
