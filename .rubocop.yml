@@ -5,6 +5,7 @@ Rails:
   Enabled: true
 AllCops:
   TargetRubyVersion: 2.7
+  NewCops: enable
   Exclude:
     - 'bin/*'
     - 'config/**/*'
@@ -50,6 +51,8 @@ Style/TrailingCommaInHashLiteral:
   Enabled: false
 Style/RescueStandardError:
   Enabled: false
+Style/HashAsLastArrayItem:
+  EnforcedStyle: no_braces
 Style/HashEachMethods:
   Enabled: true
 Style/HashTransformKeys:

@@ -32,7 +32,7 @@ class APIController < ApplicationController
     end
 
     def errors_json(messages)
-      { errors: [*messages] }
+      { errors: Array(messages) }
     end
 
     def render_server_error
