@@ -10,18 +10,6 @@ module Users
 
     before_action :not_allowed, only: %i[new edit cancel]
 
-    def new
-      super
-    end
-
-    def edit
-      super
-    end
-
-    def cancel
-      super
-    end
-
     private
 
       def not_allowed
