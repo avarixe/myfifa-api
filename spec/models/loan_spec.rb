@@ -4,15 +4,16 @@
 #
 # Table name: loans
 #
-#  id          :bigint           not null, primary key
-#  destination :string
-#  ended_on    :date
-#  origin      :string
-#  signed_on   :date
-#  started_on  :date
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  player_id   :bigint
+#  id              :bigint           not null, primary key
+#  destination     :string
+#  ended_on        :date
+#  origin          :string
+#  signed_on       :date
+#  started_on      :date
+#  wage_percentage :integer
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  player_id       :bigint
 #
 # Indexes
 #
@@ -35,6 +36,12 @@ RSpec.describe Loan, type: :model do
   it 'requires a destination' do
     expect(
       FactoryBot.build(:loan, destination: nil)).to_not be_valid
+  end
+
+  it 'only accepts a valid wage percentage' do
+    expect(FactoryBot.build(:loan, wage_percentage: nil)).to be_valid
+    expect(FactoryBot.build(:loan, wage_percentage: -1)).to_not be_valid
+    expect(FactoryBot.build(:loan, wage_percentage: 101)).to_not be_valid
   end
 
   it 'has an end date after start date' do

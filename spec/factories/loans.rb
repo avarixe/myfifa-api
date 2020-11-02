@@ -4,15 +4,16 @@
 #
 # Table name: loans
 #
-#  id          :bigint           not null, primary key
-#  destination :string
-#  ended_on    :date
-#  origin      :string
-#  signed_on   :date
-#  started_on  :date
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  player_id   :bigint
+#  id              :bigint           not null, primary key
+#  destination     :string
+#  ended_on        :date
+#  origin          :string
+#  signed_on       :date
+#  started_on      :date
+#  wage_percentage :integer
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  player_id       :bigint
 #
 # Indexes
 #
@@ -24,6 +25,7 @@ FactoryBot.define do
     origin { Faker::Team.unique.name }
     destination { Faker::Team.unique.name }
     started_on { Faker::Date.between(from: Date.today, to: 60.days.from_now) }
+    wage_percentage { Faker::Number.between(from: 0, to: 100) }
     player
   end
 end
