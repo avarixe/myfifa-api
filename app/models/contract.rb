@@ -53,6 +53,7 @@ class Contract < ApplicationRecord
     bonus_req_type
     ended_on
     started_on
+    num_seasons
   ].freeze
 
   def self.permitted_attributes
@@ -125,6 +126,21 @@ class Contract < ApplicationRecord
 
   def retire!
     update(ended_on: team.end_of_season + 1.day, conclusion: 'Retired')
+  end
+
+  def num_seasons=(val)
+    return if val.blank?
+
+    self.ended_on = Date.new(
+      (signed_on || currently_on).year + val,
+      team.started_on.month,
+      team.started_on.day
+    )
+    @num_seasons_set = true
+  end
+
+  def ended_on=(val)
+    super unless @num_seasons_set
   end
 
   ###############
