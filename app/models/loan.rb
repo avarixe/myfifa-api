@@ -4,15 +4,16 @@
 #
 # Table name: loans
 #
-#  id          :bigint           not null, primary key
-#  destination :string
-#  ended_on    :date
-#  origin      :string
-#  signed_on   :date
-#  started_on  :date
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  player_id   :bigint
+#  id              :bigint           not null, primary key
+#  destination     :string
+#  ended_on        :date
+#  origin          :string
+#  signed_on       :date
+#  started_on      :date
+#  wage_percentage :integer
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  player_id       :bigint
 #
 # Indexes
 #
@@ -28,6 +29,7 @@ class Loan < ApplicationRecord
     origin
     destination
     started_on
+    wage_percentage
     returned
   ].freeze
 
@@ -47,6 +49,7 @@ class Loan < ApplicationRecord
   validates :ended_on,
             date: { after_or_equal_to: :started_on },
             allow_nil: true
+  validates :wage_percentage, inclusion: { in: 0..100, allow_nil: true }
 
   ###############
   #  CALLBACKS  #
