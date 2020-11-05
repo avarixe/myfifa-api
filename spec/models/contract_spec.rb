@@ -52,6 +52,30 @@ RSpec.describe Contract, type: :model do
     expect(FactoryBot.build(:contract, bonus_req: bonus_req, performance_bonus: perf_bonus, bonus_req_type: Faker::Lorem.word)).to_not be_valid
   end
 
+  it 'rejects ended_on if num_seasons is provided' do
+    player = FactoryBot.create(:player)
+    contract = FactoryBot.build(:contract, player: player, ended_on: 365.days.from_now, num_seasons: 2)
+    expect(contract.ended_on).to_not be == 365.days.from_now
+  end
+
+  it 'sets ended_on automatically if num_seasons is set' do
+    player = FactoryBot.create(:player)
+    contract = FactoryBot.build(:contract, player: player, num_seasons: 3)
+    expect(contract.ended_on).to be == player.team.started_on + 3.years
+  end
+
+  it 'sets ended_on correctly if signed during 2nd half of season and num_seasons is set' do
+    player = FactoryBot.create(:player)
+    contract = FactoryBot.build(:contract, player: player, signed_on: player.team.started_on + 7.months, num_seasons: 3)
+    expect(contract.ended_on).to be == player.team.started_on + 4.years
+  end
+
+  it 'sets ended_on to end of season if signed during 2nd half of season with no years  and num_seasons is set' do
+    player = FactoryBot.create(:player)
+    contract = FactoryBot.build(:contract, player: player, signed_on: player.team.started_on + 7.months, num_seasons: 0)
+    expect(contract.ended_on).to be == player.team.started_on + 1.years
+  end
+
   it 'sets Player as Pending if started_on > current date' do
     future_date = Faker::Date.between from: 1.days.from_now,
                                       to: 365.days.from_now
