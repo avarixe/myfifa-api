@@ -43,6 +43,10 @@ RSpec.describe Match, type: :model do
     expect(FactoryBot.build(:match, competition: nil)).to_not be_valid
   end
 
+  it 'does not require a competition if friendly' do
+    expect(FactoryBot.build(:match, competition: nil, friendly: true)).to be_valid
+  end
+
   it 'cannot have duplicate home and away teams' do
     team = Faker::Team.name
     expect(FactoryBot.build(:match, home: team, away: team)).to_not be_valid

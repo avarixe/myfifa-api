@@ -9,6 +9,7 @@
 #  away_score  :integer
 #  competition :string
 #  extra_time  :boolean          default(FALSE)
+#  friendly    :boolean          default(FALSE)
 #  home        :string
 #  home_score  :integer
 #  played_on   :date

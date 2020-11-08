@@ -9,6 +9,7 @@
 #  away_score  :integer
 #  competition :string
 #  extra_time  :boolean          default(FALSE)
+#  friendly    :boolean          default(FALSE)
 #  home        :string
 #  home_score  :integer
 #  played_on   :date
@@ -40,6 +41,7 @@ class Match < ApplicationRecord
     played_on
     competition
     stage
+    friendly
     extra_time
   ].freeze
 
@@ -55,7 +57,7 @@ class Match < ApplicationRecord
 
   validates :home, presence: true
   validates :away, presence: true
-  validates :competition, presence: true
+  validates :competition, presence: true, unless: :friendly?
   validates :played_on, presence: true
   validate :different_teams
 
