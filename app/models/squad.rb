@@ -53,7 +53,12 @@ class Squad < ApplicationRecord
     self.squad_players = match.caps.where(start: 0).map do |cap|
       SquadPlayer.new(player_id: cap.player_id, pos: cap.pos)
     end
-    save
+  end
+
+  def eligible_players
+    squad_players.includes(:player).select do |squad_player|
+      squad_player.player.active?
+    end
   end
 
   def as_json(options = {})

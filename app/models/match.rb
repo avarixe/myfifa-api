@@ -96,10 +96,9 @@ class Match < ApplicationRecord
   ##############
 
   def apply(squad)
-    self.caps = squad.squad_players.map do |squad_player|
+    self.caps = squad.eligible_players.map do |squad_player|
       Cap.new(player_id: squad_player.player_id, pos: squad_player.pos)
     end
-    save
   end
 
   ###############
