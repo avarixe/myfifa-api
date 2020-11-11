@@ -81,7 +81,7 @@ class Substitution < ApplicationRecord
   end
 
   def delete_cap
-    sub_cap.destroy
+    sub_cap&.destroy
     subbed_cap.update(stop: match_stop, subbed_out: false)
   end
 
