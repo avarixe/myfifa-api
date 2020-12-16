@@ -1,6 +1,7 @@
 require:
   - rubocop-rspec
   - rubocop-performance
+  - rubocop-rails
 Rails:
   Enabled: true
 AllCops:
@@ -31,6 +32,8 @@ Lint/RaiseException:
   Enabled: true
 Lint/StructNewOverride:
   Enabled: true
+Rails/LexicallyScopedActionFilter:
+  Enabled: false
 Style/Documentation:
   Enabled: false
 Style/ExponentialNotation:

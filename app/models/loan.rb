@@ -56,8 +56,8 @@ class Loan < ApplicationRecord
   ###############
 
   before_validation :set_signed_on
-  after_save :update_status
   after_update :end_current_contract, if: :loaned_in?
+  after_save :update_status
 
   def set_signed_on
     self.signed_on ||= team.currently_on

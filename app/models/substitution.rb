@@ -82,7 +82,7 @@ class Substitution < ApplicationRecord
 
   def delete_cap
     sub_cap&.destroy
-    subbed_cap.update(stop: match_stop, subbed_out: false)
+    subbed_cap&.update(stop: match_stop, subbed_out: false)
   end
 
   delegate :team, to: :match
