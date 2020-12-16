@@ -59,8 +59,8 @@ class Goal < ApplicationRecord
   after_destroy :decrement_score
 
   def set_names
-    self.player_name = player.name if player_id.present?
-    self.assisted_by = assisting_player.name if assist_id.present?
+    self.player_name = reload_player.name if player_id.present?
+    self.assisted_by = reload_assisting_player.name if assist_id.present?
   end
 
   def increment_score

@@ -86,6 +86,7 @@ RSpec.describe Goal, type: :model do
     player = FactoryBot.create :player
     player2 = FactoryBot.create :player, team: player.team
     player_assist = FactoryBot.create :goal, assist_id: player.id
+    puts "player2 ##{player2.id}: #{player2.name}"
     player_assist.update(assist_id: player2.id)
     expect(player_assist.assisted_by).to be == player2.name
   end
