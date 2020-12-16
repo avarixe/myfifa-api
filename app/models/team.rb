@@ -66,12 +66,12 @@ class Team < ApplicationRecord
     Player.transaction do
       players
         .preload(:contracts, :loans, :injuries)
-        .each(&:update_status)
+        .find_each(&:update_status)
     end
   end
 
   def badge_path
-    return unless badge.attached?
+    return unless badge.attached? && !destroyed?
 
     Rails.application.routes.url_helpers.rails_blob_url(badge, only_path: true)
   end

@@ -55,8 +55,8 @@ class Goal < ApplicationRecord
 
   before_validation :set_names
   after_create :increment_score
-  after_destroy :decrement_score
   after_update :update_score, if: :score_changed?
+  after_destroy :decrement_score
 
   def set_names
     self.player_name = player.name if player_id.present?

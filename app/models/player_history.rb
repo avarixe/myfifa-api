@@ -37,8 +37,8 @@ class PlayerHistory < ApplicationRecord
 
   delegate :currently_on, to: :player
 
-  before_create :remove_duplicates
   before_validation :set_recorded_on
+  before_create :remove_duplicates
 
   def remove_duplicates
     PlayerHistory

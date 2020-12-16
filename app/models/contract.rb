@@ -109,7 +109,7 @@ class Contract < ApplicationRecord
       .where(player_id: player_id)
       .where(Contract.arel_table[:ended_on].gt(started_on))
       .where.not(id: id)
-      .each do |contract|
+      .find_each do |contract|
         contract.update!(ended_on: started_on, conclusion: 'Renewed')
       end
   end
