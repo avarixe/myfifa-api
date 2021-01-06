@@ -64,15 +64,15 @@ RSpec.describe Contract, type: :model do
     expect(contract.ended_on).to be == player.team.started_on + 3.years
   end
 
-  it 'sets ended_on correctly if signed during 2nd half of season and num_seasons is set' do
+  it 'sets ended_on correctly if started during 2nd half of season and num_seasons is set' do
     player = FactoryBot.create(:player)
-    contract = FactoryBot.build(:contract, player: player, signed_on: player.team.started_on + 7.months, num_seasons: 3)
+    contract = FactoryBot.build(:contract, player: player, started_on: player.team.started_on + 7.months, num_seasons: 3)
     expect(contract.ended_on).to be == player.team.started_on + 4.years
   end
 
-  it 'sets ended_on to end of season if signed during 2nd half of season with no years  and num_seasons is set' do
+  it 'sets ended_on to end of season if started during 2nd half of season with no years and num_seasons is set to 0' do
     player = FactoryBot.create(:player)
-    contract = FactoryBot.build(:contract, player: player, signed_on: player.team.started_on + 7.months, num_seasons: 0)
+    contract = FactoryBot.build(:contract, player: player, started_on: player.team.started_on + 7.months, num_seasons: 0)
     expect(contract.ended_on).to be == player.team.started_on + 1.years
   end
 

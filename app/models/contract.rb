@@ -131,11 +131,8 @@ class Contract < ApplicationRecord
   def num_seasons=(val)
     return if val.blank?
 
-    self.ended_on = Date.new(
-      (signed_on || currently_on).year + val,
-      team.started_on.month,
-      team.started_on.day
-    )
+    num_years = ((started_on - team.started_on) / 365).round + val
+    self.ended_on = team.started_on + num_years.years
     @num_seasons_set = true
   end
 
