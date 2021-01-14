@@ -45,6 +45,7 @@ class Substitution < ApplicationRecord
   validates :minute, inclusion: 1..120
 
   before_validation :set_names
+  before_create :set_default_bools
   after_create :create_cap
   after_update :update_subbed_cap, if: :saved_change_to_player_id?
   after_update :update_sub_cap, if: :saved_change_to_replacement_id?
@@ -53,6 +54,10 @@ class Substitution < ApplicationRecord
   def set_names
     self.player_name = player.name if player_id.present?
     self.replaced_by = replacement.name if replacement_id.present?
+  end
+
+  def set_default_bools
+    self.injury ||= false
   end
 
   def create_cap

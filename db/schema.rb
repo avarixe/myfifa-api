@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2020_12_16_230231) do
+ActiveRecord::Schema.define(version: 2021_01_14_171655) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -47,11 +47,11 @@ ActiveRecord::Schema.define(version: 2020_12_16_230231) do
     t.bigint "match_id"
     t.integer "minute"
     t.bigint "player_id"
-    t.boolean "red_card", default: false
+    t.boolean "red_card", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "player_name"
-    t.boolean "home", default: false
+    t.boolean "home", default: false, null: false
     t.index ["match_id"], name: "index_bookings_on_match_id"
     t.index ["player_id"], name: "index_bookings_on_player_id"
   end
@@ -64,7 +64,7 @@ ActiveRecord::Schema.define(version: 2020_12_16_230231) do
     t.integer "stop"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "subbed_out", default: false
+    t.boolean "subbed_out", default: false, null: false
     t.integer "rating"
     t.index ["match_id"], name: "index_caps_on_match_id"
     t.index ["player_id", "match_id"], name: "index_caps_on_player_id_and_match_id", unique: true
@@ -124,9 +124,9 @@ ActiveRecord::Schema.define(version: 2020_12_16_230231) do
     t.string "player_name"
     t.bigint "player_id"
     t.bigint "assist_id"
-    t.boolean "home", default: false
-    t.boolean "own_goal", default: false
-    t.boolean "penalty", default: false
+    t.boolean "home", default: false, null: false
+    t.boolean "own_goal", default: false, null: false
+    t.boolean "penalty", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "assisted_by"
@@ -166,11 +166,11 @@ ActiveRecord::Schema.define(version: 2020_12_16_230231) do
     t.date "played_on"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "extra_time", default: false
+    t.boolean "extra_time", default: false, null: false
     t.integer "home_score"
     t.integer "away_score"
     t.string "stage"
-    t.boolean "friendly", default: false
+    t.boolean "friendly", default: false, null: false
     t.index ["team_id"], name: "index_matches_on_team_id"
   end
 
@@ -247,7 +247,7 @@ ActiveRecord::Schema.define(version: 2020_12_16_230231) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "status"
-    t.boolean "youth", default: true
+    t.boolean "youth", default: false, null: false
     t.integer "kit_no"
     t.index ["team_id"], name: "index_players_on_team_id"
   end
@@ -275,7 +275,7 @@ ActiveRecord::Schema.define(version: 2020_12_16_230231) do
     t.string "name"
     t.integer "num_teams"
     t.integer "num_fixtures"
-    t.boolean "table", default: false
+    t.boolean "table", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["competition_id"], name: "index_stages_on_competition_id"
@@ -286,7 +286,7 @@ ActiveRecord::Schema.define(version: 2020_12_16_230231) do
     t.integer "minute"
     t.bigint "player_id"
     t.bigint "replacement_id"
-    t.boolean "injury", default: false
+    t.boolean "injury", default: false, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "player_name"
@@ -314,7 +314,7 @@ ActiveRecord::Schema.define(version: 2020_12_16_230231) do
     t.string "title"
     t.date "started_on"
     t.date "currently_on"
-    t.boolean "active", default: true
+    t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "currency", default: "$"
@@ -349,7 +349,7 @@ ActiveRecord::Schema.define(version: 2020_12_16_230231) do
     t.inet "last_sign_in_ip"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.boolean "admin", default: false
+    t.boolean "admin", default: false, null: false
     t.string "username"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true

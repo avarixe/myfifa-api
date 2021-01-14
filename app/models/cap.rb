@@ -84,6 +84,13 @@ class Cap < ApplicationRecord
   validate :same_team?
   validate :active_player?, if: :player_id
 
+  after_initialize :set_defaults
+  before_create :set_default_bools
+
+  def set_default_bools
+    self.subbed_out ||= false
+  end
+
   def same_team?
     return if match_id.nil? ||
               player_id.nil? ||
@@ -98,7 +105,6 @@ class Cap < ApplicationRecord
     errors.add(:player, 'must be active')
   end
 
-  after_initialize :set_defaults
   after_destroy :remove_events
 
   def set_defaults
