@@ -122,10 +122,15 @@ class Player < ApplicationRecord
   ##############
 
   before_save :set_kit_no, if: :status_changed?
+  before_create :set_default_bools
   after_create :save_history
   after_update :update_history
   after_update :end_pending_injuries, unless: :injured?
   after_update :set_contract_conclusion, if: :saved_change_to_status?
+
+  def set_default_bools
+    self.youth ||= false
+  end
 
   def set_kit_no
     self.kit_no = nil if status.blank? || loaned?

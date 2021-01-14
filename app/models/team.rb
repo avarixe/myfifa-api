@@ -52,10 +52,15 @@ class Team < ApplicationRecord
   validates :currency, presence: true
 
   before_validation :set_started_on
+  before_create :set_default_bools
   after_save :update_player_statuses
 
   def set_started_on
     self.currently_on ||= started_on
+  end
+
+  def set_default_bools
+    self.active ||= true
   end
 
   def team

@@ -77,6 +77,8 @@ class Match < ApplicationRecord
     self.played_on ||= currently_on
     self.home_score ||= 0
     self.away_score ||= 0
+    self.extra_time ||= false
+    self.friendly ||= false
   end
 
   def increment_currently_on
