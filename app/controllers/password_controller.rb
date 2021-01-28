@@ -7,7 +7,7 @@ class PasswordController < APIController
   def forgot
     @user = User.active.find_by(email: params[:email])
     @user.send_reset_password_instructions if @user.present?
-    render json: I18n.t('devise.passwords.send_instructions')
+    render json: t('devise.passwords.send_instructions')
   end
 
   # reset Password for user
@@ -15,7 +15,7 @@ class PasswordController < APIController
     @user = User.reset_password_by_token(reset_password_params)
 
     if @user.errors.empty?
-
+      render json: t('devise.passwords.updated_not_active')
     else
       render json: errors_json(@user.errors.full_messages),
              status: :unprocessable_entity

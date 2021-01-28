@@ -55,26 +55,19 @@ Rails.application.configure do
   # config.active_job.queue_adapter     = :resque
   # config.active_job.queue_name_prefix = "myfifa_api_production"
 
+  # Ignore bad email addresses and do not raise email delivery errors.
+  # Set this to true and configure the email server for immediate delivery to raise delivery errors.
+  config.action_mailer.raise_delivery_errors = true
+
   config.action_mailer.perform_caching = false
+
+  config.action_mailer.perform_deliveries = true
+
+  config.action_mailer.delivery_method = :sendmail
 
   config.action_mailer.default_url_options = {
     host: ENV['actionmailer_url_host']
   }
-
-  config.action_mailer.perform_deliveries = true
-
-  config.action_mailer.smtp_settings = {
-      address: ENV['actionmailer_address'],
-      port: ENV['actionmailer_port'],
-      user_name: ENV['actionmailer_username'],
-      password: ENV['actionmailer_password'],
-      authentication: :plain,
-      enable_starttls_auto: true
-  }
-
-  # Ignore bad email addresses and do not raise email delivery errors.
-  # Set this to true and configure the email server for immediate delivery to raise delivery errors.
-  # config.action_mailer.raise_delivery_errors = false
 
   # Enable locale fallbacks for I18n (makes lookups for any locale fall back to
   # the I18n.default_locale when a translation cannot be found).
