@@ -8,7 +8,7 @@
 #  rating     :integer
 #  start      :integer
 #  stop       :integer
-#  subbed_out :boolean          default(FALSE)
+#  subbed_out :boolean          default(FALSE), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  match_id   :bigint
@@ -16,8 +16,10 @@
 #
 # Indexes
 #
-#  index_caps_on_match_id   (match_id)
-#  index_caps_on_player_id  (player_id)
+#  index_caps_on_match_id                    (match_id)
+#  index_caps_on_player_id                   (player_id)
+#  index_caps_on_player_id_and_match_id      (player_id,match_id) UNIQUE
+#  index_caps_on_pos_and_match_id_and_start  (pos,match_id,start) UNIQUE
 #
 
 require 'rails_helper'

@@ -10,20 +10,14 @@ class TokensController < Doorkeeper::TokensController
     response = strategy.authorize
     body = response.body
 
-    # if response.status == :ok
-    #   User the resource_owner_id from token to identify the user
-    #   user = User.find(response.token.resource_owner_id)
-    #   body[:user] = user.as_json unless user.nil?
-    # else
-    unless response.status == :ok
-      body[:errors] = ['Invalid Username/Password. Please try again.']
+    if response.status == :ok
+      # Use the resource_owner_id from token to identify the user
+      body[:user] = User.find(response.token.resource_owner_id)
     end
 
     headers.merge! response.headers
     self.response_body = body.to_json
-    self.status        = response.status
-  rescue Doorkeeper::Errors::DoorkeeperError => e
-    handle_token_exception e
+    self.status = response.status
   end
 
   private

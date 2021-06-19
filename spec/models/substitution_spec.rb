@@ -5,7 +5,7 @@
 # Table name: substitutions
 #
 #  id             :bigint           not null, primary key
-#  injury         :boolean          default(FALSE)
+#  injury         :boolean          default(FALSE), not null
 #  minute         :integer
 #  player_name    :string
 #  replaced_by    :string

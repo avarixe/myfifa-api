@@ -14,7 +14,7 @@
 #  sec_pos     :text             default([]), is an Array
 #  status      :string
 #  value       :integer
-#  youth       :boolean          default(TRUE)
+#  youth       :boolean          default(FALSE), not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  team_id     :bigint

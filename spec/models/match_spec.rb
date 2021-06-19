@@ -8,8 +8,8 @@
 #  away        :string
 #  away_score  :integer
 #  competition :string
-#  extra_time  :boolean          default(FALSE)
-#  friendly    :boolean          default(FALSE)
+#  extra_time  :boolean          default(FALSE), not null
+#  friendly    :boolean          default(FALSE), not null
 #  home        :string
 #  home_score  :integer
 #  played_on   :date

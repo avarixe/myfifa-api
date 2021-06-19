@@ -8,7 +8,7 @@
 #  name           :string
 #  num_fixtures   :integer
 #  num_teams      :integer
-#  table          :boolean          default(FALSE)
+#  table          :boolean          default(FALSE), not null
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
 #  competition_id :bigint

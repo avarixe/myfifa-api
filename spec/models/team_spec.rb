@@ -5,7 +5,7 @@
 # Table name: teams
 #
 #  id           :bigint           not null, primary key
-#  active       :boolean          default(TRUE)
+#  active       :boolean          default(TRUE), not null
 #  currency     :string           default("$")
 #  currently_on :date
 #  started_on   :date

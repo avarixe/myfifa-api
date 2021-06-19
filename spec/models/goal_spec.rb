@@ -6,10 +6,10 @@
 #
 #  id          :bigint           not null, primary key
 #  assisted_by :string
-#  home        :boolean          default(FALSE)
+#  home        :boolean          default(FALSE), not null
 #  minute      :integer
-#  own_goal    :boolean          default(FALSE)
-#  penalty     :boolean          default(FALSE)
+#  own_goal    :boolean          default(FALSE), not null
+#  penalty     :boolean          default(FALSE), not null
 #  player_name :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
