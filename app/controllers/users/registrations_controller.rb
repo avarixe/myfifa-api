@@ -42,6 +42,7 @@ module Users
           password
           password_confirmation
           current_password
+          dark_mode
         ]
       end
   end

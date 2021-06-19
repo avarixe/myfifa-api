@@ -5,10 +5,10 @@
 # Table name: bookings
 #
 #  id          :bigint           not null, primary key
-#  home        :boolean          default(FALSE)
+#  home        :boolean          default(FALSE), not null
 #  minute      :integer
 #  player_name :string
-#  red_card    :boolean          default(FALSE)
+#  red_card    :boolean          default(FALSE), not null
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
 #  match_id    :bigint
