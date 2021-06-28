@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class FixturesController < APIController
+class FixturesController < ApiController
   load_and_authorize_resource :stage
   load_and_authorize_resource through: :stage, shallow: true
 

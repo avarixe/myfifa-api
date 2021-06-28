@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class PlayerHistoriesController < APIController
+class PlayerHistoriesController < ApiController
   include Searchable
 
   def search

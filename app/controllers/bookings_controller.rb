@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class BookingsController < APIController
+class BookingsController < ApiController
   include Searchable
   before_action :set_match, only: %i[create]
   load_and_authorize_resource :match

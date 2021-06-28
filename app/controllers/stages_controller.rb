@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class StagesController < APIController
+class StagesController < ApiController
   include Searchable
   before_action :set_stage, only: %i[show update destroy]
   load_and_authorize_resource :competition

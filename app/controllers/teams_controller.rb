@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class TeamsController < APIController
+class TeamsController < ApiController
   load_and_authorize_resource except: %i[create]
 
   def index

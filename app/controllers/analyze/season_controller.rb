@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Analyze
-  class SeasonController < APIController
+  class SeasonController < ApiController
     include Analyzer
     load_and_authorize_resource :team
     before_action :set_season_data

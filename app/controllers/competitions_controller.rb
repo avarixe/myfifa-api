@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class CompetitionsController < APIController
+class CompetitionsController < ApiController
   load_and_authorize_resource :team
   load_and_authorize_resource through: :team, shallow: true, except: [:destroy]
 

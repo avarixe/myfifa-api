@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SquadsController < APIController
+class SquadsController < ApiController
   load_and_authorize_resource :team
   load_and_authorize_resource through: :team, shallow: true
 
