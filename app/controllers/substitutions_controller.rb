@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class SubstitutionsController < APIController
+class SubstitutionsController < ApiController
   include Searchable
   load_and_authorize_resource :match
   load_and_authorize_resource through: :match, shallow: true

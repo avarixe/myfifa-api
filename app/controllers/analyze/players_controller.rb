@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Analyze
-  class PlayersController < APIController
+  class PlayersController < ApiController
     include Analyzer
     load_and_authorize_resource :team
     before_action :set_player_ids

@@ -35,6 +35,9 @@ gem 'doorkeeper'
 
 gem 'cancancan'
 
+# GraphQL
+gem 'graphql'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
@@ -66,6 +69,7 @@ group :test do
 end
 
 group :development do
+  gem 'graphiql-rails'
   gem 'listen', '~> 3.0.5'
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'

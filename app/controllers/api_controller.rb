@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class APIController < ApplicationController
+class ApiController < ApplicationController
   include CanCan::ControllerAdditions
   include Authentication
 

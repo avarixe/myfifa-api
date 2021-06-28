@@ -32,6 +32,16 @@ Lint/RaiseException:
   Enabled: true
 Lint/StructNewOverride:
   Enabled: true
+# Metrics/AbcSize:
+#   Enabled: false
+Metrics/ClassLength:
+  Enabled: false
+Metrics/MethodLength:
+  Exclude:
+    - app/controllers/graphql_controller.rb
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*.rb'
 Rails/LexicallyScopedActionFilter:
   Enabled: false
 Style/Documentation:
@@ -62,12 +72,3 @@ Style/HashTransformKeys:
   Enabled: true
 Style/HashTransformValues:
   Enabled: true
-# Metrics/AbcSize:
-#   Enabled: false
-Metrics/ClassLength:
-  Enabled: false
-# Metrics/MethodLength:
-#   Enabled: false
-Metrics/BlockLength:
-  Exclude:
-    - 'spec/**/*.rb'

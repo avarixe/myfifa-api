@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-class LoansController < APIController
+class LoansController < ApiController
   include Searchable
   load_and_authorize_resource :player
   load_and_authorize_resource through: :player, shallow: true

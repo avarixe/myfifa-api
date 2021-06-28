@@ -103,6 +103,10 @@ GEM
       thor (>= 0.14.0, < 2)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
+    graphiql-rails (1.7.0)
+      railties
+      sprockets-rails
+    graphql (1.12.12)
     i18n (1.8.10)
       concurrent-ruby (~> 1.0)
     listen (3.0.8)
@@ -267,6 +271,8 @@ DEPENDENCIES
   factory_bot_rails
   faker
   figaro
+  graphiql-rails
+  graphql
   listen (~> 3.0.5)
   oj
   pg
