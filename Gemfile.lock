@@ -63,6 +63,8 @@ GEM
     annotate (3.1.1)
       activerecord (>= 3.2, < 7.0)
       rake (>= 10.4, < 14.0)
+    ar_lazy_preload (0.6.2)
+      rails (>= 5.0)
     ast (2.4.2)
     bcrypt (3.1.16)
     bootsnap (1.7.5)
@@ -260,6 +262,7 @@ PLATFORMS
 
 DEPENDENCIES
   annotate
+  ar_lazy_preload
   bootsnap
   brakeman
   bullet
