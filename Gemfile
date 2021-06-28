@@ -38,6 +38,8 @@ gem 'cancancan'
 # GraphQL
 gem 'graphql'
 
+gem 'ar_lazy_preload'
+
 # Use Capistrano for deployment
 # gem 'capistrano-rails', group: :development
 
