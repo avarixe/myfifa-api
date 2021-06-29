@@ -2,8 +2,8 @@
 
 module Types
   class BaseObject < GraphQL::Schema::Object
-    edge_type_class(Types::BaseEdge)
-    connection_type_class(Types::BaseConnection)
-    field_class Types::BaseField
+    edge_type_class(BaseEdge)
+    connection_type_class(BaseConnection)
+    field_class BaseField
   end
 end
