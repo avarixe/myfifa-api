@@ -3,9 +3,9 @@
 module Types
   module BaseInterface
     include GraphQL::Schema::Interface
-    edge_type_class(Types::BaseEdge)
-    connection_type_class(Types::BaseConnection)
+    edge_type_class(BaseEdge)
+    connection_type_class(BaseConnection)
 
-    field_class Types::BaseField
+    field_class BaseField
   end
 end
