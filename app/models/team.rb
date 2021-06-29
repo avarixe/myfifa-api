@@ -8,8 +8,8 @@
 #  active       :boolean          default(TRUE), not null
 #  currency     :string           default("$")
 #  currently_on :date
+#  name         :string
 #  started_on   :date
-#  title        :string
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  user_id      :bigint
@@ -32,7 +32,7 @@ class Team < ApplicationRecord
 
   PERMITTED_ATTRIBUTES = %i[
     started_on
-    title
+    name
     currently_on
     currency
     badge
@@ -46,7 +46,7 @@ class Team < ApplicationRecord
     PERMITTED_ATTRIBUTES.drop 1
   end
 
-  validates :title, presence: true
+  validates :name, presence: true
   validates :started_on, presence: true
   validates :currently_on, presence: true
   validates :currency, presence: true

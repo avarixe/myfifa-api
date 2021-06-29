@@ -110,11 +110,11 @@ class Match < ApplicationRecord
   delegate :currently_on, to: :team
 
   def team_played?
-    [home, away].include? team.title
+    [home, away].include? team.name
   end
 
   def team_home?
-    team.title == home
+    team.name == home
   end
 
   def team_score

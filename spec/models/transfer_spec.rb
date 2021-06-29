@@ -49,7 +49,7 @@ RSpec.describe Transfer, type: :model do
     @player = FactoryBot.create :player
     FactoryBot.create :transfer,
                       player: @player,
-                      origin: @player.team.title,
+                      origin: @player.team.name,
                       moved_on: @player.currently_on
     expect(@player.status).to be_nil
     expect(@player.last_contract.ended_on).to be == @player.currently_on
@@ -60,7 +60,7 @@ RSpec.describe Transfer, type: :model do
     @player = FactoryBot.create :player
     FactoryBot.create :transfer,
                       player: @player,
-                      origin: @player.team.title,
+                      origin: @player.team.name,
                       moved_on: @player.currently_on + 1.week
     expect(@player.status).to_not be_nil
     @player.team.increment_date 1.week

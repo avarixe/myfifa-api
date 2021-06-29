@@ -61,9 +61,9 @@ RSpec.describe Match, type: :model do
   it 'detects when user team is playing' do
     team = FactoryBot.create(:team)
     expect(FactoryBot.build(:match).team_played?).to be false
-    match1 = FactoryBot.build :match, team: team, home: team.title
+    match1 = FactoryBot.build :match, team: team, home: team.name
     expect(match1.team_played?).to be true
-    match2 = FactoryBot.build :match, team: team, away: team.title
+    match2 = FactoryBot.build :match, team: team, away: team.name
     expect(match2.team_played?).to be true
   end
 

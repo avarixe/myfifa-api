@@ -8,8 +8,8 @@
 #  active       :boolean          default(TRUE), not null
 #  currency     :string           default("$")
 #  currently_on :date
+#  name         :string
 #  started_on   :date
-#  title        :string
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  user_id      :bigint
@@ -21,7 +21,7 @@
 
 FactoryBot.define do
   factory :team do
-    title { Faker::Team.name }
+    name { Faker::Team.name }
     started_on { Time.now }
     user
 
