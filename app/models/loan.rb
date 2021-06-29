@@ -100,11 +100,11 @@ class Loan < ApplicationRecord
   alias returned returned?
 
   def loaned_in?
-    team.title == destination
+    team.name == destination
   end
 
   def loaned_out?
-    team.title == origin
+    team.name == origin
   end
 
   def as_json(options = {})

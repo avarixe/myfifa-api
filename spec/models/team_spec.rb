@@ -8,8 +8,8 @@
 #  active       :boolean          default(TRUE), not null
 #  currency     :string           default("$")
 #  currently_on :date
+#  name         :string
 #  started_on   :date
-#  title        :string
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
 #  user_id      :bigint
@@ -28,8 +28,8 @@ RSpec.describe Team, type: :model do
     expect(team).to be_valid
   end
 
-  it 'requires a title' do
-    expect(FactoryBot.build(:team, title: nil)).to_not be_valid
+  it 'requires a name' do
+    expect(FactoryBot.build(:team, name: nil)).to_not be_valid
   end
 
   it 'requires a start date' do

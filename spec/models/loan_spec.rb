@@ -68,7 +68,7 @@ RSpec.describe Loan, type: :model do
     FactoryBot.create :loan,
                       player: player,
                       started_on: player.currently_on,
-                      origin: player.team.title
+                      origin: player.team.name
     expect(player.loaned?).to be true
   end
 
@@ -76,14 +76,14 @@ RSpec.describe Loan, type: :model do
     FactoryBot.create :loan,
                       player: player,
                       started_on: player.currently_on,
-                      destination: player.team.title
+                      destination: player.team.name
     expect(player.loaned?).to_not be true
   end
 
   it 'changes status when loaned Player returns to team' do
     FactoryBot.create :loan,
                       player: player,
-                      origin: player.team.title
+                      origin: player.team.name
     player.loans.last.update returned: true
     expect(player.active?).to be true
   end
@@ -93,7 +93,7 @@ RSpec.describe Loan, type: :model do
     loan = FactoryBot.create :loan,
                              player: player,
                              origin: Faker::Team.name,
-                             destination: player.team.title
+                             destination: player.team.name
     player.team.increment_date 1.year
     loan.update returned: true
 
@@ -105,7 +105,7 @@ RSpec.describe Loan, type: :model do
     FactoryBot.create :injury, player: player
     FactoryBot.create :loan,
                       player: player,
-                      origin: player.team.title,
+                      origin: player.team.name,
                       started_on: player.currently_on
     expect(player.injured?).to be false
     expect(player.injuries.last.ended_on).to be == player.currently_on

@@ -76,6 +76,6 @@ class Transfer < ApplicationRecord
   delegate :team, to: :player
 
   def out?
-    team.title == origin
+    team.name == origin
   end
 end
