@@ -2,7 +2,7 @@
 
 module Types
   module Myfifa
-    class PenaltyShootoutType < Types::BaseObject
+    class PenaltyShootoutType < BaseObject
       field :id, ID, null: false
       field :match_id, Integer, null: false
       field :home_score, Integer, null: false

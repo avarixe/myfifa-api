@@ -9,6 +9,13 @@ module Types
     # Add root-level fields here.
     # They will be entry points for queries on your schema.
 
+    field :user, Myfifa::UserType, null: false
+
+    def user
+      # context[:current_user]
+      User.first
+    end
+
     %w[
       Team
       Player

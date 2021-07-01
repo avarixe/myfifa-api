@@ -2,7 +2,7 @@
 
 module Types
   module Myfifa
-    class GoalType < Types::BaseObject
+    class GoalType < BaseObject
       field :id, ID, null: false
       field :match_id, Integer, null: false
       field :minute, Integer, null: false

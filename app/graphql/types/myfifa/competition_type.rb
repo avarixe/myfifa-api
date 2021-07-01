@@ -2,7 +2,7 @@
 
 module Types
   module Myfifa
-    class CompetitionType < Types::BaseObject
+    class CompetitionType < BaseObject
       field :id, ID, null: false
       field :team_id, Integer, null: false
       field :season, Integer, null: false

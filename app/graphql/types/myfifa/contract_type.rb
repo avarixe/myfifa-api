@@ -2,7 +2,7 @@
 
 module Types
   module Myfifa
-    class ContractType < Types::BaseObject
+    class ContractType < BaseObject
       field :id, ID, null: false
       field :player_id, Integer, null: false
       field :signed_on, GraphQL::Types::ISO8601Date, null: false

@@ -2,7 +2,7 @@
 
 module Types
   module Myfifa
-    class SquadType < Types::BaseObject
+    class SquadType < BaseObject
       field :id, ID, null: false
       field :team_id, Integer, null: false
       field :name, String, null: false

@@ -2,7 +2,7 @@
 
 module Types
   module Myfifa
-    class PlayerHistoryType < Types::BaseObject
+    class PlayerHistoryType < BaseObject
       field :id, ID, null: false
       field :player_id, Integer, null: false
       field :recorded_on, GraphQL::Types::ISO8601Date, null: false

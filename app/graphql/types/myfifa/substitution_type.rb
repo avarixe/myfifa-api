@@ -2,7 +2,7 @@
 
 module Types
   module Myfifa
-    class SubstitutionType < Types::BaseObject
+    class SubstitutionType < BaseObject
       field :id, ID, null: false
       field :match_id, Integer, null: false
       field :minute, Integer, null: false

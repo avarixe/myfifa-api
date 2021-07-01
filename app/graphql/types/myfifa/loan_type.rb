@@ -2,7 +2,7 @@
 
 module Types
   module Myfifa
-    class LoanType < Types::BaseObject
+    class LoanType < BaseObject
       field :id, ID, null: false
       field :player_id, Integer, null: false
       field :started_on, GraphQL::Types::ISO8601Date, null: false

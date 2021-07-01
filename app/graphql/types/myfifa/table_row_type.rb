@@ -2,7 +2,7 @@
 
 module Types
   module Myfifa
-    class TableRowType < Types::BaseObject
+    class TableRowType < BaseObject
       field :id, ID, null: false
       field :stage_id, Integer, null: false
       field :name, String, null: true

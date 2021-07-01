@@ -2,7 +2,7 @@
 
 module Types
   module Myfifa
-    class FixtureLegType < Types::BaseObject
+    class FixtureLegType < BaseObject
       field :id, ID, null: false
       field :fixture_id, Integer, null: false
       field :home_score, String, null: true
