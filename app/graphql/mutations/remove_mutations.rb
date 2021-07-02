@@ -20,28 +20,35 @@ module Mutations
       TableRow
       Team
       Transfer
-      User
-    ].each do |klass|
+    ].each do |model_name|
       remove_mutation = Class.new(BaseMutation) do
         argument :id, GraphQL::Types::ID, required: true
 
-        field klass.underscore.to_sym,
-              Types::Myfifa.const_get("#{klass}Type"),
+        field model_name.underscore.to_sym,
+              Types::Myfifa.const_get("#{model_name}Type"),
               null: true
         field :errors, Types::ValidationErrorsType, null: true
 
         def resolve(id:)
-          record = klass.constantize.find(id)
+          record = model_name.constantize.find(id)
 
           if record.destroy
-            { klass.underscore.to_sym => record }
+            { model_name.underscore.to_sym => record }
           else
             { errors: record.errors }
           end
         end
+
+        define_singleton_method :model_name do
+          model_name
+        end
+
+        def model_name
+          self.class.model_name
+        end
       end
 
-      const_set("Remove#{klass}", remove_mutation)
+      const_set("Remove#{model_name}", remove_mutation)
     end
   end
 end

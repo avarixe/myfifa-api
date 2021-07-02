@@ -35,6 +35,10 @@ class Match < ApplicationRecord
   has_many :caps, dependent: :destroy
   has_many :players, through: :caps
 
+  accepts_nested_attributes_for :penalty_shootout,
+                                allow_destroy: true,
+                                update_only: true
+
   PERMITTED_ATTRIBUTES = %i[
     home
     away

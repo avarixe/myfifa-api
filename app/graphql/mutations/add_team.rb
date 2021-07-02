@@ -8,8 +8,7 @@ module Mutations
     field :errors, Types::ValidationErrorsType, null: true
 
     def resolve(attributes:)
-      # team = context[:current_user].teams.new(attributes.to_h)
-      team = User.first.teams.new(attributes.to_h)
+      team = context[:current_user].teams.new(attributes.to_h)
 
       if team.save
         { team: team }

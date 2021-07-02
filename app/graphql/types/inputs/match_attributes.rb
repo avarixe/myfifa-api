@@ -9,6 +9,10 @@ module Types
       argument :played_on, GraphQL::Types::ISO8601Date, required: false
       argument :extra_time, Boolean, required: false
       argument :stage, String, required: false
+
+      argument :penalty_shootout_attributes,
+               PenaltyShootoutAttributes,
+               required: false
     end
   end
 end

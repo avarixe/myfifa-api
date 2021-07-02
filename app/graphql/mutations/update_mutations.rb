@@ -12,7 +12,6 @@ module Mutations
       Injury
       Loan
       Match
-      PenaltyShootout
       Player
       Squad
       Stage
@@ -21,30 +20,38 @@ module Mutations
       Team
       Transfer
       User
-    ].each do |klass|
+    ].each do |model_name|
       update_mutation = Class.new(BaseMutation) do
         argument :id, GraphQL::Types::ID, required: true
         argument :attributes,
-                 Types::Inputs.const_get("#{klass}Attributes"),
+                 Types::Inputs.const_get("#{model_name}Attributes"),
                  required: true
 
-        field klass.underscore.to_sym,
-              Types::Myfifa.const_get("#{klass}Type"),
+        field model_name.underscore.to_sym,
+              Types::Myfifa.const_get("#{model_name}Type"),
               null: true
         field :errors, Types::ValidationErrorsType, null: true
 
         def resolve(id:, attributes:)
-          record = klass.constantize.find(id)
+          record = model_name.constantize.find(id)
 
           if record.update(attributes.to_h)
-            { klass.underscore.to_sym => record }
+            { model_name.underscore.to_sym => record }
           else
             { errors: record.errors }
           end
         end
+
+        define_singleton_method :model_name do
+          model_name
+        end
+
+        def model_name
+          self.class.model_name
+        end
       end
 
-      const_set("Update#{klass}", update_mutation)
+      const_set("Update#{model_name}", update_mutation)
     end
   end
 end
