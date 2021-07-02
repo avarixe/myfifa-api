@@ -8,6 +8,8 @@ module Types
       argument :destination, String, required: true
       argument :origin, String, required: true
       argument :wage_percentage, Integer, required: false
+
+      argument :returned, Boolean, required: false
     end
   end
 end

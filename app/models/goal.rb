@@ -35,21 +35,6 @@ class Goal < ApplicationRecord
              optional: true,
              inverse_of: :assists
 
-  PERMITTED_ATTRIBUTES = %i[
-    minute
-    player_name
-    player_id
-    assisted_by
-    assist_id
-    home
-    own_goal
-    penalty
-  ].freeze
-
-  def self.permitted_attributes
-    PERMITTED_ATTRIBUTES
-  end
-
   validates :minute, inclusion: 1..120
   validates :player_name, presence: true
 

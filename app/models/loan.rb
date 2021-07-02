@@ -25,18 +25,6 @@ class Loan < ApplicationRecord
 
   belongs_to :player
 
-  PERMITTED_ATTRIBUTES = %i[
-    origin
-    destination
-    started_on
-    wage_percentage
-    returned
-  ].freeze
-
-  def self.permitted_attributes
-    PERMITTED_ATTRIBUTES
-  end
-
   scope :active, -> { where(ended_on: nil) }
 
   ################

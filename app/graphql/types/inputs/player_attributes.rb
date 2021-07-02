@@ -9,9 +9,10 @@ module Types
       argument :sec_pos, [String], required: false
       argument :ovr, Integer, required: false
       argument :value, Integer, required: false
-      argument :birth_year, Integer, required: false
       argument :youth, Boolean, required: false
       argument :kit_no, Integer, required: false
+
+      argument :age, Integer, required: false
     end
   end
 end

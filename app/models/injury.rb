@@ -22,15 +22,6 @@ class Injury < ApplicationRecord
 
   belongs_to :player
 
-  PERMITTED_ATTRIBUTES = %i[
-    description
-    recovered
-  ].freeze
-
-  def self.permitted_attributes
-    PERMITTED_ATTRIBUTES
-  end
-
   scope :active, -> { where(ended_on: nil) }
 
   #################

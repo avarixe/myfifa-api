@@ -39,22 +39,6 @@ class Match < ApplicationRecord
                                 allow_destroy: true,
                                 update_only: true
 
-  PERMITTED_ATTRIBUTES = %i[
-    home
-    away
-    played_on
-    competition
-    stage
-    friendly
-    extra_time
-  ].freeze
-
-  def self.permitted_attributes
-    PERMITTED_ATTRIBUTES
-  end
-
-  scope :with_players, -> { includes(caps: :player) }
-
   ################
   #  VALIDATION  #
   ################

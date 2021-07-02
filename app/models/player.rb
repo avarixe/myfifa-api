@@ -78,22 +78,6 @@ class Player < ApplicationRecord
     LW
   ].freeze
 
-  PERMITTED_ATTRIBUTES = %i[
-    name
-    nationality
-    pos
-    ovr
-    value
-    kit_no
-    birth_year
-    youth
-    age
-  ].freeze
-
-  def self.permitted_attributes
-    PERMITTED_ATTRIBUTES
-  end
-
   ################
   #  VALIDATION  #
   ################

@@ -34,8 +34,6 @@ RSpec.describe Booking, type: :model do
     expect(FactoryBot.build(:booking, minute: -1)).to_not be_valid
   end
 
-  it 'requires a Cap for the player if player_id is present'
-
   it 'automatically sets player name if player_id set' do
     player = FactoryBot.create(:player)
     player_booking = FactoryBot.create :booking, player_id: player.id

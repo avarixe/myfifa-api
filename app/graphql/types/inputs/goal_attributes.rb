@@ -6,11 +6,11 @@ module Types
       argument :minute, Integer, required: true
       argument :player_name, String, required: false
       argument :player_id, Integer, required: false
+      argument :assisted_by, String, required: false
       argument :assist_id, Integer, required: false
       argument :home, Boolean, required: true
       argument :own_goal, Boolean, required: true
       argument :penalty, Boolean, required: true
-      argument :assisted_by, String, required: false
     end
   end
 end

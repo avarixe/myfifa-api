@@ -30,22 +30,6 @@ class Team < ApplicationRecord
 
   has_one_attached :badge
 
-  PERMITTED_ATTRIBUTES = %i[
-    started_on
-    name
-    currently_on
-    currency
-    badge
-  ].freeze
-
-  def self.permitted_create_attributes
-    PERMITTED_ATTRIBUTES
-  end
-
-  def self.permitted_update_attributes
-    PERMITTED_ATTRIBUTES.drop 1
-  end
-
   validates :name, presence: true
   validates :started_on, presence: true
   validates :currently_on, presence: true

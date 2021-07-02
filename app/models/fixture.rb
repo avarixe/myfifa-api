@@ -27,15 +27,6 @@ class Fixture < ApplicationRecord
 
   accepts_nested_attributes_for :legs, allow_destroy: true
 
-  PERMITTED_ATTRIBUTES = %i[
-    home_team
-    away_team
-  ].freeze
-
-  def self.permitted_attributes
-    PERMITTED_ATTRIBUTES
-  end
-
   validates :legs,
             length: { minimum: 1, message: 'are missing for Fixture' }
 

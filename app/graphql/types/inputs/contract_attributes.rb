@@ -11,6 +11,8 @@ module Types
       argument :bonus_req_type, String, required: false
       argument :ended_on, GraphQL::Types::ISO8601Date, required: true
       argument :started_on, GraphQL::Types::ISO8601Date, required: true
+
+      argument :num_seasons, Integer, required: false
     end
   end
 end

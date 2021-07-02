@@ -44,22 +44,6 @@ class Contract < ApplicationRecord
     Retired
   ].freeze
 
-  PERMITTED_ATTRIBUTES = %i[
-    wage
-    signing_bonus
-    release_clause
-    performance_bonus
-    bonus_req
-    bonus_req_type
-    ended_on
-    started_on
-    num_seasons
-  ].freeze
-
-  def self.permitted_attributes
-    PERMITTED_ATTRIBUTES
-  end
-
   scope :active, lambda { |date|
     where(arel_table[:started_on].lteq(date))
       .where(arel_table[:ended_on].gt(date))

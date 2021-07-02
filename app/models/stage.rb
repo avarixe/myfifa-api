@@ -26,17 +26,6 @@ class Stage < ApplicationRecord
   has_many :table_rows, dependent: :destroy
   has_many :fixtures, dependent: :destroy
 
-  PERMITTED_ATTRIBUTES = %i[
-    name
-    num_teams
-    num_fixtures
-    table
-  ].freeze
-
-  def self.permitted_attributes
-    PERMITTED_ATTRIBUTES
-  end
-
   validates :name, presence: true
   validates :num_teams, numericality: { greater_than: 0 }
   validates :num_fixtures, numericality: { greater_than: 0 }, unless: :table?

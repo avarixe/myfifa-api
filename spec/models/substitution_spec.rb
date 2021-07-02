@@ -59,8 +59,6 @@ RSpec.describe Substitution, type: :model do
     expect(FactoryBot.build(:substitution, replacement: nil)).to_not be_valid
   end
 
-  it 'requires a Cap for the replaced player'
-
   it 'automatically sets player name' do
     expect(@sub.player_name).to be == @sub.player.name
   end

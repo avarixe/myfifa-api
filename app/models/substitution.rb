@@ -29,19 +29,6 @@ class Substitution < ApplicationRecord
   belongs_to :player
   belongs_to :replacement, class_name: 'Player'
 
-  PERMITTED_ATTRIBUTES = %i[
-    minute
-    player_name
-    player_id
-    replaced_by
-    replacement_id
-    injury
-  ].freeze
-
-  def self.permitted_attributes
-    PERMITTED_ATTRIBUTES
-  end
-
   validates :minute, inclusion: 1..120
 
   before_validation :set_names

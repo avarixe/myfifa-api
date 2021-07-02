@@ -57,16 +57,6 @@ class Cap < ApplicationRecord
     RW
   ].freeze
 
-  PERMITTED_ATTRIBUTES = %i[
-    player_id
-    rating
-    pos
-  ].freeze
-
-  def self.permitted_attributes
-    PERMITTED_ATTRIBUTES
-  end
-
   scope :clean_sheets, lambda { |team|
     joins(:match)
       .where(matches: { away_score: 0, home: team.name })

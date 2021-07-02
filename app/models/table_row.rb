@@ -31,19 +31,6 @@ class TableRow < ApplicationRecord
 
   belongs_to :stage
 
-  PERMITTED_ATTRIBUTES = %i[
-    name
-    wins
-    draws
-    losses
-    goals_for
-    goals_against
-  ].freeze
-
-  def self.permitted_attributes
-    PERMITTED_ATTRIBUTES
-  end
-
   validates :name, presence: true, on: :update
   validates :wins, presence: true
   validates :draws, presence: true
