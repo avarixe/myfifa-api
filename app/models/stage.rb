@@ -31,7 +31,6 @@ class Stage < ApplicationRecord
   validates :num_fixtures, numericality: { greater_than: 0 }, unless: :table?
 
   after_initialize :set_default_name
-  before_create :set_default_bools
   after_create :create_items
 
   def set_default_name
@@ -42,10 +41,6 @@ class Stage < ApplicationRecord
       when 2 then 'Final'
       else        "Round of #{num_teams}"
       end
-  end
-
-  def set_default_bools
-    self.table ||= false
   end
 
   def create_items
@@ -61,16 +56,4 @@ class Stage < ApplicationRecord
   end
 
   delegate :team, to: :competition
-
-  def as_json(options = {})
-    options[:include] ||= []
-    options[:include] += [
-      fixtures: {
-        methods: %i[legs],
-        except: %i[created_at updated_at]
-      },
-      table_rows: { methods: %i[goal_difference points] }
-    ]
-    super
-  end
 end

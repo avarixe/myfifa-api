@@ -6,12 +6,12 @@
 #
 #  id          :bigint           not null, primary key
 #  away        :string
-#  away_score  :integer
+#  away_score  :integer          default(0)
 #  competition :string
 #  extra_time  :boolean          default(FALSE), not null
 #  friendly    :boolean          default(FALSE), not null
 #  home        :string
-#  home_score  :integer
+#  home_score  :integer          default(0)
 #  played_on   :date
 #  stage       :string
 #  created_at  :datetime         not null
@@ -57,17 +57,8 @@ class Match < ApplicationRecord
   #  CALLBACK  #
   ##############
 
-  before_validation :set_defaults
   after_save :increment_currently_on, if: :saved_change_to_played_on?
   after_save :set_cap_stop_times, if: :saved_change_to_extra_time?
-
-  def set_defaults
-    self.played_on ||= currently_on
-    self.home_score ||= 0
-    self.away_score ||= 0
-    self.extra_time ||= false
-    self.friendly ||= false
-  end
 
   def increment_currently_on
     return if currently_on >= played_on
@@ -129,21 +120,5 @@ class Match < ApplicationRecord
     score += away_score.to_s
     score += " (#{penalty_shootout.away_score})" if penalty_shootout
     score
-  end
-
-  def events
-    [*goals, *substitutions, *bookings].sort_by(&:minute)
-  end
-
-  def as_json(options = {})
-    options[:methods] ||= []
-    options[:methods] += %i[
-      score
-      team_score
-      other_score
-      team_result
-      penalty_shootout
-    ]
-    super
   end
 end

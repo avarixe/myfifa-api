@@ -50,10 +50,4 @@ class User < ApplicationRecord
   validates :username,
             length: { minimum: 6 },
             uniqueness: { case_sensitive: false }
-
-  before_create :set_default_bools
-
-  def set_default_bools
-    self.admin ||= false
-  end
 end

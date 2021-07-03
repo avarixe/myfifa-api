@@ -9,13 +9,6 @@ module Types
     # Add root-level fields here.
     # They will be entry points for queries on your schema.
 
-    field :user, Myfifa::UserType, null: false
-
-    def user
-      # context[:current_user]
-      User.first
-    end
-
     %w[
       Team
       Player
@@ -38,6 +31,11 @@ module Types
       define_method model.underscore do |id:|
         model_class.find(id)
       end
+    end
+
+    field :user, Myfifa::UserType, null: false
+    def user
+      context[:current_user]
     end
   end
 end

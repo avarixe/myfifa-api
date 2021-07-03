@@ -13,6 +13,8 @@ module Types
       argument :kit_no, Integer, required: false
 
       argument :age, Integer, required: false
+
+      argument :contracts_attributes, [ContractAttributes], required: false
     end
   end
 end

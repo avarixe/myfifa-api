@@ -13,6 +13,10 @@ module Types
       field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
       field :currency, String, null: false
 
+      field :time_period, String, null: false
+      # field :badge_path, String, null: true
+      field :opponents, [String], null: false
+
       field :players, [PlayerType], null: false
       field :matches, [MatchType], null: false
       field :competitions, [CompetitionType], null: false

@@ -18,6 +18,9 @@ module Types
       field :youth, Boolean, null: false
       field :kit_no, Integer, null: true
 
+      field :age, Integer, null: false
+      field :pos_idx, Integer, null: false
+
       field :team, TeamType, null: false
 
       field :histories, [PlayerHistoryType], null: false

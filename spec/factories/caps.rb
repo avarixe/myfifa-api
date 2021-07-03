@@ -6,8 +6,8 @@
 #  id         :bigint           not null, primary key
 #  pos        :string
 #  rating     :integer
-#  start      :integer
-#  stop       :integer
+#  start      :integer          default(0)
+#  stop       :integer          default(90)
 #  subbed_out :boolean          default(FALSE), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null

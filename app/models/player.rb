@@ -106,15 +106,10 @@ class Player < ApplicationRecord
   ##############
 
   before_save :set_kit_no, if: :status_changed?
-  before_create :set_default_bools
   after_create :save_history
   after_update :update_history
   after_update :end_pending_injuries, unless: :injured?
   after_update :set_contract_conclusion, if: :saved_change_to_status?
-
-  def set_default_bools
-    self.youth ||= false
-  end
 
   def set_kit_no
     self.kit_no = nil if status.blank? || loaned?
@@ -127,10 +122,7 @@ class Player < ApplicationRecord
   end
 
   def update_history
-    if saved_change_to_ovr? ||
-       saved_change_to_value?
-      save_history
-    end
+    save_history if saved_change_to_ovr? || saved_change_to_value?
   end
 
   def end_pending_injuries
@@ -192,11 +184,5 @@ class Player < ApplicationRecord
 
   def pos_idx
     POSITIONS.index pos
-  end
-
-  def as_json(options = {})
-    options[:methods] ||= []
-    options[:methods] += %i[age pos_idx]
-    super
   end
 end

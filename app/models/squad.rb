@@ -52,10 +52,4 @@ class Squad < ApplicationRecord
       squad_player.player.active?
     end
   end
-
-  def as_json(options = {})
-    options[:include] ||= []
-    options[:include] += [:squad_players]
-    super
-  end
 end

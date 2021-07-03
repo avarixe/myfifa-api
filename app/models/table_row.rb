@@ -38,7 +38,7 @@ class TableRow < ApplicationRecord
   validates :goals_for, presence: true
   validates :goals_against, presence: true
 
-  delegate :team, :competition_id, to: :stage
+  delegate :team, to: :stage
 
   def goal_difference
     goals_for - goals_against
@@ -46,11 +46,5 @@ class TableRow < ApplicationRecord
 
   def points
     3 * wins + draws
-  end
-
-  def as_json(options = {})
-    options[:methods] ||= []
-    options[:methods] += %i[competition_id goal_difference points]
-    super
   end
 end

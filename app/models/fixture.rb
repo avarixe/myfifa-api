@@ -27,14 +27,7 @@ class Fixture < ApplicationRecord
 
   accepts_nested_attributes_for :legs, allow_destroy: true
 
-  validates :legs,
-            length: { minimum: 1, message: 'are missing for Fixture' }
+  validates :legs, length: { minimum: 1, message: 'are missing for Fixture' }
 
-  delegate :team, :competition_id, to: :stage
-
-  def as_json(options = {})
-    options[:methods] ||= []
-    options[:methods] += %i[competition_id legs]
-    super
-  end
+  delegate :team, to: :stage
 end

@@ -36,15 +36,10 @@ class Team < ApplicationRecord
   validates :currency, presence: true
 
   before_validation :set_started_on
-  before_create :set_default_bools
   after_save :update_player_statuses
 
   def set_started_on
     self.currently_on ||= started_on
-  end
-
-  def set_default_bools
-    self.active ||= true
   end
 
   def team
@@ -63,12 +58,6 @@ class Team < ApplicationRecord
     return unless badge.attached? && !destroyed?
 
     Rails.application.routes.url_helpers.rails_blob_url(badge, only_path: true)
-  end
-
-  def as_json(options = {})
-    options[:methods] ||= []
-    options[:methods] += %i[time_period badge_path]
-    super
   end
 
   def increment_date(amount)
@@ -94,5 +83,9 @@ class Team < ApplicationRecord
       start: season_start,
       end: season_start + 1.year - 1.day
     }
+  end
+
+  def opponents
+    team.matches.pluck(:home, :away).flatten.uniq.sort
   end
 end

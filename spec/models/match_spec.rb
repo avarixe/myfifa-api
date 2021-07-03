@@ -6,12 +6,12 @@
 #
 #  id          :bigint           not null, primary key
 #  away        :string
-#  away_score  :integer
+#  away_score  :integer          default(0)
 #  competition :string
 #  extra_time  :boolean          default(FALSE), not null
 #  friendly    :boolean          default(FALSE), not null
 #  home        :string
-#  home_score  :integer
+#  home_score  :integer          default(0)
 #  played_on   :date
 #  stage       :string
 #  created_at  :datetime         not null
@@ -51,11 +51,6 @@ RSpec.describe Match, type: :model do
   it 'cannot have duplicate home and away teams' do
     team = Faker::Team.name
     expect(FactoryBot.build(:match, home: team, away: team)).to_not be_valid
-  end
-
-  it 'defaults date to the Team current date' do
-    @match = FactoryBot.create :match, played_on: nil
-    expect(match.played_on).to be == match.team.currently_on
   end
 
   it 'detects when user team is playing' do

@@ -31,5 +31,5 @@ class PenaltyShootout < ApplicationRecord
     errors.add :base, 'Penalty Shootout must have a winner'
   end
 
-  delegate :team, :home, :away, to: :match
+  delegate :team, to: :match
 end

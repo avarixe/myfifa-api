@@ -17,6 +17,9 @@ module Types
       field :stage, String, null: true
       field :friendly, Boolean, null: false
 
+      field :score, String, null: false
+      field :team_result, String, null: false
+
       field :team, TeamType, null: false
       field :caps, [CapType], null: false
       field :goals, [GoalType], null: false

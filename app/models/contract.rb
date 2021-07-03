@@ -91,7 +91,7 @@ class Contract < ApplicationRecord
   def close_previous_contract
     Contract
       .where(player_id: player_id)
-      .where(Contract.arel_table[:ended_on].gt(started_on))
+      .where('ended_on > ?', started_on)
       .where.not(id: id)
       .find_each do |contract|
         contract.update!(ended_on: started_on, conclusion: 'Renewed')
@@ -128,7 +128,7 @@ class Contract < ApplicationRecord
   #  ACCESSORS  #
   ###############
 
-  delegate :team, :currently_on, :youth?, :loaned?, to: :player
+  delegate :team, :currently_on, to: :player
 
   def current?
     pending? || active?

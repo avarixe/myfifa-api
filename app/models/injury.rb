@@ -38,7 +38,7 @@ class Injury < ApplicationRecord
   def no_double_injury
     return unless player.injured?
 
-    errors.add(:base, 'Player can not be injured when already injured.')
+    errors.add :base, 'Player can not be injured when already injured.'
   end
 
   ###############
@@ -59,9 +59,7 @@ class Injury < ApplicationRecord
   delegate :update_status, to: :player
 
   def recovered=(val)
-    return unless player_id && val
-
-    self.ended_on = team.currently_on
+    self.ended_on = team.currently_on if player_id && val
   end
 
   ###############
@@ -77,13 +75,5 @@ class Injury < ApplicationRecord
 
   def recovered?
     ended_on.present?
-  end
-
-  alias recovered recovered?
-
-  def as_json(options = {})
-    options[:methods] ||= []
-    options[:methods] << :recovered
-    super
   end
 end

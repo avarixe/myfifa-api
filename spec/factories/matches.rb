@@ -6,12 +6,12 @@
 #
 #  id          :bigint           not null, primary key
 #  away        :string
-#  away_score  :integer
+#  away_score  :integer          default(0)
 #  competition :string
 #  extra_time  :boolean          default(FALSE), not null
 #  friendly    :boolean          default(FALSE), not null
 #  home        :string
-#  home_score  :integer
+#  home_score  :integer          default(0)
 #  played_on   :date
 #  stage       :string
 #  created_at  :datetime         not null
