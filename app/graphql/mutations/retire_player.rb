@@ -7,7 +7,8 @@ module Mutations
     field :player, Types::Myfifa::PlayerType, null: true
 
     def resolve(id:)
-      player = Player.find(id)
+      current_ability = Ability.new(context[:current_user])
+      player = Player.accessible_by(current_ability).find(id)
       player.current_contract&.retire!
       { player: player }
     end

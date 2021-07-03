@@ -25,11 +25,13 @@ module Types
       end
 
       define_method model.underscore.pluralize do
-        model_class.all
+        current_ability = Ability.new(context[:current_user])
+        model_class.accessible_by(current_ability).all
       end
 
       define_method model.underscore do |id:|
-        model_class.find(id)
+        current_ability = Ability.new(context[:current_user])
+        model_class.accessible_by(current_ability).find(id)
       end
     end
 

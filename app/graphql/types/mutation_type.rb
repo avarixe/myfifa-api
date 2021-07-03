@@ -19,17 +19,17 @@ module Types
       TableRow
       Team
       Transfer
-    ].each do |klass|
-      if klass == 'Team'
+    ].each do |model|
+      if model == 'Team'
         field :add_team, mutation: Mutations::AddTeam
       else
-        field "add_#{klass.underscore}".to_sym,
-              mutation: Mutations::AddMutations.const_get("Add#{klass}")
+        field "add_#{model.underscore}".to_sym,
+              mutation: Mutations::AddMutations.const_get("Add#{model}")
       end
-      field "update_#{klass.underscore}".to_sym,
-            mutation: Mutations::UpdateMutations.const_get("Update#{klass}")
-      field "remove_#{klass.underscore}".to_sym,
-            mutation: Mutations::RemoveMutations.const_get("Remove#{klass}")
+      field "update_#{model.underscore}".to_sym,
+            mutation: Mutations::UpdateMutations.const_get("Update#{model}")
+      field "remove_#{model.underscore}".to_sym,
+            mutation: Mutations::RemoveMutations.const_get("Remove#{model}")
     end
 
     field :release_player, mutation: Mutations::ReleasePlayer
