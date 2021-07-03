@@ -27,10 +27,6 @@ class GraphqlController < ApplicationController
 
   private
 
-    def current_user
-      @current_user ||= User.find_by(id: doorkeeper_token&.resource_owner_id)
-    end
-
     # Handle variables in form data, JSON body, or a blank value
     def prepare_variables(variables_param)
       case variables_param
