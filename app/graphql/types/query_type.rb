@@ -34,10 +34,5 @@ module Types
         model_class.accessible_by(current_ability).find(id)
       end
     end
-
-    field :user, Myfifa::UserType, null: false
-    def user
-      context[:current_user]
-    end
   end
 end

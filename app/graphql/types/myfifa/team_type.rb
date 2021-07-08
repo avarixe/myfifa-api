@@ -14,7 +14,7 @@ module Types
       field :currency, String, null: false
 
       field :time_period, String, null: false
-      # field :badge_path, String, null: true
+      field :badge_path, String, null: true
       field :opponents, [String], null: false
 
       field :players, [PlayerType], null: false

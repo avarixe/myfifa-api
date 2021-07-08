@@ -19,7 +19,6 @@ module Mutations
       TableRow
       Team
       Transfer
-      User
     ].each do |model|
       update_mutation = Class.new(BaseMutation) do
         argument :id, GraphQL::Types::ID, required: true

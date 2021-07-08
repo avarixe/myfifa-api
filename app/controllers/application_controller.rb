@@ -8,4 +8,11 @@ class ApplicationController < ActionController::API
         User.find(doorkeeper_token.resource_owner_id) if doorkeeper_token
       end
     end
+
+    def authenticate!
+      return if current_user.present?
+
+      render json: { errors: ['User is not authenticated!'] },
+             status: :unauthorized
+    end
 end

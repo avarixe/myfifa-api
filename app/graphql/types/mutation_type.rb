@@ -37,7 +37,5 @@ module Types
     field :apply_squad_to_match, mutation: Mutations::ApplySquadToMatch
     field :store_match_lineup_to_squad,
           mutation: Mutations::StoreMatchLineupToSquad
-
-    field :update_user, mutation: Mutations::UpdateMutations::UpdateUser
   end
 end

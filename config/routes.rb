@@ -10,7 +10,9 @@ Rails.application.routes.draw do
     controllers tokens: 'tokens'
   end
 
-  devise_for :users,
-             only: :registrations,
-             controllers: { registrations: 'users' }
+  constraints format: :json do
+    resource :user, controller: :user, only: %i[show create update] do
+      patch 'password', action: 'change_password', on: :member
+    end
+  end
 end
