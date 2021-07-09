@@ -37,4 +37,11 @@ RSpec.describe SquadPlayer, type: :model do
   it 'requires a squad' do
     expect(build(:squad_player, squad_id: nil)).not_to be_valid
   end
+
+  it 'requires a player and squad of the same team' do
+    squad_player = build :squad_player,
+                         player: create(:player),
+                         squad: create(:squad)
+    expect(squad_player).not_to be_valid
+  end
 end

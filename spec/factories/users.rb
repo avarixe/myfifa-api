@@ -35,5 +35,6 @@ FactoryBot.define do
     username { Faker::Internet.unique.username(specifier: 6) }
     email { Faker::Internet.unique.email }
     password { Faker::Internet.password }
+    password_confirmation { password }
   end
 end

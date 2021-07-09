@@ -10,8 +10,7 @@ class UserController < ApplicationController
   def create
     @user = User.new(sign_up_params)
     if @user.save
-      render json: { message: 'User has been successfully registered!' },
-             status: :created
+      render json: @user, status: :created
     else
       render json: { errors: @user.errors.full_messages },
              status: :bad_request
@@ -19,8 +18,9 @@ class UserController < ApplicationController
   end
 
   def update
-    if current_user.update_without_password(account_update_params)
-      render json: current_user
+    @user = current_user
+    if @user.update_without_password(account_update_params)
+      render json: @user
     else
       render json: { errors: @user.errors.full_messages },
              status: :bad_request
@@ -28,7 +28,8 @@ class UserController < ApplicationController
   end
 
   def change_password
-    if current_user.update_with_password(password_change_params)
+    @user = current_user
+    if @user.update_with_password(password_change_params)
       render json: { message: 'Password has been successfully changed!' }
     else
       render json: { errors: @user.errors.full_messages },

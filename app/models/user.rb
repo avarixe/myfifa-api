@@ -50,4 +50,5 @@ class User < ApplicationRecord
   validates :username,
             length: { minimum: 6 },
             uniqueness: { case_sensitive: false }
+  validates :password_confirmation, presence: true, if: :password_required?
 end

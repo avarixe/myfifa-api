@@ -26,7 +26,8 @@
 require 'rails_helper'
 
 RSpec.describe Match, type: :model do
-  let(:match) { create :match }
+  let(:team) { create :team }
+  let(:match) { create :match, team: team }
 
   it 'has a valid factory' do
     expect(match).to be_valid
@@ -49,8 +50,8 @@ RSpec.describe Match, type: :model do
   end
 
   it 'cannot have duplicate home and away teams' do
-    team = Faker::Team.name
-    expect(build(:match, home: team, away: team)).not_to be_valid
+    team_name = Faker::Team.name
+    expect(build(:match, home: team_name, away: team_name)).not_to be_valid
   end
 
   it 'detects when user team is not playing' do
@@ -58,13 +59,11 @@ RSpec.describe Match, type: :model do
   end
 
   it 'detects when user team is playing home' do
-    team = create :team
     match = build :match, team: team, home: team.name
     expect(match.team_played?).to be true
   end
 
   it 'detects when user team is playing away' do
-    team = create :team
     match = build :match, team: team, away: team.name
     expect(match.team_played?).to be true
   end
@@ -74,13 +73,13 @@ RSpec.describe Match, type: :model do
   end
 
   it 'cannot have two Performance records for the same player' do
-    player = create :player, team: match.team
+    player = create :player, team: team
     create :cap, match: match, player: player
     expect(build(:cap, match: match, player: player)).not_to be_valid
   end
 
   it 'sets Match times to 120 minutes if extra time' do
-    player = create :player, team: match.team
+    player = create :player, team: team
     cap = create :cap, match: match, player: player
     match.update(extra_time: true)
     expect(cap.reload.stop).to be == 120
@@ -92,6 +91,39 @@ RSpec.describe Match, type: :model do
     cap = create :cap, match: match, player: player
     match.update(extra_time: false)
     expect(cap.reload.stop).to be == 90
+  end
+
+  %i[home away].each do |side|
+    opposite_side = side == :home ? :away : :home
+
+    describe "when Team is #{side}" do
+      it 'detects team win' do
+        match = create :match,
+                       team: team,
+                       side => team.name,
+                       "#{side}_score" => 1,
+                       "#{opposite_side}_score" => 0
+        expect(match.team_result).to be == 'win'
+      end
+
+      it 'detects team draw' do
+        match = create :match,
+                       team: team,
+                       side => team.name,
+                       "#{side}_score" => 1,
+                       "#{opposite_side}_score" => 1
+        expect(match.team_result).to be == 'draw'
+      end
+
+      it 'detects team loss' do
+        match = create :match,
+                       team: team,
+                       side => team.name,
+                       "#{side}_score" => 0,
+                       "#{opposite_side}_score" => 1
+        expect(match.team_result).to be == 'loss'
+      end
+    end
   end
 
   it 'does not move current date forward if date is behind current date' do
