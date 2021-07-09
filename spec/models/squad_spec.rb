@@ -20,7 +20,7 @@ require 'rails_helper'
 RSpec.describe Squad, type: :model do
   let(:squad) { create(:squad) }
 
-  it "has a valid factory" do
+  it 'has a valid factory' do
     expect(squad).to be_valid
   end
 
@@ -30,7 +30,7 @@ RSpec.describe Squad, type: :model do
       Faker::Number.between(from: 12, to: 20)
     ].each do |i|
       squad = build :squad, players_count: i
-      expect(squad).to_not be_valid
+      expect(squad).not_to be_valid
     end
   end
 
@@ -38,14 +38,14 @@ RSpec.describe Squad, type: :model do
     squad = build :squad, players_count: 10
     taken_positions = squad.squad_players.map(&:pos)
     squad.squad_players << build(:squad_player, pos: taken_positions[0])
-    expect(squad).to_not be_valid
+    expect(squad).not_to be_valid
   end
 
   it 'cannot have duplicate player ids' do
     squad = build :squad, players_count: 10
     taken_player_ids = squad.squad_players.map(&:player_id)
     squad.squad_players << build(:squad_player, player_id: taken_player_ids[0])
-    expect(squad).to_not be_valid
+    expect(squad).not_to be_valid
   end
 
   describe 'when Match lineup is stored' do
@@ -64,9 +64,13 @@ RSpec.describe Squad, type: :model do
       expect { old_record.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
 
-    it 'creates SquadPlayers matching Caps' do
+    it "creates SquadPlayers matching Caps' player id" do
       squad.store_lineup(match)
       expect(squad.squad_players.pluck(:player_id)).to be == match.caps.pluck(:player_id)
+    end
+
+    it "creates SquadPlayers matching Caps' positions" do
+      squad.store_lineup(match)
       expect(squad.squad_players.pluck(:pos)).to be == match.caps.pluck(:pos)
     end
   end

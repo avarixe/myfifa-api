@@ -19,22 +19,22 @@
 require 'rails_helper'
 
 RSpec.describe PenaltyShootout, type: :model do
-  it "has a valid factory" do
+  it 'has a valid factory' do
     expect(create(:penalty_shootout)).to be_valid
   end
 
   it 'requires a home score' do
-    expect(build(:penalty_shootout, home_score: nil)).to_not be_valid
+    expect(build(:penalty_shootout, home_score: nil)).not_to be_valid
   end
 
   it 'requires an away score' do
-    expect(build(:penalty_shootout, away_score: nil)).to_not be_valid
+    expect(build(:penalty_shootout, away_score: nil)).not_to be_valid
   end
 
   it 'must have a winner' do
     score = Faker::Number.between(from: 0, to: 20)
     expect(
       build(:penalty_shootout, home_score: score, away_score: score)
-    ).to_not be_valid
+    ).not_to be_valid
   end
 end

@@ -33,15 +33,15 @@ RSpec.describe Match, type: :model do
   end
 
   it 'requires a home team' do
-    expect(build(:match, home: nil)).to_not be_valid
+    expect(build(:match, home: nil)).not_to be_valid
   end
 
   it 'requires an away team' do
-    expect(build(:match, away: nil)).to_not be_valid
+    expect(build(:match, away: nil)).not_to be_valid
   end
 
   it 'requires a competition' do
-    expect(build(:match, competition: nil)).to_not be_valid
+    expect(build(:match, competition: nil)).not_to be_valid
   end
 
   it 'does not require a competition if friendly' do
@@ -50,16 +50,23 @@ RSpec.describe Match, type: :model do
 
   it 'cannot have duplicate home and away teams' do
     team = Faker::Team.name
-    expect(build(:match, home: team, away: team)).to_not be_valid
+    expect(build(:match, home: team, away: team)).not_to be_valid
   end
 
-  it 'detects when user team is playing' do
-    team = create(:team)
+  it 'detects when user team is not playing' do
     expect(build(:match).team_played?).to be false
-    match1 = build :match, team: team, home: team.name
-    expect(match1.team_played?).to be true
-    match2 = build :match, team: team, away: team.name
-    expect(match2.team_played?).to be true
+  end
+
+  it 'detects when user team is playing home' do
+    team = create :team
+    match = build :match, team: team, home: team.name
+    expect(match.team_played?).to be true
+  end
+
+  it 'detects when user team is playing away' do
+    team = create :team
+    match = build :match, team: team, away: team.name
+    expect(match.team_played?).to be true
   end
 
   it 'starts off 0 - 0' do
@@ -67,24 +74,29 @@ RSpec.describe Match, type: :model do
   end
 
   it 'cannot have two Performance records for the same player' do
-    @match = create :match
-    @player = create :player, team: @match.team
-    create :cap, match: @match, player: @player
-    expect(build(:cap, match: @match, player: @player)).to_not be_valid
+    player = create :player, team: match.team
+    create :cap, match: match, player: player
+    expect(build(:cap, match: match, player: player)).not_to be_valid
   end
 
   it 'sets Match times to 120 minutes if extra time' do
-    @player = create :player, team: match.team
-    cap = create :cap, match: match, player: @player
+    player = create :player, team: match.team
+    cap = create :cap, match: match, player: player
     match.update(extra_time: true)
     expect(cap.reload.stop).to be == 120
+  end
+
+  it 'sets Match times to 90 minutes if not extra time' do
+    match = create :match, extra_time: true
+    player = create :player, team: match.team
+    cap = create :cap, match: match, player: player
     match.update(extra_time: false)
     expect(cap.reload.stop).to be == 90
   end
 
   it 'does not move current date forward if date is behind current date' do
     match.update(played_on: match.currently_on - 1.day)
-    expect(match.team.reload.currently_on).to_not be == match.played_on
+    expect(match.team.reload.currently_on).not_to be == match.played_on
   end
 
   it 'moves current date forward if date is ahead of current date' do
@@ -102,9 +114,13 @@ RSpec.describe Match, type: :model do
       expect { cap.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end
 
-    it 'creates Caps matching SquadPlayers' do
+    it "creates Caps matching SquadPlayers' player ids" do
       match.apply(squad)
       expect(match.caps.pluck(:player_id)).to be == squad.squad_players.pluck(:player_id)
+    end
+
+    it "creates Caps matching SquadPlayers' positions" do
+      match.apply(squad)
       expect(match.caps.pluck(:pos)).to be == squad.squad_players.pluck(:pos)
     end
   end

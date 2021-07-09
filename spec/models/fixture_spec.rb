@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: fixtures
@@ -24,6 +26,6 @@ RSpec.describe Fixture, type: :model do
   end
 
   it 'requires at least one FixtureLeg' do
-    expect(build(:fixture, legs_count: 0)).to_not be_valid
+    expect(build(:fixture, legs_count: 0)).not_to be_valid
   end
 end

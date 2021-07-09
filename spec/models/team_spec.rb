@@ -24,19 +24,19 @@ require 'rails_helper'
 RSpec.describe Team, type: :model do
   let(:team) { create(:team) }
 
-  it "has a valid factory" do
+  it 'has a valid factory' do
     expect(team).to be_valid
   end
 
   it 'requires a name' do
-    expect(build(:team, name: nil)).to_not be_valid
+    expect(build(:team, name: nil)).not_to be_valid
   end
 
   it 'requires a start date' do
-    expect(build(:team, started_on: nil)).to_not be_valid
+    expect(build(:team, started_on: nil)).not_to be_valid
   end
 
   it 'requires a currency' do
-    expect(build(:team, currency: nil)).to_not be_valid
+    expect(build(:team, currency: nil)).not_to be_valid
   end
 end

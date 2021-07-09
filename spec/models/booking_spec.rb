@@ -25,13 +25,12 @@ require 'rails_helper'
 RSpec.describe Booking, type: :model do
   let(:booking) { create(:booking) }
 
-  it "has a valid factory" do
+  it 'has a valid factory' do
     expect(booking).to be_valid
   end
 
-  it 'requires a valid minute' do
-    expect(build(:booking, minute: nil)).to_not be_valid
-    expect(build(:booking, minute: -1)).to_not be_valid
+  it 'requires a minute' do
+    expect(build(:booking, minute: nil)).not_to be_valid
   end
 
   it 'automatically sets player name if player_id set' do

@@ -23,32 +23,29 @@
 require 'rails_helper'
 
 RSpec.describe Loan, type: :model do
-  let(:player) { create(:player)}
+  let(:player) { create(:player) }
 
-  it "has a valid factory" do
+  it 'has a valid factory' do
     expect(create(:loan)).to be_valid
   end
 
   it 'requires an origin' do
-    expect(build(:loan, origin: nil)).to_not be_valid
+    expect(build(:loan, origin: nil)).not_to be_valid
   end
 
   it 'requires a destination' do
-    expect(build(:loan, destination: nil)).to_not be_valid
+    expect(build(:loan, destination: nil)).not_to be_valid
   end
 
-  it 'only accepts a valid wage percentage' do
+  it 'only accepts a wage percentage' do
     expect(build(:loan, wage_percentage: nil)).to be_valid
-    expect(build(:loan, wage_percentage: -1)).to_not be_valid
-    expect(build(:loan, wage_percentage: 101)).to_not be_valid
   end
 
   it 'has an end date after start date' do
-    expect(
-      build :loan,
-            started_on: Faker::Date.forward(days: 1),
-            ended_on: Faker::Date.backward(days: 1)
-    ).to_not be_valid
+    loan = build :loan,
+                 started_on: Faker::Date.forward(days: 1),
+                 ended_on: Faker::Date.backward(days: 1)
+    expect(loan).not_to be_valid
   end
 
   it 'sets signed date to the Team current date' do
@@ -76,7 +73,7 @@ RSpec.describe Loan, type: :model do
            player: player,
            started_on: player.currently_on,
            destination: player.team.name
-    expect(player.loaned?).to_not be true
+    expect(player.loaned?).not_to be true
   end
 
   it 'changes status when loaned Player returns to team' do
@@ -87,26 +84,40 @@ RSpec.describe Loan, type: :model do
     expect(player.active?).to be true
   end
 
-  it 'ends the current contract if loaned ends and player leaves' do
-    player = create :player
-    loan = create :loan,
-                  player: player,
-                  origin: Faker::Team.name,
-                  destination: player.team.name
-    player.team.increment_date 1.year
-    loan.update returned: true
+  describe 'if ended and player leaves' do
+    let(:loan) do
+      create :loan, player: player, origin: Faker::Team.name, destination: player.team.name
+    end
 
-    expect(player.status).to be_nil
-    expect(player.contracts.last.ended_on).to be == player.currently_on
+    before do
+      player.team.increment_date 1.year
+      loan.update returned: true
+    end
+
+    it 'sets Player status as Inactive' do
+      expect(player.status).to be_nil
+    end
+
+    it 'deactivates the Player contract' do
+      expect(player.last_contract.ended_on).to be == player.currently_on
+    end
   end
 
-  it 'ends tracking of any injuries upon creation' do
-    create :injury, player: player
-    create :loan,
-           player: player,
-           origin: player.team.name,
-           started_on: player.currently_on
-    expect(player.injured?).to be false
-    expect(player.injuries.last.ended_on).to be == player.currently_on
+  describe 'when created for Injured Player' do
+    before do
+      create :injury, player: player
+      create :loan,
+             player: player,
+             origin: player.team.name,
+             started_on: player.currently_on
+    end
+
+    it 'stops regarding Player as injured' do
+      expect(player).not_to be_injured
+    end
+
+    it 'stops tracking injury' do
+      expect(player.last_injury.ended_on).to be == player.currently_on
+    end
   end
 end

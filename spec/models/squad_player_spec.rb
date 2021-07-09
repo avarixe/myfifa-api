@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 # == Schema Information
 #
 # Table name: squad_players
@@ -26,14 +27,14 @@ RSpec.describe SquadPlayer, type: :model do
   end
 
   it 'requires a position' do
-    expect(build(:squad_player, pos: nil)).to_not be_valid
+    expect(build(:squad_player, pos: nil)).not_to be_valid
   end
 
   it 'requires a player' do
-    expect(build(:squad_player, player_id: nil)).to_not be_valid
+    expect(build(:squad_player, player_id: nil)).not_to be_valid
   end
 
   it 'requires a squad' do
-    expect(build(:squad_player, squad_id: nil)).to_not be_valid
+    expect(build(:squad_player, squad_id: nil)).not_to be_valid
   end
 end

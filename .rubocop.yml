@@ -8,13 +8,12 @@ AllCops:
   TargetRubyVersion: 2.7
   NewCops: enable
   Exclude:
-    - 'bin/*'
-    - 'config/**/*'
-    - 'db/**/*'
-    - 'lib/tasks/*'
-    - 'script/**/*'
-    - 'spec/**/*.rb'
-    - 'vendor/**/*'
+    - bin/*
+    - config/**/*
+    - db/**/*
+    - lib/tasks/*
+    - script/**/*
+    - vendor/**/*
 
 Layout/EmptyLinesAroundAttributeAccessor:
   Enabled: true
@@ -43,7 +42,6 @@ Metrics/MethodLength:
     - app/graphql/mutations/add_mutations.rb
 Metrics/BlockLength:
   Exclude:
-    - spec/**/*.rb
     - app/graphql/mutations/add_mutations.rb
 Rails/LexicallyScopedActionFilter:
   Enabled: false
