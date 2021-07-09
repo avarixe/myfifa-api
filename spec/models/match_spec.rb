@@ -26,39 +26,39 @@
 require 'rails_helper'
 
 RSpec.describe Match, type: :model do
-  let(:match) { FactoryBot.create :match }
+  let(:match) { create :match }
 
   it 'has a valid factory' do
     expect(match).to be_valid
   end
 
   it 'requires a home team' do
-    expect(FactoryBot.build(:match, home: nil)).to_not be_valid
+    expect(build(:match, home: nil)).to_not be_valid
   end
 
   it 'requires an away team' do
-    expect(FactoryBot.build(:match, away: nil)).to_not be_valid
+    expect(build(:match, away: nil)).to_not be_valid
   end
 
   it 'requires a competition' do
-    expect(FactoryBot.build(:match, competition: nil)).to_not be_valid
+    expect(build(:match, competition: nil)).to_not be_valid
   end
 
   it 'does not require a competition if friendly' do
-    expect(FactoryBot.build(:match, competition: nil, friendly: true)).to be_valid
+    expect(build(:match, competition: nil, friendly: true)).to be_valid
   end
 
   it 'cannot have duplicate home and away teams' do
     team = Faker::Team.name
-    expect(FactoryBot.build(:match, home: team, away: team)).to_not be_valid
+    expect(build(:match, home: team, away: team)).to_not be_valid
   end
 
   it 'detects when user team is playing' do
-    team = FactoryBot.create(:team)
-    expect(FactoryBot.build(:match).team_played?).to be false
-    match1 = FactoryBot.build :match, team: team, home: team.name
+    team = create(:team)
+    expect(build(:match).team_played?).to be false
+    match1 = build :match, team: team, home: team.name
     expect(match1.team_played?).to be true
-    match2 = FactoryBot.build :match, team: team, away: team.name
+    match2 = build :match, team: team, away: team.name
     expect(match2.team_played?).to be true
   end
 
@@ -67,19 +67,15 @@ RSpec.describe Match, type: :model do
   end
 
   it 'cannot have two Performance records for the same player' do
-    @match = FactoryBot.create :match
-    @player = FactoryBot.create :player, team: @match.team
-    FactoryBot.create :cap, match: @match, player: @player
-    expect(
-      FactoryBot.build :cap,
-                       match: @match,
-                       player: @player
-    ).to_not be_valid
+    @match = create :match
+    @player = create :player, team: @match.team
+    create :cap, match: @match, player: @player
+    expect(build(:cap, match: @match, player: @player)).to_not be_valid
   end
 
   it 'sets Match times to 120 minutes if extra time' do
-    @player = FactoryBot.create :player, team: match.team
-    cap = FactoryBot.create :cap, match: match, player: @player
+    @player = create :player, team: match.team
+    cap = create :cap, match: match, player: @player
     match.update(extra_time: true)
     expect(cap.reload.stop).to be == 120
     match.update(extra_time: false)
@@ -97,11 +93,11 @@ RSpec.describe Match, type: :model do
   end
 
   describe 'when Squad is applied' do
-    let(:squad) { FactoryBot.create :squad, team: match.team }
+    let(:squad) { create :squad, team: match.team }
 
     it 'removes previous Caps' do
-      player = FactoryBot.create :player, team: match.team
-      cap = FactoryBot.create :cap, match: match, player: player
+      player = create :player, team: match.team
+      cap = create :cap, match: match, player: player
       match.apply(squad)
       expect { cap.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end

@@ -19,21 +19,21 @@
 require 'rails_helper'
 
 RSpec.describe SquadPlayer, type: :model do
-  let(:squad_player) { FactoryBot.create(:squad_player) }
+  let(:squad_player) { create(:squad_player) }
 
   it 'has a valid factory' do
     expect(squad_player).to be_valid
   end
 
   it 'requires a position' do
-    expect(FactoryBot.build(:squad_player, pos: nil)).to_not be_valid
+    expect(build(:squad_player, pos: nil)).to_not be_valid
   end
 
   it 'requires a player' do
-    expect(FactoryBot.build(:squad_player, player_id: nil)).to_not be_valid
+    expect(build(:squad_player, player_id: nil)).to_not be_valid
   end
 
   it 'requires a squad' do
-    expect(FactoryBot.build(:squad_player, squad_id: nil)).to_not be_valid
+    expect(build(:squad_player, squad_id: nil)).to_not be_valid
   end
 end

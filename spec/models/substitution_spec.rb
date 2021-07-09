@@ -27,36 +27,36 @@ require 'rails_helper'
 RSpec.describe Substitution, type: :model do
   before do |test|
     unless test.metadata[:skip_before]
-      @team = FactoryBot.create :team
-      @match = FactoryBot.create :match, team: @team
-      @player = FactoryBot.create :player, team: @team
-      @replacement = FactoryBot.create :player, team: @team
-      FactoryBot.create :cap, start: 0, match: @match, player: @player
-      @sub = FactoryBot.create :substitution,
-                               player_id: @player.id,
-                               replacement_id: @replacement.id,
-                               match: @match
+      @team = create :team
+      @match = create :match, team: @team
+      @player = create :player, team: @team
+      @replacement = create :player, team: @team
+      create :cap, start: 0, match: @match, player: @player
+      @sub = create :substitution,
+                    player_id: @player.id,
+                    replacement_id: @replacement.id,
+                    match: @match
     end
   end
 
   it 'has a valid factory', :skip_before do
-    expect(FactoryBot.create(:substitution)).to be_valid
+    expect(create(:substitution)).to be_valid
   end
 
   it 'requires a player', :skip_before do
-    expect(FactoryBot.build(:substitution, player: nil)).to_not be_valid
+    expect(build(:substitution, player: nil)).to_not be_valid
   end
 
   it 'requires a match', :skip_before do
-    expect(FactoryBot.build(:substitution, match: nil)).to_not be_valid
+    expect(build(:substitution, match: nil)).to_not be_valid
   end
 
   it 'requires a minute', :skip_before do
-    expect(FactoryBot.build(:substitution, minute: nil)).to_not be_valid
+    expect(build(:substitution, minute: nil)).to_not be_valid
   end
 
   it 'requires a replacement', :skip_before do
-    expect(FactoryBot.build(:substitution, replacement: nil)).to_not be_valid
+    expect(build(:substitution, replacement: nil)).to_not be_valid
   end
 
   it 'automatically sets player name' do
@@ -81,14 +81,14 @@ RSpec.describe Substitution, type: :model do
       @match.substitutions.map(&:destroy)
       @match.caps.delete_all
       @match.update(extra_time: true)
-      @player = FactoryBot.create :player, team: @team
-      @replacement = FactoryBot.create :player, team: @team
-      FactoryBot.create :cap, start: 0, match: @match, player: @player
-      @sub = FactoryBot.create :substitution,
-                               player_id: @player.id,
-                               replacement_id: @replacement.id,
-                               match: @match,
-                               minute: Faker::Number.between(from: 91, to: 120)
+      @player = create :player, team: @team
+      @replacement = create :player, team: @team
+      create :cap, start: 0, match: @match, player: @player
+      @sub = create :substitution,
+                    player_id: @player.id,
+                    replacement_id: @replacement.id,
+                    match: @match,
+                    minute: Faker::Number.between(from: 91, to: 120)
     end
 
     it 'creates a Cap record upon creation' do
@@ -114,9 +114,9 @@ RSpec.describe Substitution, type: :model do
 
   describe 'upon player_id change' do
     before :each do
-      @player2 = FactoryBot.create :player, team: @team
+      @player2 = create :player, team: @team
       pos2 = Cap::POSITIONS[Cap::POSITIONS.index(@player.caps.last.pos) - 1]
-      FactoryBot.create :cap, start: 0, match: @match, player: @player2, pos: pos2
+      create :cap, start: 0, match: @match, player: @player2, pos: pos2
       @sub.update(player_id: @player2.id)
     end
 
@@ -137,7 +137,7 @@ RSpec.describe Substitution, type: :model do
 
   describe 'upon replacement_id change' do
     before :each do
-      @player2 = FactoryBot.create :player, team: @team
+      @player2 = create :player, team: @team
       @sub.update(replacement_id: @player2.id)
     end
 

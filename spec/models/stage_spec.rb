@@ -19,20 +19,20 @@
 require 'rails_helper'
 
 RSpec.describe Stage, type: :model do
-  let(:stage) { FactoryBot.create(:stage) }
+  let(:stage) { create(:stage) }
 
   it 'has a valid factory' do
     expect(stage).to be_valid
   end
 
   it 'requires a num_team' do
-    expect(FactoryBot.build(:stage, num_teams: nil)).to_not be_valid
-    expect(FactoryBot.build(:stage, num_teams: Faker::Number.negative)).to_not be_valid
+    expect(build(:stage, num_teams: nil)).to_not be_valid
+    expect(build(:stage, num_teams: Faker::Number.negative)).to_not be_valid
   end
 
   it 'requires a num_fixtures' do
-    expect(FactoryBot.build(:stage, num_fixtures: nil)).to_not be_valid
-    expect(FactoryBot.build(:stage, num_fixtures: Faker::Number.negative)).to_not be_valid
+    expect(build(:stage, num_fixtures: nil)).to_not be_valid
+    expect(build(:stage, num_fixtures: Faker::Number.negative)).to_not be_valid
   end
 
   it 'sets default name depending on number of teams' do
@@ -44,7 +44,7 @@ RSpec.describe Stage, type: :model do
   end
 
   it 'creates table rows if table' do
-    stage = FactoryBot.create(:stage, table: true)
+    stage = create(:stage, table: true)
     expect(stage.table_rows.size).to be == stage.num_teams
     expect(stage.fixtures.size).to be == 0
   end

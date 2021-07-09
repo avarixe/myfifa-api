@@ -17,13 +17,13 @@
 require 'rails_helper'
 
 RSpec.describe Fixture, type: :model do
-  let(:fixture) { FactoryBot.create(:fixture) }
+  let(:fixture) { create(:fixture) }
 
   it 'has a valid factory' do
     expect(fixture).to be_valid
   end
 
   it 'requires at least one FixtureLeg' do
-    expect(FactoryBot.build(:fixture, legs_count: 0)).to_not be_valid
+    expect(build(:fixture, legs_count: 0)).to_not be_valid
   end
 end

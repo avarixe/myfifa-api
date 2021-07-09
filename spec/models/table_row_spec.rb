@@ -21,30 +21,30 @@
 require 'rails_helper'
 
 RSpec.describe TableRow, type: :model do
-  let(:row) { FactoryBot.create(:table_row) }
+  let(:row) { create(:table_row) }
 
   it 'has a valid factory' do
     expect(row).to be_valid
   end
 
   it 'requires wins' do
-    expect(FactoryBot.build(:table_row, wins: nil)).to_not be_valid
+    expect(build(:table_row, wins: nil)).to_not be_valid
   end
 
   it 'requires draws' do
-    expect(FactoryBot.build(:table_row, draws: nil)).to_not be_valid
+    expect(build(:table_row, draws: nil)).to_not be_valid
   end
 
   it 'requires losses' do
-    expect(FactoryBot.build(:table_row, losses: nil)).to_not be_valid
+    expect(build(:table_row, losses: nil)).to_not be_valid
   end
 
   it 'requires goals_for' do
-    expect(FactoryBot.build(:table_row, goals_for: nil)).to_not be_valid
+    expect(build(:table_row, goals_for: nil)).to_not be_valid
   end
 
   it 'requires goals_against' do
-    expect(FactoryBot.build(:table_row, goals_against: nil)).to_not be_valid
+    expect(build(:table_row, goals_against: nil)).to_not be_valid
   end
 
   it 'requires name when updating' do

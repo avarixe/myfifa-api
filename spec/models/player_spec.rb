@@ -27,34 +27,34 @@
 require 'rails_helper'
 
 RSpec.describe Player, type: :model do
-  let(:player) { FactoryBot.create(:player) }
+  let(:player) { create(:player) }
 
   it "has a valid factory" do
     expect(player).to be_valid
   end
 
   it 'requires a name' do
-    expect(FactoryBot.build(:player, name: nil)).to_not be_valid
+    expect(build(:player, name: nil)).to_not be_valid
   end
 
   it 'requires a valid position' do
-    expect(FactoryBot.build(:player, pos: nil)).to_not be_valid
-    expect(FactoryBot.build(:player, pos: 'GKK')).to_not be_valid
+    expect(build(:player, pos: nil)).to_not be_valid
+    expect(build(:player, pos: 'GKK')).to_not be_valid
   end
 
   it 'requires an valid OVR' do
-    expect(FactoryBot.build(:player, ovr: nil)).to_not be_valid
-    expect(FactoryBot.build(:player, ovr: -1)).to_not be_valid
+    expect(build(:player, ovr: nil)).to_not be_valid
+    expect(build(:player, ovr: -1)).to_not be_valid
   end
 
   it 'requires a valid value' do
-    expect(FactoryBot.build(:player, value: nil)).to_not be_valid
-    expect(FactoryBot.build(:player, value: -1)).to_not be_valid
+    expect(build(:player, value: nil)).to_not be_valid
+    expect(build(:player, value: -1)).to_not be_valid
   end
 
   it 'requires a birth year' do
-    expect(FactoryBot.build(:player, birth_year: nil)).to_not be_valid
-    expect(FactoryBot.build(:player, value: -1)).to_not be_valid
+    expect(build(:player, birth_year: nil)).to_not be_valid
+    expect(build(:player, value: -1)).to_not be_valid
   end
 
   it 'requires all secondary positions to be valid' do
@@ -62,8 +62,8 @@ RSpec.describe Player, type: :model do
     3.times do
       sec_pos << Player::POSITIONS.sample
     end
-    expect(FactoryBot.build(:player, sec_pos: [''])).to_not be_valid
-    expect(FactoryBot.build(:player, sec_pos: sec_pos)).to be_valid
+    expect(build(:player, sec_pos: [''])).to_not be_valid
+    expect(build(:player, sec_pos: sec_pos)).to be_valid
   end
 
   it 'starts with a history record' do

@@ -17,7 +17,7 @@
 require 'rails_helper'
 
 RSpec.describe FixtureLeg, type: :model do
-  let(:fixture_leg) { FactoryBot.create(:fixture_leg) }
+  let(:fixture_leg) { create(:fixture_leg) }
 
   it 'has a valid factory' do
     expect(fixture_leg).to be_valid
