@@ -62,9 +62,9 @@ end
 
 group :test do
   gem 'brakeman', require: false
-  gem 'rspec-rails'
-  # gem 'rspec-graphql_response'
   gem 'rspec-graphql_matchers'
+  gem 'rspec-graphql_response'
+  gem 'rspec-rails'
   gem 'rubocop', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
