@@ -8,4 +8,60 @@ RSpec.describe Mutations::AddTeam do
   it { is_expected.to accept_argument(:attributes).of_type('TeamAttributes!') }
   it { is_expected.to have_a_field(:team).returning('Team') }
   it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+
+  describe 'execution', type: :graphql do
+    let(:user) { create :user }
+
+    graphql_operation <<-GQL
+      mutation addTeam($attributes: TeamAttributes!) {
+        addTeam(attributes: $attributes) {
+          team {
+            id
+            name
+          }
+          errors {
+            fullMessages
+          }
+        }
+      }
+    GQL
+
+    describe 'with valid attributes' do
+      graphql_variables do
+        {
+          attributes: {
+            name: Faker::Team.name,
+            startedOn: Time.zone.today.strftime('%F')
+          }
+        }
+      end
+
+      graphql_context do
+        { current_user: user }
+      end
+
+      it 'creates a new Team for the user' do
+        execute_graphql
+        expect(user.reload.teams.count).to be == 1
+      end
+
+      it 'returns the created Team' do
+        expect(response_data.dig('addTeam', 'team')).to be_present
+      end
+    end
+
+    describe 'with invalid attributes' do
+      graphql_variables do
+        { attributes: { name: Faker::Team.name } }
+      end
+
+      graphql_context do
+        { current_user: user }
+      end
+
+      it 'returns errors if attributes are not valid' do
+        expect(response_data.dig('addTeam', 'errors', 'fullMessages')).to be_present
+      end
+    end
+  end
 end
