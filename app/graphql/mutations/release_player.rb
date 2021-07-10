@@ -4,7 +4,7 @@ module Mutations
   class ReleasePlayer < Mutations::BaseMutation
     argument :id, ID, required: true
 
-    field :player, Types::Myfifa::PlayerType, null: true
+    field :player, Types::Myfifa::PlayerType, null: false
 
     def resolve(id:)
       current_ability = Ability.new(context[:current_user])

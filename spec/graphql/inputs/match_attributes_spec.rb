@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 RSpec.describe Types::Inputs::MatchAttributes do
-  subject { described_class }
+  subject(:match_attributes) { described_class }
 
   it { is_expected.to accept_argument(:home).of_type('String') }
   it { is_expected.to accept_argument(:away).of_type('String') }
@@ -12,5 +12,10 @@ RSpec.describe Types::Inputs::MatchAttributes do
   it { is_expected.to accept_argument(:extra_time).of_type('Boolean') }
   it { is_expected.to accept_argument(:stage).of_type('String') }
 
-  it { is_expected.to accept_argument(:penalty_shootout_attributes).of_type('PenaltyShootoutAttributes') }
+  it do
+    expect(match_attributes).to(
+      accept_argument(:penalty_shootout_attributes)
+        .of_type('PenaltyShootoutAttributes')
+    )
+  end
 end

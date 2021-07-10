@@ -11,7 +11,7 @@ module Mutations
     }.each do |parent_model, models|
       models.each do |model|
         add_mutation = Class.new(BaseMutation) do
-          argument "#{parent_model.underscore.to_sym}_id".to_sym,
+          argument "#{parent_model.underscore}_id".to_sym,
                    GraphQL::Types::ID,
                    required: true
           argument :attributes,

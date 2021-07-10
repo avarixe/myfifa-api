@@ -5,7 +5,7 @@ module Mutations
     argument :match_id, ID, required: true
     argument :squad_id, ID, required: true
 
-    field :match, Types::Myfifa::MatchType, null: true
+    field :match, Types::Myfifa::MatchType, null: false
 
     def resolve(match_id:, squad_id:)
       current_ability = Ability.new(context[:current_user])
