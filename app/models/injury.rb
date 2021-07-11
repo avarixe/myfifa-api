@@ -72,8 +72,4 @@ class Injury < ApplicationRecord
     started_on <= team.currently_on &&
       (ended_on.nil? || team.currently_on < ended_on)
   end
-
-  def recovered?
-    ended_on.present?
-  end
 end

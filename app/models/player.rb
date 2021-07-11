@@ -150,9 +150,7 @@ class Player < ApplicationRecord
   end
 
   def age=(val)
-    return if team.nil?
-
-    self[:birth_year] = team.currently_on.year - val.to_i
+    self[:birth_year] = team.currently_on.year - val.to_i if team.present?
   end
 
   ###############

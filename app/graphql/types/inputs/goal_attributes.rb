@@ -8,9 +8,9 @@ module Types
       argument :player_id, Integer, required: false
       argument :assisted_by, String, required: false
       argument :assist_id, Integer, required: false
-      argument :home, Boolean, required: true
-      argument :own_goal, Boolean, required: true
-      argument :penalty, Boolean, required: true
+      argument :home, Boolean, required: false
+      argument :own_goal, Boolean, required: false
+      argument :penalty, Boolean, required: false
     end
   end
 end

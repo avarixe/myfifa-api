@@ -15,29 +15,19 @@ RSpec.describe Mutations::AddTeam do
     graphql_operation <<-GQL
       mutation addTeam($attributes: TeamAttributes!) {
         addTeam(attributes: $attributes) {
-          team {
-            id
-            name
-          }
-          errors {
-            fullMessages
-          }
+          team { id }
+          errors { fullMessages }
         }
       }
     GQL
 
+    graphql_context do
+      { current_user: user }
+    end
+
     describe 'with valid attributes' do
       graphql_variables do
-        {
-          attributes: {
-            name: Faker::Team.name,
-            startedOn: Time.zone.today.strftime('%F')
-          }
-        }
-      end
-
-      graphql_context do
-        { current_user: user }
+        { attributes: graphql_attributes_for(:team) }
       end
 
       it 'creates a new Team for the user' do
@@ -46,17 +36,14 @@ RSpec.describe Mutations::AddTeam do
       end
 
       it 'returns the created Team' do
-        expect(response_data.dig('addTeam', 'team')).to be_present
+        expect(response_data.dig('addTeam', 'team', 'id'))
+          .to be == user.teams.first.id.to_s
       end
     end
 
     describe 'with invalid attributes' do
       graphql_variables do
         { attributes: { name: Faker::Team.name } }
-      end
-
-      graphql_context do
-        { current_user: user }
       end
 
       it 'returns errors if attributes are not valid' do

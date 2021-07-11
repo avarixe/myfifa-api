@@ -64,10 +64,6 @@ class Team < ApplicationRecord
     update(currently_on: currently_on + amount)
   end
 
-  def time_period
-    "#{started_on.year} - #{currently_on.year}"
-  end
-
   def current_season
     ((currently_on - started_on) / 365).to_i
   end

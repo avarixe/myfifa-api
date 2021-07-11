@@ -75,10 +75,6 @@ class Substitution < ApplicationRecord
 
   delegate :team, to: :match
 
-  def home
-    match.team_home?
-  end
-
   def subbed_cap
     match.caps.find_by(player_id: player_id)
   end

@@ -83,8 +83,4 @@ class Goal < ApplicationRecord
   end
 
   delegate :team, to: :match
-
-  def away?
-    !home?
-  end
 end

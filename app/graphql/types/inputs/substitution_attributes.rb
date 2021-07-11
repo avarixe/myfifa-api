@@ -6,7 +6,7 @@ module Types
       argument :minute, Integer, required: true
       argument :player_id, Integer, required: true
       argument :replacement_id, Integer, required: true
-      argument :injury, Boolean, required: true
+      argument :injury, Boolean, required: false
     end
   end
 end

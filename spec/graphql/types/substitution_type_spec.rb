@@ -16,8 +16,6 @@ RSpec.describe Types::Myfifa::SubstitutionType do
   it { is_expected.to have_field(:player_name).of_type('String!') }
   it { is_expected.to have_field(:replaced_by).of_type('String!') }
 
-  it { is_expected.to have_field(:home).of_type('Boolean!') }
-
   it { is_expected.to have_field(:player).of_type('Player!') }
   it { is_expected.to have_field(:replacement).of_type('Player!') }
 end

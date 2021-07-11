@@ -37,6 +37,10 @@ RSpec.describe Injury, type: :model do
     expect(injury).not_to be_valid
   end
 
+  it 'is rejected for already injured Players' do
+    expect(build(:injury, player: injury.player)).not_to be_valid
+  end
+
   it 'occurs on the Team current date' do
     expect(injury.started_on).to be == injury.team.currently_on
   end

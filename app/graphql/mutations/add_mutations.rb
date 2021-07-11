@@ -31,9 +31,8 @@ module Mutations
                             .accessible_by(current_ability)
                             .find(parent_id)
 
-            record = parent_record
-                     .public_send(model.underscore.pluralize)
-                     .new(args[:attributes].to_h)
+            record = parent_record.public_send(model.underscore.pluralize).new
+            record.attributes = args[:attributes].to_h
 
             if record.save
               { model.underscore.to_sym => record }

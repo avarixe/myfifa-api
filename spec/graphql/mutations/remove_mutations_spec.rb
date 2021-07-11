@@ -27,6 +27,37 @@ RSpec.describe Mutations::RemoveMutations do
       it { is_expected.to accept_argument(:id).of_type('ID!') }
       it { is_expected.to have_a_field(model.underscore.to_sym).returning(model) }
       it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+
+      describe 'execution', type: :graphql do
+        let(:record) { create model.underscore.to_sym }
+
+        graphql_operation "
+          mutation remove#{model}($id: ID!) {
+            remove#{model}(id: $id) {
+              #{model.camelize(:lower)} { id }
+              errors { fullMessages }
+            }
+          }
+        "
+
+        graphql_variables do
+          { id: record.id }
+        end
+
+        graphql_context do
+          { current_user: record.team.user }
+        end
+
+        it "removes the #{model}" do
+          execute_graphql
+          expect { record.reload }.to raise_error(ActiveRecord::RecordNotFound)
+        end
+
+        it "returns the removed #{model}" do
+          expect(response_data.dig("remove#{model}", model.camelize(:lower), 'id'))
+            .to be == record.id.to_s
+        end
+      end
     end
   end
 end

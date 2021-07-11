@@ -5,9 +5,9 @@ module Types
     class BookingAttributes < BaseInputObject
       argument :minute, Integer, required: true
       argument :player_id, Integer, required: false
-      argument :red_card, Boolean, required: true
+      argument :red_card, Boolean, required: false
       argument :player_name, String, required: false
-      argument :home, Boolean, required: true
+      argument :home, Boolean, required: false
     end
   end
 end

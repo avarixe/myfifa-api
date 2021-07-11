@@ -35,16 +35,6 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  PERMITTED_ATTRIBUTES = %i[
-    email
-    full_name
-    username
-  ].freeze
-
-  def self.permitted_attributes
-    PERMITTED_ATTRIBUTES
-  end
-
   has_many :teams, dependent: :destroy
 
   validates :username,

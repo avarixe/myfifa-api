@@ -18,6 +18,8 @@
 
 FactoryBot.define do
   factory :fixture do
+    home_team { Faker::Team.name }
+    away_team { Faker::Team.name }
     stage
 
     transient do

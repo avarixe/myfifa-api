@@ -44,11 +44,6 @@ class Contract < ApplicationRecord
     Retired
   ].freeze
 
-  scope :active, lambda { |date|
-    where(arel_table[:started_on].lteq(date))
-      .where(arel_table[:ended_on].gt(date))
-  }
-
   ################
   #  VALIDATION  #
   ################

@@ -14,8 +14,6 @@ module Types
       field :player_name, String, null: false
       field :replaced_by, String, null: false
 
-      field :home, Boolean, null: false
-
       field :player, PlayerType, null: false
       field :replacement, PlayerType, null: false
     end
