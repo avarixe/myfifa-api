@@ -13,15 +13,40 @@ module Types
     field :team, Myfifa::TeamType, null: false do
       argument :id, ID, required: true
     end
+    field :player, Myfifa::PlayerType, null: false do
+      argument :id, ID, required: true
+    end
+    field :match, Myfifa::MatchType, null: false do
+      argument :id, ID, required: true
+    end
+    field :competition, Myfifa::CompetitionType, null: false do
+      argument :id, ID, required: true
+    end
 
     def teams
-      current_ability = Ability.new(context[:current_user])
       Team.accessible_by(current_ability).all
     end
 
     def team(id:)
-      current_ability = Ability.new(context[:current_user])
       Team.accessible_by(current_ability).find(id)
     end
+
+    def player(id:)
+      Player.accessible_by(current_ability).find(id)
+    end
+
+    def match(id:)
+      Match.accessible_by(current_ability).find(id)
+    end
+
+    def competition(id:)
+      Competition.accessible_by(current_ability).find(id)
+    end
+
+    private
+
+      def current_ability
+        Ability.new(context[:current_user])
+      end
   end
 end

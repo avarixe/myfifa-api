@@ -7,14 +7,9 @@ RSpec.describe Types::QueryType do
 
   it { is_expected.to have_field(:teams).of_type('[Team!]!') }
   it { is_expected.to have_field(:team).of_type('Team!') }
-
-  describe 'team query' do
-    subject(:field) { described_class.fields['team'] }
-
-    it 'requires an ID' do
-      expect(field).to accept_argument(:id).of_type('ID!')
-    end
-  end
+  it { is_expected.to have_field(:player).of_type('Player!') }
+  it { is_expected.to have_field(:match).of_type('Match!') }
+  it { is_expected.to have_field(:competition).of_type('Competition!') }
 
   describe 'teams query execution', type: :graphql do
     let(:user) { create :user }
@@ -37,40 +32,56 @@ RSpec.describe Types::QueryType do
     end
   end
 
-  describe 'team query execution', type: :graphql do
-    let(:user) { create :user }
+  %w[team player match competition].each do |type|
+    describe "#{type} query" do
+      subject(:field) { described_class.fields[type] }
 
-    graphql_operation <<-GQL
-      query fetchTeam($id: ID!) {
-        team(id: $id) { id }
-      }
-    GQL
-
-    graphql_context do
-      { current_user: user }
-    end
-
-    describe 'for user owned Team' do
-      let(:team) { create :team, user: user }
-
-      graphql_variables do
-        { id: team.id }
+      it 'requires an ID' do
+        expect(field).to accept_argument(:id).of_type('ID!')
       end
 
-      it 'returns specific Team' do
-        expect(response_data.dig('team', 'id')).to be == team.id.to_s
-      end
-    end
+      describe 'execution', type: :graphql do
+        let(:user) { create :user }
 
-    describe 'for Team not owned by user' do
-      let(:team) { create :team }
+        graphql_operation "
+          query fetch#{type.titleize}($id: ID!) {
+            #{type}(id: $id) { id }
+          }
+        "
 
-      graphql_variables do
-        { id: team.id }
-      end
+        graphql_context do
+          { current_user: user }
+        end
 
-      it 'does not return specific Team' do
-        expect { execute_graphql }.to raise_error(ActiveRecord::RecordNotFound)
+        describe 'for user owned Team' do
+          let(:record) do
+            if type == 'team'
+              create :team, user: user
+            else
+              create type.to_sym, team: create(:team, user: user)
+            end
+          end
+
+          graphql_variables do
+            { id: record.id }
+          end
+
+          it 'returns specific Team' do
+            expect(response_data.dig(type, 'id')).to be == record.id.to_s
+          end
+        end
+
+        describe "for #{type.titleize} not owned by user" do
+          let(:record) { create type.to_sym }
+
+          graphql_variables do
+            { id: record.id }
+          end
+
+          it "does not return specific #{type.titleize}" do
+            expect { execute_graphql }.to raise_error(ActiveRecord::RecordNotFound)
+          end
+        end
       end
     end
   end

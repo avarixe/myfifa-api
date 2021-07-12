@@ -14,7 +14,7 @@ RSpec.describe ApplicationCable::Connection, type: :channel do
   end
 
   it 'successfully connects with token' do
-    connect '/cable', headers: { 'Authorization' => "Bearer #{token.token}" }
+    connect '/cable', params: { access_token: token.token }
     expect(connection.current_user).to be == user
   end
 
