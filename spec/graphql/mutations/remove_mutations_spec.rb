@@ -13,6 +13,7 @@ RSpec.describe Mutations::RemoveMutations do
     Injury
     Loan
     Match
+    PenaltyShootout
     Player
     Squad
     Stage

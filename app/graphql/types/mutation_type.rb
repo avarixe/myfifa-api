@@ -37,5 +37,7 @@ module Types
     field :apply_squad_to_match, mutation: Mutations::ApplySquadToMatch
     field :store_match_lineup_to_squad,
           mutation: Mutations::StoreMatchLineupToSquad
+    field :remove_penalty_shootout,
+          mutation: Mutations::RemoveMutations::RemovePenaltyShootout
   end
 end

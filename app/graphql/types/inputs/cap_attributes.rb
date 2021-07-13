@@ -3,8 +3,8 @@
 module Types
   module Inputs
     class CapAttributes < BaseInputObject
-      argument :player_id, ID, required: true
-      argument :pos, String, required: true
+      argument :player_id, ID, required: false
+      argument :pos, String, required: false
     end
   end
 end
