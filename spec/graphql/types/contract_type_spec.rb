@@ -6,7 +6,7 @@ RSpec.describe Types::Myfifa::ContractType do
   subject { described_class }
 
   it { is_expected.to have_field(:id).of_type('ID!') }
-  it { is_expected.to have_field(:player_id).of_type('Int!') }
+  it { is_expected.to have_field(:player_id).of_type('ID!') }
   it { is_expected.to have_field(:signed_on).of_type('ISO8601Date!') }
   it { is_expected.to have_field(:wage).of_type('Int!') }
   it { is_expected.to have_field(:signing_bonus).of_type('Int') }

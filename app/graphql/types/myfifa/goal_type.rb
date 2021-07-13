@@ -4,11 +4,11 @@ module Types
   module Myfifa
     class GoalType < BaseObject
       field :id, ID, null: false
-      field :match_id, Integer, null: false
+      field :match_id, ID, null: false
       field :minute, Integer, null: false
       field :player_name, String, null: false
-      field :player_id, Integer, null: true
-      field :assist_id, Integer, null: true
+      field :player_id, ID, null: true
+      field :assist_id, ID, null: true
       field :home, Boolean, null: false
       field :own_goal, Boolean, null: false
       field :penalty, Boolean, null: false

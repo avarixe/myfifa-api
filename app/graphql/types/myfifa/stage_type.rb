@@ -4,7 +4,7 @@ module Types
   module Myfifa
     class StageType < BaseObject
       field :id, ID, null: false
-      field :competition_id, Integer, null: false
+      field :competition_id, ID, null: false
       field :name, String, null: false
       field :num_teams, Integer, null: true
       field :num_fixtures, Integer, null: true

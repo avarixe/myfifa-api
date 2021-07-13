@@ -6,11 +6,11 @@ RSpec.describe Types::Myfifa::PlayerType do
   subject { described_class }
 
   it { is_expected.to have_field(:id).of_type('ID!') }
-  it { is_expected.to have_field(:team_id).of_type('Int!') }
+  it { is_expected.to have_field(:team_id).of_type('ID!') }
   it { is_expected.to have_field(:name).of_type('String!') }
   it { is_expected.to have_field(:nationality).of_type('String') }
   it { is_expected.to have_field(:pos).of_type('String!') }
-  it { is_expected.to have_field(:sec_pos).of_type('String') }
+  it { is_expected.to have_field(:sec_pos).of_type('[String!]!') }
   it { is_expected.to have_field(:ovr).of_type('Int!') }
   it { is_expected.to have_field(:value).of_type('Int!') }
   it { is_expected.to have_field(:birth_year).of_type('Int!') }

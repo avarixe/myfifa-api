@@ -4,9 +4,9 @@ module Types
   module Myfifa
     class BookingType < BaseObject
       field :id, ID, null: false
-      field :match_id, Integer, null: false
+      field :match_id, ID, null: false
       field :minute, Integer, null: false
-      field :player_id, Integer, null: false
+      field :player_id, ID, null: false
       field :red_card, Boolean, null: false
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
       field :updated_at, GraphQL::Types::ISO8601DateTime, null: false

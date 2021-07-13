@@ -6,7 +6,7 @@ RSpec.describe Types::Myfifa::MatchType do
   subject { described_class }
 
   it { is_expected.to have_field(:id).of_type('ID!') }
-  it { is_expected.to have_field(:team_id).of_type('Int!') }
+  it { is_expected.to have_field(:team_id).of_type('ID!') }
   it { is_expected.to have_field(:home).of_type('String!') }
   it { is_expected.to have_field(:away).of_type('String!') }
   it { is_expected.to have_field(:competition).of_type('String') }

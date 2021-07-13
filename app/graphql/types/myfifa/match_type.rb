@@ -4,7 +4,7 @@ module Types
   module Myfifa
     class MatchType < BaseObject
       field :id, ID, null: false
-      field :team_id, Integer, null: false
+      field :team_id, ID, null: false
       field :home, String, null: false
       field :away, String, null: false
       field :competition, String, null: true

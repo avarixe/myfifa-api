@@ -4,7 +4,7 @@ module Types
   module Myfifa
     class TeamType < BaseObject
       field :id, ID, null: false
-      field :user_id, Integer, null: false
+      field :user_id, ID, null: false
       field :name, String, null: false
       field :started_on, GraphQL::Types::ISO8601Date, null: false
       field :currently_on, GraphQL::Types::ISO8601Date, null: false

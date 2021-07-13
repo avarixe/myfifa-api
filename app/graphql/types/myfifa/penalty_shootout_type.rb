@@ -4,7 +4,7 @@ module Types
   module Myfifa
     class PenaltyShootoutType < BaseObject
       field :id, ID, null: false
-      field :match_id, Integer, null: false
+      field :match_id, ID, null: false
       field :home_score, Integer, null: false
       field :away_score, Integer, null: false
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false

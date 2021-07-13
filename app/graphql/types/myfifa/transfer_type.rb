@@ -4,7 +4,7 @@ module Types
   module Myfifa
     class TransferType < BaseObject
       field :id, ID, null: false
-      field :player_id, Integer, null: false
+      field :player_id, ID, null: false
       field :signed_on, GraphQL::Types::ISO8601Date, null: false
       field :moved_on, GraphQL::Types::ISO8601Date, null: false
       field :origin, String, null: false

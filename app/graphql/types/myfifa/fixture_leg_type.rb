@@ -4,7 +4,7 @@ module Types
   module Myfifa
     class FixtureLegType < BaseObject
       field :id, ID, null: false
-      field :fixture_id, Integer, null: false
+      field :fixture_id, ID, null: false
       field :home_score, String, null: true
       field :away_score, String, null: true
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false

@@ -4,11 +4,11 @@ module Types
   module Myfifa
     class PlayerType < BaseObject
       field :id, ID, null: false
-      field :team_id, Integer, null: false
+      field :team_id, ID, null: false
       field :name, String, null: false
       field :nationality, String, null: true
       field :pos, String, null: false
-      field :sec_pos, String, null: true
+      field :sec_pos, [String], null: false
       field :ovr, Integer, null: false
       field :value, Integer, null: false
       field :birth_year, Integer, null: false

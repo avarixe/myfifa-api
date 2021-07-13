@@ -4,8 +4,8 @@ module Types
   module Myfifa
     class CapType < BaseObject
       field :id, ID, null: false
-      field :match_id, Integer, null: false
-      field :player_id, Integer, null: false
+      field :match_id, ID, null: false
+      field :player_id, ID, null: false
       field :pos, String, null: false
       field :start, Integer, null: false
       field :stop, Integer, null: false

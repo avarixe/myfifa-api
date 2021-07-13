@@ -6,11 +6,11 @@ RSpec.describe Types::Myfifa::GoalType do
   subject { described_class }
 
   it { is_expected.to have_field(:id).of_type('ID!') }
-  it { is_expected.to have_field(:match_id).of_type('Int!') }
+  it { is_expected.to have_field(:match_id).of_type('ID!') }
   it { is_expected.to have_field(:minute).of_type('Int!') }
   it { is_expected.to have_field(:player_name).of_type('String!') }
-  it { is_expected.to have_field(:player_id).of_type('Int') }
-  it { is_expected.to have_field(:assist_id).of_type('Int') }
+  it { is_expected.to have_field(:player_id).of_type('ID') }
+  it { is_expected.to have_field(:assist_id).of_type('ID') }
   it { is_expected.to have_field(:home).of_type('Boolean!') }
   it { is_expected.to have_field(:own_goal).of_type('Boolean!') }
   it { is_expected.to have_field(:penalty).of_type('Boolean!') }
