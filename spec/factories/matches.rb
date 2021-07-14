@@ -13,6 +13,7 @@
 #  home        :string
 #  home_score  :integer          default(0)
 #  played_on   :date
+#  season      :integer
 #  stage       :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null

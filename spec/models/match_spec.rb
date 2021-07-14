@@ -13,6 +13,7 @@
 #  home        :string
 #  home_score  :integer          default(0)
 #  played_on   :date
+#  season      :integer
 #  stage       :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
@@ -61,6 +62,13 @@ RSpec.describe Match, type: :model do
   it 'detects when user team is playing home' do
     match = build :match, team: team, home: team.name
     expect(match.team_played?).to be true
+  end
+
+  it 'automatically sets the season based on Team start' do
+    match = create :match,
+                   team: team,
+                   played_on: team.currently_on + 1.year
+    expect(match.season).to be == 1
   end
 
   it 'detects when user team is playing away' do

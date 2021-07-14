@@ -10,6 +10,7 @@ RSpec.describe Types::Myfifa::MatchType do
   it { is_expected.to have_field(:home).of_type('String!') }
   it { is_expected.to have_field(:away).of_type('String!') }
   it { is_expected.to have_field(:competition).of_type('String') }
+  it { is_expected.to have_field(:season).of_type('Int!') }
   it { is_expected.to have_field(:played_on).of_type('ISO8601Date!') }
   it { is_expected.to have_field(:created_at).of_type('ISO8601DateTime!') }
   it { is_expected.to have_field(:updated_at).of_type('ISO8601DateTime!') }

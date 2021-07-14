@@ -8,6 +8,7 @@ module Types
       field :home, String, null: false
       field :away, String, null: false
       field :competition, String, null: true
+      field :season, Integer, null: false
       field :played_on, GraphQL::Types::ISO8601Date, null: false
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
       field :updated_at, GraphQL::Types::ISO8601DateTime, null: false

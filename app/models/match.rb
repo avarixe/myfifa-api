@@ -13,6 +13,7 @@
 #  home        :string
 #  home_score  :integer          default(0)
 #  played_on   :date
+#  season      :integer
 #  stage       :string
 #  created_at  :datetime         not null
 #  updated_at  :datetime         not null
@@ -57,8 +58,13 @@ class Match < ApplicationRecord
   #  CALLBACK  #
   ##############
 
+  before_create :set_season
   after_save :increment_currently_on, if: :saved_change_to_played_on?
   after_save :set_cap_stop_times, if: :saved_change_to_extra_time?
+
+  def set_season
+    self.season = ((played_on - team.started_on) / 365).to_i
+  end
 
   def increment_currently_on
     return if currently_on >= played_on

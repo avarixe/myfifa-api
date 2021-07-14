@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_03_050459) do
+ActiveRecord::Schema.define(version: 2021_07_14_024442) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -171,6 +171,7 @@ ActiveRecord::Schema.define(version: 2021_07_03_050459) do
     t.integer "away_score", default: 0
     t.string "stage"
     t.boolean "friendly", default: false, null: false
+    t.integer "season"
     t.index ["team_id"], name: "index_matches_on_team_id"
   end
 
