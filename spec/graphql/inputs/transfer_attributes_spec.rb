@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Types::Inputs::TransferAttributes do
+describe Types::Inputs::TransferAttributes do
   subject { described_class }
 
   it { is_expected.to accept_argument(:moved_on).of_type('ISO8601Date') }

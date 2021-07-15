@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Types::Inputs::MatchAttributes do
+describe Types::Inputs::MatchAttributes do
   subject(:match_attributes) { described_class }
 
   it { is_expected.to accept_argument(:home).of_type('String') }

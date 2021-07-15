@@ -26,7 +26,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Match, type: :model do
+describe Match, type: :model do
   let(:team) { create :team }
   let(:match) { create :match, team: team }
 

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Types::Myfifa::PlayerHistoryType do
+describe Types::Myfifa::PlayerHistoryType do
   subject { described_class }
 
   it { is_expected.to have_field(:id).of_type('ID!') }

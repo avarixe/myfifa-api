@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe ApplicationCable::Connection, type: :channel do
+describe ApplicationCable::Connection, type: :channel do
   let(:user) { create :user }
   let(:application) do
     Doorkeeper::Application.create! name: Faker::Company.name,

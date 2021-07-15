@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Types::Inputs::FixtureAttributes do
+describe Types::Inputs::FixtureAttributes do
   subject { described_class }
 
   it { is_expected.to accept_argument(:home_team).of_type('String!') }

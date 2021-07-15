@@ -22,7 +22,7 @@
 
 require 'rails_helper'
 
-RSpec.describe TableRow, type: :model do
+describe TableRow, type: :model do
   let(:row) { create(:table_row) }
 
   it 'has a valid factory' do

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Types::Inputs::CompetitionAttributes do
+describe Types::Inputs::CompetitionAttributes do
   subject { described_class }
 
   it { is_expected.to accept_argument(:season).of_type('Int') }

@@ -22,7 +22,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Booking, type: :model do
+describe Booking, type: :model do
   let(:booking) { create(:booking) }
 
   it 'has a valid factory' do

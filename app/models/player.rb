@@ -179,8 +179,4 @@ class Player < ApplicationRecord
   def age
     currently_on.year - birth_year
   end
-
-  def pos_idx
-    POSITIONS.index pos
-  end
 end

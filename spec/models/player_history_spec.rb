@@ -20,7 +20,7 @@
 
 require 'rails_helper'
 
-RSpec.describe PlayerHistory, type: :model do
+describe PlayerHistory, type: :model do
   it 'has a valid factory' do
     expect(create(:player_history)).to be_valid
   end

@@ -26,7 +26,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Goal, type: :model do
+describe Goal, type: :model do
   let(:goal) { create(:goal) }
 
   it 'has a valid factory' do

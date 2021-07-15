@@ -20,7 +20,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Competition, type: :model do
+describe Competition, type: :model do
   let(:competition) { create(:competition) }
 
   it 'has a valid factory' do

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Types::Myfifa::PlayerType do
+describe Types::Myfifa::PlayerType do
   subject { described_class }
 
   it { is_expected.to have_field(:id).of_type('ID!') }
@@ -21,7 +21,6 @@ RSpec.describe Types::Myfifa::PlayerType do
   it { is_expected.to have_field(:kit_no).of_type('Int') }
 
   it { is_expected.to have_field(:age).of_type('Int!') }
-  it { is_expected.to have_field(:pos_idx).of_type('Int!') }
 
   it { is_expected.to have_field(:team).of_type('Team!') }
 

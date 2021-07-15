@@ -24,7 +24,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Substitution, type: :model do
+describe Substitution, type: :model do
   let(:match) { create :match }
   let(:cap) do
     player = create :player, team: match.team

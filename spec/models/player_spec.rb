@@ -26,7 +26,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Player, type: :model do
+describe Player, type: :model do
   let(:player) { create(:player) }
 
   it 'has a valid factory' do
@@ -65,6 +65,12 @@ RSpec.describe Player, type: :model do
     player.birth_year = nil
     player.age = player.team.currently_on.year - player.birth_year_was
     expect(player.birth_year).to be == player.birth_year_was
+  end
+
+  it 'sets age based on team date and birth year' do
+    expected_age = Faker::Number.within(range: 18..30)
+    player.birth_year = player.team.currently_on.year - expected_age
+    expect(player.age).to be == expected_age
   end
 
   describe 'when ovr is changed' do

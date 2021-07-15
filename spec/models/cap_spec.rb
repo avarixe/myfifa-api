@@ -25,7 +25,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Cap, type: :model do
+describe Cap, type: :model do
   let(:team) { create :team }
   let(:player) { create :player, team: team }
   let(:match) { create :match, team: team }

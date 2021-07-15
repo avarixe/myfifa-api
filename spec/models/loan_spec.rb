@@ -22,7 +22,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Loan, type: :model do
+describe Loan, type: :model do
   let(:player) { create(:player) }
 
   it 'has a valid factory' do

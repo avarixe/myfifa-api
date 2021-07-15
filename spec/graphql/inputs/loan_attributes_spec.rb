@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Types::Inputs::LoanAttributes do
+describe Types::Inputs::LoanAttributes do
   subject { described_class }
 
   it { is_expected.to accept_argument(:started_on).of_type('ISO8601Date!') }

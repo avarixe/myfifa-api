@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Types::Inputs::SquadAttributes do
+describe Types::Inputs::SquadAttributes do
   subject(:squad_attributes) { described_class }
 
   it { is_expected.to accept_argument(:name).of_type('String!') }

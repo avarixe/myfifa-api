@@ -53,7 +53,6 @@ class Substitution < ApplicationRecord
   end
 
   def update_subbed_cap
-    # byebug
     match
       .caps
       .find_by(player_id: player_id_before_last_save)

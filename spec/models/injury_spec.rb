@@ -19,7 +19,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Injury, type: :model do
+describe Injury, type: :model do
   let(:injury) { create :injury }
 
   it 'has a valid factory' do

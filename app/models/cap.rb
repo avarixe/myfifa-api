@@ -57,12 +57,6 @@ class Cap < ApplicationRecord
     RW
   ].freeze
 
-  scope :clean_sheets, lambda { |team|
-    joins(:match)
-      .where(matches: { away_score: 0, home: team.name })
-      .or(joins(:match).where(matches: { home_score: 0, away: team.name }))
-  }
-
   validates :start, inclusion: 0..120
   validates :stop,
             inclusion: 0..120,

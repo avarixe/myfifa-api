@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Mutations::AddMutations do
+describe Mutations::AddMutations do
   {
     # 'Team' => ['Player']
     'Team' => %w[Competition Match Player Squad],

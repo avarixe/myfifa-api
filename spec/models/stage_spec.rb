@@ -20,7 +20,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Stage, type: :model do
+describe Stage, type: :model do
   let(:stage) { create :stage }
 
   it 'has a valid factory' do

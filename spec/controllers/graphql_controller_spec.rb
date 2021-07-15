@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe GraphqlController, type: :request do
+describe GraphqlController, type: :request do
   let(:user) { create :user }
   let(:application) do
     Doorkeeper::Application.create! name: Faker::Company.name,

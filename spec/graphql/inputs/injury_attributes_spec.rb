@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Types::Inputs::InjuryAttributes do
+describe Types::Inputs::InjuryAttributes do
   subject { described_class }
 
   it { is_expected.to accept_argument(:started_on).of_type('ISO8601Date') }

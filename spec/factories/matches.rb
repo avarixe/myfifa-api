@@ -26,8 +26,8 @@
 
 FactoryBot.define do
   factory :match do
-    home { Faker::Team.unique.name }
-    away { Faker::Team.unique.name }
+    home { 'Home Team' }
+    away { 'Away Team' }
     competition { Faker::Lorem.word }
     played_on { Faker::Date.between(from: Time.zone.today, to: 60.days.from_now) }
     team

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Mutations::UpdateMutations do
+describe Mutations::UpdateMutations do
   %w[
     Booking
     Cap

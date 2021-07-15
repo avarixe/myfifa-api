@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Types::Inputs::ContractAttributes do
+describe Types::Inputs::ContractAttributes do
   subject { described_class }
 
   it { is_expected.to accept_argument(:wage).of_type('Int!') }

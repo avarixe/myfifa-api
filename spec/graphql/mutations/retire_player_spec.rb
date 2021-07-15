@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Mutations::RetirePlayer, type: :graphql do
+describe Mutations::RetirePlayer, type: :graphql do
   subject { described_class }
 
   let(:user) { create :user }

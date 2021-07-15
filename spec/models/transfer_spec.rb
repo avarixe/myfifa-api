@@ -23,7 +23,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Transfer, type: :model do
+describe Transfer, type: :model do
   let(:player) { create :player }
 
   it 'has a valid factory' do

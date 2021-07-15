@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Mutations::ReleasePlayer, type: :graphql do
+describe Mutations::ReleasePlayer, type: :graphql do
   subject { described_class }
 
   let(:user) { create :user }

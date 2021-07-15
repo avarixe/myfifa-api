@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Types::Myfifa::SubstitutionType do
+describe Types::Myfifa::SubstitutionType do
   subject { described_class }
 
   it { is_expected.to have_field(:id).of_type('ID!') }

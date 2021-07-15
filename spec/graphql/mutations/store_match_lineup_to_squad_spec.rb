@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Mutations::StoreMatchLineupToSquad do
+describe Mutations::StoreMatchLineupToSquad do
   subject { described_class }
 
   it { is_expected.to accept_argument(:match_id).of_type('ID!') }

@@ -26,7 +26,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Contract, type: :model do
+describe Contract, type: :model do
   let(:player) { create :player }
   let(:contract) { create :contract }
   let(:perf_bonus) { Faker::Number.between from: 10_000, to: 1_000_000 }
@@ -130,7 +130,9 @@ RSpec.describe Contract, type: :model do
   it 'sets Pending Player as Active once current date reaches effective date' do
     future_date = Faker::Date.between from: 1.day.from_now,
                                       to: 365.days.from_now
-    contract = create :contract, started_on: future_date
+    contract = create :contract,
+                      started_on: future_date,
+                      ended_on: future_date + 1.year
     contract.player.team.update(currently_on: future_date)
     expect(contract.player.reload.active?).to be == true
   end

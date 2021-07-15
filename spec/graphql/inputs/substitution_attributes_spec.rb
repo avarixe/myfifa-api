@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Types::Inputs::SubstitutionAttributes do
+describe Types::Inputs::SubstitutionAttributes do
   subject { described_class }
 
   it { is_expected.to accept_argument(:minute).of_type('Int!') }

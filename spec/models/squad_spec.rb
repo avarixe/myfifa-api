@@ -17,7 +17,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Squad, type: :model do
+describe Squad, type: :model do
   let(:squad) { create(:squad) }
 
   it 'has a valid factory' do

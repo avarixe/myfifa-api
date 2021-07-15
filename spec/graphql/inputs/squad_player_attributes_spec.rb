@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-RSpec.describe Types::Inputs::SquadPlayerAttributes do
+describe Types::Inputs::SquadPlayerAttributes do
   subject { described_class }
 
   it { is_expected.to accept_argument(:id).of_type('ID') }

@@ -72,15 +72,6 @@ class Team < ApplicationRecord
     started_on + (current_season + 1).years - 1.day
   end
 
-  def season_data(season)
-    season_start = started_on + season.years
-    {
-      label: "#{season_start.year} - #{season_start.year + 1}",
-      start: season_start,
-      end: season_start + 1.year - 1.day
-    }
-  end
-
   def opponents
     team.matches.pluck(:home, :away).flatten.uniq.sort
   end
