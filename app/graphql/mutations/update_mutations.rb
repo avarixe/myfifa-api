@@ -35,14 +35,12 @@ module Mutations
           current_ability = Ability.new(context[:current_user])
           record = model.constantize.find(id)
 
-          if current_ability.can? :update, record
-            if record.update(attributes.to_h)
-              { model.underscore.to_sym => record }
-            else
-              { errors: record.errors }
-            end
+          current_ability.authorize! :update, record
+
+          if record.update(attributes.to_h)
+            { model.underscore.to_sym => record }
           else
-            raise CanCan::AccessDenied(nil, :update, record)
+            { errors: record.errors }
           end
         end
       end

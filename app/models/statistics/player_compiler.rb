@@ -2,11 +2,11 @@
 
 module Statistics
   class PlayerCompiler
-    attr_accessor :team, :player_id, :competition, :season
+    attr_accessor :team, :player_ids, :competition, :season
 
-    def initialize(team:, player_id: nil, competition: nil, season: nil)
+    def initialize(team:, player_ids: nil, competition: nil, season: nil)
       @team = team
-      @player_id = player_id
+      @player_ids = player_ids
       @competition = competition
       @season = season
     end
@@ -30,7 +30,7 @@ module Statistics
 
       def base_player_query
         @base_player_query ||= @team.players.where({
-          id: player_id,
+          id: player_ids,
           matches: {
             competition: competition,
             season: season

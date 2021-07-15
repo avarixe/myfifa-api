@@ -56,7 +56,7 @@ describe Statistics::PlayerCompiler do
 
     it 'filters results by Player ID if provided' do
       players.each do |player|
-        compiler = described_class.new(team: team, player_id: player.id)
+        compiler = described_class.new(team: team, player_ids: [player.id])
         num_in_set = sample_set.count { |set| set[:player] == player }
         num_in_results = compiler.results.pluck(:num_matches).sum
         expect(num_in_results).to be == num_in_set

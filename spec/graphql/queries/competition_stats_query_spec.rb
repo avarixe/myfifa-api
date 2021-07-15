@@ -7,7 +7,7 @@ describe Types::QueryType, type: :graphql do
 
   it { is_expected.to accept_argument(:team_id).of_type('ID!') }
   it { is_expected.to accept_argument(:competition).of_type('String') }
-  it { is_expected.to accept_argument(:season).of_type('String') }
+  it { is_expected.to accept_argument(:season).of_type('Int') }
 
   describe 'query competitionStats' do
     let(:user) { create :user }

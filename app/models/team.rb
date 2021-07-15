@@ -68,8 +68,12 @@ class Team < ApplicationRecord
     ((currently_on - started_on) / 365).to_i
   end
 
-  def end_of_season
-    started_on + (current_season + 1).years - 1.day
+  def end_of_current_season
+    end_of_season(current_season)
+  end
+
+  def end_of_season(season)
+    started_on + (season + 1).years - 1.day
   end
 
   def opponents

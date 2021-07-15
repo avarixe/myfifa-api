@@ -181,7 +181,9 @@ describe Contract, type: :model do
 
   describe 'when terminated' do
     let(:contract) do
-      create :contract, player: player, ended_on: player.team.currently_on + 2.years
+      create :contract,
+             player: player,
+             ended_on: player.team.currently_on + 2.years
     end
 
     before do
@@ -199,7 +201,9 @@ describe Contract, type: :model do
 
   describe 'when retired' do
     let(:contract) do
-      create :contract, player: player, ended_on: player.team.currently_on + 2.years
+      create :contract,
+             player: player,
+             ended_on: player.team.currently_on + 2.years
     end
 
     before do
@@ -207,7 +211,8 @@ describe Contract, type: :model do
     end
 
     it 'sets expirate date to end of the season' do
-      expect(contract.ended_on).to be == player.team.end_of_season + 1.day
+      expect(contract.ended_on)
+        .to be == player.team.end_of_current_season + 1.day
     end
 
     it "sets conclusion as 'Retired'" do

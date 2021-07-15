@@ -100,11 +100,13 @@ class Contract < ApplicationRecord
   delegate :update_status, to: :player
 
   def terminate!
-    update(ended_on: currently_on, conclusion: 'Released')
+    update ended_on: currently_on,
+           conclusion: 'Released'
   end
 
   def retire!
-    update(ended_on: team.end_of_season + 1.day, conclusion: 'Retired')
+    update ended_on: team.end_of_current_season + 1.day,
+           conclusion: 'Retired'
   end
 
   def num_seasons=(val)

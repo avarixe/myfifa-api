@@ -24,14 +24,14 @@ module Types
     end
     field :player_stats, [Statistics::PlayerStatsType], null: false do
       argument :team_id, ID, required: true
-      argument :player_id, ID, required: false
+      argument :player_ids, [ID], required: false
       argument :competition, String, required: false
-      argument :season, String, required: false
+      argument :season, Int, required: false
     end
     field :competition_stats, [Statistics::CompetitionStatsType], null: false do
       argument :team_id, ID, required: true
       argument :competition, String, required: false
-      argument :season, String, required: false
+      argument :season, Int, required: false
     end
 
     def teams
@@ -54,11 +54,11 @@ module Types
       Competition.accessible_by(current_ability).find(id)
     end
 
-    def player_stats(team_id:, player_id: nil, competition: nil, season: nil)
+    def player_stats(team_id:, player_ids: [], competition: nil, season: nil)
       team = Team.accessible_by(current_ability).find(team_id)
       ::Statistics::PlayerCompiler.new(
         team: team,
-        player_id: player_id,
+        player_ids: player_ids,
         competition: competition,
         season: season
       ).results
