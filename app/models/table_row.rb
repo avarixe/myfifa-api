@@ -47,4 +47,10 @@ class TableRow < ApplicationRecord
   def points
     3 * wins + draws
   end
+
+  def as_json(options = {})
+    options[:methods] ||= []
+    options[:methods] += %i[goal_difference points]
+    super
+  end
 end

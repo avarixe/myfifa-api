@@ -127,4 +127,13 @@ class Match < ApplicationRecord
     score += " (#{penalty_shootout.away_score})" if penalty_shootout
     score
   end
+
+  def as_json(options = {})
+    options[:methods] ||= []
+    options[:methods] += %i[
+      score
+      team_result
+    ]
+    super
+  end
 end

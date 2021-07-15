@@ -179,4 +179,10 @@ class Player < ApplicationRecord
   def age
     currently_on.year - birth_year
   end
+
+  def as_json(options = {})
+    options[:methods] ||= []
+    options[:methods] += %i[age]
+    super
+  end
 end
