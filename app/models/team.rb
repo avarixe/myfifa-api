@@ -79,4 +79,29 @@ class Team < ApplicationRecord
   def opponents
     team.matches.pluck(:home, :away).flatten.uniq.sort
   end
+
+  def competition_stats(competition: nil, season: nil)
+    Statistics::CompetitionCompiler.new(
+      team: self,
+      competition: competition,
+      season: season
+    ).results
+  end
+
+  def player_stats(player_ids: [], competition: nil, season: nil)
+    Statistics::PlayerCompiler.new(
+      team: self,
+      player_ids: player_ids,
+      competition: competition,
+      season: season
+    ).results
+  end
+
+  def player_history_stats(player_ids: [], season: nil)
+    Statistics::PlayerHistoryCompiler.new(
+      team: self,
+      player_ids: player_ids,
+      season: season
+    ).results
+  end
 end

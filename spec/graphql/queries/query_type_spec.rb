@@ -10,7 +10,4 @@ describe Types::QueryType do
   it { is_expected.to have_field(:player).of_type('Player!') }
   it { is_expected.to have_field(:match).of_type('Match!') }
   it { is_expected.to have_field(:competition).of_type('Competition!') }
-
-  it { is_expected.to have_field(:competition_stats).of_type('[CompetitionStats!]!') }
-  it { is_expected.to have_field(:player_stats).of_type('[PlayerStats!]!') }
 end

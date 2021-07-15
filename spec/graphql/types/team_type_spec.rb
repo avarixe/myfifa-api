@@ -24,4 +24,29 @@ describe Types::Myfifa::TeamType do
   it { is_expected.to have_field(:matches).of_type('[Match!]!') }
   it { is_expected.to have_field(:competitions).of_type('[Competition!]!') }
   it { is_expected.to have_field(:squads).of_type('[Squad!]!') }
+
+  describe 'competitionStats field' do
+    subject(:field) { described_class.fields['competitionStats'] }
+
+    it { is_expected.to be_of_type('[CompetitionStats!]!') }
+    it { is_expected.to accept_argument(:competition).of_type('String') }
+    it { is_expected.to accept_argument(:season).of_type('Int') }
+  end
+
+  describe 'playerStats field' do
+    subject(:field) { described_class.fields['playerStats'] }
+
+    it { is_expected.to be_of_type('[PlayerStats!]!') }
+    it { is_expected.to accept_argument(:player_ids).of_type('[ID!]') }
+    it { is_expected.to accept_argument(:competition).of_type('String') }
+    it { is_expected.to accept_argument(:season).of_type('Int') }
+  end
+
+  describe 'playerHistoryStats field' do
+    subject(:field) { described_class.fields['playerHistoryStats'] }
+
+    it { is_expected.to be_of_type('[PlayerHistoryStats!]!') }
+    it { is_expected.to accept_argument(:player_ids).of_type('[ID!]') }
+    it { is_expected.to accept_argument(:season).of_type('Int') }
+  end
 end

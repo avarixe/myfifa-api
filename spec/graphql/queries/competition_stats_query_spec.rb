@@ -3,23 +3,17 @@
 require 'rails_helper'
 
 describe Types::QueryType, type: :graphql do
-  subject(:field) { described_class.fields['competitionStats'] }
+  let(:user) { create :user }
+  let(:team) { create :team, user: user }
 
-  it { is_expected.to accept_argument(:team_id).of_type('ID!') }
-  it { is_expected.to accept_argument(:competition).of_type('String') }
-  it { is_expected.to accept_argument(:season).of_type('Int') }
+  before do
+    create_list :match, 10, team: team
+  end
 
-  describe 'query competitionStats' do
-    let(:user) { create :user }
-    let(:team) { create :team, user: user }
-
-    before do
-      create_list :match, 10, team: team
-    end
-
-    graphql_operation <<-GQL
-      query fetchCompetitionStats($teamId: ID!) {
-        competitionStats(teamId: $teamId) {
+  graphql_operation <<-GQL
+    query fetchCompetitionStats($id: ID!) {
+      team(id: $id) {
+        competitionStats {
           competition
           season
           wins
@@ -29,22 +23,22 @@ describe Types::QueryType, type: :graphql do
           goalsAgainst
         }
       }
-    GQL
+    }
+  GQL
 
-    graphql_context do
-      { current_user: user }
-    end
+  graphql_context do
+    { current_user: user }
+  end
 
-    graphql_variables do
-      { teamId: team.id }
-    end
+  graphql_variables do
+    { id: team.id }
+  end
 
-    it 'returns compiled Competition data' do
-      compiled_stats = Statistics::CompetitionCompiler.new(team: team).results
-      response_data['competitionStats'].each do |stats|
-        stats = stats.transform_keys { |k| k.underscore.to_sym }
-        expect(compiled_stats).to include(stats)
-      end
+  it 'returns compiled Competition data' do
+    compiled_stats = Statistics::CompetitionCompiler.new(team: team).results
+    response_data['team']['competitionStats'].each do |stats|
+      stats = stats.transform_keys { |k| k.underscore.to_sym }
+      expect(compiled_stats).to include(stats)
     end
   end
 end

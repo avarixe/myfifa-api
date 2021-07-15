@@ -21,6 +21,24 @@ module Types
       field :matches, [MatchType], null: false
       field :competitions, [CompetitionType], null: false
       field :squads, [SquadType], null: false
+
+      field :competition_stats,
+            [Statistics::CompetitionStatsType],
+            null: false do
+        argument :competition, String, required: false
+        argument :season, Int, required: false
+      end
+      field :player_stats, [Statistics::PlayerStatsType], null: false do
+        argument :player_ids, [ID], required: false
+        argument :competition, String, required: false
+        argument :season, Int, required: false
+      end
+      field :player_history_stats,
+            [Statistics::PlayerHistoryStatsType],
+            null: false do
+        argument :player_ids, [ID], required: false
+        argument :season, Int, required: false
+      end
     end
   end
 end

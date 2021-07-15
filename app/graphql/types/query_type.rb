@@ -22,17 +22,6 @@ module Types
     field :competition, Myfifa::CompetitionType, null: false do
       argument :id, ID, required: true
     end
-    field :player_stats, [Statistics::PlayerStatsType], null: false do
-      argument :team_id, ID, required: true
-      argument :player_ids, [ID], required: false
-      argument :competition, String, required: false
-      argument :season, Int, required: false
-    end
-    field :competition_stats, [Statistics::CompetitionStatsType], null: false do
-      argument :team_id, ID, required: true
-      argument :competition, String, required: false
-      argument :season, Int, required: false
-    end
 
     def teams
       Team.accessible_by(current_ability).all
@@ -52,25 +41,6 @@ module Types
 
     def competition(id:)
       Competition.accessible_by(current_ability).find(id)
-    end
-
-    def player_stats(team_id:, player_ids: [], competition: nil, season: nil)
-      team = Team.accessible_by(current_ability).find(team_id)
-      ::Statistics::PlayerCompiler.new(
-        team: team,
-        player_ids: player_ids,
-        competition: competition,
-        season: season
-      ).results
-    end
-
-    def competition_stats(team_id:, competition: nil, season: nil)
-      team = Team.accessible_by(current_ability).find(team_id)
-      ::Statistics::CompetitionCompiler.new(
-        team: team,
-        competition: competition,
-        season: season
-      ).results
     end
 
     private
