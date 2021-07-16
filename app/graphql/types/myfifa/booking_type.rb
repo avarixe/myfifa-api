@@ -9,8 +9,7 @@ module Types
       field :player_id, ID, null: false
       field :red_card, Boolean, null: false
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
-      field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
-      field :player_name, String, null: false
+            field :player_name, String, null: false
       field :home, Boolean, null: false
 
       field :match, MatchType, null: false

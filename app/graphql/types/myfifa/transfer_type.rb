@@ -13,7 +13,6 @@ module Types
       field :traded_player, String, null: true
       field :addon_clause, Integer, null: true
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
-      field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
       field :player, PlayerType, null: false
     end

@@ -30,7 +30,7 @@ module Statistics
 
       def base_player_query
         @base_player_query ||= @team.players.where({
-          id: player_ids,
+          id: player_ids.presence,
           matches: {
             competition: competition,
             season: season

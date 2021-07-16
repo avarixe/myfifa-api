@@ -13,8 +13,7 @@ module Types
       field :own_goal, Boolean, null: false
       field :penalty, Boolean, null: false
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
-      field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
-      field :assisted_by, String, null: true
+            field :assisted_by, String, null: true
 
       field :player, PlayerType, null: true
       field :assisting_player, PlayerType, null: true

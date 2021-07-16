@@ -10,8 +10,7 @@ module Types
       field :replacement_id, ID, null: false
       field :injury, Boolean, null: false
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
-      field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
-      field :player_name, String, null: false
+            field :player_name, String, null: false
       field :replaced_by, String, null: false
 
       field :player, PlayerType, null: false

@@ -15,8 +15,7 @@ describe Types::Myfifa::PlayerType do
   it { is_expected.to have_field(:value).of_type('Int!') }
   it { is_expected.to have_field(:birth_year).of_type('Int!') }
   it { is_expected.to have_field(:created_at).of_type('ISO8601DateTime!') }
-  it { is_expected.to have_field(:updated_at).of_type('ISO8601DateTime!') }
-  it { is_expected.to have_field(:status).of_type('String') }
+    it { is_expected.to have_field(:status).of_type('String') }
   it { is_expected.to have_field(:youth).of_type('Boolean!') }
   it { is_expected.to have_field(:kit_no).of_type('Int') }
 

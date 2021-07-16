@@ -14,7 +14,6 @@ describe Types::Myfifa::TableRowType do
   it { is_expected.to have_field(:goals_for).of_type('Int') }
   it { is_expected.to have_field(:goals_against).of_type('Int') }
   it { is_expected.to have_field(:created_at).of_type('ISO8601DateTime!') }
-  it { is_expected.to have_field(:updated_at).of_type('ISO8601DateTime!') }
 
   it { is_expected.to have_field(:goal_difference).of_type('Int!') }
   it { is_expected.to have_field(:points).of_type('Int!') }

@@ -10,8 +10,7 @@ module Types
       field :currently_on, GraphQL::Types::ISO8601Date, null: false
       field :active, Boolean, null: false
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
-      field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
-      field :currency, String, null: false
+            field :currency, String, null: false
 
       field :time_period, String, null: false
       field :badge_path, String, null: true

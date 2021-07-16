@@ -15,8 +15,7 @@ describe Types::Myfifa::ContractType do
   it { is_expected.to have_field(:bonus_req).of_type('Int') }
   it { is_expected.to have_field(:bonus_req_type).of_type('String') }
   it { is_expected.to have_field(:created_at).of_type('ISO8601DateTime!') }
-  it { is_expected.to have_field(:updated_at).of_type('ISO8601DateTime!') }
-  it { is_expected.to have_field(:ended_on).of_type('ISO8601Date!') }
+    it { is_expected.to have_field(:ended_on).of_type('ISO8601Date!') }
   it { is_expected.to have_field(:started_on).of_type('ISO8601Date!') }
   it { is_expected.to have_field(:conclusion).of_type('String') }
 

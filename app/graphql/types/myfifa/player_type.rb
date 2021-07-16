@@ -13,8 +13,7 @@ module Types
       field :value, Integer, null: false
       field :birth_year, Integer, null: false
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
-      field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
-      field :status, String, null: true
+            field :status, String, null: true
       field :youth, Boolean, null: false
       field :kit_no, Integer, null: true
 

@@ -12,7 +12,6 @@ describe Types::Myfifa::StageType do
   it { is_expected.to have_field(:num_fixtures).of_type('Int') }
   it { is_expected.to have_field(:table).of_type('Boolean!') }
   it { is_expected.to have_field(:created_at).of_type('ISO8601DateTime!') }
-  it { is_expected.to have_field(:updated_at).of_type('ISO8601DateTime!') }
 
   it { is_expected.to have_field(:competition).of_type('Competition!') }
   it { is_expected.to have_field(:table_rows).of_type('[TableRow!]!') }

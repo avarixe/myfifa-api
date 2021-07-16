@@ -10,7 +10,6 @@ module Types
       field :num_fixtures, Integer, null: true
       field :table, Boolean, null: false
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
-      field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
       field :competition, CompetitionType, null: false
       field :table_rows, [TableRowType], null: false

@@ -15,7 +15,6 @@ describe Types::Myfifa::TransferType do
   it { is_expected.to have_field(:traded_player).of_type('String') }
   it { is_expected.to have_field(:addon_clause).of_type('Int') }
   it { is_expected.to have_field(:created_at).of_type('ISO8601DateTime!') }
-  it { is_expected.to have_field(:updated_at).of_type('ISO8601DateTime!') }
 
   it { is_expected.to have_field(:player).of_type('Player!') }
 end

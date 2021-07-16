@@ -8,7 +8,6 @@ module Types
       field :player_id, ID, null: false
       field :pos, String, null: false
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
-      field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
       field :squad, SquadType, null: false
       field :player, PlayerType, null: false

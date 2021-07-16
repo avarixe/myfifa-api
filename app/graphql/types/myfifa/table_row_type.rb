@@ -12,7 +12,6 @@ module Types
       field :goals_for, Integer, null: true
       field :goals_against, Integer, null: true
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
-      field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
 
       field :goal_difference, Integer, null: false
       field :points, Integer, null: false

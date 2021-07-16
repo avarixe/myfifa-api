@@ -10,8 +10,7 @@ module Types
       field :start, Integer, null: false
       field :stop, Integer, null: false
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
-      field :updated_at, GraphQL::Types::ISO8601DateTime, null: false
-      field :subbed_out, Boolean, null: false
+            field :subbed_out, Boolean, null: false
       field :rating, Integer, null: true
 
       field :match, MatchType, null: false
