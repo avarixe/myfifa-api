@@ -9,7 +9,7 @@ module Types
       field :ended_on, GraphQL::Types::ISO8601Date, null: true
       field :destination, String, null: false
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
-            field :origin, String, null: false
+      field :origin, String, null: false
       field :signed_on, GraphQL::Types::ISO8601Date, null: false
       field :wage_percentage, Integer, null: true
 

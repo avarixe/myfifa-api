@@ -88,14 +88,14 @@ describe Statistics::PlayerHistoryCompiler do
              ended_on: team.end_of_season(1)
       (0..2).each do |season|
         compiler = described_class.new(team: team, season: season)
-        results = compiler.results
         player_results = compiler.results.find do |result|
           result[:player_id] == player.id
         end
+        expectating = expect(player_results)
         if season < 2
-          expect(player_results).to be_present
+          expectating.to be_present
         else
-          expect(player_results).not_to be_present
+          expectating.not_to be_present
         end
       end
     end

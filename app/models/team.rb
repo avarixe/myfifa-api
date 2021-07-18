@@ -36,7 +36,7 @@ class Team < ApplicationRecord
   validates :currency, presence: true
 
   before_validation :set_started_on
-  after_save :update_player_statuses
+  after_save :update_player_statuses, if: :saved_change_to_currently_on?
 
   def set_started_on
     self.currently_on ||= started_on

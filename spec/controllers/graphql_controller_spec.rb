@@ -4,11 +4,11 @@ require 'rails_helper'
 
 describe GraphqlController, type: :request do
   let(:user) { create :user }
-  let(:application) do
-    Doorkeeper::Application.create! name: Faker::Company.name,
-                                    redirect_uri: "https://#{Faker::Internet.domain_name}"
-  end
   let(:token) do
+    application = Doorkeeper::Application.create(
+      name: Faker::Company.name,
+      redirect_uri: "https://#{Faker::Internet.domain_name}"
+    )
     Doorkeeper::AccessToken.create! application: application,
                                     resource_owner_id: user.id
   end

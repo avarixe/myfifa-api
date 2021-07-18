@@ -13,7 +13,7 @@ module Types
       field :bonus_req, Integer, null: true
       field :bonus_req_type, String, null: true
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
-            field :ended_on, GraphQL::Types::ISO8601Date, null: false
+      field :ended_on, GraphQL::Types::ISO8601Date, null: false
       field :started_on, GraphQL::Types::ISO8601Date, null: false
       field :conclusion, String, null: true
 

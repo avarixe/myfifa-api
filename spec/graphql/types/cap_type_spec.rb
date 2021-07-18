@@ -12,7 +12,7 @@ describe Types::Myfifa::CapType do
   it { is_expected.to have_field(:start).of_type('Int!') }
   it { is_expected.to have_field(:stop).of_type('Int!') }
   it { is_expected.to have_field(:created_at).of_type('ISO8601DateTime!') }
-    it { is_expected.to have_field(:subbed_out).of_type('Boolean!') }
+  it { is_expected.to have_field(:subbed_out).of_type('Boolean!') }
   it { is_expected.to have_field(:rating).of_type('Int') }
 
   it { is_expected.to have_field(:match).of_type('Match!') }

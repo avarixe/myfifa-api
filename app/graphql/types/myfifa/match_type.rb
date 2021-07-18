@@ -11,7 +11,7 @@ module Types
       field :season, Integer, null: false
       field :played_on, GraphQL::Types::ISO8601Date, null: false
       field :created_at, GraphQL::Types::ISO8601DateTime, null: false
-            field :extra_time, Boolean, null: false
+      field :extra_time, Boolean, null: false
       field :home_score, Integer, null: false
       field :away_score, Integer, null: false
       field :stage, String, null: true

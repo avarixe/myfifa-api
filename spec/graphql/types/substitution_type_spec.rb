@@ -12,7 +12,7 @@ describe Types::Myfifa::SubstitutionType do
   it { is_expected.to have_field(:replacement_id).of_type('ID!') }
   it { is_expected.to have_field(:injury).of_type('Boolean!') }
   it { is_expected.to have_field(:created_at).of_type('ISO8601DateTime!') }
-    it { is_expected.to have_field(:player_name).of_type('String!') }
+  it { is_expected.to have_field(:player_name).of_type('String!') }
   it { is_expected.to have_field(:replaced_by).of_type('String!') }
 
   it { is_expected.to have_field(:player).of_type('Player!') }

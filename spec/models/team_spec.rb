@@ -41,8 +41,8 @@ describe Team, type: :model do
   end
 
   it '#badge_path returns the path for the attached badge' do
-    team.badge.attach io: File.open(Rails.root.join('public/robots.txt')),
-                      filename: 'test.txt'
+    team.badge.attach io: File.open(Rails.root.join('spec/support/test-badge.png')),
+                      filename: 'badge.png'
     expect(team.badge_path).to be_present
   end
 

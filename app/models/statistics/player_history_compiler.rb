@@ -72,7 +72,7 @@ module Statistics
 
       def season_query
         data = base_query
-               .where(recorded_on: ..team.end_of_season(season))
+               .where(recorded_on: nil..team.end_of_season(season))
                .order(recorded_on: :desc)
                .pluck(:player_id, :recorded_on, :ovr, :value)
         data.group_by(&:first).map do |_player_id, player_records|
