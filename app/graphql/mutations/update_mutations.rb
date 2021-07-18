@@ -37,7 +37,7 @@ module Mutations
 
           current_ability.authorize! :update, record
 
-          if record.update(attributes.to_h)
+          if record.skip_preload.update(attributes.to_h)
             { model.underscore.to_sym => record }
           else
             { errors: record.errors }
