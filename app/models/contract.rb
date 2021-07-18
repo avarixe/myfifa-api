@@ -44,27 +44,6 @@ class Contract < ApplicationRecord
     Retired
   ].freeze
 
-  PERMITTED_ATTRIBUTES = %i[
-    wage
-    signing_bonus
-    release_clause
-    performance_bonus
-    bonus_req
-    bonus_req_type
-    ended_on
-    started_on
-    num_seasons
-  ].freeze
-
-  def self.permitted_attributes
-    PERMITTED_ATTRIBUTES
-  end
-
-  scope :active, lambda { |date|
-    where(arel_table[:started_on].lteq(date))
-      .where(arel_table[:ended_on].gt(date))
-  }
-
   ################
   #  VALIDATION  #
   ################
@@ -107,7 +86,7 @@ class Contract < ApplicationRecord
   def close_previous_contract
     Contract
       .where(player_id: player_id)
-      .where(Contract.arel_table[:ended_on].gt(started_on))
+      .where('ended_on > ?', started_on)
       .where.not(id: id)
       .find_each do |contract|
         contract.update!(ended_on: started_on, conclusion: 'Renewed')
@@ -121,11 +100,13 @@ class Contract < ApplicationRecord
   delegate :update_status, to: :player
 
   def terminate!
-    update(ended_on: currently_on, conclusion: 'Released')
+    update ended_on: currently_on,
+           conclusion: 'Released'
   end
 
   def retire!
-    update(ended_on: team.end_of_season + 1.day, conclusion: 'Retired')
+    update ended_on: team.end_of_current_season + 1.day,
+           conclusion: 'Retired'
   end
 
   def num_seasons=(val)
@@ -144,7 +125,7 @@ class Contract < ApplicationRecord
   #  ACCESSORS  #
   ###############
 
-  delegate :team, :currently_on, :youth?, :loaned?, to: :player
+  delegate :team, :currently_on, to: :player
 
   def current?
     pending? || active?
