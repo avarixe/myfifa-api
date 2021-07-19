@@ -18,10 +18,12 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  player_id         :bigint
+#  previous_id       :bigint
 #
 # Indexes
 #
-#  index_contracts_on_player_id  (player_id)
+#  index_contracts_on_player_id    (player_id)
+#  index_contracts_on_previous_id  (previous_id)
 #
 
 require 'rails_helper'
@@ -237,6 +239,10 @@ describe Contract, type: :model do
 
     it "sets previous conclusion as 'Renewed'" do
       expect(contract.reload.conclusion).to be == 'Renewed'
+    end
+
+    it 'connects to the previous Contract' do
+      expect(contract.renewal).to be == contract.player.current_contract
     end
   end
 end

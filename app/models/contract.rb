@@ -28,6 +28,15 @@ class Contract < ApplicationRecord
   include Broadcastable
 
   belongs_to :player
+  belongs_to :previous,
+             class_name: 'Contract',
+             inverse_of: :renewal,
+             optional: true
+  has_one :renewal,
+          class_name: 'Contract',
+          foreign_key: :previous_id,
+          inverse_of: :previous,
+          dependent: :nullify
 
   BONUS_REQUIREMENT_TYPES = [
     'Appearances',
@@ -89,7 +98,8 @@ class Contract < ApplicationRecord
       .where('ended_on > ?', started_on)
       .where.not(id: id)
       .find_each do |contract|
-        contract.update!(ended_on: started_on, conclusion: 'Renewed')
+        contract.update! ended_on: started_on, conclusion: 'Renewed'
+        update! previous_id: contract.id
       end
   end
 
