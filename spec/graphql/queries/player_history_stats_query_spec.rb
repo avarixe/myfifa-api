@@ -10,6 +10,7 @@ describe Types::QueryType, type: :graphql do
     query fetchPlayerHistoryStats($id: ID!) {
       team(id: $id) {
         playerHistoryStats {
+          season
           playerId
           ovr
           value

@@ -51,25 +51,13 @@ describe Statistics::PlayerHistoryCompiler do
       end
     end
 
-    it 'provides Player ovr/value changes' do
-      compiler = described_class.new(team: team)
-      results = compiler.results
-      sample_set.each do |set|
-        expected_data = {
-          player_id: set[:player].id,
-          ovr: [set[:ovr][0], set[:ovr][-1]],
-          value: [set[:value][0], set[:value][-1]]
-        }
-        expect(results).to include(expected_data)
-      end
-    end
-
     it 'only provides Player ovr/value changes for Season if provided' do
       (0..2).each do |season|
         compiler = described_class.new(team: team, season: season)
         results = compiler.results
         sample_set.each do |set|
           expected_data = {
+            season: season,
             player_id: set[:player].id,
             ovr: [set[:ovr][season], set[:ovr][season + 1]],
             value: [set[:value][season], set[:value][season + 1]]
@@ -91,12 +79,22 @@ describe Statistics::PlayerHistoryCompiler do
         player_results = compiler.results.find do |result|
           result[:player_id] == player.id
         end
-        expectating = expect(player_results)
+        expecting = expect(player_results)
         if season < 2
-          expectating.to be_present
+          expecting.to be_present
         else
-          expectating.not_to be_present
+          expecting.not_to be_present
         end
+      end
+    end
+
+    it 'provides Player ovr/value changes for all Seasons if provided' do
+      compiler = described_class.new(team: team)
+      (0..2).each do |season|
+        results_include_season = compiler.results.any? do |result|
+          result[:season] == season
+        end
+        expect(results_include_season).to be true
       end
     end
   end

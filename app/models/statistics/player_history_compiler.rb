@@ -11,68 +11,35 @@ module Statistics
     end
 
     def results
-      season.present? ? season_query : total_query
+      @results ||= season.present? ? season_query : total_query
     end
 
     private
 
-      def base_query
-        PlayerHistory.unscope(:order).where(
+      def player_history_query
+        PlayerHistory.where(
           player_id:
             if player_ids.present?
               team.players.where(id: player_ids)
-            elsif season.present?
-              season_players
             else
-              team.players
+              season_players
             end.select(:id)
         )
       end
 
       def total_query
-        query = <<~SQL.squish
-          DISTINCT ON (player_id)
-          player_id,
-          FIRST_VALUE(ovr)
-            OVER (
-              PARTITION BY player_id
-              ORDER BY recorded_on
-            ) first_ovr,
-          LAST_VALUE(ovr)
-            OVER (
-              PARTITION BY player_id
-              ORDER BY recorded_on
-              RANGE BETWEEN
-                UNBOUNDED PRECEDING AND
-                UNBOUNDED FOLLOWING
-            ) last_ovr,
-          FIRST_VALUE(value)
-            OVER (
-              PARTITION BY player_id
-              ORDER BY recorded_on
-            ) first_value,
-          LAST_VALUE(value)
-            OVER (
-              PARTITION BY player_id
-              ORDER BY recorded_on
-              RANGE BETWEEN
-                UNBOUNDED PRECEDING AND
-                UNBOUNDED FOLLOWING
-            ) last_value
-        SQL
-
-        base_query.pluck(Arel.sql(query)).map do |data|
-          {
-            player_id: data[0],
-            ovr: [data[1], data[2]],
-            value: [data[3], data[4]]
-          }
+        [].tap do |total_data|
+          (0..team.current_season).map do |season|
+            @season = season
+            total_data.concat season_query
+          end
         end
       end
 
       def season_query
-        data = base_query
+        data = player_history_query
                .where(recorded_on: nil..team.end_of_season(season))
+               .unscope(:order)
                .order(recorded_on: :desc)
                .pluck(:player_id, :recorded_on, :ovr, :value)
         data.group_by(&:first).map do |_player_id, player_records|
@@ -85,6 +52,7 @@ module Statistics
                       records.last
         last_value = records.first
         {
+          season: season,
           player_id: records.first[0],
           ovr: [first_value[2], last_value[2]],
           value: [first_value[3], last_value[3]]
@@ -100,7 +68,7 @@ module Statistics
       end
 
       def season_start
-        @season_start ||= team.started_on + season.years
+        team.started_on + season.years
       end
   end
 end
