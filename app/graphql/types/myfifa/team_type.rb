@@ -27,13 +27,15 @@ module Types
         argument :competition, String, required: false
         argument :season, Int, required: false
       end
-      field :player_stats, [Statistics::PlayerStatsType], null: false do
+      field :player_performance_stats,
+            [Statistics::PlayerPerformanceStatsType],
+            null: false do
         argument :player_ids, [ID], required: false
         argument :competition, String, required: false
         argument :season, Int, required: false
       end
-      field :player_history_stats,
-            [Statistics::PlayerHistoryStatsType],
+      field :player_development_stats,
+            [Statistics::PlayerDevelopmentStatsType],
             null: false do
         argument :player_ids, [ID], required: false
         argument :season, Int, required: false

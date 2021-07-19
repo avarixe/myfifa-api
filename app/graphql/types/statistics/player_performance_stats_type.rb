@@ -2,7 +2,7 @@
 
 module Types
   module Statistics
-    class PlayerStatsType < BaseObject
+    class PlayerPerformanceStatsType < BaseObject
       field :player_id, ID, null: false
       field :season, Integer, null: false
       field :competition, String, null: false

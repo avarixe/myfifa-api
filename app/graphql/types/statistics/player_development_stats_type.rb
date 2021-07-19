@@ -2,7 +2,7 @@
 
 module Types
   module Statistics
-    class PlayerHistoryStatsType < BaseObject
+    class PlayerDevelopmentStatsType < BaseObject
       field :season, Int, null: false
       field :player_id, ID, null: false
       field :ovr, [Int], null: false

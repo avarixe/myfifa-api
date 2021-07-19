@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Types::Statistics::PlayerStatsType do
+describe Types::Statistics::PlayerPerformanceStatsType do
   subject { described_class }
 
   it { is_expected.to have_field(:player_id).of_type('ID!') }

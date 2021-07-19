@@ -7,9 +7,9 @@ describe Types::QueryType, type: :graphql do
   let(:team) { create :team, user: user }
 
   graphql_operation <<-GQL
-    query fetchPlayerHistoryStats($id: ID!) {
+    query fetchPlayerDevelopmentStats($id: ID!) {
       team(id: $id) {
-        playerHistoryStats {
+        playerDevelopmentStats {
           season
           playerId
           ovr
@@ -39,8 +39,8 @@ describe Types::QueryType, type: :graphql do
   end
 
   it 'returns compiled Player data' do
-    compiled_stats = Statistics::PlayerHistoryCompiler.new(team: team).results
-    response_data['team']['playerHistoryStats'].each do |stats|
+    compiled_stats = Statistics::PlayerDevelopmentCompiler.new(team: team).results
+    response_data['team']['playerDevelopmentStats'].each do |stats|
       stats = stats.transform_keys { |k| k.underscore.to_sym }
       stats[:player_id] = stats[:player_id].to_i
       expect(compiled_stats).to include(stats)

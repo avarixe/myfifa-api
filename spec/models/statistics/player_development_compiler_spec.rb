@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Statistics::PlayerHistoryCompiler do
+describe Statistics::PlayerDevelopmentCompiler do
   let(:team) { create :team }
 
   it 'requires a team' do

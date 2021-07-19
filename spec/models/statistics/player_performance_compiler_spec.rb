@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Statistics::PlayerCompiler do
+describe Statistics::PlayerPerformanceCompiler do
   let(:team) { create :team }
   let(:players) { create_list :player, 3, team: team }
   let(:compiler) { described_class.new(team: team) }

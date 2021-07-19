@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Statistics
-  class PlayerCompiler
+  class PlayerPerformanceCompiler
     attr_accessor :team, :player_ids, :competition, :season
 
     def initialize(team:, player_ids: nil, competition: nil, season: nil)

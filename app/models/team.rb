@@ -88,8 +88,8 @@ class Team < ApplicationRecord
     ).results
   end
 
-  def player_stats(player_ids: [], competition: nil, season: nil)
-    Statistics::PlayerCompiler.new(
+  def player_performance_stats(player_ids: [], competition: nil, season: nil)
+    Statistics::PlayerPerformanceCompiler.new(
       team: self,
       player_ids: player_ids,
       competition: competition,
@@ -97,8 +97,8 @@ class Team < ApplicationRecord
     ).results
   end
 
-  def player_history_stats(player_ids: [], season: nil)
-    Statistics::PlayerHistoryCompiler.new(
+  def player_development_stats(player_ids: [], season: nil)
+    Statistics::PlayerDevelopmentCompiler.new(
       team: self,
       player_ids: player_ids,
       season: season

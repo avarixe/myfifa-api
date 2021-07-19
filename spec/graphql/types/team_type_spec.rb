@@ -32,19 +32,19 @@ describe Types::Myfifa::TeamType do
     it { is_expected.to accept_argument(:season).of_type('Int') }
   end
 
-  describe 'playerStats field' do
-    subject(:field) { described_class.fields['playerStats'] }
+  describe 'playerPerformanceStats field' do
+    subject(:field) { described_class.fields['playerPerformanceStats'] }
 
-    it { is_expected.to be_of_type('[PlayerStats!]!') }
+    it { is_expected.to be_of_type('[PlayerPerformanceStats!]!') }
     it { is_expected.to accept_argument(:player_ids).of_type('[ID!]') }
     it { is_expected.to accept_argument(:competition).of_type('String') }
     it { is_expected.to accept_argument(:season).of_type('Int') }
   end
 
-  describe 'playerHistoryStats field' do
-    subject(:field) { described_class.fields['playerHistoryStats'] }
+  describe 'playerDevelopmentStats field' do
+    subject(:field) { described_class.fields['playerDevelopmentStats'] }
 
-    it { is_expected.to be_of_type('[PlayerHistoryStats!]!') }
+    it { is_expected.to be_of_type('[PlayerDevelopmentStats!]!') }
     it { is_expected.to accept_argument(:player_ids).of_type('[ID!]') }
     it { is_expected.to accept_argument(:season).of_type('Int') }
   end

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Types::Statistics::PlayerHistoryStatsType do
+describe Types::Statistics::PlayerDevelopmentStatsType do
   subject { described_class }
 
   it { is_expected.to have_field(:season).of_type('Int!') }
