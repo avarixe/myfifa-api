@@ -38,7 +38,7 @@ module Statistics
 
       def season_query
         data = player_history_query
-               .where(recorded_on: nil..team.end_of_season(season))
+               .where(recorded_on: nil..season_end)
                .unscope(:order)
                .order(recorded_on: :desc)
                .pluck(:player_id, :recorded_on, :ovr, :value)
@@ -63,12 +63,16 @@ module Statistics
         team
           .players
           .joins(:contracts)
-          .where('contracts.started_on <= ?', team.end_of_season(season))
+          .where('contracts.started_on <= ?', season_end)
           .where('contracts.ended_on > ?', season_start)
       end
 
       def season_start
         team.started_on + season.years
+      end
+
+      def season_end
+        team.end_of_season(season)
       end
   end
 end

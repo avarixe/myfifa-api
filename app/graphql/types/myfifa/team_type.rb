@@ -40,6 +40,11 @@ module Types
         argument :player_ids, [ID], required: false
         argument :season, Int, required: false
       end
+      field :transfer_activity,
+            Statistics::TransferActivityType,
+            null: false do
+        argument :season, Int, required: false
+      end
     end
   end
 end

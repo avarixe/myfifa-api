@@ -12,7 +12,7 @@ describe Statistics::PlayerDevelopmentCompiler do
   describe 'result' do
     let(:sample_set) do
       (0...Faker::Number.within(range: 5..10)).map do
-        player = create :player, team: team
+        player = create :player, team: team, contracts_count: 0
         create :contract,
                player: player,
                started_on: team.started_on,

@@ -104,4 +104,8 @@ class Team < ApplicationRecord
       season: season
     ).results
   end
+
+  def transfer_activity(season: nil)
+    Statistics::TransferActivityCompiler.new(team: self, season: season).results
+  end
 end

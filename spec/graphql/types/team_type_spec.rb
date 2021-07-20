@@ -48,4 +48,11 @@ describe Types::Myfifa::TeamType do
     it { is_expected.to accept_argument(:player_ids).of_type('[ID!]') }
     it { is_expected.to accept_argument(:season).of_type('Int') }
   end
+
+  describe 'transferActivity field' do
+    subject(:field) { described_class.fields['transferActivity'] }
+
+    it { is_expected.to be_of_type('TransferActivity!') }
+    it { is_expected.to accept_argument(:season).of_type('Int') }
+  end
 end

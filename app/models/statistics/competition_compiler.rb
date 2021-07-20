@@ -35,7 +35,7 @@ module Statistics
     private
 
       def matches_by_competition_and_season
-        @team.matches.where({
+        team.matches.where({
           competition: competition,
           season: season
         }.compact).group_by { |match| [match.competition, match.season] }
