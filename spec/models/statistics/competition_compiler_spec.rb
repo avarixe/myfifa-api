@@ -3,8 +3,7 @@
 require 'rails_helper'
 
 describe Statistics::CompetitionCompiler do
-  let(:team) { create :team }
-  let(:compiler) { described_class.new(team: team) }
+  let(:compiler) { described_class.new(team: Team.last) }
   let(:results) { compiler.results }
 
   it 'requires a team' do
@@ -13,20 +12,18 @@ describe Statistics::CompetitionCompiler do
 
   describe 'result' do
     sample_competitions = %w[A B C].freeze
-
-    let(:sample_set) do
-      (0...Faker::Number.within(range: 5..10)).map do
-        {
-          home: Faker::Boolean.boolean,
-          home_score: Faker::Number.within(range: 0..3),
-          away_score: Faker::Number.within(range: 0..3),
-          season: Faker::Number.within(range: 0..3),
-          competition: sample_competitions.sample
-        }
-      end
+    sample_set = (0...Faker::Number.within(range: 5..10)).map do
+      {
+        home: Faker::Boolean.boolean,
+        home_score: Faker::Number.within(range: 0..3),
+        away_score: Faker::Number.within(range: 0..3),
+        season: Faker::Number.within(range: 0..3),
+        competition: sample_competitions.sample
+      }
     end
 
-    before do
+    before :all do
+      team = create :team
       sample_set.each do |set|
         create :match,
                team: team,
@@ -39,7 +36,12 @@ describe Statistics::CompetitionCompiler do
       end
     end
 
+    after :all do
+      User.last.destroy
+    end
+
     it 'filters results by Competition if provided' do
+      team = Team.last
       sample_competitions.each do |competition|
         compiler = described_class.new(team: team, competition: competition)
         num_in_set = sample_set.count { |set| set[:competition] == competition }
@@ -49,6 +51,7 @@ describe Statistics::CompetitionCompiler do
     end
 
     it 'filters results by Season if provided' do
+      team = Team.last
       (0..3).each do |season|
         compiler = described_class.new(team: team, season: season)
         num_in_set = sample_set.count { |set| set[:season] == season }

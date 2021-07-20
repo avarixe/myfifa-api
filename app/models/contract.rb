@@ -18,10 +18,12 @@
 #  created_at        :datetime         not null
 #  updated_at        :datetime         not null
 #  player_id         :bigint
+#  previous_id       :bigint
 #
 # Indexes
 #
-#  index_contracts_on_player_id  (player_id)
+#  index_contracts_on_player_id    (player_id)
+#  index_contracts_on_previous_id  (previous_id)
 #
 
 class Contract < ApplicationRecord

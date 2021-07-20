@@ -31,13 +31,12 @@ describe Types::QueryType, type: :graphql do
     players = create_list :player, 3, team: team
     create :transfer, player: players[0], origin: team.name
     create :loan, player: players[1]
+    players[2].current_contract.terminate!
   end
 
   it 'returns compiled Transfer Activity data' do
-    response_data['team']['transferActivity'].each do |key, data|
-      %i[arrivals departures transfers loans].each do |key|
-        expect(data).to be_present
-      end
+    %w[arrivals departures transfers loans].each do |key|
+      expect(response_data['team']['transferActivity'][key]).to be_present
     end
   end
 end

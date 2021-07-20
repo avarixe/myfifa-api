@@ -3,36 +3,33 @@
 require 'rails_helper'
 
 describe Statistics::PlayerDevelopmentCompiler do
-  let(:team) { create :team }
+  let(:team) { Team.last }
 
   it 'requires a team' do
     expect { described_class.new }.to raise_error(ArgumentError)
   end
 
   describe 'result' do
-    let(:sample_set) do
-      (0...Faker::Number.within(range: 5..10)).map do
-        player = create :player, team: team, contracts_count: 0
-        create :contract,
-               player: player,
-               started_on: team.started_on,
-               ended_on: team.end_of_season(5)
-        {
-          player: player,
-          ovr: [
-            player.ovr,
-            *(0..2).map { Faker::Number.within(range: 50..90) }
-          ],
-          value: [
-            player.value,
-            *(0..2).map { Faker::Number.within(range: 50_000..9_000_000) }
-          ]
-        }
-      end
+    sample_set = (0...Faker::Number.within(range: 5..10)).map do
+      {
+        ovr: (0..3).map { Faker::Number.within(range: 50..90) },
+        value: (0..3).map { Faker::Number.within(range: 50_000..9_000_000) }
+      }
     end
 
-    before do
+    before :all do
+      team = create :team
       sample_set.each do |set|
+        team.update currently_on: team.started_on
+        player = create :player,
+                        team: team,
+                        ovr: set[:ovr][0],
+                        value: set[:value][0],
+                        contracts_count: 0
+        create :contract,
+               player: player,
+               ended_on: team.end_of_season(5)
+        set[:player] = player
         3.times do |i|
           team.update currently_on: team.started_on +
                                     i.years +
@@ -40,6 +37,10 @@ describe Statistics::PlayerDevelopmentCompiler do
           set[:player].update ovr: set[:ovr][i + 1], value: set[:value][i + 1]
         end
       end
+    end
+
+    after :all do
+      User.last.destroy
     end
 
     it 'filters results by Player ID if provided' do

@@ -4,6 +4,8 @@ Layout/LineLength:
   Max: 100
 Metrics/BlockLength:
   Enabled: false
+RSpec/BeforeAfterAll:
+  Enabled: false
 RSpec/ExampleLength:
   Enabled: false
 Style/BlockComments:

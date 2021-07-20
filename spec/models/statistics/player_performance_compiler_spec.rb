@@ -3,8 +3,7 @@
 require 'rails_helper'
 
 describe Statistics::PlayerPerformanceCompiler do
-  let(:team) { create :team }
-  let(:players) { create_list :player, 3, team: team }
+  let(:team) { Team.last }
   let(:compiler) { described_class.new(team: team) }
   let(:results) { compiler.results }
 
@@ -14,24 +13,24 @@ describe Statistics::PlayerPerformanceCompiler do
 
   describe 'result' do
     sample_competitions = %w[A B C].freeze
-
-    let(:sample_set) do
-      (0...Faker::Number.within(range: 5..10)).map do
-        {
-          player: players.sample,
-          season: Faker::Number.within(range: 0..3),
-          competition: sample_competitions.sample,
-          num_minutes: Faker::Number.within(range: 60..90),
-          num_goals: Faker::Number.within(range: 0..3),
-          num_assists: Faker::Number.within(range: 0..3),
-          clean_sheet: Faker::Boolean.boolean,
-          home: Faker::Boolean.boolean,
-        }
-      end
+    sample_set = (0...Faker::Number.within(range: 5..10)).map do
+      {
+        player: Faker::Number.within(range: 0..2),
+        season: Faker::Number.within(range: 0..3),
+        competition: sample_competitions.sample,
+        num_minutes: Faker::Number.within(range: 60..90),
+        num_goals: Faker::Number.within(range: 0..3),
+        num_assists: Faker::Number.within(range: 0..3),
+        clean_sheet: Faker::Boolean.boolean,
+        home: Faker::Boolean.boolean,
+      }
     end
 
-    before do
+    before :all do
+      team = create :team
+      players = create_list :player, 3, team: team
       sample_set.each do |set|
+        set[:player] = players[set[:player]]
         match = create :match,
                        team: team,
                        home: set[:home] ? team.name : 'Home Team',
@@ -54,8 +53,12 @@ describe Statistics::PlayerPerformanceCompiler do
       end
     end
 
+    after :all do
+      User.last.destroy
+    end
+
     it 'filters results by Player ID if provided' do
-      players.each do |player|
+      team.players.each do |player|
         compiler = described_class.new(team: team, player_ids: [player.id])
         num_in_set = sample_set.count { |set| set[:player] == player }
         num_in_results = compiler.results.pluck(:num_matches).sum
@@ -82,7 +85,7 @@ describe Statistics::PlayerPerformanceCompiler do
     end
 
     it 'reports num matches per player/season/competition set' do
-      players.each do |player|
+      team.players.each do |player|
         sample_competitions.each do |competition|
           (0..3).each do |season|
             num_in_set = sample_set.count do |set|
@@ -103,7 +106,7 @@ describe Statistics::PlayerPerformanceCompiler do
 
     %w[num_minutes num_goals num_assists].each do |metric|
       it "reports #{metric} per player/season/competition set" do
-        players.each do |player|
+        team.players.each do |player|
           sample_competitions.each do |competition|
             (0..3).each do |season|
               num_in_set = sample_set.sum do |set|
@@ -128,7 +131,7 @@ describe Statistics::PlayerPerformanceCompiler do
     end
 
     it 'reports num clean sheets per player/season/competition set' do
-      players.each do |player|
+      team.players.each do |player|
         sample_competitions.each do |competition|
           (0..3).each do |season|
             num_in_set = sample_set.count do |set|

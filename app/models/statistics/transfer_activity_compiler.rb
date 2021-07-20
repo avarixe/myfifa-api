@@ -34,9 +34,11 @@ module Statistics
       end
 
       def departures
-        contracts = base_query(Contract).where.not(conclusion: [nil, 'Renewed'])
+        contracts = base_query(Contract).where.not(
+          conclusion: [nil, 'Renewed', 'Transferred']
+        )
         if season
-          contracts.where(ended_on: season_start..season_end)
+          contracts.where ended_on: (season_start + 1.day)..(season_end + 1.day)
         else
           contracts
         end

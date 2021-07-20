@@ -3,28 +3,23 @@
 require 'rails_helper'
 
 describe Statistics::TransferActivityCompiler do
-  let(:team) { create :team }
-
   it 'requires a team' do
     expect { described_class.new }.to raise_error(ArgumentError)
   end
 
   describe 'result' do
-    sample_competitions = %w[A B C].freeze
-
-    let(:sample_set) do
-      (1..3).map do |season|
-        {
-          season: season,
-          arrivals: Faker::Number.within(range: 0..3),
-          departures: Faker::Number.within(range: 0..3),
-          transfers: Faker::Number.within(range: 0..3),
-          loans: Faker::Number.within(range: 0..3)
-        }
-      end
+    sample_set = (1..3).map do |season|
+      {
+        season: season,
+        arrivals: Faker::Number.within(range: 0..3),
+        departures: Faker::Number.within(range: 0..3),
+        transfers: Faker::Number.within(range: 0..3),
+        loans: Faker::Number.within(range: 0..3)
+      }
     end
 
-    before do
+    before :all do
+      team = create :team
       sample_set.each do |set|
         set[:arrivals].times do
           player = create :player, team: team, contracts_count: 0
@@ -37,7 +32,7 @@ describe Statistics::TransferActivityCompiler do
           player = create :player, team: team, contracts_count: 0
           create :contract,
                  player: player,
-                 ended_on: team.currently_on + set[:season].years
+                 ended_on: team.end_of_season(set[:season])
         end
         set[:transfers].times do
           player = create :player, team: team, contracts_count: 0
@@ -64,9 +59,13 @@ describe Statistics::TransferActivityCompiler do
       team.increment_date 5.years
     end
 
+    after :all do
+      User.last.destroy
+    end
+
     (1..3).each do |season|
       describe "if Season #{season} provided" do
-        let(:compiler) { described_class.new(team: team, season: season) }
+        let(:compiler) { described_class.new(team: Team.last, season: season) }
         let(:set) { sample_set[season - 1] }
 
         it "returns arriving Contracts in Season #{season}" do
@@ -74,8 +73,7 @@ describe Statistics::TransferActivityCompiler do
         end
 
         it "returns departing Contracts in Season #{season}" do
-          expect(compiler.results[:departures].count)
-            .to be == set[:departures] + set[:transfers]
+          expect(compiler.results[:departures].count).to be == set[:departures]
         end
 
         it "returns Transfers in Season #{season}" do
@@ -89,7 +87,7 @@ describe Statistics::TransferActivityCompiler do
     end
 
     describe 'if Season not provided' do
-      let(:compiler) { described_class.new(team: team) }
+      let(:compiler) { described_class.new(team: Team.last) }
 
       it 'returns all arriving Contracts' do
         Contract.where(previous_id: nil).each do |contract|
@@ -98,7 +96,7 @@ describe Statistics::TransferActivityCompiler do
       end
 
       it 'returns all departing Contracts' do
-        Contract.where.not(conclusion: [nil, 'Renewed']).each do |contract|
+        Contract.where.not(conclusion: [nil, 'Renewed', 'Transferred']).each do |contract|
           expect(compiler.results[:departures]).to include(contract)
         end
       end
