@@ -2,9 +2,14 @@
 
 module Mutations
   class ReleasePlayer < Mutations::BaseMutation
-    argument :id, ID, required: true
+    description "Immediately expire Player's current Contract"
 
-    field :player, Types::Myfifa::PlayerType, null: false
+    argument :id, ID, 'ID of Player to terminate Contract', required: true
+
+    field :player,
+          Types::Myfifa::PlayerType,
+          'Player who was released',
+          null: false
 
     def resolve(id:)
       current_ability = Ability.new(context[:current_user])

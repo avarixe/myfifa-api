@@ -2,10 +2,15 @@
 
 module Mutations
   class ApplySquadToMatch < Mutations::BaseMutation
-    argument :match_id, ID, required: true
-    argument :squad_id, ID, required: true
+    description 'load Match Caps with Squad Players and Positions'
 
-    field :match, Types::Myfifa::MatchType, null: false
+    argument :match_id, ID, 'ID of Match to update', required: true
+    argument :squad_id, ID, 'ID of Squad to be applied', required: true
+
+    field :match,
+          Types::Myfifa::MatchType,
+          'Match that was updated based on Squad',
+          null: false
 
     def resolve(match_id:, squad_id:)
       current_ability = Ability.new(context[:current_user])

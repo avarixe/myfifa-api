@@ -11,16 +11,16 @@ module Types
 
     field :teams, [Myfifa::TeamType], null: false
     field :team, Myfifa::TeamType, null: false do
-      argument :id, ID, required: true
+      argument :id, ID, 'ID of Team', required: true
     end
     field :player, Myfifa::PlayerType, null: false do
-      argument :id, ID, required: true
+      argument :id, ID, 'ID of Player', required: true
     end
     field :match, Myfifa::MatchType, null: false do
-      argument :id, ID, required: true
+      argument :id, ID, 'ID of Match', required: true
     end
     field :competition, Myfifa::CompetitionType, null: false do
-      argument :id, ID, required: true
+      argument :id, ID, 'ID of Competition', required: true
     end
 
     def teams

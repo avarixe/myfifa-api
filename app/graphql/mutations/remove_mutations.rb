@@ -20,28 +20,37 @@ module Mutations
       TableRow
       Team
       Transfer
-    ].each do |klass|
+    ].each do |model|
       remove_mutation = Class.new(BaseMutation) do
-        argument :id, GraphQL::Types::ID, required: true
+        description "Remove #{model} from database"
 
-        field klass.underscore.to_sym,
-              Types::Myfifa.const_get("#{klass}Type"),
+        argument :id,
+                 GraphQL::Types::ID,
+                 "ID of #{model} to delete",
+                 required: true
+
+        field model.underscore.to_sym,
+              Types::Myfifa.const_get("#{model}Type"),
+              "Removed #{model} if deleted from the database",
               null: true
-        field :errors, Types::ValidationErrorsType, null: true
+        field :errors,
+              Types::ValidationErrorsType,
+              "Errors preventing #{model} from being removed",
+              null: true
 
         define_method :resolve do |id:|
           current_ability = Ability.new(context[:current_user])
-          record = klass.constantize.accessible_by(current_ability).find(id)
+          record = model.constantize.accessible_by(current_ability).find(id)
 
           if record.destroy
-            { klass.underscore.to_sym => record }
+            { model.underscore.to_sym => record }
           else
             { errors: record.errors }
           end
         end
       end
 
-      const_set("Remove#{klass}", remove_mutation)
+      const_set("Remove#{model}", remove_mutation)
     end
   end
 end

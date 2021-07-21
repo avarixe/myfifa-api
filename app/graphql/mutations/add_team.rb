@@ -2,10 +2,21 @@
 
 module Mutations
   class AddTeam < Mutations::BaseMutation
-    argument :attributes, Types::Inputs::TeamAttributes, required: true
+    description 'Create new Team in database with the provided attributes'
 
-    field :team, Types::Myfifa::TeamType, null: true
-    field :errors, Types::ValidationErrorsType, null: true
+    argument :attributes,
+             Types::Inputs::TeamAttributes,
+             'Data object to save as Team',
+             required: true
+
+    field :team,
+          Types::Myfifa::TeamType,
+          'Created Team if saved to database',
+          null: true
+    field :errors,
+          Types::ValidationErrorsType,
+          'Errors preventing Team from being created',
+          null: true
 
     def resolve(attributes:)
       team = context[:current_user].teams.new(attributes.to_h)

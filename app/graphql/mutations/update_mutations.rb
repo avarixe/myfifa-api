@@ -21,15 +21,25 @@ module Mutations
       Transfer
     ].each do |model|
       update_mutation = Class.new(BaseMutation) do
-        argument :id, GraphQL::Types::ID, required: true
+        description "Update #{model} with the provided attributes"
+
+        argument :id,
+                 GraphQL::Types::ID,
+                 "ID of #{model} to update",
+                 required: true
         argument :attributes,
                  Types::Inputs.const_get("#{model}Attributes"),
+                 "Data object to update #{model}",
                  required: true
 
         field model.underscore.to_sym,
               Types::Myfifa.const_get("#{model}Type"),
+              "Updated #{model} if attributes were saved",
               null: true
-        field :errors, Types::ValidationErrorsType, null: true
+        field :errors,
+              Types::ValidationErrorsType,
+              'Errors preventing changes from being applied',
+              null: true
 
         define_method :resolve do |id:, attributes:|
           current_ability = Ability.new(context[:current_user])
