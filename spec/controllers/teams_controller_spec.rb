@@ -2,126 +2,59 @@
 
 require 'rails_helper'
 
-RSpec.describe TeamsController, type: :request do
-  let(:user) { FactoryBot.create(:user) }
-  let(:application) {
-    Doorkeeper::Application.create!(
+describe TeamsController, type: :request do
+  let(:user) { create :user }
+  let(:team) { create :team, user: user }
+  let(:token) do
+    application = Doorkeeper::Application.create(
       name: Faker::Company.name,
       redirect_uri: "https://#{Faker::Internet.domain_name}"
     )
-  }
-  let(:token) {
-    Doorkeeper::AccessToken.create!(
-      application: application,
-      resource_owner_id: user.id
-    )
-  }
-
-  describe 'GET #index' do
-    it 'requires a valid token' do
-      get teams_url
-      assert_response 401
-    end
-
-    it 'returns all User Teams' do
-      another_user = FactoryBot.create :user, email: Faker::Internet.unique.email
-      FactoryBot.create_list :team, 3, user: user
-      FactoryBot.create :team, user: another_user
-
-      get teams_url,
-          headers: { 'Authorization' => "Bearer #{token.token}" }
-      assert_response :success
-      expect(json).to be == JSON.parse(user.teams.to_json)
-    end
+    Doorkeeper::AccessToken.create! application: application,
+                                    resource_owner_id: user.id
+  end
+  let(:test_badge_path) { Rails.root.join('spec/support/test-badge.png') }
+  let(:team_badge_params) do
+    { badge: Rack::Test::UploadedFile.new(test_badge_path) }
   end
 
-  describe 'GET #show' do
+  describe 'POST teams#add_badge' do
     it 'requires a valid token' do
-      team = FactoryBot.create :team, user: user
-      get team_url(team)
-      assert_response 401
+      post badge_team_url(team), params: { team: team_badge_params }
+      assert_response :unauthorized
     end
 
-    it 'returns Team JSON' do
-      team = FactoryBot.create :team, user: user
-
-      get team_url(team),
-          headers: { 'Authorization' => "Bearer #{token.token}" }
-      assert_response :success
-      expect(json).to be == JSON.parse(team.to_json)
-    end
-  end
-
-  describe 'POST #create' do
-    before do |test|
-      unless test.metadata[:skip_before]
-        post teams_url,
+    describe 'with authorized token' do
+      before do
+        post badge_team_url(team),
              headers: { 'Authorization' => "Bearer #{token.token}" },
-             params: { team: FactoryBot.attributes_for(:team) }
+             params: { team: team_badge_params }
+      end
+
+      it 'uploads the Team Badge' do
+        expect(team.reload.badge.attached?).to be true
+      end
+
+      it 'returns the Team badge path' do
+        assert_response :success
+        expect(response.body).to be == team.reload.badge_path
       end
     end
-
-    it 'requires a valid token', skip_before: true do
-      post teams_url,
-           params: { team: FactoryBot.attributes_for(:team) }
-      assert_response 401
-    end
-
-    it 'creates a new Team' do
-      expect(Team.count).to be == 1
-    end
-
-    it 'returns Team JSON' do
-      team = Team.last
-      expect(json).to be == JSON.parse(team.to_json)
-    end
   end
 
-  describe 'PATCH #update' do
+  describe 'DELETE teams#remove_badge' do
     it 'requires a valid token' do
-      team = FactoryBot.create :team, user: user
-      patch team_url(team),
-            params: { team: FactoryBot.attributes_for(:team) }
-      assert_response 401
+      delete badge_team_url(team)
+      assert_response :unauthorized
     end
 
-    it 'rejects requests from other Users' do
-      team = FactoryBot.create :team
-      patch team_url(team),
-            headers: { 'Authorization' => "Bearer #{token.token}" },
-            params: { team: FactoryBot.attributes_for(:team) }
-      assert_response 403
-    end
-
-    it 'returns updated Team JSON' do
-      team = FactoryBot.create :team, user: user
-      patch team_url(team),
-            headers: { 'Authorization' => "Bearer #{token.token}" },
-            params: { team: FactoryBot.attributes_for(:team) }
-      team.reload
-      expect(json).to be == JSON.parse(team.to_json)
-    end
-  end
-
-  describe 'DELETE #destroy' do
-    it 'requires a valid token' do
-      team = FactoryBot.create :team, user: user
-      delete team_url(team)
-      assert_response 401
-    end
-
-    it 'rejects requests from other Users' do
-      team = FactoryBot.create :team
-      delete team_url(team),
+    it 'removes the Team badge' do
+      team.badge.attach io: File.open(test_badge_path),
+                        filename: 'test.txt'
+      delete badge_team_url(team),
              headers: { 'Authorization' => "Bearer #{token.token}" }
-      assert_response 403
-    end
-
-    it 'removes the Team' do
-      team = FactoryBot.create :team, user: user
-      delete team_url(team),
-             headers: { 'Authorization' => "Bearer #{token.token}" }
-      expect { team.reload }.to raise_error(ActiveRecord::RecordNotFound)
+      assert_response :success
+      expect(team.reload.badge.attached?).to be false
     end
   end
 end

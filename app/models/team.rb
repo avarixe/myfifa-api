@@ -30,37 +30,16 @@ class Team < ApplicationRecord
 
   has_one_attached :badge
 
-  PERMITTED_ATTRIBUTES = %i[
-    started_on
-    name
-    currently_on
-    currency
-    badge
-  ].freeze
-
-  def self.permitted_create_attributes
-    PERMITTED_ATTRIBUTES
-  end
-
-  def self.permitted_update_attributes
-    PERMITTED_ATTRIBUTES.drop 1
-  end
-
   validates :name, presence: true
   validates :started_on, presence: true
   validates :currently_on, presence: true
   validates :currency, presence: true
 
   before_validation :set_started_on
-  before_create :set_default_bools
-  after_save :update_player_statuses
+  after_save :update_player_statuses, if: :saved_change_to_currently_on?
 
   def set_started_on
     self.currently_on ||= started_on
-  end
-
-  def set_default_bools
-    self.active ||= true
   end
 
   def team
@@ -81,34 +60,52 @@ class Team < ApplicationRecord
     Rails.application.routes.url_helpers.rails_blob_url(badge, only_path: true)
   end
 
-  def as_json(options = {})
-    options[:methods] ||= []
-    options[:methods] += %i[time_period badge_path]
-    super
-  end
-
   def increment_date(amount)
     update(currently_on: currently_on + amount)
-  end
-
-  def time_period
-    "#{started_on.year} - #{currently_on.year}"
   end
 
   def current_season
     ((currently_on - started_on) / 365).to_i
   end
 
-  def end_of_season
-    started_on + (current_season + 1).years - 1.day
+  def end_of_current_season
+    end_of_season(current_season)
   end
 
-  def season_data(season)
-    season_start = started_on + season.years
-    {
-      label: "#{season_start.year} - #{season_start.year + 1}",
-      start: season_start,
-      end: season_start + 1.year - 1.day
-    }
+  def end_of_season(season)
+    started_on + (season + 1).years - 1.day
+  end
+
+  def opponents
+    team.matches.pluck(:home, :away).flatten.uniq.sort
+  end
+
+  def competition_stats(competition: nil, season: nil)
+    Statistics::CompetitionCompiler.new(
+      team: self,
+      competition: competition,
+      season: season
+    ).results
+  end
+
+  def player_performance_stats(player_ids: [], competition: nil, season: nil)
+    Statistics::PlayerPerformanceCompiler.new(
+      team: self,
+      player_ids: player_ids,
+      competition: competition,
+      season: season
+    ).results
+  end
+
+  def player_development_stats(player_ids: [], season: nil)
+    Statistics::PlayerDevelopmentCompiler.new(
+      team: self,
+      player_ids: player_ids,
+      season: season
+    ).results
+  end
+
+  def transfer_activity(season: nil)
+    Statistics::TransferActivityCompiler.new(team: self, season: season).results
   end
 end

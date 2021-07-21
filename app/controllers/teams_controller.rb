@@ -1,38 +1,30 @@
 # frozen_string_literal: true
 
-class TeamsController < APIController
-  load_and_authorize_resource except: %i[create]
+class TeamsController < ApplicationController
+  before_action :authenticate!
+  before_action :set_team
 
-  def index
-    render json: current_user.teams.includes(badge_attachment: :blob).to_json
+  def add_badge
+    if @team.update(team_badge_params)
+      render json: @team.badge_path
+    else
+      render json: { errors: @team.errors.full_messages },
+             status: :bad_request
+    end
   end
 
-  def show
-    render json: @team.to_json
-  end
-
-  def create
-    @team = current_user.teams.new(new_team_params)
-    save_record @team
-  end
-
-  def update
-    @team.attributes = edit_team_params
-    save_record @team
-  end
-
-  def destroy
-    @team.destroy
-    render json: @team
+  def remove_badge
+    @team.badge.purge
+    head :ok
   end
 
   private
 
-    def new_team_params
-      params.require(:team).permit Team.permitted_create_attributes
+    def team_badge_params
+      params.require(:team).permit [:badge]
     end
 
-    def edit_team_params
-      params.require(:team).permit Team.permitted_update_attributes
+    def set_team
+      @team = current_user.teams.find(params[:id])
     end
 end
