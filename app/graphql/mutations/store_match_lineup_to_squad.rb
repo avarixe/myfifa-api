@@ -8,10 +8,8 @@ module Mutations
     argument :match_id, ID, 'ID of Match to store Lineup from', required: true
     argument :squad_id, ID, 'ID of Squad to update', required: true
 
-    field :squad,
-          Types::Myfifa::SquadType,
-          'Squad that was updated based on Match',
-          null: false
+    field :squad, Types::Myfifa::SquadType,
+          'Squad that was updated based on Match', null: false
 
     def resolve(match_id:, squad_id:)
       current_ability = Ability.new(context[:current_user])

@@ -24,19 +24,14 @@ module Mutations
       remove_mutation = Class.new(BaseMutation) do
         description "Remove #{model} from database"
 
-        argument :id,
-                 GraphQL::Types::ID,
-                 "ID of #{model} to delete",
-                 required: true
+        argument :id, GraphQL::Types::ID,
+                 "ID of #{model} to delete", required: true
 
-        field model.underscore.to_sym,
-              Types::Myfifa.const_get("#{model}Type"),
-              "Removed #{model} if deleted from the database",
+        field model.underscore.to_sym, Types::Myfifa.const_get("#{model}Type"),
+              "#{model} that was removed if deleted from the database",
               null: true
-        field :errors,
-              Types::ValidationErrorsType,
-              "Errors preventing #{model} from being removed",
-              null: true
+        field :errors, Types::ValidationErrorsType,
+              "Errors preventing #{model} from being removed", null: true
 
         define_method :resolve do |id:|
           current_ability = Ability.new(context[:current_user])

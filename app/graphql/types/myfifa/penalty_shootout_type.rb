@@ -3,13 +3,17 @@
 module Types
   module Myfifa
     class PenaltyShootoutType < BaseObject
-      field :id, ID, null: false
-      field :match_id, ID, null: false
-      field :home_score, Integer, null: false
-      field :away_score, Integer, null: false
-      field :created_at, GraphQL::Types::ISO8601DateTime, null: false
+      description 'Record of a Penalty Shootout in a Match'
 
-      field :match, MatchType, null: false
+      field :id, ID, 'Unique Identifer of record', null: false
+      field :match_id, ID, 'ID of Match', null: false
+      field :home_score, Integer, 'Penalties scored by Home Team', null: false
+      field :away_score, Integer, 'Penalties scored by Away Team', null: false
+      field :created_at, GraphQL::Types::ISO8601DateTime,
+            'Timestamp this record was created', null: false
+
+      field :match, MatchType,
+            'Match pertaining to this Penalty Shootout', null: false
     end
   end
 end

@@ -6,10 +6,8 @@ module Mutations
 
     argument :id, ID, 'ID of Player to terminate Contract', required: true
 
-    field :player,
-          Types::Myfifa::PlayerType,
-          'Player who was released',
-          null: false
+    field :player, Types::Myfifa::PlayerType,
+          'Player who was released', null: false
 
     def resolve(id:)
       current_ability = Ability.new(context[:current_user])
