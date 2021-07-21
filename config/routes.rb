@@ -6,6 +6,8 @@ Rails.application.routes.draw do
     mount GraphiQL::Rails::Engine, at: '/graphiql', graphql_path: '/graphql'
   end
 
+  mount GraphdocRuby::Application, at: '/'
+
   use_doorkeeper do
     controllers tokens: 'tokens'
   end
