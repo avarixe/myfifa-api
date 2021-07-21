@@ -49,7 +49,7 @@ module Mutations
         end
       end
 
-      const_set("Update#{model}", update_mutation)
+      const_set "Update#{model}", update_mutation
     end
   end
 end

@@ -10,7 +10,7 @@ module Types
       field :season, Integer,
             'Number of complete years between Team Start and this Competition',
             null: false
-      field :name, String, 'Name of Competition', null: false
+      field :name, String, 'Name of this Competition', null: false
       field :champion, String,
             'Name of Team that won this Competition', null: true
       field :created_at, GraphQL::Types::ISO8601DateTime,

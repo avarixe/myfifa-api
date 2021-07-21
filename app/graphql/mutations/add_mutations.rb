@@ -45,7 +45,7 @@ module Mutations
           end
         end
 
-        const_set("Add#{model}", add_mutation)
+        const_set "Add#{model}", add_mutation
       end
     end
   end

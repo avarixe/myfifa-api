@@ -45,7 +45,7 @@ module Mutations
         end
       end
 
-      const_set("Remove#{model}", remove_mutation)
+      const_set "Remove#{model}", remove_mutation
     end
   end
 end

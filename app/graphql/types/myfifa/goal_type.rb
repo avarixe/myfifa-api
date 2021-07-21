@@ -12,6 +12,8 @@ module Types
             'Name of Player who scored this Goal', null: false
       field :player_id, ID,
             'ID of Player who scored this Goal if record exists', null: true
+      field :assisted_by, String,
+            'Name of the Player who assisted the Goal', null: true
       field :assist_id, ID,
             'ID of Player who assisted this Goal if record exists', null: true
       field :home, Boolean,
@@ -21,8 +23,6 @@ module Types
       field :penalty, Boolean, 'Whether this Goal was a Penalty', null: false
       field :created_at, GraphQL::Types::ISO8601DateTime,
             'Timestamp this record was created', null: false
-      field :assisted_by, String,
-            'Name of the Player who assisted the Goal', null: true
 
       field :player, PlayerType, 'Player who scored this Goal', null: true
       field :assisting_player, PlayerType,

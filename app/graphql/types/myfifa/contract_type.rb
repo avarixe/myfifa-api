@@ -9,8 +9,7 @@ module Types
       field :player_id, ID, 'ID of Player', null: false
       field :signed_on, GraphQL::Types::ISO8601Date,
             'Date of Team when this Contract was created', null: false
-      field :wage, Integer,
-            'Scheduled Compensation for Services', null: false
+      field :wage, Integer, 'Weekly Wage for this Player', null: false
       field :signing_bonus, Integer,
             'Initial Payment upon signing this Contract', null: true
       field :release_clause, Integer,
