@@ -3,10 +3,12 @@
 module Types
   module Inputs
     class SquadAttributes < BaseInputObject
-      argument :name, String, required: true
+      description 'Attributes to create/update a Squad record'
 
-      argument :squad_players_attributes,
-               [SquadPlayerAttributes],
+      argument :name, String, 'Name of this Squad', required: true
+
+      argument :squad_players_attributes, [SquadPlayerAttributes],
+               'List of attributes for player slots bound to this Squad',
                required: true
     end
   end

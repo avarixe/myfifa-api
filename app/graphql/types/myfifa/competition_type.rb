@@ -3,15 +3,22 @@
 module Types
   module Myfifa
     class CompetitionType < BaseObject
-      field :id, ID, null: false
-      field :team_id, ID, null: false
-      field :season, Integer, null: false
-      field :name, String, null: false
-      field :champion, String, null: true
-      field :created_at, GraphQL::Types::ISO8601DateTime, null: false
+      description 'Record of a League/Cup in a Season'
 
-      field :team, TeamType, null: false
-      field :stages, [StageType], null: false
+      field :id, ID, 'Unique Identifer of record', null: false
+      field :team_id, ID, 'ID of Team', null: false
+      field :season, Integer,
+            'Number of complete years between Team Start and this Competition',
+            null: false
+      field :name, String, 'Name of this Competition', null: false
+      field :champion, String,
+            'Name of Team that won this Competition', null: true
+      field :created_at, GraphQL::Types::ISO8601DateTime,
+            'Timestamp this record was created', null: false
+
+      field :team, TeamType, 'Team bound to this Competition', null: false
+      field :stages, [StageType],
+            'List of Stages in this Competition', null: false
     end
   end
 end

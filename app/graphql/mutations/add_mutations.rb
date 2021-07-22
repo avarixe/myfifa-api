@@ -11,17 +11,20 @@ module Mutations
     }.each do |parent_model, models|
       models.each do |model|
         add_mutation = Class.new(BaseMutation) do
-          argument "#{parent_model.underscore}_id".to_sym,
-                   GraphQL::Types::ID,
-                   required: true
-          argument :attributes,
-                   Types::Inputs.const_get("#{model}Attributes"),
-                   required: true
+          description "Create new #{model} in database " \
+                      'with the provided attributes'
+
+          argument "#{parent_model.underscore}_id".to_sym, GraphQL::Types::ID,
+                   "ID of #{parent_model} bounding #{model}", required: true
+          argument :attributes, Types::Inputs.const_get("#{model}Attributes"),
+                   "Data object to save as #{model}", required: true
 
           field model.underscore.to_sym,
                 Types::Myfifa.const_get("#{model}Type"),
+                "#{model} that was created if saved to database",
                 null: true
-          field :errors, Types::ValidationErrorsType, null: true
+          field :errors, Types::ValidationErrorsType,
+                "Errors preventing #{model} from being created", null: true
 
           define_method :resolve do |**args|
             current_ability = Ability.new(context[:current_user])
@@ -42,7 +45,7 @@ module Mutations
           end
         end
 
-        const_set("Add#{model}", add_mutation)
+        const_set "Add#{model}", add_mutation
       end
     end
   end

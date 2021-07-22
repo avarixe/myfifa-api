@@ -9,18 +9,23 @@ module Types
     # Add root-level fields here.
     # They will be entry points for queries on your schema.
 
-    field :teams, [Myfifa::TeamType], null: false
-    field :team, Myfifa::TeamType, null: false do
-      argument :id, ID, required: true
+    field :teams, [Myfifa::TeamType],
+          'List of all Teams owned by User', null: false
+    field :team, Myfifa::TeamType,
+          'Specific Team owned by User', null: false do
+      argument :id, ID, 'ID of Team', required: true
     end
-    field :player, Myfifa::PlayerType, null: false do
-      argument :id, ID, required: true
+    field :player, Myfifa::PlayerType,
+          'Specific Player bound to a Team owned by User', null: false do
+      argument :id, ID, 'ID of Player', required: true
     end
-    field :match, Myfifa::MatchType, null: false do
-      argument :id, ID, required: true
+    field :match, Myfifa::MatchType,
+          'Specific Match bound to a Team owned by User', null: false do
+      argument :id, ID, 'ID of Match', required: true
     end
-    field :competition, Myfifa::CompetitionType, null: false do
-      argument :id, ID, required: true
+    field :competition, Myfifa::CompetitionType,
+          'Specific Competition bound to a Team owned by User', null: false do
+      argument :id, ID, 'ID of Competition', required: true
     end
 
     def teams

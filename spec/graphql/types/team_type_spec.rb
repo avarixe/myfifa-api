@@ -15,7 +15,6 @@ describe Types::Myfifa::TeamType do
   it { is_expected.to have_field(:created_at).of_type('ISO8601DateTime!') }
   it { is_expected.to have_field(:currency).of_type('String!') }
 
-  it { is_expected.to have_field(:time_period).of_type('String!') }
   it { is_expected.to have_field(:badge_path).of_type('String') }
   it { is_expected.to have_field(:opponents).of_type('[String!]!') }
 

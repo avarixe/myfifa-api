@@ -37,6 +37,8 @@ gem 'cancancan'
 
 # GraphQL
 gem 'graphql'
+# GraphDoc to document GraphQL API
+gem 'graphdoc-ruby'
 
 gem 'ar_lazy_preload'
 

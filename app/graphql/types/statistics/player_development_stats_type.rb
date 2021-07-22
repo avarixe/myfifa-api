@@ -3,10 +3,17 @@
 module Types
   module Statistics
     class PlayerDevelopmentStatsType < BaseObject
-      field :season, Int, null: false
-      field :player_id, ID, null: false
-      field :ovr, [Int], null: false
-      field :value, [Int], null: false
+      description 'Player Overall Rating and Value Changes in a Season'
+
+      field :player_id, ID, 'ID of Player', null: false
+      field :season, Int,
+            'Number of complete years after Team Start and this Season',
+            null: false
+      field :ovr, [Int],
+            'Overall Rating of Player at start and end of this Season',
+            null: false
+      field :value, [Int],
+            'Value of Player at start and end of this Season', null: false
     end
   end
 end

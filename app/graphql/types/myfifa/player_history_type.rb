@@ -3,15 +3,20 @@
 module Types
   module Myfifa
     class PlayerHistoryType < BaseObject
-      field :id, ID, null: false
-      field :player_id, ID, null: false
-      field :recorded_on, GraphQL::Types::ISO8601Date, null: false
-      field :ovr, Integer, null: false
-      field :value, Integer, null: false
-      field :created_at, GraphQL::Types::ISO8601DateTime, null: false
-      field :kit_no, Integer, null: true
+      description 'Record of Player Overall Rating, Value, and Kit Number ' \
+                  'on a specific date'
 
-      field :player, PlayerType, null: false
+      field :id, ID, 'Unique Identifer of record', null: false
+      field :player_id, ID, 'ID of Player', null: false
+      field :recorded_on, GraphQL::Types::ISO8601Date,
+            'Date on which the Player had these values', null: false
+      field :ovr, Integer, 'Overall Rating of Player', null: false
+      field :value, Integer, 'Value of Player', null: false
+      field :created_at, GraphQL::Types::ISO8601DateTime,
+            'Timestamp this record was created', null: false
+      field :kit_no, Integer, 'Kit Number assigned to Player', null: true
+
+      field :player, PlayerType, 'Player pertaining to this record', null: false
     end
   end
 end

@@ -105,6 +105,10 @@ GEM
       thor (>= 0.14.0, < 2)
     globalid (0.4.2)
       activesupport (>= 4.2.0)
+    graphdoc-ruby (0.1.0)
+      activesupport (>= 4.2.0)
+      bundler
+      rack
     graphiql-rails (1.7.0)
       railties
       sprockets-rails
@@ -283,6 +287,7 @@ DEPENDENCIES
   factory_bot_rails
   faker
   figaro
+  graphdoc-ruby
   graphiql-rails
   graphql
   listen (~> 3.0.5)

@@ -2,9 +2,13 @@
 
 module Mutations
   class RetirePlayer < Mutations::BaseMutation
-    argument :id, ID, required: true
+    description "Update Player's current Contract to expire " \
+                'at end of the current Season'
 
-    field :player, Types::Myfifa::PlayerType, null: false
+    argument :id, ID, 'ID of Player to retire', required: true
+
+    field :player, Types::Myfifa::PlayerType,
+          'Player that was marked as Retiring', null: false
 
     def resolve(id:)
       current_ability = Ability.new(context[:current_user])

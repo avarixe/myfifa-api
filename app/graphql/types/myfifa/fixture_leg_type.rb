@@ -3,13 +3,17 @@
 module Types
   module Myfifa
     class FixtureLegType < BaseObject
-      field :id, ID, null: false
-      field :fixture_id, ID, null: false
-      field :home_score, String, null: true
-      field :away_score, String, null: true
-      field :created_at, GraphQL::Types::ISO8601DateTime, null: false
+      description 'Record of a Leg of a Competition Fixture'
 
-      field :fixture, FixtureType, null: false
+      field :id, ID, 'Unique Identifer of record', null: false
+      field :fixture_id, ID, 'ID of Fixture', null: false
+      field :home_score, String, 'Score of the Home Team', null: true
+      field :away_score, String, 'Score of the Away Team', null: true
+      field :created_at, GraphQL::Types::ISO8601DateTime,
+            'Timestamp this record was created', null: false
+
+      field :fixture, FixtureType,
+            'Fixture pertaining to this Leg', null: false
     end
   end
 end
