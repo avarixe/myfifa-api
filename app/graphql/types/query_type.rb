@@ -9,6 +9,8 @@ module Types
     # Add root-level fields here.
     # They will be entry points for queries on your schema.
 
+    field :user, Myfifa::UserType,
+          'Data about the current User', null: true
     field :teams, [Myfifa::TeamType],
           'List of all Teams owned by User', null: false
     field :team, Myfifa::TeamType,
@@ -26,6 +28,10 @@ module Types
     field :competition, Myfifa::CompetitionType,
           'Specific Competition bound to a Team owned by User', null: false do
       argument :id, ID, 'ID of Competition', required: true
+    end
+
+    def user
+      context[:current_user]
     end
 
     def teams

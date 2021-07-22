@@ -2,6 +2,10 @@
 
 module Types
   class MutationType < BaseObject
+    field :register_user, mutation: Mutations::RegisterUser
+    field :update_user, mutation: Mutations::UpdateUser
+    field :change_password, mutation: Mutations::ChangePassword
+
     %w[
       Booking
       Cap
