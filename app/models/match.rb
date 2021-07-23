@@ -29,11 +29,23 @@ class Match < ApplicationRecord
 
   belongs_to :team
   has_one :penalty_shootout, dependent: :destroy
-  has_many :goals, dependent: :destroy
-  has_many :substitutions, dependent: :destroy
-  has_many :bookings, dependent: :destroy
+  has_many :goals,
+           -> { order :minute },
+           inverse_of: :match,
+           dependent: :destroy
+  has_many :substitutions,
+           -> { order :minute },
+           inverse_of: :match,
+           dependent: :destroy
+  has_many :bookings,
+           -> { order :minute },
+           inverse_of: :match,
+           dependent: :destroy
 
-  has_many :caps, dependent: :destroy
+  has_many :caps,
+           -> { order :start },
+           inverse_of: :match,
+           dependent: :destroy
   has_many :players, through: :caps
 
   accepts_nested_attributes_for :penalty_shootout,

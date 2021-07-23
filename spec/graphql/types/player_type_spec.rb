@@ -33,4 +33,6 @@ describe Types::Myfifa::PlayerType do
   it { is_expected.to have_field(:goals).of_type('[Goal!]!') }
   it { is_expected.to have_field(:assists).of_type('[Goal!]!') }
   it { is_expected.to have_field(:bookings).of_type('[Booking!]!') }
+
+  it { is_expected.to have_field(:current_contract).of_type('Contract') }
 end

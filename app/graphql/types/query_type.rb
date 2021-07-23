@@ -34,12 +34,10 @@ module Types
       context[:current_user]
     end
 
-    def teams
-      Team.accessible_by(current_ability).all
-    end
+    delegate :teams, to: :user
 
     def team(id:)
-      Team.accessible_by(current_ability).find(id)
+      teams.find(id)
     end
 
     def player(id:)

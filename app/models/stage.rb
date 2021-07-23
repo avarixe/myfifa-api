@@ -24,7 +24,10 @@ class Stage < ApplicationRecord
   default_scope { order(num_teams: :desc, id: :asc) }
   belongs_to :competition
   has_many :table_rows, dependent: :destroy
-  has_many :fixtures, dependent: :destroy
+  has_many :fixtures,
+           -> { order :id },
+           inverse_of: :stage,
+           dependent: :destroy
 
   validates :name, presence: true
   validates :num_teams, numericality: { greater_than: 0 }

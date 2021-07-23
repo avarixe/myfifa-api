@@ -35,7 +35,10 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
-  has_many :teams, dependent: :destroy
+  has_many :teams,
+           -> { order updated_at: :desc },
+           inverse_of: :user,
+           dependent: :destroy
 
   validates :username,
             length: { minimum: 6 },

@@ -44,6 +44,8 @@ module Types
             'List of Goals assisted by this Player', null: false
       field :bookings, [BookingType],
             'List of Bookings for this Player', null: false
+
+      field :current_contract, ContractType, null: true
     end
   end
 end

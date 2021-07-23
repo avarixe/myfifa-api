@@ -23,10 +23,22 @@ class Team < ApplicationRecord
   include Broadcastable
 
   belongs_to :user
-  has_many :players, dependent: :destroy
-  has_many :squads, dependent: :destroy
-  has_many :matches, dependent: :destroy
-  has_many :competitions, dependent: :destroy
+  has_many :players,
+           -> { order :id },
+           inverse_of: :team,
+           dependent: :destroy
+  has_many :squads,
+           -> { order :id },
+           inverse_of: :team,
+           dependent: :destroy
+  has_many :matches,
+           -> { order played_on: :asc },
+           inverse_of: :team,
+           dependent: :destroy
+  has_many :competitions,
+           -> { order :id },
+           inverse_of: :team,
+           dependent: :destroy
 
   has_one_attached :badge
 

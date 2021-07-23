@@ -54,6 +54,6 @@ describe Team, type: :model do
 
   it '#last_match returns the last Match bound to it' do
     create_list :match, 2, team: team
-    expect(team.last_match).to be == Match.last
+    expect(team.last_match).to be == Match.order(:played_on).last
   end
 end

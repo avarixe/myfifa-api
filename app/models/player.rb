@@ -29,13 +29,26 @@ class Player < ApplicationRecord
 
   belongs_to :team
   has_many :histories,
+           -> { order :recorded_on },
            class_name: 'PlayerHistory',
            inverse_of: :player,
            dependent: :destroy
-  has_many :injuries, dependent: :destroy
-  has_many :loans, dependent: :destroy
-  has_many :contracts, dependent: :destroy
-  has_many :transfers, dependent: :destroy
+  has_many :injuries,
+           -> { order :started_on },
+           inverse_of: :player,
+           dependent: :destroy
+  has_many :loans,
+           -> { order :started_on },
+           inverse_of: :player,
+           dependent: :destroy
+  has_many :contracts,
+           -> { order :started_on },
+           inverse_of: :player,
+           dependent: :destroy
+  has_many :transfers,
+           -> { order :moved_on },
+           inverse_of: :player,
+           dependent: :destroy
 
   has_many :caps, dependent: :destroy
   has_many :matches, through: :caps
