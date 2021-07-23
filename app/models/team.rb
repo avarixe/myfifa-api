@@ -80,6 +80,10 @@ class Team < ApplicationRecord
     team.matches.pluck(:home, :away).flatten.uniq.sort
   end
 
+  def last_match
+    matches.last
+  end
+
   def competition_stats(competition: nil, season: nil)
     Statistics::CompetitionCompiler.new(
       team: self,

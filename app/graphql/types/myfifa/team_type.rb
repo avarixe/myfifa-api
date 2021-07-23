@@ -23,6 +23,9 @@ module Types
       field :opponents, [String],
             'List of Teams participating in a Match tracked for this Team',
             null: false
+      field :last_match, MatchType,
+            'Last Match bound to this Team',
+            null: true
 
       field :players, [PlayerType],
             'List of Players bound to this Team', null: false

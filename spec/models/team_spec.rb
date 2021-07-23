@@ -51,4 +51,9 @@ describe Team, type: :model do
     expect(team.opponents)
       .to be == team.matches.reload.pluck(:home, :away).flatten.uniq.sort
   end
+
+  it '#last_match returns the last Match bound to it' do
+    create_list :match, 2, team: team
+    expect(team.last_match).to be == Match.last
+  end
 end
