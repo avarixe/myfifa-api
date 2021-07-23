@@ -54,26 +54,35 @@ class Team < ApplicationRecord
     self.currently_on ||= started_on
   end
 
-  def team
-    self
+  def update_player_statuses
+    players.find_each do |player|
+      player.update status:
+        if pending_player_ids.include? player.id
+          'Pending'
+        elsif active_player_ids.exclude? player.id
+          nil
+        elsif loaned_player_ids.include? player.id
+          'Loaned'
+        elsif injured_player_ids.include? player.id
+          'Injured'
+        else
+          'Active'
+        end
+    end
   end
 
-  def update_player_statuses
-    Player.transaction do
-      players
-        .preload(:contracts, :loans, :injuries)
-        .find_each(&:update_status)
-    end
+  def increment_date(amount)
+    update(currently_on: currently_on + amount)
+  end
+
+  def team
+    self
   end
 
   def badge_path
     return unless badge.attached? && !destroyed?
 
     Rails.application.routes.url_helpers.rails_blob_url(badge, only_path: true)
-  end
-
-  def increment_date(amount)
-    update(currently_on: currently_on + amount)
   end
 
   def current_season
@@ -123,5 +132,22 @@ class Team < ApplicationRecord
 
   def transfer_activity(season: nil)
     Statistics::TransferActivityCompiler.new(team: self, season: season).results
+  end
+
+  def active_player_ids
+    @active_player_ids ||= Contract.active_for(self).pluck(:player_id)
+  end
+
+  def pending_player_ids
+    @pending_player_ids ||=
+      Contract.pending_for(self).pluck(:player_id)
+  end
+
+  def injured_player_ids
+    @injured_player_ids ||= Injury.active_for(self).pluck(:player_id)
+  end
+
+  def loaned_player_ids
+    @loaned_player_ids ||= Loan.active_for(self).pluck(:player_id)
   end
 end

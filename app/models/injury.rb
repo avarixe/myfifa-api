@@ -22,7 +22,12 @@ class Injury < ApplicationRecord
 
   belongs_to :player
 
-  scope :active, -> { where(ended_on: nil) }
+  scope :active_for, lambda { |team|
+    joins(:player)
+      .where(players: { team_id: team.id })
+      .where(started_on: nil..team.currently_on)
+      .where('ended_on IS NULL OR ended_on > ?', team.currently_on)
+  }
 
   #################
   #  VALIDATIONS  #

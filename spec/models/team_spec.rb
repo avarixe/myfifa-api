@@ -56,4 +56,39 @@ describe Team, type: :model do
     create_list :match, 2, team: team
     expect(team.last_match).to be == Match.order(:played_on).last
   end
+
+  describe 'when currently_on changes' do
+    it 'updates Player status to Pending when applicable' do
+      player = create :player, team: team, contracts_count: 0
+      create :contract,
+             player: player,
+             signed_on: team.currently_on + 1.week,
+             started_on: team.currently_on + 1.month
+      team.increment_date 1.week
+      expect(player.reload.status).to be == 'Pending'
+    end
+
+    it 'updates Player status to Active when applicable' do
+      player = create :player, team: team, contracts_count: 0
+      create :contract,
+             player: player,
+             started_on: team.currently_on + 1.week
+      team.increment_date 1.week
+      expect(player.reload.status).to be == 'Active'
+    end
+
+    it 'updates Player status to Injured when applicable' do
+      player = create :player, team: team
+      create :injury, player: player, started_on: team.currently_on + 1.week
+      team.increment_date 1.week
+      expect(player.reload.status).to be == 'Injured'
+    end
+
+    it 'updates Player status to Loaned when applicable' do
+      player = create :player, team: team
+      create :loan, player: player, started_on: team.currently_on + 1.week
+      team.increment_date 1.week
+      expect(player.reload.status).to be == 'Loaned'
+    end
+  end
 end
