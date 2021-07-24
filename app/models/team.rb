@@ -80,9 +80,9 @@ class Team < ApplicationRecord
   end
 
   def badge_path
-    return unless badge.attached? && !destroyed?
+    return unless badge.attached?
 
-    Rails.application.routes.url_helpers.rails_blob_url(badge, only_path: true)
+    Rails.application.routes.url_helpers.rails_blob_url badge, only_path: true
   end
 
   def current_season
@@ -103,35 +103,6 @@ class Team < ApplicationRecord
 
   def last_match
     matches.last
-  end
-
-  def competition_stats(competition: nil, season: nil)
-    Statistics::CompetitionCompiler.new(
-      team: self,
-      competition: competition,
-      season: season
-    ).results
-  end
-
-  def player_performance_stats(player_ids: [], competition: nil, season: nil)
-    Statistics::PlayerPerformanceCompiler.new(
-      team: self,
-      player_ids: player_ids,
-      competition: competition,
-      season: season
-    ).results
-  end
-
-  def player_development_stats(player_ids: [], season: nil)
-    Statistics::PlayerDevelopmentCompiler.new(
-      team: self,
-      player_ids: player_ids,
-      season: season
-    ).results
-  end
-
-  def transfer_activity(season: nil)
-    Statistics::TransferActivityCompiler.new(team: self, season: season).results
   end
 
   def active_player_ids

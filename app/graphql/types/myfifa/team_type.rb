@@ -73,6 +73,42 @@ module Types
         argument :season, Int,
                  'Specific Season indicator to filter results', required: false
       end
+
+      def competition_stats(competition: nil, season: nil)
+        ::Statistics::CompetitionCompiler.new(
+          team: object,
+          competition: competition,
+          season: season
+        ).results
+      end
+
+      def player_performance_stats(
+        player_ids: [],
+        competition: nil,
+        season: nil
+      )
+        ::Statistics::PlayerPerformanceCompiler.new(
+          team: object,
+          player_ids: player_ids,
+          competition: competition,
+          season: season
+        ).results
+      end
+
+      def player_development_stats(player_ids: [], season: nil)
+        ::Statistics::PlayerDevelopmentCompiler.new(
+          team: object,
+          player_ids: player_ids,
+          season: season
+        ).results
+      end
+
+      def transfer_activity(season: nil)
+        ::Statistics::TransferActivityCompiler.new(
+          team: object,
+          season: season
+        ).results
+      end
     end
   end
 end
