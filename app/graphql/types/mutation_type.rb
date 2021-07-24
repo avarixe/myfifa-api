@@ -39,6 +39,7 @@ module Types
             mutation: Mutations::RemoveMutations.const_get("Remove#{model}")
     end
 
+    field :upload_badge, mutation: Mutations::UploadBadge
     field :release_player, mutation: Mutations::ReleasePlayer
     field :retire_player, mutation: Mutations::RetirePlayer
     field :apply_squad_to_match, mutation: Mutations::ApplySquadToMatch

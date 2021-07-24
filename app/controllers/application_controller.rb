@@ -10,11 +10,4 @@ class ApplicationController < ActionController::API
         AccessToken.active.find_by(token: token)&.user
       end
     end
-
-    def authenticate!
-      return if current_user.present?
-
-      render json: { errors: ['User is not authenticated!'] },
-             status: :unauthorized
-    end
 end

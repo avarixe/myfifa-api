@@ -43,4 +43,20 @@ describe Mutations::UpdateUser, type: :graphql do
         .to be == user.id.to_s
     end
   end
+
+  describe 'with invalid attributes' do
+    let(:unavailable_username) { create(:user).username }
+    graphql_variables do
+      {
+        attributes: {
+          username: unavailable_username
+        }
+      }
+    end
+
+    it 'does not update the User' do
+      execute_graphql
+      expect(user.reload.username).not_to be == unavailable_username
+    end
+  end
 end

@@ -7,11 +7,4 @@ Rails.application.routes.draw do
   end
 
   mount GraphdocRuby::Application, at: '/graphdoc'
-
-  constraints format: :json do
-    resources :teams, only: [] do
-      post 'badge', on: :member, to: 'teams#add_badge'
-      delete 'badge', on: :member, to: 'teams#remove_badge'
-    end
-  end
 end

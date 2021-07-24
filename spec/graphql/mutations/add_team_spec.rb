@@ -15,7 +15,7 @@ describe Mutations::AddTeam, type: :graphql do
     mutation addTeam($attributes: TeamAttributes!) {
       addTeam(attributes: $attributes) {
         team { id }
-        errors { fullMessages }
+        errors { details fullMessages }
       }
     }
   GQL

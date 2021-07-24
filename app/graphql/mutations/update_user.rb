@@ -18,7 +18,7 @@ module Mutations
       if user.update_without_password(attributes.to_h)
         { user: user }
       else
-        { errors: record.errors }
+        { errors: user.errors }
       end
     end
   end
