@@ -90,8 +90,6 @@ GEM
       warden (~> 1.2.3)
     diff-lcs (1.4.4)
     docile (1.4.0)
-    doorkeeper (5.5.2)
-      railties (>= 5)
     erubi (1.10.0)
     factory_bot (6.2.0)
       activesupport (>= 5.0.0)
@@ -283,7 +281,6 @@ DEPENDENCIES
   cancancan
   date_validator
   devise
-  doorkeeper
   factory_bot_rails
   faker
   figaro

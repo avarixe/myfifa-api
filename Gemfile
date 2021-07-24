@@ -31,7 +31,6 @@ gem 'oj'
 
 # Devise authentication
 gem 'devise'
-gem 'doorkeeper'
 
 gem 'cancancan'
 

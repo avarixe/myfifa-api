@@ -5,14 +5,7 @@ require 'rails_helper'
 describe TeamsController, type: :request do
   let(:user) { create :user }
   let(:team) { create :team, user: user }
-  let(:token) do
-    application = Doorkeeper::Application.create(
-      name: Faker::Company.name,
-      redirect_uri: "https://#{Faker::Internet.domain_name}"
-    )
-    Doorkeeper::AccessToken.create! application: application,
-                                    resource_owner_id: user.id
-  end
+  let(:token) { create :access_token, user: user }
   let(:test_badge_path) { Rails.root.join('spec/support/test-badge.png') }
   let(:team_badge_params) do
     { badge: Rack::Test::UploadedFile.new(test_badge_path) }

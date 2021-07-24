@@ -34,10 +34,10 @@ module Types
       context[:current_user]
     end
 
-    delegate :teams, to: :user
+    delegate :teams, to: :user, allow_nil: true
 
     def team(id:)
-      teams.find(id)
+      teams&.find(id)
     end
 
     def player(id:)

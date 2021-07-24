@@ -1,10 +1,14 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::API
+  include ActionController::HttpAuthentication::Token::ControllerMethods
+
   private
 
     def current_user
-      @current_user ||= User.find_by(id: doorkeeper_token&.resource_owner_id)
+      @current_user ||= authenticate_with_http_token do |token|
+        AccessToken.active.find_by(token: token)&.user
+      end
     end
 
     def authenticate!

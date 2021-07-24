@@ -3,15 +3,8 @@
 require 'rails_helper'
 
 describe GraphqlController, type: :request do
-  let(:user) { create :user }
-  let(:token) do
-    application = Doorkeeper::Application.create(
-      name: Faker::Company.name,
-      redirect_uri: "https://#{Faker::Internet.domain_name}"
-    )
-    Doorkeeper::AccessToken.create! application: application,
-                                    resource_owner_id: user.id
-  end
+  let(:token) { create :access_token }
+  let(:user) { token.user }
 
   describe 'POST graphql#execute' do
     it 'parses and executes gql' do
@@ -44,6 +37,22 @@ describe GraphqlController, type: :request do
              headers: { 'Authorization' => "Bearer #{token.token}" },
              params: { query: team_query, variables: { id: team.id } }
         expect(json.dig('data', 'team')).to be_present
+      end
+
+      it 'rejects expired tokens' do
+        token.update(expires_at: Time.current - 1.second)
+        post graphql_url,
+             headers: { 'Authorization' => "Bearer #{token.token}" },
+             params: { query: team_query, variables: { id: team.id }.to_json }
+        expect(json.dig('data', 'team')).not_to be_present
+      end
+
+      it 'rejects revoked tokens' do
+        token.update(revoked_at: Time.current)
+        post graphql_url,
+             headers: { 'Authorization' => "Bearer #{token.token}" },
+             params: { query: team_query, variables: { id: team.id }.to_json }
+        expect(json.dig('data', 'team')).not_to be_present
       end
     end
   end

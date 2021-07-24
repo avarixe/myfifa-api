@@ -35,6 +35,7 @@ class User < ApplicationRecord
   devise :database_authenticatable, :registerable,
          :recoverable, :rememberable, :trackable, :validatable
 
+  has_many :access_tokens, dependent: :destroy
   has_many :teams,
            -> { order updated_at: :desc },
            inverse_of: :user,

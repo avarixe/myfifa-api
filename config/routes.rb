@@ -8,10 +8,6 @@ Rails.application.routes.draw do
 
   mount GraphdocRuby::Application, at: '/graphdoc'
 
-  use_doorkeeper do
-    controllers tokens: 'tokens'
-  end
-
   constraints format: :json do
     resources :teams, only: [] do
       post 'badge', on: :member, to: 'teams#add_badge'
