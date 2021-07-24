@@ -7,7 +7,7 @@ module Types
     field :id, ID, 'Unique Identifier of record', null: false
     field :match_id, ID, 'ID of Match', null: false
     field :minute, Integer, 'Minute of Match this occurred', null: false
-    field :player_id, ID, 'ID of Player booked if record exists', null: false
+    field :player_id, ID, 'ID of Player booked if record exists', null: true
     field :red_card, Boolean,
           'Whether Booking was a Yellow (false) or Red (true) Card', null: false
     field :created_at, GraphQL::Types::ISO8601DateTime,

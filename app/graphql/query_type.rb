@@ -10,8 +10,8 @@ class QueryType < BaseTypes::BaseObject
 
   field :user, Types::UserType, 'Data about the current User', null: true
   field :teams, [Types::TeamType],
-        'List of all Teams owned by User', null: false
-  field :team, Types::TeamType, 'Specific Team owned by User', null: false do
+        'List of all Teams owned by User', null: true
+  field :team, Types::TeamType, 'Specific Team owned by User', null: true do
     argument :id, ID, 'ID of Team', required: true
   end
   field :player, Types::PlayerType,
