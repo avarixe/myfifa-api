@@ -4,7 +4,7 @@ module Mutations
   class ChangePassword < BaseMutation
     description 'Change the password for a User'
 
-    argument :attributes, Types::Inputs::UserPasswordChangeAttributes,
+    argument :attributes, InputObjects::UserPasswordChangeAttributes,
              'Data object to change the password for User', required: true
 
     field :confirmation, String,

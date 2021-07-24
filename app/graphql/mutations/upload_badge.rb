@@ -7,7 +7,7 @@ module Mutations
     argument :team_id, ID, 'ID of Team to upload this Badge', required: true
     argument :badge, ApolloUploadServer::Upload, required: true
 
-    field :team, Types::Myfifa::TeamType,
+    field :team, Types::TeamType,
           'Team that was updated if saved to database', null: true
     field :errors, Types::ValidationErrorsType,
           'Errors preventing Team from being created', null: true

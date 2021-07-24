@@ -46,6 +46,7 @@ describe Mutations::UpdateUser, type: :graphql do
 
   describe 'with invalid attributes' do
     let(:unavailable_username) { create(:user).username }
+
     graphql_variables do
       {
         attributes: {

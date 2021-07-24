@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Types::Myfifa::UserType do
+describe Types::UserType do
   subject { described_class }
 
   it { is_expected.to have_field(:id).of_type('ID!') }

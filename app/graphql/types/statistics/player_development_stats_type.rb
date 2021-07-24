@@ -2,7 +2,7 @@
 
 module Types
   module Statistics
-    class PlayerDevelopmentStatsType < BaseObject
+    class PlayerDevelopmentStatsType < BaseTypes::BaseObject
       description 'Player Overall Rating and Value Changes in a Season'
 
       field :player_id, ID, 'ID of Player', null: false

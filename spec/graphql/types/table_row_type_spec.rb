@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Types::Myfifa::TableRowType do
+describe Types::TableRowType do
   subject { described_class }
 
   it { is_expected.to have_field(:id).of_type('ID!') }

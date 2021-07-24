@@ -16,11 +16,11 @@ module Mutations
 
           argument "#{parent_model.underscore}_id".to_sym, GraphQL::Types::ID,
                    "ID of #{parent_model} bounding #{model}", required: true
-          argument :attributes, Types::Inputs.const_get("#{model}Attributes"),
+          argument :attributes, InputObjects.const_get("#{model}Attributes"),
                    "Data object to save as #{model}", required: true
 
           field model.underscore.to_sym,
-                Types::Myfifa.const_get("#{model}Type"),
+                Types.const_get("#{model}Type"),
                 "#{model} that was created if saved to database",
                 null: true
           field :errors, Types::ValidationErrorsType,

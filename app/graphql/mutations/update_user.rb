@@ -4,10 +4,10 @@ module Mutations
   class UpdateUser < BaseMutation
     description 'Update User with the provided attributes'
 
-    argument :attributes, Types::Inputs::UserAttributes,
+    argument :attributes, InputObjects::UserAttributes,
              'Data object to update User', required: true
 
-    field :user, Types::Myfifa::UserType,
+    field :user, Types::UserType,
           'User that was updated if attributes were saved', null: true
     field :errors, Types::ValidationErrorsType,
           'Errors preventing changes from being applied', null: true

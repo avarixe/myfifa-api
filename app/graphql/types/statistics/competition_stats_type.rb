@@ -2,7 +2,7 @@
 
 module Types
   module Statistics
-    class CompetitionStatsType < BaseObject
+    class CompetitionStatsType < BaseTypes::BaseObject
       description 'Statistics for a Competition in a Season'
 
       field :season, Integer,

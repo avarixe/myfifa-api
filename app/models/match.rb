@@ -43,7 +43,7 @@ class Match < ApplicationRecord
            dependent: :destroy
 
   has_many :caps,
-           -> { order :start },
+           -> { order :start, :id },
            inverse_of: :match,
            dependent: :destroy
   has_many :players, through: :caps

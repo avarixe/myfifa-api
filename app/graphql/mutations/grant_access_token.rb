@@ -9,12 +9,10 @@ module Mutations
     argument :password, String,
              'Password authenticating the User', required: true
 
-    field :token, String,
-          'Access Token enabling API access', null: true
+    field :token, String, 'Access Token enabling API access', null: true
     field :expires_at, GraphQL::Types::ISO8601DateTime,
           'Time at which this Access Token will become invalid', null: true
-    field :user, Types::Myfifa::UserType,
-          'User that was authenticated', null: true
+    field :user, Types::UserType, 'User that was authenticated', null: true
     field :errors, Types::ValidationErrorsType,
           'Errors preventing User from being authenticated', null: true
 

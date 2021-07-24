@@ -4,10 +4,10 @@ module Mutations
   class RegisterUser < Mutations::BaseMutation
     description 'Create new User in database with the provided attributes'
 
-    argument :attributes, Types::Inputs::UserRegistrationAttributes,
+    argument :attributes, InputObjects::UserRegistrationAttributes,
              'Data object to save as User', required: true
 
-    field :user, Types::Myfifa::UserType,
+    field :user, Types::UserType,
           'User that was created if saved to database', null: true
     field :errors, Types::ValidationErrorsType,
           'Errors preventing User from being created', null: true

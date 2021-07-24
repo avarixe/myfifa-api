@@ -6,7 +6,7 @@ module Mutations
 
     argument :id, ID, 'ID of Player to terminate Contract', required: true
 
-    field :player, Types::Myfifa::PlayerType,
+    field :player, Types::PlayerType,
           'Player who was released', null: false
 
     def resolve(id:)
