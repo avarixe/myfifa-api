@@ -29,13 +29,26 @@ class Player < ApplicationRecord
 
   belongs_to :team
   has_many :histories,
+           -> { order :recorded_on },
            class_name: 'PlayerHistory',
            inverse_of: :player,
            dependent: :destroy
-  has_many :injuries, dependent: :destroy
-  has_many :loans, dependent: :destroy
-  has_many :contracts, dependent: :destroy
-  has_many :transfers, dependent: :destroy
+  has_many :injuries,
+           -> { order :started_on },
+           inverse_of: :player,
+           dependent: :destroy
+  has_many :loans,
+           -> { order :started_on },
+           inverse_of: :player,
+           dependent: :destroy
+  has_many :contracts,
+           -> { order :started_on },
+           inverse_of: :player,
+           dependent: :destroy
+  has_many :transfers,
+           -> { order :moved_on },
+           inverse_of: :player,
+           dependent: :destroy
 
   has_many :caps, dependent: :destroy
   has_many :matches, through: :caps
@@ -108,7 +121,7 @@ class Player < ApplicationRecord
   before_save :set_kit_no, if: :status_changed?
   after_create :save_history
   after_update :update_history
-  after_update :end_pending_injuries, unless: :injured?
+  after_update :end_pending_injuries, if: :saved_change_to_status?
   after_update :set_contract_conclusion, if: :saved_change_to_status?
 
   def set_kit_no
@@ -126,6 +139,8 @@ class Player < ApplicationRecord
   end
 
   def end_pending_injuries
+    return if injured?
+
     injuries.where(ended_on: nil).update(ended_on: currently_on)
   end
 
@@ -143,7 +158,7 @@ class Player < ApplicationRecord
     update status:
       if current_contract.nil?        then nil
       elsif current_loan&.loaned_out? then 'Loaned'
-      elsif current_injury            then 'Injured'
+      elsif current_injury.present?   then 'Injured'
       elsif current_contract.pending? then 'Pending'
       else 'Active'
       end

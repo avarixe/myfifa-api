@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module Types
-  class ValidationErrorsType < Types::BaseObject
+  class ValidationErrorsType < BaseTypes::BaseObject
     description 'Errors from a record failing validation'
 
     field :details, String, 'Error Details', null: false

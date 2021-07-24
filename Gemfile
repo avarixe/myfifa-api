@@ -31,14 +31,13 @@ gem 'oj'
 
 # Devise authentication
 gem 'devise'
-gem 'doorkeeper'
 
 gem 'cancancan'
 
 # GraphQL
 gem 'graphql'
-# GraphDoc to document GraphQL API
-gem 'graphdoc-ruby'
+# for multipart file upload in GraphQL
+gem 'apollo_upload_server'
 
 gem 'ar_lazy_preload'
 

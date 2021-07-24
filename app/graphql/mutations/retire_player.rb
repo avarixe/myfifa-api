@@ -7,7 +7,7 @@ module Mutations
 
     argument :id, ID, 'ID of Player to retire', required: true
 
-    field :player, Types::Myfifa::PlayerType,
+    field :player, Types::PlayerType,
           'Player that was marked as Retiring', null: false
 
     def resolve(id:)

@@ -162,6 +162,8 @@ describe Contract, type: :model do
   end
 
   describe 'when expired for Injured Player' do
+    let(:player) { create :player, contracts_count: 0 }
+
     before do
       create :contract,
              player: player,

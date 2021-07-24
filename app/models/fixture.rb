@@ -21,6 +21,7 @@ class Fixture < ApplicationRecord
 
   belongs_to :stage
   has_many :legs,
+           -> { order :id },
            class_name: 'FixtureLeg',
            inverse_of: :fixture,
            dependent: :destroy

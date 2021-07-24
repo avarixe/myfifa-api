@@ -2,15 +2,15 @@
 
 module Types
   module Statistics
-    class TransferActivityType < BaseObject
+    class TransferActivityType < BaseTypes::BaseObject
       description 'Collection of Player Arrivals and Departures'
 
-      field :arrivals, [Myfifa::ContractType],
+      field :arrivals, [ContractType],
             'List of new Contracts (i.e. excluding Renewals)', null: false
-      field :departures, [Myfifa::ContractType],
+      field :departures, [ContractType],
             'List of Contract expirations excluding Transfers', null: false
-      field :transfers, [Myfifa::TransferType], 'List of Transfers', null: false
-      field :loans, [Myfifa::LoanType], 'List of Loans', null: false
+      field :transfers, [TransferType], 'List of Transfers', null: false
+      field :loans, [LoanType], 'List of Loans', null: false
     end
   end
 end

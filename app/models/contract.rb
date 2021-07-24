@@ -40,6 +40,17 @@ class Contract < ApplicationRecord
           inverse_of: :previous,
           dependent: :nullify
 
+  scope :active_for, lambda { |team|
+    joins(:player).where(players: { team_id: team.id }).where(
+      'started_on <= :date AND :date < ended_on', date: team.currently_on
+    )
+  }
+  scope :pending_for, lambda { |team|
+    joins(:player).where(players: { team_id: team.id }).where(
+      'signed_on <= :date AND :date < started_on', date: team.currently_on
+    )
+  }
+
   BONUS_REQUIREMENT_TYPES = [
     'Appearances',
     'Goals',

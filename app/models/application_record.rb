@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
 class ApplicationRecord < ActiveRecord::Base
-  default_scope { order :id }
-
   self.abstract_class = true
 
   def as_json(options = {})

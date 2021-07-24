@@ -2,7 +2,7 @@
 
 module Types
   module Statistics
-    class PlayerPerformanceStatsType < BaseObject
+    class PlayerPerformanceStatsType < BaseTypes::BaseObject
       description 'Player Match Statistics in a Competition and Season'
 
       stats_field_suffix = 'by Player this Season and Competition'

@@ -23,10 +23,22 @@ class Team < ApplicationRecord
   include Broadcastable
 
   belongs_to :user
-  has_many :players, dependent: :destroy
-  has_many :squads, dependent: :destroy
-  has_many :matches, dependent: :destroy
-  has_many :competitions, dependent: :destroy
+  has_many :players,
+           -> { order :id },
+           inverse_of: :team,
+           dependent: :destroy
+  has_many :squads,
+           -> { order :id },
+           inverse_of: :team,
+           dependent: :destroy
+  has_many :matches,
+           -> { order played_on: :asc },
+           inverse_of: :team,
+           dependent: :destroy
+  has_many :competitions,
+           -> { order :id },
+           inverse_of: :team,
+           dependent: :destroy
 
   has_one_attached :badge
 
@@ -42,26 +54,35 @@ class Team < ApplicationRecord
     self.currently_on ||= started_on
   end
 
-  def team
-    self
-  end
-
   def update_player_statuses
-    Player.transaction do
-      players
-        .preload(:contracts, :loans, :injuries)
-        .find_each(&:update_status)
+    players.find_each do |player|
+      player.update status:
+        if pending_player_ids.include? player.id
+          'Pending'
+        elsif active_player_ids.exclude? player.id
+          nil
+        elsif loaned_player_ids.include? player.id
+          'Loaned'
+        elsif injured_player_ids.include? player.id
+          'Injured'
+        else
+          'Active'
+        end
     end
-  end
-
-  def badge_path
-    return unless badge.attached? && !destroyed?
-
-    Rails.application.routes.url_helpers.rails_blob_url(badge, only_path: true)
   end
 
   def increment_date(amount)
     update(currently_on: currently_on + amount)
+  end
+
+  def team
+    self
+  end
+
+  def badge_path
+    return unless badge.attached?
+
+    Rails.application.routes.url_helpers.rails_blob_url badge, only_path: true
   end
 
   def current_season
@@ -80,32 +101,24 @@ class Team < ApplicationRecord
     team.matches.pluck(:home, :away).flatten.uniq.sort
   end
 
-  def competition_stats(competition: nil, season: nil)
-    Statistics::CompetitionCompiler.new(
-      team: self,
-      competition: competition,
-      season: season
-    ).results
+  def last_match
+    matches.last
   end
 
-  def player_performance_stats(player_ids: [], competition: nil, season: nil)
-    Statistics::PlayerPerformanceCompiler.new(
-      team: self,
-      player_ids: player_ids,
-      competition: competition,
-      season: season
-    ).results
+  def active_player_ids
+    @active_player_ids ||= Contract.active_for(self).pluck(:player_id)
   end
 
-  def player_development_stats(player_ids: [], season: nil)
-    Statistics::PlayerDevelopmentCompiler.new(
-      team: self,
-      player_ids: player_ids,
-      season: season
-    ).results
+  def pending_player_ids
+    @pending_player_ids ||=
+      Contract.pending_for(self).pluck(:player_id)
   end
 
-  def transfer_activity(season: nil)
-    Statistics::TransferActivityCompiler.new(team: self, season: season).results
+  def injured_player_ids
+    @injured_player_ids ||= Injury.active_for(self).pluck(:player_id)
+  end
+
+  def loaned_player_ids
+    @loaned_player_ids ||= Loan.active_for(self).pluck(:player_id)
   end
 end

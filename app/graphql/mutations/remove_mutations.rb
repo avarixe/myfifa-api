@@ -27,7 +27,7 @@ module Mutations
         argument :id, GraphQL::Types::ID,
                  "ID of #{model} to delete", required: true
 
-        field model.underscore.to_sym, Types::Myfifa.const_get("#{model}Type"),
+        field model.underscore.to_sym, Types.const_get("#{model}Type"),
               "#{model} that was removed if deleted from the database",
               null: true
         field :errors, Types::ValidationErrorsType,

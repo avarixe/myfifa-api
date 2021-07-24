@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Types::Myfifa::TeamType do
+describe Types::TeamType do
   subject { described_class }
 
   it { is_expected.to have_field(:id).of_type('ID!') }
@@ -17,6 +17,7 @@ describe Types::Myfifa::TeamType do
 
   it { is_expected.to have_field(:badge_path).of_type('String') }
   it { is_expected.to have_field(:opponents).of_type('[String!]!') }
+  it { is_expected.to have_field(:last_match).of_type('Match') }
 
   it { is_expected.to have_field(:players).of_type('[Player!]!') }
   it { is_expected.to have_field(:matches).of_type('[Match!]!') }

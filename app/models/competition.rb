@@ -22,7 +22,10 @@ class Competition < ApplicationRecord
   include Broadcastable
 
   belongs_to :team
-  has_many :stages, dependent: :destroy
+  has_many :stages,
+           -> { order :id },
+           inverse_of: :competition,
+           dependent: :destroy
 
   attr_accessor :preset_format,
                 :num_teams,

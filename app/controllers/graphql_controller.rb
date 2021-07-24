@@ -12,7 +12,7 @@ class GraphqlController < ApplicationController
     operation_name = params[:operationName]
     context = {
       # Query context goes here, for example:
-      current_user: current_user,
+      current_user: current_user
     }
     result = MyfifaApiSchema.execute query,
                                      variables: variables,
@@ -25,22 +25,14 @@ class GraphqlController < ApplicationController
 
     # Handle variables in form data, JSON body, or a blank value
     def prepare_variables(variables_param)
-      case variables_param
+      case variables_param.presence
       when String
-        if variables_param.present?
-          JSON.parse(variables_param) || {}
-        else
-          {}
-        end
-      when Hash
-        variables_param
+        JSON.parse(variables_param) || {}
       when ActionController::Parameters
         # GraphQL-Ruby will validate name and type of incoming variables.
         variables_param.to_unsafe_hash
-      when nil
-        {}
       else
-        raise ArgumentError, "Unexpected parameter: #{variables_param}"
+        {}
       end
     end
 end
