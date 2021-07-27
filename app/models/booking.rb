@@ -29,10 +29,10 @@ class Booking < ApplicationRecord
   validates :minute, inclusion: 1..120
   validates :player_name, presence: true
 
-  before_validation :set_names
+  before_validation :set_names, if: -> { player_id.present? }
 
   def set_names
-    self.player_name = player.name if player_id.present?
+    self.player_name = player.name
   end
 
   delegate :team, to: :match

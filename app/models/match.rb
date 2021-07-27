@@ -71,7 +71,8 @@ class Match < ApplicationRecord
   ##############
 
   before_create :set_season
-  after_save :increment_currently_on, if: :saved_change_to_played_on?
+  after_save :increment_currently_on,
+             if: -> { saved_change_to_played_on? && currently_on < played_on }
   after_save :set_cap_stop_times, if: :saved_change_to_extra_time?
 
   def set_season
@@ -79,8 +80,6 @@ class Match < ApplicationRecord
   end
 
   def increment_currently_on
-    return if currently_on >= played_on
-
     team.update(currently_on: played_on)
   end
 

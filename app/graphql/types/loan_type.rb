@@ -20,6 +20,13 @@ module Types
           'Date of Team when Loan is created', null: false
     field :wage_percentage, Integer,
           'Percentage of Wage to be paid by Destination Team', null: true
+    field :transfer_fee, Integer,
+          'Transfer Fee paid to the original Team ' \
+          'if Loan-to-Buy option is activated', null: true
+    field :addon_clause, Integer,
+          'Percentage of Transfer Fee to be received from the ' \
+          'destination Team if they sell this Player ' \
+          'after Loan-to-Buy option is activated', null: true
 
     field :player, PlayerType, 'Loaned Player', null: false
   end
