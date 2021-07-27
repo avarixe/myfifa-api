@@ -156,7 +156,8 @@ describe Match, type: :model do
 
     it "creates Caps matching SquadPlayers' player ids" do
       match.apply(squad)
-      expect(match.caps.pluck(:player_id)).to be == squad.squad_players.pluck(:player_id)
+      expect(match.caps.pluck(:player_id))
+        .to match_array(squad.squad_players.pluck(:player_id))
     end
 
     it "creates Caps matching SquadPlayers' positions" do
