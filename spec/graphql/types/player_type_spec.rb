@@ -35,4 +35,6 @@ describe Types::PlayerType do
   it { is_expected.to have_field(:bookings).of_type('[Booking!]!') }
 
   it { is_expected.to have_field(:current_contract).of_type('Contract') }
+  it { is_expected.to have_field(:current_injury).of_type('Injury') }
+  it { is_expected.to have_field(:current_loan).of_type('Loan') }
 end

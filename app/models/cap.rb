@@ -79,9 +79,7 @@ class Cap < ApplicationRecord
   end
 
   def active_player?
-    return if player.active?
-
-    errors.add(:player, 'must be active')
+    errors.add(:player, 'must be active') unless player.active?
   end
 
   after_destroy :remove_events

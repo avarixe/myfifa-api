@@ -15,10 +15,21 @@ module InputObjects
     argument :wage_percentage, Integer,
              'Percentage of Wage to be paid by Destination Team',
              required: false
+    argument :transfer_fee, Integer,
+             'Transfer Fee paid to the original Team ' \
+             'if Loan-to-Buy option is activated', required: false
+    argument :addon_clause, Integer,
+             'Percentage of Transfer Fee to be received from the ' \
+             'destination Team if they sell this Player ' \
+             'after Loan-to-Buy option is activated', required: false
 
     argument :returned, Boolean,
              "Whether Player has returned from this Loan\n" \
              '(automatically sets Ended On to Team contemporary date)',
+             required: false
+    argument :activated_buy_option, Boolean,
+             "Whether the Loan-to-Buy option has been activated\n" \
+             '(automatically ends Loan and creates associated Transfer)',
              required: false
   end
 end

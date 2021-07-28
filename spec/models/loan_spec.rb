@@ -5,11 +5,13 @@
 # Table name: loans
 #
 #  id              :bigint           not null, primary key
+#  addon_clause    :integer
 #  destination     :string
 #  ended_on        :date
 #  origin          :string
 #  signed_on       :date
 #  started_on      :date
+#  transfer_fee    :integer
 #  wage_percentage :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
@@ -53,7 +55,7 @@ describe Loan, type: :model do
     expect(loan.signed_on).to be == loan.team.currently_on
   end
 
-  it 'sets end date to the Team current date' do
+  it 'sets end date to the Team current date when returned' do
     loan = create :loan
     loan.team.increment_date 2.days
     loan.update returned: true
@@ -86,7 +88,10 @@ describe Loan, type: :model do
 
   describe 'if ended and player leaves' do
     let(:loan) do
-      create :loan, player: player, origin: Faker::Team.name, destination: player.team.name
+      create :loan,
+             player: player,
+             origin: Faker::Team.name,
+             destination: player.team.name
     end
 
     before do
@@ -118,6 +123,42 @@ describe Loan, type: :model do
 
     it 'stops tracking injury' do
       expect(player.last_injury.ended_on).to be == player.currently_on
+    end
+  end
+
+  describe 'when Loan-to-Buy is activated' do
+    let(:loan) do
+      create :loan,
+             player: player,
+             origin: player.team.name,
+             started_on: player.team.currently_on,
+             transfer_fee: Faker::Number.within(range: 50_000..10_000_000),
+             addon_clause: Faker::Number.within(range: 0..25)
+    end
+
+    before do
+      player.team.increment_date 1.week
+      loan.update activated_buy_option: true
+    end
+
+    it 'concludes the Loan' do
+      expect(loan.ended_on).to be == loan.team.currently_on
+    end
+
+    it 'creates a Transfer on the current Team date' do
+      expect(loan.player.transfers.last.moved_on)
+        .to be == loan.team.currently_on
+    end
+
+    it 'creates a Transfer inheriting its Transfer Fee' do
+      expect(loan.player.transfers.last.fee).to be == loan.transfer_fee
+    end
+
+    it 'creates a Transfer inheriting Add-On Clause, Origin and Destination' do
+      %i[addon_clause origin destination].each do |attribute|
+        expect(loan.player.transfers.last.public_send(attribute))
+          .to be == loan.public_send(attribute)
+      end
     end
   end
 end

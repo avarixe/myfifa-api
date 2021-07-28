@@ -5,11 +5,13 @@
 # Table name: loans
 #
 #  id              :bigint           not null, primary key
+#  addon_clause    :integer
 #  destination     :string
 #  ended_on        :date
 #  origin          :string
 #  signed_on       :date
 #  started_on      :date
+#  transfer_fee    :integer
 #  wage_percentage :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null
@@ -49,7 +51,8 @@ class Loan < ApplicationRecord
   ###############
 
   before_validation :set_signed_on
-  after_update :end_current_contract, if: :loaned_in?
+  after_update :end_current_contract, if: -> { loaned_in? && @returned }
+  after_update :activate_buy_option, if: -> { @activated_buy_option }
   after_save :update_status
 
   def set_signed_on
@@ -57,10 +60,16 @@ class Loan < ApplicationRecord
   end
 
   def end_current_contract
-    return if !returned? && player.contracts.none?
-
-    player.contracts.last.update(ended_on: ended_on)
+    player.contracts.last&.update(ended_on: ended_on)
     player.update_status
+  end
+
+  def activate_buy_option
+    player.transfers.create origin: origin,
+                            destination: destination,
+                            fee: transfer_fee,
+                            addon_clause: addon_clause,
+                            moved_on: team.currently_on
   end
 
   ##############
@@ -70,7 +79,13 @@ class Loan < ApplicationRecord
   delegate :update_status, to: :player
 
   def returned=(val)
+    @returned = val
     self.ended_on = team.currently_on if player_id && val
+  end
+
+  def activated_buy_option=(val)
+    @activated_buy_option = val
+    self.returned = true
   end
 
   ###############
@@ -82,10 +97,6 @@ class Loan < ApplicationRecord
   def current?
     started_on <= team.currently_on &&
       (ended_on.nil? || team.currently_on < ended_on)
-  end
-
-  def returned?
-    ended_on.present?
   end
 
   def loaned_in?

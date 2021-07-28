@@ -5,11 +5,13 @@
 # Table name: loans
 #
 #  id              :bigint           not null, primary key
+#  addon_clause    :integer
 #  destination     :string
 #  ended_on        :date
 #  origin          :string
 #  signed_on       :date
 #  started_on      :date
+#  transfer_fee    :integer
 #  wage_percentage :integer
 #  created_at      :datetime         not null
 #  updated_at      :datetime         not null

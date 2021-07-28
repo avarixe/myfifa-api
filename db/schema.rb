@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_07_23_232135) do
+ActiveRecord::Schema.define(version: 2021_07_26_235824) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -168,6 +168,8 @@ ActiveRecord::Schema.define(version: 2021_07_23_232135) do
     t.string "origin"
     t.date "signed_on"
     t.integer "wage_percentage"
+    t.integer "transfer_fee"
+    t.integer "addon_clause"
     t.index ["player_id"], name: "index_loans_on_player_id"
   end
 

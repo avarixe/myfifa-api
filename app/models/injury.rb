@@ -51,7 +51,8 @@ class Injury < ApplicationRecord
   ###############
 
   before_validation :set_started_on
-  after_save :update_status
+  after_create :update_status
+  after_update :update_status, if: :saved_change_to_ended_on
 
   def set_started_on
     self.started_on ||= team.currently_on

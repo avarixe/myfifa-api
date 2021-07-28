@@ -118,14 +118,19 @@ class Player < ApplicationRecord
   #  CALLBACK  #
   ##############
 
-  before_save :set_kit_no, if: :status_changed?
+  before_save :clear_kit_no,
+              if: -> { status_changed? && (status.blank? || loaned?) }
   after_create :save_history
-  after_update :update_history
-  after_update :end_pending_injuries, if: :saved_change_to_status?
-  after_update :set_contract_conclusion, if: :saved_change_to_status?
+  after_update :save_history,
+               if: -> { saved_change_to_ovr? || saved_change_to_value? }
+  after_update :end_pending_injuries, if: lambda {
+    saved_change_to_status? && status_before_last_save == 'Injured'
+  }
+  after_update :set_contract_conclusion,
+               if: -> { saved_change_to_status? && status.blank? }
 
-  def set_kit_no
-    self.kit_no = nil if status.blank? || loaned?
+  def clear_kit_no
+    self.kit_no = nil
   end
 
   def save_history
@@ -134,19 +139,11 @@ class Player < ApplicationRecord
                      kit_no: kit_no
   end
 
-  def update_history
-    save_history if saved_change_to_ovr? || saved_change_to_value?
-  end
-
   def end_pending_injuries
-    return if injured?
-
     injuries.where(ended_on: nil).update(ended_on: currently_on)
   end
 
   def set_contract_conclusion
-    return if status.present?
-
     last_contract&.update(conclusion: last_contract.conclusion || 'Expired')
   end
 

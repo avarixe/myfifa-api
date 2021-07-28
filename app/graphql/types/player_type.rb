@@ -43,6 +43,11 @@ module Types
     field :bookings, [BookingType],
           'List of Bookings for this Player', null: false
 
-    field :current_contract, ContractType, null: true
+    field :current_contract, ContractType,
+          'Currently active Contract bound to this Player', null: true
+    field :current_injury, InjuryType,
+          'Current Injury afficted by this Player', null: true
+    field :current_loan, LoanType,
+          'Currently active Loan bound to this Player', null: true
   end
 end
