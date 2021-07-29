@@ -32,6 +32,14 @@ module Types
           'List of Competitions bound to this Team', null: false
     field :squads, [SquadType], 'List of Squads bound to this Team', null: false
 
+    field :loaned_players, [PlayerType],
+          'List of Loaned Players bound to this Team', null: false
+    field :injured_players, [PlayerType],
+          'List of Injured Players bound to this Team', null: false
+    field :expiring_players, [PlayerType],
+          'List of Players with Contracts ending at the end of the season',
+          null: false
+
     field :competition_stats, [Statistics::CompetitionStatsType],
           'List of Team performance statistics in each Competition',
           null: false do

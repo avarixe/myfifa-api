@@ -24,6 +24,10 @@ describe Types::TeamType do
   it { is_expected.to have_field(:competitions).of_type('[Competition!]!') }
   it { is_expected.to have_field(:squads).of_type('[Squad!]!') }
 
+  it { is_expected.to have_field(:loaned_players).of_type('[Player!]!') }
+  it { is_expected.to have_field(:injured_players).of_type('[Player!]!') }
+  it { is_expected.to have_field(:expiring_players).of_type('[Player!]!') }
+
   describe 'competitionStats field' do
     subject(:field) { described_class.fields['competitionStats'] }
 

@@ -39,7 +39,6 @@ module Statistics
       def season_query
         data = player_history_query
                .where(recorded_on: nil..season_end)
-               .unscope(:order)
                .order(recorded_on: :desc)
                .pluck(:player_id, :recorded_on, :ovr, :value)
         data.group_by(&:first).map do |_player_id, player_records|

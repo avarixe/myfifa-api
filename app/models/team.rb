@@ -105,6 +105,23 @@ class Team < ApplicationRecord
     matches.last
   end
 
+  def loaned_players
+    players.where(status: 'Loaned')
+  end
+
+  def injured_players
+    players.where(status: 'Injured')
+  end
+
+  def expiring_players
+    players.joins(:contracts).where(
+      contracts: {
+        conclusion: nil,
+        ended_on: nil..(end_of_current_season + 1.day)
+      }
+    )
+  end
+
   def active_player_ids
     @active_player_ids ||= Contract.active_for(self).pluck(:player_id)
   end
