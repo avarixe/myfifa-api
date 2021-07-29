@@ -57,6 +57,80 @@ describe Team, type: :model do
     expect(team.last_match).to be == Match.order(:played_on).last
   end
 
+  describe '#injured_players' do
+    let(:player) { create :player, team: team }
+
+    it 'includes injured Players bound to it' do
+      create :injury, player: player, started_on: team.currently_on
+      expect(team.injured_players).to include(player)
+    end
+
+    it 'does not include non-injured Players bound to it' do
+      expect(team.injured_players).not_to include(player)
+    end
+  end
+
+  describe '#loaned_players' do
+    let(:player) { create :player, team: team }
+
+    it 'includes Players loaned from it' do
+      create :loan,
+             player: player,
+             origin: team.name,
+             started_on: team.currently_on
+      expect(team.loaned_players).to include(player)
+    end
+
+    it 'does not include non-loaned Players bound to it' do
+      expect(team.loaned_players).not_to include(player)
+    end
+
+    it 'does not include Played loaned to it' do
+      create :loan,
+             player: player,
+             destination: team.name,
+             started_on: team.currently_on
+      expect(team.loaned_players).not_to include(player)
+    end
+  end
+
+  describe '#expiring_players' do
+    let(:player) { create :player, team: team, contracts_count: 0 }
+
+    it 'includes Players with contracts ending after the current season' do
+      create :contract,
+             player: player,
+             ended_on: team.end_of_current_season + 1.day
+      expect(team.expiring_players).to include(player)
+    end
+
+    it 'does not include Players with contracts that already ended' do
+      create :contract,
+             player: player,
+             ended_on: team.currently_on + 1.month
+      team.increment_date 1.year
+      expect(team.expiring_players).not_to include(player)
+    end
+
+    it 'does not include Played with expiring contrcts that were renewed' do
+      create :contract,
+             player: player,
+             ended_on: team.currently_on + 1.month
+      create :contract,
+             player: player,
+             ended_on: team.currently_on + 2.years
+      expect(team.expiring_players).not_to include(player)
+    end
+  end
+
+  it '#injured_players returns all injured Players bound to it' do
+    players = create_list :player, 3, team: team
+    players.each do |player|
+      create :injury, player: player, started_on: team.currently_on
+      expect(team.injured_players).to include(player)
+    end
+  end
+
   describe 'when currently_on changes' do
     it 'updates Player status to Pending when applicable' do
       player = create :player, team: team, contracts_count: 0
