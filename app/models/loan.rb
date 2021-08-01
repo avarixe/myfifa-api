@@ -85,7 +85,7 @@ class Loan < ApplicationRecord
 
   def activated_buy_option=(val)
     @activated_buy_option = val
-    self.returned = true
+    self.returned = val
   end
 
   ###############
