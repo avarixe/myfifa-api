@@ -72,7 +72,8 @@ describe Mutations::AddMutations do
                 )
               when 'Injury'
                 graphql_attributes_for(:injury).merge(
-                  startedOn: parent_record.team.currently_on.to_s
+                  startedOn: parent_record.team.currently_on.to_s,
+                  endedOn: (parent_record.team.currently_on + 3.months).to_s
                 )
               else
                 graphql_attributes_for(model.underscore)

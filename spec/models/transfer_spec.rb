@@ -52,7 +52,7 @@ describe Transfer, type: :model do
       create :transfer,
              player: player,
              origin: player.team.name,
-             moved_on: player.currently_on
+             moved_on: player.team.currently_on
     end
 
     it 'clears Player status' do
@@ -60,7 +60,7 @@ describe Transfer, type: :model do
     end
 
     it 'ends the current contract' do
-      expect(player.last_contract.ended_on).to be == player.currently_on
+      expect(player.last_contract.ended_on).to be == player.team.currently_on
     end
 
     it "concludes the current contract as 'Transferred'" do
@@ -73,7 +73,7 @@ describe Transfer, type: :model do
       create :transfer,
              player: player,
              origin: player.team.name,
-             moved_on: player.currently_on + 1.week
+             moved_on: player.team.currently_on + 1.week
     end
 
     it 'does not immediately clear Player status' do
@@ -86,7 +86,7 @@ describe Transfer, type: :model do
       create :transfer,
              player: player,
              origin: player.team.name,
-             moved_on: player.currently_on + 1.week
+             moved_on: player.team.currently_on + 1.week
       player.team.increment_date 1.week
     end
 
@@ -95,7 +95,7 @@ describe Transfer, type: :model do
     end
 
     it 'ends the current contract' do
-      expect(player.last_contract.ended_on).to be == player.currently_on
+      expect(player.last_contract.ended_on).to be == player.team.currently_on
     end
 
     it "concludes the current contract as 'Transferred'" do

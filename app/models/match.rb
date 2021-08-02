@@ -71,8 +71,9 @@ class Match < ApplicationRecord
   ##############
 
   before_create :set_season
-  after_save :increment_currently_on,
-             if: -> { saved_change_to_played_on? && currently_on < played_on }
+  after_save :increment_currently_on, if: lambda {
+    saved_change_to_played_on? && team.currently_on < played_on
+  }
   after_save :set_cap_stop_times, if: :saved_change_to_extra_time?
 
   def set_season
@@ -102,8 +103,6 @@ class Match < ApplicationRecord
   ###############
   #  ACCESSORS  #
   ###############
-
-  delegate :currently_on, to: :team
 
   def team_played?
     [home, away].include? team.name

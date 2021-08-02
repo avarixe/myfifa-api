@@ -10,5 +10,9 @@ module InputObjects
              'Date Player recovered from this Injury', required: false
     argument :description, String,
              'Description of this Injury', required: true
+
+    argument :duration, InjuryDurationAttributes,
+             'Duration of this Injury (automatically sets End Date)',
+             required: false
   end
 end

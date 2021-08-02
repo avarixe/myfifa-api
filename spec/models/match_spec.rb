@@ -135,12 +135,12 @@ describe Match, type: :model do
   end
 
   it 'does not move current date forward if date is behind current date' do
-    match.update(played_on: match.currently_on - 1.day)
+    match.update(played_on: match.team.currently_on - 1.day)
     expect(match.team.reload.currently_on).not_to be == match.played_on
   end
 
   it 'moves current date forward if date is ahead of current date' do
-    match.update(played_on: match.currently_on + 1.day)
+    match.update(played_on: match.team.currently_on + 1.day)
     expect(match.team.reload.currently_on).to be == match.played_on
   end
 
@@ -162,7 +162,8 @@ describe Match, type: :model do
 
     it "creates Caps matching SquadPlayers' positions" do
       match.apply(squad)
-      expect(match.caps.pluck(:pos)).to be == squad.squad_players.pluck(:pos)
+      expect(match.caps.pluck(:pos))
+        .to match_array(squad.squad_players.pluck(:pos))
     end
   end
 end

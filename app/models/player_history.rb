@@ -28,18 +28,18 @@ class PlayerHistory < ApplicationRecord
   validates :value, numericality: { only_integer: true }
   validates :kit_no, numericality: { only_integer: true }, allow_nil: true
 
-  delegate :currently_on, to: :player
-
   before_validation :set_recorded_on
   before_create :remove_duplicates
 
   def remove_duplicates
     PlayerHistory
-      .where(player_id: player_id, recorded_on: currently_on)
+      .where(player_id: player_id, recorded_on: team.currently_on)
       .delete_all
   end
 
   def set_recorded_on
-    self.recorded_on ||= currently_on
+    self.recorded_on ||= team.currently_on
   end
+
+  delegate :team, to: :player
 end

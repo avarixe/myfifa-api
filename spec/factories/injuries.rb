@@ -22,8 +22,20 @@ FactoryBot.define do
     description { Faker::Lorem.word }
     player
 
-    after(:build) do |injury|
-      injury.started_on ||= injury.player.team.currently_on
+    transient do
+      duration { rand(1..200).days }
+    end
+
+    after(:build) do |injury, evaluator|
+      if injury.ended_on.blank?
+        injury.started_on ||= Faker::Date.between(
+          from: Date.current,
+          to: Date.current + 1.year
+        )
+        injury.ended_on = injury.started_on + evaluator.duration
+      elsif injury.started_on.blank?
+        injury.started_on = injury.ended_on - evaluator.duration
+      end
     end
   end
 end

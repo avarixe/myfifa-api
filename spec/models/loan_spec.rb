@@ -65,7 +65,7 @@ describe Loan, type: :model do
   it 'changes status to loaned when loaned out' do
     create :loan,
            player: player,
-           started_on: player.currently_on,
+           started_on: player.team.currently_on,
            origin: player.team.name
     expect(player.loaned?).to be true
   end
@@ -73,7 +73,7 @@ describe Loan, type: :model do
   it 'does not change status to loaned when loaned in' do
     create :loan,
            player: player,
-           started_on: player.currently_on,
+           started_on: player.team.currently_on,
            destination: player.team.name
     expect(player.loaned?).not_to be true
   end
@@ -104,17 +104,19 @@ describe Loan, type: :model do
     end
 
     it 'deactivates the Player contract' do
-      expect(player.last_contract.ended_on).to be == player.currently_on
+      expect(player.last_contract.ended_on).to be == player.team.currently_on
     end
   end
 
   describe 'when created for Injured Player' do
     before do
-      create :injury, player: player
+      create :injury,
+             player: player,
+             started_on: player.team.currently_on
       create :loan,
              player: player,
              origin: player.team.name,
-             started_on: player.currently_on
+             started_on: player.team.currently_on
     end
 
     it 'stops regarding Player as injured' do
@@ -122,7 +124,7 @@ describe Loan, type: :model do
     end
 
     it 'stops tracking injury' do
-      expect(player.last_injury.ended_on).to be == player.currently_on
+      expect(player.last_injury.ended_on).to be == player.team.currently_on
     end
   end
 

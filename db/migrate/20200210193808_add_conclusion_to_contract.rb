@@ -9,7 +9,7 @@ class AddConclusionToContract < ActiveRecord::Migration[6.0]
           'Transferred'
         elsif contract.player.contracts.where(started_on: contract.ended_on).any?
           'Renewed'
-        elsif contract.ended_on < contract.currently_on
+        elsif contract.ended_on < contract.team.currently_on
           'Expired'
         end
       )
