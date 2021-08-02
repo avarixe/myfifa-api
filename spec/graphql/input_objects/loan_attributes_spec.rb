@@ -5,6 +5,7 @@ require 'rails_helper'
 describe InputObjects::LoanAttributes do
   subject { described_class }
 
+  it { is_expected.to accept_argument(:signed_on).of_type('ISO8601Date!') }
   it { is_expected.to accept_argument(:started_on).of_type('ISO8601Date!') }
   it { is_expected.to accept_argument(:ended_on).of_type('ISO8601Date') }
   it { is_expected.to accept_argument(:destination).of_type('String!') }

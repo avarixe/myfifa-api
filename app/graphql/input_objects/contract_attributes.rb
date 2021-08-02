@@ -24,6 +24,8 @@ module InputObjects
              required: true
     argument :started_on, GraphQL::Types::ISO8601Date,
              'Date on which this Contract becomes active', required: true
+    argument :signed_on, GraphQL::Types::ISO8601Date,
+             'Date on which this Contract was signed', required: true
 
     argument :num_seasons, Integer,
              'Number of Season this Contract will be active for',

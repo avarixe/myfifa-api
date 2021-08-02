@@ -40,9 +40,13 @@ class Loan < ApplicationRecord
   #  VALIDATION  #
   ################
 
-  validates :started_on, presence: true
   validates :origin, presence: true
   validates :destination, presence: true
+  validates :started_on,
+            date: {
+              after_or_equal_to: :signed_on,
+              before_or_equal_to: :ended_on
+            }
   validates :ended_on, date: { after_or_equal_to: :started_on }
   validates :wage_percentage, inclusion: { in: 0..100, allow_nil: true }
 

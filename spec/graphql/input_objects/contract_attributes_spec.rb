@@ -13,6 +13,7 @@ describe InputObjects::ContractAttributes do
   it { is_expected.to accept_argument(:bonus_req_type).of_type('String') }
   it { is_expected.to accept_argument(:ended_on).of_type('ISO8601Date!') }
   it { is_expected.to accept_argument(:started_on).of_type('ISO8601Date!') }
+  it { is_expected.to accept_argument(:signed_on).of_type('ISO8601Date!') }
 
   it { is_expected.to accept_argument(:num_seasons).of_type('Int') }
 end

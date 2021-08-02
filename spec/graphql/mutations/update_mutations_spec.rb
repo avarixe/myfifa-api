@@ -73,6 +73,25 @@ describe Mutations::UpdateMutations do
                 playerId: record.player_id,
                 replacementId: record.replacement_id
               )
+            when 'Contract'
+              graphql_attributes_for(:contract).merge(
+                signedOn: record.team.currently_on.to_s
+              )
+            when 'Injury'
+              graphql_attributes_for(:injury).merge(
+                startedOn: record.team.currently_on.to_s,
+                endedOn: (record.team.currently_on + 3.months).to_s
+              )
+            when 'Loan'
+              graphql_attributes_for(:loan).merge(
+                signedOn: record.team.currently_on.to_s,
+                startedOn: record.team.currently_on.to_s,
+                endedOn: (record.team.currently_on + 1.year).to_s
+              )
+            when 'Transfer'
+              graphql_attributes_for(:transfer).merge(
+                signedOn: record.team.currently_on.to_s
+              )
             else
               graphql_attributes_for(model.underscore)
             end

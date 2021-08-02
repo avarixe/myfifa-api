@@ -39,10 +39,6 @@ describe Loan, type: :model do
     expect(build(:loan, destination: nil)).not_to be_valid
   end
 
-  it 'only accepts a wage percentage' do
-    expect(build(:loan, wage_percentage: nil)).to be_valid
-  end
-
   it 'has an end date after start date' do
     loan = build :loan,
                  started_on: Faker::Date.forward(days: 1),

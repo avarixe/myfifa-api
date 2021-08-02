@@ -1,4 +1,4 @@
-class SetEndedOnToOpenInjuries < ActiveRecord::Migration[6.1]
+class SetEndedOnForOpenInjuries < ActiveRecord::Migration[6.1]
   def change
     Injury
       .where(ended_on: nil)
