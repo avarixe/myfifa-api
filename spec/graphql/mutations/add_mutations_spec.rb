@@ -75,6 +75,11 @@ describe Mutations::AddMutations do
                   startedOn: parent_record.team.currently_on.to_s,
                   endedOn: (parent_record.team.currently_on + 3.months).to_s
                 )
+              when 'Loan'
+                graphql_attributes_for(:loan).merge(
+                  startedOn: parent_record.team.currently_on.to_s,
+                  endedOn: (parent_record.team.currently_on + 1.year).to_s
+                )
               else
                 graphql_attributes_for(model.underscore)
               end

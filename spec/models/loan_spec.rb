@@ -55,13 +55,6 @@ describe Loan, type: :model do
     expect(loan.signed_on).to be == loan.team.currently_on
   end
 
-  it 'sets end date to the Team current date when returned' do
-    loan = create :loan
-    loan.team.increment_date 2.days
-    loan.update returned: true
-    expect(loan.ended_on).to be == loan.team.currently_on
-  end
-
   it 'changes status to loaned when loaned out' do
     create :loan,
            player: player,
@@ -81,31 +74,11 @@ describe Loan, type: :model do
   it 'changes status when loaned Player returns to team' do
     create :loan,
            player: player,
-           origin: player.team.name
-    player.loans.last.update returned: true
-    expect(player.active?).to be true
-  end
-
-  describe 'if ended and player leaves' do
-    let(:loan) do
-      create :loan,
-             player: player,
-             origin: Faker::Team.name,
-             destination: player.team.name
-    end
-
-    before do
-      player.team.increment_date 1.year
-      loan.update returned: true
-    end
-
-    it 'sets Player status as Inactive' do
-      expect(player.status).to be_nil
-    end
-
-    it 'deactivates the Player contract' do
-      expect(player.last_contract.ended_on).to be == player.team.currently_on
-    end
+           origin: player.team.name,
+           started_on: player.team.currently_on,
+           ended_on: player.team.currently_on + 1.week
+    player.team.increment_date 1.week
+    expect(player.reload.active?).to be true
   end
 
   describe 'when created for Injured Player' do
@@ -141,10 +114,6 @@ describe Loan, type: :model do
     before do
       player.team.increment_date 1.week
       loan.update activated_buy_option: true
-    end
-
-    it 'concludes the Loan' do
-      expect(loan.ended_on).to be == loan.team.currently_on
     end
 
     it 'creates a Transfer on the current Team date' do

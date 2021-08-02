@@ -13,6 +13,5 @@ describe InputObjects::LoanAttributes do
   it { is_expected.to accept_argument(:transfer_fee).of_type('Int') }
   it { is_expected.to accept_argument(:addon_clause).of_type('Int') }
 
-  it { is_expected.to accept_argument(:returned).of_type('Boolean') }
   it { is_expected.to accept_argument(:activated_buy_option).of_type('Boolean') }
 end

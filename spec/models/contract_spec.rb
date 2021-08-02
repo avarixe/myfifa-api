@@ -185,6 +185,32 @@ describe Contract, type: :model do
     end
   end
 
+  describe 'when expired for Loaned Player' do
+    let(:player) { create :player, contracts_count: 0 }
+
+    before do
+      create :contract,
+             player: player,
+             started_on: player.team.currently_on,
+             ended_on: player.team.currently_on + 1.week
+      create :loan,
+             player: player,
+             origin: player.team.name,
+             started_on: player.team.currently_on,
+             ended_on: player.team.currently_on + 1.year
+      player.team.increment_date 1.week
+      player.reload
+    end
+
+    it 'stops regarding Player as loaned' do
+      expect(player).not_to be_loaned
+    end
+
+    it 'stops tracking loan' do
+      expect(player.last_loan.ended_on).to be == player.team.currently_on
+    end
+  end
+
   describe 'when terminated' do
     let(:contract) do
       create :contract,

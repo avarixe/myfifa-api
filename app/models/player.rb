@@ -126,6 +126,9 @@ class Player < ApplicationRecord
   after_update :end_pending_injuries, if: lambda {
     saved_change_to_status? && status_before_last_save == 'Injured'
   }
+  after_update :end_pending_loans, if: lambda {
+    saved_change_to_status? && status_before_last_save == 'Loaned'
+  }
   after_update :set_contract_conclusion,
                if: -> { saved_change_to_status? && status.blank? }
 
@@ -141,6 +144,12 @@ class Player < ApplicationRecord
 
   def end_pending_injuries
     injuries
+      .where('ended_on > ?', team.currently_on)
+      .update(ended_on: team.currently_on)
+  end
+
+  def end_pending_loans
+    loans
       .where('ended_on > ?', team.currently_on)
       .update(ended_on: team.currently_on)
   end
