@@ -41,23 +41,14 @@ describe Injury, type: :model do
     expect(build(:injury, player: injury.player)).not_to be_valid
   end
 
-  it 'occurs on the Team current date' do
-    expect(injury.started_on).to be == injury.team.currently_on
-  end
-
-  it 'sets ended on timestamp to Team current date when recovered' do
-    injury.team.increment_date(2.days)
-    injury.update(recovered: true)
-    expect(injury.ended_on).to be == injury.team.currently_on
-  end
-
   it 'changes Player status to injured when injured' do
     expect(injury.player.injured?).to be true
   end
 
   it 'changes Player status when no longer injured' do
     player = injury.player
-    player.injuries.last.update(recovered: true)
+    player.team.increment_date 1.week
+    player.injuries.last.update(ended_on: player.team.currently_on)
     expect(player.active?).to be true
   end
 end

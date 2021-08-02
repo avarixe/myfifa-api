@@ -50,29 +50,14 @@ class Injury < ApplicationRecord
   #  CALLBACKS  #
   ###############
 
-  before_validation :set_started_on
   after_create :update_status
   after_update :update_status, if: :saved_change_to_ended_on
-
-  def set_started_on
-    self.started_on ||= team.currently_on
-  end
-
-  ##############
-  #  MUTATORS  #
-  ##############
-
-  delegate :update_status, to: :player
-
-  def recovered=(val)
-    self.ended_on = team.currently_on if player_id && val
-  end
 
   ###############
   #  ACCESSORS  #
   ###############
 
-  delegate :team, to: :player
+  delegate :team, :update_status, to: :player
 
   def current?
     started_on <= team.currently_on &&

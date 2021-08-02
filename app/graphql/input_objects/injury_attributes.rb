@@ -10,10 +10,5 @@ module InputObjects
              'Date Player recovered from this Injury', required: false
     argument :description, String,
              'Description of this Injury', required: true
-
-    argument :recovered, Boolean,
-             "Whether Player has recovered from this Injury\n" \
-             '(automatically sets Ended On to Team contemporary date)',
-             required: false
   end
 end

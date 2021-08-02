@@ -66,10 +66,13 @@ describe Mutations::AddMutations do
                   end
                 }
               when 'Substitution'
-
                 graphql_attributes_for(:substitution).merge(
                   playerId: create(:player, team: parent_record.team).id,
                   replacementId: create(:player, team: parent_record.team).id
+                )
+              when 'Injury'
+                graphql_attributes_for(:injury).merge(
+                  startedOn: parent_record.team.currently_on.to_s
                 )
               else
                 graphql_attributes_for(model.underscore)

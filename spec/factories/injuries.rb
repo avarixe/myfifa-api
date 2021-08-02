@@ -21,5 +21,9 @@ FactoryBot.define do
   factory :injury do
     description { Faker::Lorem.word }
     player
+
+    after(:build) do |injury|
+      injury.started_on ||= injury.player.team.currently_on
+    end
   end
 end
