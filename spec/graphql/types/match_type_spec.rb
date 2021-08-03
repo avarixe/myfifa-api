@@ -20,7 +20,7 @@ describe Types::MatchType do
   it { is_expected.to have_field(:friendly).of_type('Boolean!') }
 
   it { is_expected.to have_field(:score).of_type('String!') }
-  it { is_expected.to have_field(:team_result).of_type('String!') }
+  it { is_expected.to have_field(:team_result).of_type('String') }
 
   it { is_expected.to have_field(:team).of_type('Team!') }
   it { is_expected.to have_field(:caps).of_type('[Cap!]!') }

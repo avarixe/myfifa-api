@@ -171,7 +171,8 @@ describe Contract, type: :model do
              ended_on: player.team.currently_on + 1.week
       create :injury,
              player: player,
-             started_on: player.team.currently_on
+             started_on: player.team.currently_on,
+             ended_on: player.team.currently_on + 3.months
       player.team.increment_date 1.week
       player.reload
     end
