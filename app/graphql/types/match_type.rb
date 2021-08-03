@@ -27,7 +27,7 @@ module Types
     field :score, String, 'Score Display of both Teams', null: false
     field :team_result, String,
           'Result of the Match in terms of bound Team, if applicable',
-          null: false
+          null: true
 
     field :team, TeamType, 'Team pertaining to this Match', null: false
     field :caps, [CapType], 'List of Caps bound to this Match', null: false
