@@ -102,7 +102,7 @@ class Contract < ApplicationRecord
   after_create :update_status
 
   def set_signed_on
-    self.signed_on ||= currently_on
+    self.signed_on ||= team.currently_on
   end
 
   def close_previous_contract
@@ -120,10 +120,8 @@ class Contract < ApplicationRecord
   #  MUTATORS  #
   ##############
 
-  delegate :update_status, to: :player
-
   def terminate!
-    update ended_on: currently_on,
+    update ended_on: team.currently_on,
            conclusion: 'Released'
   end
 
@@ -148,17 +146,17 @@ class Contract < ApplicationRecord
   #  ACCESSORS  #
   ###############
 
-  delegate :team, :currently_on, to: :player
+  delegate :team, :update_status, to: :player
 
   def current?
     pending? || active?
   end
 
   def active?
-    started_on <= currently_on && currently_on < ended_on
+    started_on <= team.currently_on && team.currently_on < ended_on
   end
 
   def pending?
-    signed_on <= currently_on && currently_on < started_on
+    signed_on <= team.currently_on && team.currently_on < started_on
   end
 end

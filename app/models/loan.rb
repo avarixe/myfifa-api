@@ -25,25 +25,29 @@
 class Loan < ApplicationRecord
   include Broadcastable
 
+  attr_accessor :activated_buy_option
+
   belongs_to :player
 
   scope :active_for, lambda { |team|
     joins(:player)
       .where(players: { team_id: team.id })
       .where(started_on: nil..team.currently_on)
-      .where('ended_on IS NULL OR ended_on > ?', team.currently_on)
+      .where('ended_on > ?', team.currently_on)
   }
 
   ################
   #  VALIDATION  #
   ################
 
-  validates :started_on, presence: true
   validates :origin, presence: true
   validates :destination, presence: true
-  validates :ended_on,
-            date: { after_or_equal_to: :started_on },
-            allow_nil: true
+  validates :started_on,
+            date: {
+              after_or_equal_to: :signed_on,
+              before_or_equal_to: :ended_on
+            }
+  validates :ended_on, date: { after_or_equal_to: :started_on }
   validates :wage_percentage, inclusion: { in: 0..100, allow_nil: true }
 
   ###############
@@ -51,17 +55,12 @@ class Loan < ApplicationRecord
   ###############
 
   before_validation :set_signed_on
-  after_update :end_current_contract, if: -> { loaned_in? && @returned }
-  after_update :activate_buy_option, if: -> { @activated_buy_option }
-  after_save :update_status
+  after_create :update_status
+  after_update :update_status, if: :saved_change_to_ended_on?
+  after_update :activate_buy_option, if: :activated_buy_option
 
   def set_signed_on
     self.signed_on ||= team.currently_on
-  end
-
-  def end_current_contract
-    player.contracts.last&.update(ended_on: ended_on)
-    player.update_status
   end
 
   def activate_buy_option
@@ -78,16 +77,6 @@ class Loan < ApplicationRecord
 
   delegate :update_status, to: :player
 
-  def returned=(val)
-    @returned = val
-    self.ended_on = team.currently_on if player_id && val
-  end
-
-  def activated_buy_option=(val)
-    @activated_buy_option = val
-    self.returned = val
-  end
-
   ###############
   #  ACCESSORS  #
   ###############
@@ -95,12 +84,7 @@ class Loan < ApplicationRecord
   delegate :team, to: :player
 
   def current?
-    started_on <= team.currently_on &&
-      (ended_on.nil? || team.currently_on < ended_on)
-  end
-
-  def loaned_in?
-    team.name == destination
+    started_on <= team.currently_on && team.currently_on < ended_on
   end
 
   def loaned_out?

@@ -32,7 +32,7 @@ class Transfer < ApplicationRecord
 
   validates :origin, presence: true
   validates :destination, presence: true
-  validates :moved_on, presence: true
+  validates :moved_on, date: { after_or_equal_to: :signed_on }
   validates :addon_clause,
             inclusion: { in: 0..100 },
             allow_nil: true

@@ -5,15 +5,14 @@ module InputObjects
     description 'Attributes to create/update a Injury record'
 
     argument :started_on, GraphQL::Types::ISO8601Date,
-             'Date Player was afflicted by this Injury', required: false
+             'Date Player was afflicted by this Injury', required: true
     argument :ended_on, GraphQL::Types::ISO8601Date,
              'Date Player recovered from this Injury', required: false
     argument :description, String,
              'Description of this Injury', required: true
 
-    argument :recovered, Boolean,
-             "Whether Player has recovered from this Injury\n" \
-             '(automatically sets Ended On to Team contemporary date)',
+    argument :duration, InjuryDurationAttributes,
+             'Duration of this Injury (automatically sets End Date)',
              required: false
   end
 end

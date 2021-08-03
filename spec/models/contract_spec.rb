@@ -167,9 +167,11 @@ describe Contract, type: :model do
     before do
       create :contract,
              player: player,
-             started_on: player.currently_on,
-             ended_on: player.currently_on + 1.week
-      create :injury, player: player
+             started_on: player.team.currently_on,
+             ended_on: player.team.currently_on + 1.week
+      create :injury,
+             player: player,
+             started_on: player.team.currently_on
       player.team.increment_date 1.week
       player.reload
     end
@@ -179,7 +181,33 @@ describe Contract, type: :model do
     end
 
     it 'stops tracking injury' do
-      expect(player.last_injury.ended_on).to be == player.currently_on
+      expect(player.last_injury.ended_on).to be == player.team.currently_on
+    end
+  end
+
+  describe 'when expired for Loaned Player' do
+    let(:player) { create :player, contracts_count: 0 }
+
+    before do
+      create :contract,
+             player: player,
+             started_on: player.team.currently_on,
+             ended_on: player.team.currently_on + 1.week
+      create :loan,
+             player: player,
+             origin: player.team.name,
+             started_on: player.team.currently_on,
+             ended_on: player.team.currently_on + 1.year
+      player.team.increment_date 1.week
+      player.reload
+    end
+
+    it 'stops regarding Player as loaned' do
+      expect(player).not_to be_loaned
+    end
+
+    it 'stops tracking loan' do
+      expect(player.last_loan.ended_on).to be == player.team.currently_on
     end
   end
 
@@ -228,7 +256,7 @@ describe Contract, type: :model do
     before do
       contract.team.increment_date(1.month)
       player = contract.player
-      create :contract, player: player, started_on: player.currently_on
+      create :contract, player: player, started_on: player.team.currently_on
     end
 
     it 'keeps the player as Active' do
@@ -236,7 +264,7 @@ describe Contract, type: :model do
     end
 
     it 'terminates the previous contract' do
-      expect(contract.reload.ended_on).to be == contract.currently_on
+      expect(contract.reload.ended_on).to be == contract.team.currently_on
     end
 
     it "sets previous conclusion as 'Renewed'" do

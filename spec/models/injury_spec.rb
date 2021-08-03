@@ -20,7 +20,12 @@
 require 'rails_helper'
 
 describe Injury, type: :model do
-  let(:injury) { create :injury }
+  let(:injury) do
+    player = create :player
+    create :injury,
+           started_on: player.team.currently_on,
+           player: player
+  end
 
   it 'has a valid factory' do
     expect(create(:injury)).to be_valid
@@ -38,17 +43,10 @@ describe Injury, type: :model do
   end
 
   it 'is rejected for already injured Players' do
-    expect(build(:injury, player: injury.player)).not_to be_valid
-  end
-
-  it 'occurs on the Team current date' do
-    expect(injury.started_on).to be == injury.team.currently_on
-  end
-
-  it 'sets ended on timestamp to Team current date when recovered' do
-    injury.team.increment_date(2.days)
-    injury.update(recovered: true)
-    expect(injury.ended_on).to be == injury.team.currently_on
+    injury2 = build :injury,
+                    started_on: injury.team.currently_on,
+                    player: injury.player
+    expect(injury2).not_to be_valid
   end
 
   it 'changes Player status to injured when injured' do
@@ -57,7 +55,16 @@ describe Injury, type: :model do
 
   it 'changes Player status when no longer injured' do
     player = injury.player
-    player.injuries.last.update(recovered: true)
+    player.team.increment_date 1.week
+    player.injuries.last.update(ended_on: player.team.currently_on)
     expect(player.active?).to be true
+  end
+
+  %w[Days Weeks Months Years].each do |timespan|
+    it "automatically sets ended_on when #{timespan} duration is provided" do
+      injury.duration = { length: 3, timespan: timespan }
+      expect(injury.ended_on)
+        .to be == injury.team.currently_on + 3.public_send(timespan.downcase)
+    end
   end
 end

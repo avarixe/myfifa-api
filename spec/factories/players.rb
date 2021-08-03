@@ -43,7 +43,7 @@ FactoryBot.define do
       create_list :contract,
                   evaluator.contracts_count,
                   player: player,
-                  started_on: player.currently_on
+                  started_on: player.team.currently_on
     end
   end
 end

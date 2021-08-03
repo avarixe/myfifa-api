@@ -126,6 +126,9 @@ class Player < ApplicationRecord
   after_update :end_pending_injuries, if: lambda {
     saved_change_to_status? && status_before_last_save == 'Injured'
   }
+  after_update :end_pending_loans, if: lambda {
+    saved_change_to_status? && status_before_last_save == 'Loaned'
+  }
   after_update :set_contract_conclusion,
                if: -> { saved_change_to_status? && status.blank? }
 
@@ -140,7 +143,15 @@ class Player < ApplicationRecord
   end
 
   def end_pending_injuries
-    injuries.where(ended_on: nil).update(ended_on: currently_on)
+    injuries
+      .where('ended_on > ?', team.currently_on)
+      .update(ended_on: team.currently_on)
+  end
+
+  def end_pending_loans
+    loans
+      .where('ended_on > ?', team.currently_on)
+      .update(ended_on: team.currently_on)
   end
 
   def set_contract_conclusion
@@ -169,8 +180,6 @@ class Player < ApplicationRecord
   #  ACCESSORS  #
   ###############
 
-  delegate :currently_on, to: :team
-
   %w[active pending injured loaned].each do |condition|
     define_method "#{condition}?" do
       status == condition.capitalize
@@ -189,7 +198,7 @@ class Player < ApplicationRecord
   end
 
   def age
-    currently_on.year - birth_year
+    team.currently_on.year - birth_year
   end
 
   def as_json(options = {})

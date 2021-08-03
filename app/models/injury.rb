@@ -26,7 +26,7 @@ class Injury < ApplicationRecord
     joins(:player)
       .where(players: { team_id: team.id })
       .where(started_on: nil..team.currently_on)
-      .where('ended_on IS NULL OR ended_on > ?', team.currently_on)
+      .where('ended_on > ?', team.currently_on)
   }
 
   #################
@@ -35,9 +35,7 @@ class Injury < ApplicationRecord
 
   validates :description, presence: true
   validates :started_on, presence: true
-  validates :ended_on,
-            date: { after_or_equal_to: :started_on },
-            allow_nil: true
+  validates :ended_on, date: { after_or_equal_to: :started_on }
   validate :no_double_injury, on: :create
 
   def no_double_injury
@@ -50,32 +48,34 @@ class Injury < ApplicationRecord
   #  CALLBACKS  #
   ###############
 
-  before_validation :set_started_on
   after_create :update_status
   after_update :update_status, if: :saved_change_to_ended_on
-
-  def set_started_on
-    self.started_on ||= team.currently_on
-  end
 
   ##############
   #  MUTATORS  #
   ##############
 
-  delegate :update_status, to: :player
+  def duration=(val)
+    return unless val.is_a?(Hash) &&
+                  val[:length].is_a?(Integer) &&
+                  %w[Days Weeks Months Years].include?(val[:timespan])
 
-  def recovered=(val)
-    self.ended_on = team.currently_on if player_id && val
+    self.ended_on = started_on +
+                    val[:length].public_send(val[:timespan].downcase)
+    @duation_set = true
+  end
+
+  def ended_on=(val)
+    super unless @duration_set
   end
 
   ###############
   #  ACCESSORS  #
   ###############
 
-  delegate :team, to: :player
+  delegate :team, :update_status, to: :player
 
   def current?
-    started_on <= team.currently_on &&
-      (ended_on.nil? || team.currently_on < ended_on)
+    started_on <= team.currently_on && team.currently_on < ended_on
   end
 end

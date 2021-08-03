@@ -66,10 +66,28 @@ describe Mutations::AddMutations do
                   end
                 }
               when 'Substitution'
-
                 graphql_attributes_for(:substitution).merge(
                   playerId: create(:player, team: parent_record.team).id,
                   replacementId: create(:player, team: parent_record.team).id
+                )
+              when 'Contract'
+                graphql_attributes_for(:contract).merge(
+                  signedOn: parent_record.team.currently_on.to_s
+                )
+              when 'Injury'
+                graphql_attributes_for(:injury).merge(
+                  startedOn: parent_record.team.currently_on.to_s,
+                  endedOn: (parent_record.team.currently_on + 3.months).to_s
+                )
+              when 'Loan'
+                graphql_attributes_for(:loan).merge(
+                  signedOn: parent_record.team.currently_on.to_s,
+                  startedOn: parent_record.team.currently_on.to_s,
+                  endedOn: (parent_record.team.currently_on + 1.year).to_s
+                )
+              when 'Transfer'
+                graphql_attributes_for(:transfer).merge(
+                  signedOn: parent_record.team.currently_on.to_s
                 )
               else
                 graphql_attributes_for(model.underscore)
