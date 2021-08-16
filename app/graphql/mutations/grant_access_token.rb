@@ -30,7 +30,7 @@ module Mutations
         {
           errors: {
             details: 'Invalid Username/Password',
-            fullMessages: ['Invalid Username/Password']
+            full_messages: ['Invalid Username/Password']
           }
         }
       end
