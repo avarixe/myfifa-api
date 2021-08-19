@@ -35,7 +35,7 @@ describe QueryType, type: :graphql do
   end
 
   it 'returns compiled Competition data' do
-    compiled_stats = Statistics::CompetitionCompiler.new(team: team).results
+    compiled_stats = CompetitionCompiler.new(team: team).results
     response_data['team']['competitionStats'].each do |stats|
       stats = stats.transform_keys { |k| k.underscore.to_sym }
       expect(compiled_stats).to include(stats)
