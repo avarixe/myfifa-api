@@ -74,7 +74,7 @@ module Types
     end
 
     def competition_stats(competition: nil, season: nil)
-      ::Statistics::CompetitionCompiler.new(
+      CompetitionCompiler.new(
         team: object,
         competition: competition,
         season: season
@@ -86,7 +86,7 @@ module Types
       competition: nil,
       season: nil
     )
-      ::Statistics::PlayerPerformanceCompiler.new(
+      PlayerPerformanceCompiler.new(
         team: object,
         player_ids: player_ids,
         competition: competition,
@@ -95,7 +95,7 @@ module Types
     end
 
     def player_development_stats(player_ids: [], season: nil)
-      ::Statistics::PlayerDevelopmentCompiler.new(
+      PlayerDevelopmentCompiler.new(
         team: object,
         player_ids: player_ids,
         season: season
@@ -103,7 +103,7 @@ module Types
     end
 
     def transfer_activity(season: nil)
-      ::Statistics::TransferActivityCompiler.new(
+      TransferActivityCompiler.new(
         team: object,
         season: season
       ).results

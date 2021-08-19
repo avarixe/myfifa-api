@@ -43,7 +43,7 @@ describe QueryType, type: :graphql do
   end
 
   it 'returns compiled Player data' do
-    compiled_stats = Statistics::PlayerPerformanceCompiler.new(team: team).results
+    compiled_stats = PlayerPerformanceCompiler.new(team: team).results
     response_data['team']['playerPerformanceStats'].each do |stats|
       stats = stats.transform_keys { |k| k.underscore.to_sym }
       stats[:player_id] = stats[:player_id].to_i

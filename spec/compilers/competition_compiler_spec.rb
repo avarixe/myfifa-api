@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Statistics::CompetitionCompiler do
+describe CompetitionCompiler do
   let(:compiler) { described_class.new(team: Team.last) }
   let(:results) { compiler.results }
 

@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Statistics::TransferActivityCompiler do
+describe TransferActivityCompiler do
   it 'requires a team' do
     expect { described_class.new }.to raise_error(ArgumentError)
   end

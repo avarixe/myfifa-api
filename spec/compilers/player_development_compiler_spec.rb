@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Statistics::PlayerDevelopmentCompiler do
+describe PlayerDevelopmentCompiler do
   let(:team) { Team.last }
 
   it 'requires a team' do

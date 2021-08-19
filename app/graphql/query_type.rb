@@ -26,6 +26,9 @@ class QueryType < BaseTypes::BaseObject
         'Specific Competition bound to a Team owned by User', null: false do
     argument :id, ID, 'ID of Competition', required: true
   end
+  field :team_names, [String], 'Names of Teams entered by User', null: false do
+    argument :search, String, 'Search Term to filter results', required: false
+  end
 
   def user
     context[:current_user]
@@ -47,6 +50,10 @@ class QueryType < BaseTypes::BaseObject
 
   def competition(id:)
     Competition.accessible_by(current_ability).find(id)
+  end
+
+  def team_names(search: nil)
+    TeamNamesCompiler.new(user: user, search: search).results
   end
 
   private
