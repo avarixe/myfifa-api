@@ -52,10 +52,6 @@ class QueryType < BaseTypes::BaseObject
     Competition.accessible_by(current_ability).find(id)
   end
 
-  def team_names(search: nil)
-    TeamNamesCompiler.new(user: user, search: search).results
-  end
-
   private
 
     def current_ability
