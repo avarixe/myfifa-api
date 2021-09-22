@@ -17,7 +17,7 @@
 FactoryBot.define do
   factory :option do
     user
-    category { CATEGORIES.sample }
+    category { Option::CATEGORIES.sample }
     sequence(:value) { |n| "Value #{n}" }
   end
 end

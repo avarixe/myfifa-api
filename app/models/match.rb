@@ -52,6 +52,8 @@ class Match < ApplicationRecord
                                 allow_destroy: true,
                                 update_only: true
 
+  cache_options 'Team', :home, :away
+
   ################
   #  VALIDATION  #
   ################

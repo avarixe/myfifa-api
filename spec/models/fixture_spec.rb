@@ -28,4 +28,12 @@ describe Fixture, type: :model do
   it 'requires at least one FixtureLeg' do
     expect(build(:fixture, legs_count: 0)).not_to be_valid
   end
+
+  it 'caches the Home Team as a Team Option' do
+    expect(Option.where(category: 'Team', value: fixture.home_team)).to be_present
+  end
+
+  it 'caches the Away Team as a Team Option' do
+    expect(Option.where(category: 'Team', value: fixture.away_team)).to be_present
+  end
 end

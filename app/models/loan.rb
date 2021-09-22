@@ -36,6 +36,8 @@ class Loan < ApplicationRecord
       .where('ended_on > ?', team.currently_on)
   }
 
+  cache_options 'Team', :origin, :destination
+
   ################
   #  VALIDATION  #
   ################

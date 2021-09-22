@@ -26,7 +26,9 @@ class QueryType < BaseTypes::BaseObject
         'Specific Competition bound to a Team owned by User', null: false do
     argument :id, ID, 'ID of Competition', required: true
   end
-  field :team_names, [String], 'Names of Teams entered by User', null: false do
+  field :options, [String],
+        'Options previously entered by User for select Category', null: false do
+    argument :category, String, 'Category of results', required: true
     argument :search, String, 'Search Term to filter results', required: false
   end
 
@@ -50,6 +52,14 @@ class QueryType < BaseTypes::BaseObject
 
   def competition(id:)
     Competition.accessible_by(current_ability).find(id)
+  end
+
+  def options(category:, search: nil)
+    context[:current_user]
+      .options
+      .where(category: category)
+      .where('LOWER(value) LIKE ?', "%#{search&.downcase}%")
+      .pluck(:value)
   end
 
   private

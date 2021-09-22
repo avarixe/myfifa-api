@@ -28,6 +28,8 @@ class Fixture < ApplicationRecord
 
   accepts_nested_attributes_for :legs, allow_destroy: true
 
+  cache_options 'Team', :home_team, :away_team
+
   validates :legs, length: { minimum: 1, message: 'are missing for Fixture' }
 
   delegate :team, to: :stage

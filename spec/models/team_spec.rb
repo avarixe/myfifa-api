@@ -40,6 +40,10 @@ describe Team, type: :model do
     expect(build(:team, currency: nil)).not_to be_valid
   end
 
+  it 'caches the name as a Team Option' do
+    expect(Option.where(category: 'Team', value: team.name)).to be_present
+  end
+
   it '#badge_path returns the path for the attached badge' do
     team.badge.attach io: File.open(Rails.root.join('spec/support/test-badge.png')),
                       filename: 'badge.png'

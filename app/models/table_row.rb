@@ -31,6 +31,8 @@ class TableRow < ApplicationRecord
 
   belongs_to :stage
 
+  cache_options 'Team', :name
+
   validates :name, presence: true, on: :update
   validates :wins, presence: true
   validates :draws, presence: true
