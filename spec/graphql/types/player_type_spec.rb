@@ -9,13 +9,13 @@ describe Types::PlayerType do
   it { is_expected.to have_field(:team_id).of_type('ID!') }
   it { is_expected.to have_field(:name).of_type('String!') }
   it { is_expected.to have_field(:nationality).of_type('String') }
-  it { is_expected.to have_field(:pos).of_type('String!') }
-  it { is_expected.to have_field(:sec_pos).of_type('[String!]!') }
+  it { is_expected.to have_field(:pos).of_type('PlayerPosition!') }
+  it { is_expected.to have_field(:sec_pos).of_type('[PlayerPosition!]!') }
   it { is_expected.to have_field(:ovr).of_type('Int!') }
   it { is_expected.to have_field(:value).of_type('Int!') }
   it { is_expected.to have_field(:birth_year).of_type('Int!') }
   it { is_expected.to have_field(:created_at).of_type('ISO8601DateTime!') }
-  it { is_expected.to have_field(:status).of_type('String') }
+  it { is_expected.to have_field(:status).of_type('PlayerStatus') }
   it { is_expected.to have_field(:youth).of_type('Boolean!') }
   it { is_expected.to have_field(:kit_no).of_type('Int') }
 

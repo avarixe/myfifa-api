@@ -28,7 +28,8 @@ class QueryType < BaseTypes::BaseObject
   end
   field :options, [String],
         'Options previously entered by User for select Category', null: false do
-    argument :category, String, 'Category of results', required: true
+    argument :category, Enums::OptionCategoryEnum,
+             'Category of results', required: true
     argument :search, String, 'Search Term to filter results', required: false
   end
 

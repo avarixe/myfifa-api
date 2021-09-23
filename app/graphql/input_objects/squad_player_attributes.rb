@@ -7,6 +7,7 @@ module InputObjects
     argument :id, ID, 'Unique Identifer of record', required: false
     argument :player_id, ID,
              'ID of Player assigned to this slot', required: true
-    argument :pos, String, 'Position designated for this slot', required: true
+    argument :pos, Enums::CapPositionEnum,
+             'Position designated for this slot', required: true
   end
 end

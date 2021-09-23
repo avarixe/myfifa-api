@@ -7,8 +7,9 @@ module InputObjects
     argument :name, String, 'Name of this Player', required: false
     argument :nationality, String,
              'Nationality of this Player', required: false
-    argument :pos, String, 'Primary Position of this Player', required: false
-    argument :sec_pos, [String],
+    argument :pos, Enums::PlayerPositionEnum,
+             'Primary Position of this Player', required: false
+    argument :sec_pos, [Enums::PlayerPositionEnum],
              'List of Secondary Positions of this Player', required: false
     argument :ovr, Integer, 'Overall Rating of this Player', required: false
     argument :value, Integer, 'Value of this Player', required: false

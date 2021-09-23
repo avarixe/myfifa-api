@@ -7,12 +7,12 @@ describe QueryType, type: :graphql do
 
   let(:user) { create :user }
 
-  it { is_expected.to accept_argument(:category).of_type('String!') }
+  it { is_expected.to accept_argument(:category).of_type('OptionCategory!') }
   it { is_expected.to accept_argument(:search).of_type('String') }
 
   describe 'when executed for Team' do
     graphql_operation <<-GQL
-      query fetchOptions($category: String!, $search: String) {
+      query fetchOptions($category: OptionCategory!, $search: String) {
         options(category: $category, search: $search)
       }
     GQL
@@ -37,7 +37,7 @@ describe QueryType, type: :graphql do
 
   describe 'when executed for Team with search' do
     graphql_operation <<-GQL
-      query fetchOptions($category: String!, $search: String) {
+      query fetchOptions($category: OptionCategory!, $search: String) {
         options(category: $category, search: $search)
       }
     GQL

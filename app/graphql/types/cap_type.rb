@@ -7,7 +7,8 @@ module Types
     field :id, ID, 'Unique Identifier of record', null: false
     field :match_id, ID, 'ID of Match', null: false
     field :player_id, ID, 'ID of Player', null: false
-    field :pos, String, 'Position assigned to Player during Match', null: false
+    field :pos, Enums::CapPositionEnum,
+          'Position assigned to Player during Match', null: false
     field :start, Integer, 'Minute of Match Player started', null: false
     field :stop, Integer, 'Minute of Match Player stopped', null: false
     field :created_at, GraphQL::Types::ISO8601DateTime,

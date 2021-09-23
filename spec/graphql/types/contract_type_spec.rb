@@ -17,7 +17,7 @@ describe Types::ContractType do
   it { is_expected.to have_field(:created_at).of_type('ISO8601DateTime!') }
   it { is_expected.to have_field(:ended_on).of_type('ISO8601Date!') }
   it { is_expected.to have_field(:started_on).of_type('ISO8601Date!') }
-  it { is_expected.to have_field(:conclusion).of_type('String') }
+  it { is_expected.to have_field(:conclusion).of_type('ContractConclusion') }
 
   it { is_expected.to have_field(:player).of_type('Player!') }
 end
