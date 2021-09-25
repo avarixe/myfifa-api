@@ -46,6 +46,16 @@ describe Loan, type: :model do
     expect(loan).not_to be_valid
   end
 
+  it 'caches the Origin as a Team Option' do
+    loan = create :loan, player: player
+    expect(Option.where(category: 'Team', value: loan.origin)).to be_present
+  end
+
+  it 'caches the Destination as a Team Option' do
+    loan = create :loan, player: player
+    expect(Option.where(category: 'Team', value: loan.destination)).to be_present
+  end
+
   it 'sets signed date to the Team current date' do
     loan = create(:loan)
     expect(loan.signed_on).to be == loan.team.currently_on

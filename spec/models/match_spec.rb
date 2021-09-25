@@ -76,6 +76,14 @@ describe Match, type: :model do
     expect(match.team_played?).to be true
   end
 
+  it 'caches the Home Team as a Team Option' do
+    expect(Option.where(category: 'Team', value: match.home)).to be_present
+  end
+
+  it 'caches the Away Team as a Team Option' do
+    expect(Option.where(category: 'Team', value: match.away)).to be_present
+  end
+
   it 'starts off 0 - 0' do
     expect(match.score).to be == '0 - 0'
   end

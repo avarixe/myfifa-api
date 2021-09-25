@@ -17,8 +17,7 @@ module InputObjects
              'Number of specified metric to receive Performance Bonus',
              required: false
     argument :bonus_req_type, String,
-             'Metric to track for receiving Performance Bonus',
-             required: false
+             'Metric to track for receiving Performance Bonus', required: false
     argument :ended_on, GraphQL::Types::ISO8601Date,
              'Date on which this Contract expired or will expire',
              required: false

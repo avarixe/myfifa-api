@@ -26,6 +26,8 @@ class Transfer < ApplicationRecord
 
   belongs_to :player
 
+  cache_options 'Team', :origin, :destination
+
   ################
   #  VALIDATION  #
   ################

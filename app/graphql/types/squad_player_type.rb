@@ -7,7 +7,8 @@ module Types
     field :id, ID, 'Unique Identifer of record', null: false
     field :squad_id, ID, 'ID of Squad', null: false
     field :player_id, ID, 'ID of Player assigned to this slot', null: false
-    field :pos, String, 'Position designated for this slot', null: false
+    field :pos, Enums::CapPositionEnum,
+          'Position designated for this slot', null: false
     field :created_at, GraphQL::Types::ISO8601DateTime,
           'Timestamp this record was created', null: false
 

@@ -27,7 +27,7 @@ module Types
           'Date on which this Contract expired or will expire', null: false
     field :started_on, GraphQL::Types::ISO8601Date,
           'Date on which this Contract becomes active', null: false
-    field :conclusion, String,
+    field :conclusion, Enums::ContractConclusionEnum,
           'How this Contract ended (e.g. Expired, Transferred, etc.)',
           null: true
 

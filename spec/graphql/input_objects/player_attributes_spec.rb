@@ -7,8 +7,8 @@ describe InputObjects::PlayerAttributes do
 
   it { is_expected.to accept_argument(:name).of_type('String') }
   it { is_expected.to accept_argument(:nationality).of_type('String') }
-  it { is_expected.to accept_argument(:pos).of_type('String') }
-  it { is_expected.to accept_argument(:sec_pos).of_type('[String!]') }
+  it { is_expected.to accept_argument(:pos).of_type('PlayerPosition') }
+  it { is_expected.to accept_argument(:sec_pos).of_type('[PlayerPosition!]') }
   it { is_expected.to accept_argument(:ovr).of_type('Int') }
   it { is_expected.to accept_argument(:value).of_type('Int') }
   it { is_expected.to accept_argument(:youth).of_type('Boolean') }

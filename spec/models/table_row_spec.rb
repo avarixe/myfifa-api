@@ -54,6 +54,10 @@ describe TableRow, type: :model do
     expect(row).not_to be_valid
   end
 
+  it 'caches the name as a Team Option' do
+    expect(Option.where(category: 'Team', value: row.name)).to be_present
+  end
+
   it 'correctly calculates goal_difference' do
     gf = Faker::Number.between(from: 0, to: 100).to_i
     ga = Faker::Number.between(from: 0, to: 100).to_i

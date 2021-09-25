@@ -8,15 +8,16 @@ module Types
     field :team_id, ID, 'ID of Team', null: false
     field :name, String, 'Name of this Player', null: false
     field :nationality, String, 'Nationality of this Player', null: true
-    field :pos, String, 'Primary Position of this Player', null: false
-    field :sec_pos, [String],
+    field :pos, Enums::PlayerPositionEnum,
+          'Primary Position of this Player', null: false
+    field :sec_pos, [Enums::PlayerPositionEnum],
           'List of Secondary Positions of this Player', null: false
     field :ovr, Integer, 'Overall Rating of this Player', null: false
     field :value, Integer, 'Value of this Player', null: false
     field :birth_year, Integer, 'Year of Birth of this Player', null: false
     field :created_at, GraphQL::Types::ISO8601DateTime,
           'Timestamp this record was created', null: false
-    field :status, String, 'Status of this Player', null: true
+    field :status, Enums::PlayerStatusEnum, 'Status of this Player', null: true
     field :youth, Boolean,
           'Whether this Player came from the Youth Academy', null: false
     field :kit_no, Integer, 'Kit Number assigned to this Player', null: true

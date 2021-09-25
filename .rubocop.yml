@@ -19,8 +19,6 @@ Layout/EmptyLinesAroundAttributeAccessor:
   Enabled: true
 Layout/IndentationConsistency:
   EnforcedStyle: indented_internal_methods
-Layout/LineLength:
-  Max: 80
 Layout/SpaceAroundMethodCallOperator:
   Enabled: true
 Lint/DeprecatedOpenSSLConstant:

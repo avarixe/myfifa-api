@@ -42,6 +42,8 @@ class Team < ApplicationRecord
 
   has_one_attached :badge
 
+  cache_options 'Team', :name
+
   validates :name, presence: true
   validates :started_on, presence: true
   validates :currently_on, presence: true

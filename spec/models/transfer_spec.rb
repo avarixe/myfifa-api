@@ -42,6 +42,16 @@ describe Transfer, type: :model do
     expect(build(:transfer, addon_clause: -1)).not_to be_valid
   end
 
+  it 'caches the Origin as a Team Option' do
+    transfer = create :transfer, player: player
+    expect(Option.where(category: 'Team', value: transfer.origin)).to be_present
+  end
+
+  it 'caches the Destination as a Team Option' do
+    transfer = create :transfer, player: player
+    expect(Option.where(category: 'Team', value: transfer.destination)).to be_present
+  end
+
   it 'is signed on the team current date' do
     transfer = create :transfer
     expect(transfer.signed_on).to be == transfer.team.currently_on

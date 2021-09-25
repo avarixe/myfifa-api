@@ -40,6 +40,7 @@ class User < ApplicationRecord
            -> { order updated_at: :desc },
            inverse_of: :user,
            dependent: :destroy
+  has_many :options, dependent: :delete_all
 
   validates :username,
             length: { minimum: 6 },
