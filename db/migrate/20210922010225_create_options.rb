@@ -14,7 +14,6 @@ class CreateOptions < ActiveRecord::Migration[6.1]
           team_options = Team.from(compiled_query(user)).order(:name).pluck(:name).map do |name|
             { user_id: user.id, category: 'Team', value: name }
           end
-          byebug
           Option.insert_all(team_options) if team_options.any?
         end
       end
