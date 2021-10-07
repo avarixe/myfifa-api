@@ -22,7 +22,7 @@ describe PlayerPerformanceCompiler do
         num_goals: Faker::Number.within(range: 0..3),
         num_assists: Faker::Number.within(range: 0..3),
         clean_sheet: Faker::Boolean.boolean,
-        home: Faker::Boolean.boolean,
+        home: Faker::Boolean.boolean
       }
     end
 

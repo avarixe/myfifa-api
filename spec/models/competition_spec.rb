@@ -99,7 +99,7 @@ describe Competition, type: :model do
 
     it 'creates a cascading number of fixtures for each Knockout stage' do
       cup.stages.includes(:fixtures).each_with_index do |round, i|
-        num_round_teams = num_teams / 2**i
+        num_round_teams = num_teams / (2**i)
         expect(round.fixtures.size).to be == num_round_teams / 2
       end
     end
@@ -108,7 +108,7 @@ describe Competition, type: :model do
   [
     { num_teams: 32, num_teams_per_group: 4, num_advances_from_group: 2 },
     { num_teams: 8, num_teams_per_group: 4, num_advances_from_group: 2 },
-    { num_teams: 24, num_teams_per_group: 3, num_advances_from_group: 2 },
+    { num_teams: 24, num_teams_per_group: 3, num_advances_from_group: 2 }
   ].each do |preset|
     describe "if Group+Knockout with preset (#{preset})" do
       let(:tournament) { create :tournament, preset }
@@ -136,7 +136,7 @@ describe Competition, type: :model do
           .includes(:fixtures)
           .where(table: false)
           .each_with_index do |round, i|
-            num_round_teams = num_groups * preset[:num_advances_from_group] / 2**i
+            num_round_teams = num_groups * preset[:num_advances_from_group] / (2**i)
             expect(round.fixtures.size).to be == num_round_teams / 2
           end
       end

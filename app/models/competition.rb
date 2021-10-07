@@ -91,7 +91,7 @@ class Competition < ApplicationRecord
 
   def load_knockout_stage
     num_rounds.times do |i|
-      num_round_teams = num_knockout_teams / 2**i
+      num_round_teams = num_knockout_teams / (2**i)
       stages.create num_teams: num_round_teams,
                     num_fixtures: num_round_teams / 2
     end
