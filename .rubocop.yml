@@ -15,20 +15,10 @@ AllCops:
     - script/**/*
     - vendor/**/*
 
-Layout/EmptyLinesAroundAttributeAccessor:
-  Enabled: true
 Layout/IndentationConsistency:
   EnforcedStyle: indented_internal_methods
-Layout/SpaceAroundMethodCallOperator:
-  Enabled: true
-Lint/DeprecatedOpenSSLConstant:
-  Enabled: true
-Lint/MixedRegexpCaptureTypes:
-  Enabled: true
-Lint/RaiseException:
-  Enabled: true
-Lint/StructNewOverride:
-  Enabled: true
+Lint/ElseLayout:
+  Enabled: false
 Metrics/AbcSize:
   Exclude:
     - app/graphql/mutations/add_mutations.rb
@@ -45,29 +35,7 @@ Metrics/BlockLength:
     - app/graphql/mutations/add_mutations.rb
 Style/Documentation:
   Enabled: false
-Style/ExponentialNotation:
-  Enabled: true
-Style/RedundantFetchBlock:
-  Enabled: true
-Style/RedundantRegexpCharacterClass:
-  Enabled: true
-Style/RedundantRegexpEscape:
-  Enabled: true
-Style/SlicingWithRange:
-  Enabled: true
-Style/TrailingCommaInArguments:
-  Enabled: false
-Style/TrailingCommaInArrayLiteral:
-  Enabled: false
-Style/TrailingCommaInHashLiteral:
-  Enabled: false
 Style/RescueStandardError:
   Enabled: false
 Style/HashAsLastArrayItem:
   EnforcedStyle: no_braces
-Style/HashEachMethods:
-  Enabled: true
-Style/HashTransformKeys:
-  Enabled: true
-Style/HashTransformValues:
-  Enabled: true

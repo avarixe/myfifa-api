@@ -71,6 +71,6 @@ describe TableRow, type: :model do
     draws = Faker::Number.number(digits: 2).to_i
     row.wins = wins
     row.draws = draws
-    expect(row.points == 3 * wins + draws).to be true
+    expect(row.points == (3 * wins) + draws).to be true
   end
 end

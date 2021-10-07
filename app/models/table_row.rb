@@ -47,7 +47,7 @@ class TableRow < ApplicationRecord
   end
 
   def points
-    3 * wins + draws
+    (3 * wins) + draws
   end
 
   def as_json(options = {})
