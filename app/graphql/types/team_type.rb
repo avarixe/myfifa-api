@@ -72,6 +72,12 @@ module Types
       argument :season, Int,
                'Specific Season indicator to filter results', required: false
     end
+    field :team_development_stats, Statistics::TeamDevelopmentStatsType,
+          'Average OVR and Total Value changes in a Season',
+          null: false do
+      argument :season, Int,
+               'Specific Season indicator to filter results', required: true
+    end
 
     def competition_stats(competition: nil, season: nil)
       CompetitionCompiler.new(
@@ -104,6 +110,13 @@ module Types
 
     def transfer_activity(season: nil)
       TransferActivityCompiler.new(
+        team: object,
+        season: season
+      ).results
+    end
+
+    def team_development_stats(season:)
+      TeamDevelopmentCompiler.new(
         team: object,
         season: season
       ).results

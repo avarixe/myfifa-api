@@ -59,4 +59,11 @@ describe Types::TeamType do
     it { is_expected.to be_of_type('TransferActivity!') }
     it { is_expected.to accept_argument(:season).of_type('Int') }
   end
+
+  describe 'teamDevelopmentStats field' do
+    subject(:field) { described_class.fields['teamDevelopmentStats'] }
+
+    it { is_expected.to be_of_type('TeamDevelopmentStats!') }
+    it { is_expected.to accept_argument(:season).of_type('Int!') }
+  end
 end
