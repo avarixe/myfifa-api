@@ -18,6 +18,7 @@ class Option < ApplicationRecord
   belongs_to :user
 
   CATEGORIES = %w[
+    Competition
     Team
   ].freeze
 

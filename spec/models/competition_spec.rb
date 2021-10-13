@@ -47,6 +47,10 @@ describe Competition, type: :model do
     expect(build(:cup, num_teams: 14)).not_to be_valid
   end
 
+  it 'caches the name as a Competition Option' do
+    expect(Option.where(category: 'Competition', value: competition.name)).to be_present
+  end
+
   %i[
     num_teams
     num_teams_per_group

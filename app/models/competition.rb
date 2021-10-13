@@ -27,6 +27,8 @@ class Competition < ApplicationRecord
            inverse_of: :competition,
            dependent: :destroy
 
+  cache_options 'Competition', :name
+
   attr_accessor :preset_format,
                 :num_teams,
                 :num_teams_per_group,
