@@ -29,7 +29,7 @@ class Loan < ApplicationRecord
 
   belongs_to :player
 
-  scope :active_for, lambda { |team|
+  scope :active_for, lambda { |team:|
     joins(:player)
       .where(players: { team_id: team.id })
       .where(started_on: nil..team.currently_on)

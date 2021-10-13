@@ -125,19 +125,20 @@ class Team < ApplicationRecord
   end
 
   def active_player_ids
-    @active_player_ids ||= Contract.active_for(self).pluck(:player_id)
+    @active_player_ids ||=
+      Contract.active_for(team: self, date: currently_on).pluck(:player_id)
   end
 
   def pending_player_ids
     @pending_player_ids ||=
-      Contract.pending_for(self).pluck(:player_id)
+      Contract.pending_for(team: self).pluck(:player_id)
   end
 
   def injured_player_ids
-    @injured_player_ids ||= Injury.active_for(self).pluck(:player_id)
+    @injured_player_ids ||= Injury.active_for(team: self).pluck(:player_id)
   end
 
   def loaned_player_ids
-    @loaned_player_ids ||= Loan.active_for(self).pluck(:player_id)
+    @loaned_player_ids ||= Loan.active_for(team: self).pluck(:player_id)
   end
 end
