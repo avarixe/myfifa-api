@@ -10,12 +10,12 @@ module Types
             null: false
       field :start_ovr, Int,
             'Average OVR of Players at start of this Season', null: false
-      field :start_value, Int,
+      field :start_value, GraphQL::Types::BigInt,
             'Total Value of Players at start of this Season', null: false
       field :end_ovr, Int,
             'Average OVR of Players currently or at end of this Season',
             null: false
-      field :end_value, Int,
+      field :end_value, GraphQL::Types::BigInt,
             'Total Value of Players currently or at end of this Season',
             null: false
     end

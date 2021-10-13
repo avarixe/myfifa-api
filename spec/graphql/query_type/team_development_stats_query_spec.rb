@@ -40,11 +40,11 @@ describe QueryType, type: :graphql do
     end
   end
 
-  it 'returns compiled Player data' do
+  it 'returns Team average OVR and total Value data' do
     compiled_stats = TeamDevelopmentCompiler.new(team: team, season: 0).results
-    stats = response_data['team']['teamDevelopmentStats'].transform_keys do |k|
-      k.underscore.to_sym
-    end
+    stats = response_data['team']['teamDevelopmentStats']
+            .transform_keys { |k| k.underscore.to_sym }
+            .transform_values(&:to_i)
     expect(compiled_stats).to include(stats)
   end
 end
