@@ -38,7 +38,10 @@ class PlayerPerformanceCompiler
     end
 
     def num_goals
-      @num_goals ||= base_player_query.joins(goals: :match).count
+      @num_goals ||= base_player_query
+                     .joins(goals: :match)
+                     .where(goals: { own_goal: false })
+                     .count
     end
 
     def num_assists
