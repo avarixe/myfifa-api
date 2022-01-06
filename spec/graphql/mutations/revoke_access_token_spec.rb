@@ -26,7 +26,7 @@ describe Mutations::RevokeAccessToken, type: :graphql do
     end
 
     graphql_context do
-      { current_user: token.user }
+      { current_user: token.user, pundit: PunditProvider.new(user: token.user) }
     end
 
     it 'revokes the Access Token' do

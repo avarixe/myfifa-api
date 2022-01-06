@@ -36,10 +36,7 @@ module Mutations
               'Errors preventing changes from being applied', null: true
 
         define_method :resolve do |id:, attributes:|
-          current_ability = Ability.new(context[:current_user])
-          record = model.constantize.find(id)
-
-          current_ability.authorize! :update, record
+          record = context[:pundit].policy_scope(model.constantize).find(id)
 
           if record.skip_preload.update(attributes.to_h)
             { model.underscore.to_sym => record }

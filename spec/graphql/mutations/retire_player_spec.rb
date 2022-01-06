@@ -27,7 +27,7 @@ describe Mutations::RetirePlayer, type: :graphql do
   end
 
   graphql_context do
-    { current_user: user }
+    { current_user: user, pundit: PunditProvider.new(user: user) }
   end
 
   it 'updates the Player contract as Retiring' do

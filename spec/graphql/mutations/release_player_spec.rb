@@ -27,7 +27,7 @@ describe Mutations::ReleasePlayer, type: :graphql do
   end
 
   graphql_context do
-    { current_user: user }
+    { current_user: user, pundit: PunditProvider.new(user: user) }
   end
 
   it 'terminates the Player contract' do

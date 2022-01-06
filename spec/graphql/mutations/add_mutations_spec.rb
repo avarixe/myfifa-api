@@ -96,7 +96,10 @@ describe Mutations::AddMutations do
         end
 
         graphql_context do
-          { current_user: parent_record.team.user }
+          {
+            current_user: parent_record.team.user,
+            pundit: PunditProvider.new(user: parent_record.team.user)
+          }
         end
 
         it "creates a #{model} for the #{parent_model}" do

@@ -20,7 +20,7 @@ describe QueryType, type: :graphql do
       "
 
       graphql_context do
-        { current_user: user }
+        { current_user: user, pundit: PunditProvider.new(user: user) }
       end
 
       describe 'for user owned Team' do

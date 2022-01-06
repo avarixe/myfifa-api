@@ -43,7 +43,7 @@ describe Mutations::StoreMatchLineupToSquad do
     end
 
     graphql_context do
-      { current_user: user }
+      { current_user: user, pundit: PunditProvider.new(user: user) }
     end
 
     it 'populates Match caps based on Squad players' do

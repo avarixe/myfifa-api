@@ -99,7 +99,10 @@ describe Mutations::UpdateMutations do
       end
 
       graphql_context do
-        { current_user: record.team.user }
+        {
+          current_user: record.team.user,
+          pundit: PunditProvider.new(user: record.team.user)
+        }
       end
 
       it "updates the #{model}" do

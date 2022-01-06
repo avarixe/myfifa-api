@@ -44,15 +44,15 @@ class QueryType < BaseTypes::BaseObject
   end
 
   def player(id:)
-    Player.accessible_by(current_ability).find(id)
+    context[:pundit].policy_scope(Player).find(id)
   end
 
   def match(id:)
-    Match.accessible_by(current_ability).find(id)
+    context[:pundit].policy_scope(Match).find(id)
   end
 
   def competition(id:)
-    Competition.accessible_by(current_ability).find(id)
+    context[:pundit].policy_scope(Competition).find(id)
   end
 
   def options(category:, search: nil)
@@ -62,10 +62,4 @@ class QueryType < BaseTypes::BaseObject
       .where('LOWER(value) LIKE ?', "%#{search&.downcase}%")
       .pluck(:value)
   end
-
-  private
-
-    def current_ability
-      Ability.new(context[:current_user])
-    end
 end

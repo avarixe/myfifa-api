@@ -32,7 +32,8 @@ gem 'oj'
 # Devise authentication
 gem 'devise'
 
-gem 'cancancan'
+# Pundit authorization
+gem 'pundit'
 
 # GraphQL
 gem 'graphql'

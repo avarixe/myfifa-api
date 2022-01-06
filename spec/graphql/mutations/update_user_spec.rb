@@ -21,7 +21,7 @@ describe Mutations::UpdateUser, type: :graphql do
   GQL
 
   graphql_context do
-    { current_user: user }
+    { current_user: user, pundit: PunditProvider.new(user: user) }
   end
 
   describe 'with valid attributes' do

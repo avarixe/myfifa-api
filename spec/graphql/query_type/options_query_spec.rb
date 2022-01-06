@@ -22,7 +22,7 @@ describe QueryType, type: :graphql do
     end
 
     graphql_context do
-      { current_user: user }
+      { current_user: user, pundit: PunditProvider.new(user: user) }
     end
 
     before do

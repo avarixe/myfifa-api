@@ -27,11 +27,9 @@ module Mutations
                 "Errors preventing #{model} from being created", null: true
 
           define_method :resolve do |**args|
-            current_ability = Ability.new(context[:current_user])
             parent_id = args["#{parent_model.underscore}_id".to_sym]
-            parent_record = parent_model
-                            .constantize
-                            .accessible_by(current_ability)
+            parent_record = context[:pundit]
+                            .policy_scope(parent_model.constantize)
                             .find(parent_id)
 
             record = parent_record.public_send(model.underscore.pluralize).new

@@ -11,8 +11,7 @@ module Mutations
           'Player that was marked as Retiring', null: false
 
     def resolve(id:)
-      current_ability = Ability.new(context[:current_user])
-      player = Player.accessible_by(current_ability).find(id)
+      player = context[:pundit].policy_scope(Player).find(id)
       player.current_contract&.retire!
       { player: player }
     end

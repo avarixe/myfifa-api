@@ -34,8 +34,7 @@ module Mutations
               "Errors preventing #{model} from being removed", null: true
 
         define_method :resolve do |id:|
-          current_ability = Ability.new(context[:current_user])
-          record = model.constantize.accessible_by(current_ability).find(id)
+          record = context[:pundit].policy_scope(model.constantize).find(id)
 
           if record.destroy
             { model.underscore.to_sym => record }

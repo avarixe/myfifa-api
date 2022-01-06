@@ -12,9 +12,8 @@ module Mutations
           'Squad that was updated based on Match', null: false
 
     def resolve(match_id:, squad_id:)
-      current_ability = Ability.new(context[:current_user])
-      match = Match.accessible_by(current_ability).find(match_id)
-      squad = Squad.accessible_by(current_ability).find(squad_id)
+      match = context[:pundit].policy_scope(Match).find(match_id)
+      squad = context[:pundit].policy_scope(Squad).find(squad_id)
       squad.store_lineup match
       { squad: squad }
     end
