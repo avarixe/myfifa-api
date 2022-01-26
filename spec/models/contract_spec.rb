@@ -122,27 +122,48 @@ describe Contract, type: :model do
     expect(contract.ended_on).to be == player.team.started_on + 1.year
   end
 
-  it 'sets Player as Pending if started_on > current date' do
-    future_date = Faker::Date.between from: 1.day.from_now,
-                                      to: 365.days.from_now
-    contract = create :contract, started_on: future_date
-    expect(contract.player.status).to be == 'Pending'
+  describe 'when unsigned' do
+    it 'does not affect Player status' do
+      player = create :player, contracts_count: 0
+      create :contract, player: player
+      expect(player.reload).not_to be_active
+    end
+
+    it 'does not affect the previous contract' do
+      first_contract_end_on = player.contracts.first.ended_on
+      create :contract, player: player
+      expect(player.contracts.reload.first.ended_on).to be == first_contract_end_on
+    end
   end
 
-  it 'sets Pending Player as Active once current date reaches effective date' do
-    future_date = Faker::Date.between from: 1.day.from_now,
-                                      to: 365.days.from_now
-    contract = create :contract,
-                      started_on: future_date,
-                      ended_on: future_date + 1.year
-    contract.player.team.update(currently_on: future_date)
-    expect(contract.player.reload.active?).to be == true
-  end
+  describe 'when signed' do
+    it 'sets Player as Pending if started_on > current date' do
+      future_date = Faker::Date.between from: 1.day.from_now,
+                                        to: 365.days.from_now
+      contract = create :contract,
+                        player: create(:player, contracts_count: 0),
+                        signed_on: Time.zone.today,
+                        started_on: future_date
+      expect(contract.player.status).to be == 'Pending'
+    end
 
-  it 'sets new Player as Active if effective date < current date' do
-    player = create :player, contracts_count: 0
-    create :contract, player: player
-    expect(player.active?).to be true
+    it 'sets Pending Player as Active once current date reaches effective date' do
+      future_date = Faker::Date.between from: 1.day.from_now,
+                                        to: 365.days.from_now
+      contract = create :contract,
+                        player: create(:player, contracts_count: 0),
+                        signed_on: Time.zone.today,
+                        started_on: future_date,
+                        ended_on: future_date + 1.year
+      contract.player.team.update(currently_on: future_date)
+      expect(contract.player.reload.active?).to be == true
+    end
+
+    it 'sets new Player as Active if effective date < current date' do
+      player = create :player, contracts_count: 0
+      create :contract, player: player, signed_on: Time.zone.today
+      expect(player.active?).to be true
+    end
   end
 
   describe 'once expired' do
@@ -167,6 +188,7 @@ describe Contract, type: :model do
     before do
       create :contract,
              player: player,
+             signed_on: player.team.currently_on,
              started_on: player.team.currently_on,
              ended_on: player.team.currently_on + 1.week
       create :injury,
@@ -192,6 +214,7 @@ describe Contract, type: :model do
     before do
       create :contract,
              player: player,
+             signed_on: player.team.currently_on,
              started_on: player.team.currently_on,
              ended_on: player.team.currently_on + 1.week
       create :loan,
@@ -216,6 +239,7 @@ describe Contract, type: :model do
     let(:contract) do
       create :contract,
              player: player,
+             signed_on: player.team.currently_on,
              ended_on: player.team.currently_on + 2.years
     end
 
@@ -236,6 +260,7 @@ describe Contract, type: :model do
     let(:contract) do
       create :contract,
              player: player,
+             signed_on: player.team.currently_on,
              ended_on: player.team.currently_on + 2.years
     end
 
@@ -257,7 +282,10 @@ describe Contract, type: :model do
     before do
       contract.team.increment_date(1.month)
       player = contract.player
-      create :contract, player: player, started_on: player.team.currently_on
+      create :contract,
+             player: player,
+             signed_on: player.team.currently_on,
+             started_on: player.team.currently_on
     end
 
     it 'keeps the player as Active' do

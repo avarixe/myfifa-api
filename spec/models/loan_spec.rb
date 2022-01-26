@@ -46,6 +46,12 @@ describe Loan, type: :model do
     expect(loan).not_to be_valid
   end
 
+  it 'requires a start date if signed' do
+    loan = build :loan, signed_on: Time.zone.today
+    loan.started_on = nil
+    expect(loan).not_to be_valid
+  end
+
   it 'caches the Origin as a Team Option' do
     loan = create :loan, player: player
     expect(Option.where(category: 'Team', value: loan.origin)).to be_present
@@ -54,11 +60,6 @@ describe Loan, type: :model do
   it 'caches the Destination as a Team Option' do
     loan = create :loan, player: player
     expect(Option.where(category: 'Team', value: loan.destination)).to be_present
-  end
-
-  it 'sets signed date to the Team current date' do
-    loan = create(:loan)
-    expect(loan.signed_on).to be == loan.team.currently_on
   end
 
   it 'changes status to loaned when loaned out' do
@@ -87,6 +88,19 @@ describe Loan, type: :model do
     expect(player.reload.active?).to be true
   end
 
+  it 'does not affect Player status if unsigned' do
+    create :loan,
+           player: player,
+           origin: player.team.name
+    expect(player).to be_active
+  end
+
+  it 'does not affect injuries if unsigned' do
+    create :injury, player: player, started_on: player.team.currently_on
+    create :loan, player: player, origin: player.team.name
+    expect(player).to be_injured
+  end
+
   describe 'when created for Injured Player' do
     before do
       create :injury,
@@ -95,6 +109,7 @@ describe Loan, type: :model do
       create :loan,
              player: player,
              origin: player.team.name,
+             signed_on: player.team.currently_on,
              started_on: player.team.currently_on
     end
 

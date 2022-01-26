@@ -34,7 +34,9 @@ class Transfer < ApplicationRecord
 
   validates :origin, presence: true
   validates :destination, presence: true
-  validates :moved_on, date: { after_or_equal_to: :signed_on }
+  validates :moved_on,
+            date: { after_or_equal_to: :signed_on },
+            if: :signed?
   validates :addon_clause,
             inclusion: { in: 0..100 },
             allow_nil: true
@@ -43,12 +45,8 @@ class Transfer < ApplicationRecord
   #  CALLBACKS  #
   ###############
 
-  before_validation :set_signed_on
-  after_create :end_current_contract, if: :out?
-
-  def set_signed_on
-    self.signed_on ||= team.currently_on
-  end
+  after_save :end_current_contract,
+             if: -> { saved_change_to_signed_on? && signed? && out? }
 
   def end_current_contract
     player.contracts.last&.update ended_on: moved_on, conclusion: 'Transferred'
@@ -60,6 +58,10 @@ class Transfer < ApplicationRecord
   ###############
 
   delegate :team, to: :player
+
+  def signed?
+    signed_on.present?
+  end
 
   def out?
     team.name == origin

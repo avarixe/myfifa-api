@@ -111,6 +111,7 @@ describe Team, type: :model do
     it 'does not include Players with contracts that already ended' do
       create :contract,
              player: player,
+             signed_on: team.currently_on,
              ended_on: team.currently_on + 1.month
       team.increment_date 1.year
       expect(team.expiring_players).not_to include(player)
@@ -119,9 +120,11 @@ describe Team, type: :model do
     it 'does not include Played with expiring contrcts that were renewed' do
       create :contract,
              player: player,
+             signed_on: team.currently_on,
              ended_on: team.currently_on + 1.month
       create :contract,
              player: player,
+             signed_on: team.currently_on,
              ended_on: team.currently_on + 2.years
       expect(team.expiring_players).not_to include(player)
     end
@@ -146,13 +149,32 @@ describe Team, type: :model do
       expect(player.reload.status).to be == 'Pending'
     end
 
+    it 'does not change Player status if contract is unsigned' do
+      player = create :player, team: team, contracts_count: 0
+      create :contract,
+             player: player,
+             started_on: team.currently_on + 1.month
+      team.increment_date 1.week
+      expect(player.reload.status).not_to be == 'Pending'
+    end
+
     it 'updates Player status to Active when applicable' do
+      player = create :player, team: team, contracts_count: 0
+      create :contract,
+             player: player,
+             signed_on: team.currently_on,
+             started_on: team.currently_on + 1.week
+      team.increment_date 1.week
+      expect(player.reload.status).to be == 'Active'
+    end
+
+    it 'does not update Player status to Active if contract is unsigned' do
       player = create :player, team: team, contracts_count: 0
       create :contract,
              player: player,
              started_on: team.currently_on + 1.week
       team.increment_date 1.week
-      expect(player.reload.status).to be == 'Active'
+      expect(player.reload.status).not_to be == 'Active'
     end
 
     it 'updates Player status to Injured when applicable' do
@@ -164,9 +186,40 @@ describe Team, type: :model do
 
     it 'updates Player status to Loaned when applicable' do
       player = create :player, team: team
-      create :loan, player: player, started_on: team.currently_on + 1.week
+      create :loan,
+             player: player,
+             signed_on: team.currently_on,
+             started_on: team.currently_on + 1.week
       team.increment_date 1.week
       expect(player.reload.status).to be == 'Loaned'
+    end
+
+    it 'does not update Player status to Loaned if unsigned' do
+      player = create :player, team: team
+      create :loan, player: player, started_on: team.currently_on + 1.week
+      team.increment_date 1.week
+      expect(player.reload.status).not_to be == 'Loaned'
+    end
+
+    it 'updates Player status if signed Transfer occurs' do
+      player = create :player, team: team
+      create :transfer,
+             player: player,
+             origin: team.name,
+             signed_on: team.currently_on,
+             moved_on: team.currently_on + 1.week
+      team.increment_date 1.week
+      expect(player.reload.status).to be_blank
+    end
+
+    it 'does not update Player status if Transfer is unsigned' do
+      player = create :player, team: team
+      create :transfer,
+             player: player,
+             origin: team.name,
+             moved_on: team.currently_on + 1.week
+      team.increment_date 1.week
+      expect(player.reload.status).to be == 'Active'
     end
   end
 end

@@ -52,9 +52,29 @@ describe Transfer, type: :model do
     expect(Option.where(category: 'Team', value: transfer.destination)).to be_present
   end
 
-  it 'is signed on the team current date' do
-    transfer = create :transfer
-    expect(transfer.signed_on).to be == transfer.team.currently_on
+  it 'requires a move date if signed' do
+    expect(build(:transfer, signed_on: Time.zone.today, moved_on: nil)).not_to be_valid
+  end
+
+  describe 'if unsigned' do
+    before do
+      create :transfer,
+             player: player,
+             origin: player.team.name,
+             moved_on: player.team.currently_on
+    end
+
+    it 'does not affect Player status' do
+      expect(player).to be_active
+    end
+
+    it 'does not end the current contract' do
+      expect(player.last_contract.ended_on).not_to be == player.team.currently_on
+    end
+
+    it 'does not add a conclusion to the current contract' do
+      expect(player.last_contract.conclusion).to be_blank
+    end
   end
 
   describe 'if immediate' do
@@ -62,6 +82,7 @@ describe Transfer, type: :model do
       create :transfer,
              player: player,
              origin: player.team.name,
+             signed_on: player.team.currently_on,
              moved_on: player.team.currently_on
     end
 
@@ -83,6 +104,7 @@ describe Transfer, type: :model do
       create :transfer,
              player: player,
              origin: player.team.name,
+             signed_on: player.team.currently_on,
              moved_on: player.team.currently_on + 1.week
     end
 
@@ -96,6 +118,7 @@ describe Transfer, type: :model do
       create :transfer,
              player: player,
              origin: player.team.name,
+             signed_on: player.team.currently_on,
              moved_on: player.team.currently_on + 1.week
       player.team.increment_date 1.week
     end

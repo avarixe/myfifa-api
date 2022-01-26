@@ -29,8 +29,8 @@ describe QueryType, type: :graphql do
 
   before do
     players = create_list :player, 3, team: team
-    create :transfer, player: players[0], origin: team.name
-    create :loan, player: players[1]
+    create :transfer, player: players[0], origin: team.name, signed_on: team.currently_on
+    create :loan, player: players[1], signed_on: team.currently_on
     players[2].current_contract.terminate!
   end
 
