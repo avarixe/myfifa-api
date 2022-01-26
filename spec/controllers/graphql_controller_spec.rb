@@ -40,7 +40,7 @@ describe GraphqlController, type: :request do
       end
 
       it 'rejects expired tokens' do
-        token.update(expires_at: Time.current - 1.second)
+        token.update(expires_at: 1.second.ago)
         post graphql_url,
              headers: { 'Authorization' => "Bearer #{token.token}" },
              params: { query: team_query, variables: { id: team.id }.to_json }
