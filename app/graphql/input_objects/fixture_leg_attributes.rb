@@ -7,7 +7,7 @@ module InputObjects
     argument :id, ID, 'Unique Identifer of record', required: false
     argument :_destroy, Boolean,
              'Whether to destroy this record', required: false
-    argument :home_score, String, 'Score of the Home Team', required: true
-    argument :away_score, String, 'Score of the Away Team', required: true
+    argument :home_score, String, 'Score of the Home Team', required: false
+    argument :away_score, String, 'Score of the Away Team', required: false
   end
 end
