@@ -17,7 +17,7 @@ module Types
     field :origin, String,
           'Name of Team this Player is loaned From', null: false
     field :signed_on, GraphQL::Types::ISO8601Date,
-          'Date of Team when Loan is created', null: false
+          'Date of Team when Loan is created', null: true
     field :wage_percentage, Integer,
           'Percentage of Wage to be paid by Destination Team', null: true
     field :transfer_fee, Integer,
