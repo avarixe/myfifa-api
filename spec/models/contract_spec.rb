@@ -220,6 +220,7 @@ describe Contract, type: :model do
       create :loan,
              player: player,
              origin: player.team.name,
+             signed_on: player.team.currently_on,
              started_on: player.team.currently_on,
              ended_on: player.team.currently_on + 1.year
       player.team.increment_date 1.week

@@ -81,6 +81,7 @@ describe Team, type: :model do
       create :loan,
              player: player,
              origin: team.name,
+             signed_on: team.currently_on,
              started_on: team.currently_on
       expect(team.loaned_players).to include(player)
     end

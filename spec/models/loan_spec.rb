@@ -65,6 +65,7 @@ describe Loan, type: :model do
   it 'changes status to loaned when loaned out' do
     create :loan,
            player: player,
+           signed_on: player.team.currently_on,
            started_on: player.team.currently_on,
            origin: player.team.name
     expect(player.loaned?).to be true
@@ -73,6 +74,7 @@ describe Loan, type: :model do
   it 'does not change status to loaned when loaned in' do
     create :loan,
            player: player,
+           signed_on: player.team.currently_on,
            started_on: player.team.currently_on,
            destination: player.team.name
     expect(player.loaned?).not_to be true
@@ -82,6 +84,7 @@ describe Loan, type: :model do
     create :loan,
            player: player,
            origin: player.team.name,
+           signed_on: player.team.currently_on,
            started_on: player.team.currently_on,
            ended_on: player.team.currently_on + 1.week
     player.team.increment_date 1.week
@@ -127,6 +130,7 @@ describe Loan, type: :model do
       create :loan,
              player: player,
              origin: player.team.name,
+             signed_on: player.team.currently_on,
              started_on: player.team.currently_on,
              transfer_fee: Faker::Number.within(range: 50_000..10_000_000),
              addon_clause: Faker::Number.within(range: 0..25)
