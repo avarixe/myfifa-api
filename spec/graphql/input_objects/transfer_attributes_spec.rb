@@ -5,7 +5,7 @@ require 'rails_helper'
 describe InputObjects::TransferAttributes do
   subject { described_class }
 
-  it { is_expected.to accept_argument(:signed_on).of_type('ISO8601Date!') }
+  it { is_expected.to accept_argument(:signed_on).of_type('ISO8601Date') }
   it { is_expected.to accept_argument(:moved_on).of_type('ISO8601Date!') }
   it { is_expected.to accept_argument(:origin).of_type('String!') }
   it { is_expected.to accept_argument(:destination).of_type('String!') }

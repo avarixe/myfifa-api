@@ -46,6 +46,12 @@ describe Loan, type: :model do
     expect(loan).not_to be_valid
   end
 
+  it 'requires a start date if signed' do
+    loan = build :loan, signed_on: Time.zone.today
+    loan.started_on = nil
+    expect(loan).not_to be_valid
+  end
+
   it 'caches the Origin as a Team Option' do
     loan = create :loan, player: player
     expect(Option.where(category: 'Team', value: loan.origin)).to be_present
@@ -56,14 +62,10 @@ describe Loan, type: :model do
     expect(Option.where(category: 'Team', value: loan.destination)).to be_present
   end
 
-  it 'sets signed date to the Team current date' do
-    loan = create(:loan)
-    expect(loan.signed_on).to be == loan.team.currently_on
-  end
-
   it 'changes status to loaned when loaned out' do
     create :loan,
            player: player,
+           signed_on: player.team.currently_on,
            started_on: player.team.currently_on,
            origin: player.team.name
     expect(player.loaned?).to be true
@@ -72,6 +74,7 @@ describe Loan, type: :model do
   it 'does not change status to loaned when loaned in' do
     create :loan,
            player: player,
+           signed_on: player.team.currently_on,
            started_on: player.team.currently_on,
            destination: player.team.name
     expect(player.loaned?).not_to be true
@@ -81,10 +84,24 @@ describe Loan, type: :model do
     create :loan,
            player: player,
            origin: player.team.name,
+           signed_on: player.team.currently_on,
            started_on: player.team.currently_on,
            ended_on: player.team.currently_on + 1.week
     player.team.increment_date 1.week
     expect(player.reload.active?).to be true
+  end
+
+  it 'does not affect Player status if unsigned' do
+    create :loan,
+           player: player,
+           origin: player.team.name
+    expect(player).to be_active
+  end
+
+  it 'does not affect injuries if unsigned' do
+    create :injury, player: player, started_on: player.team.currently_on
+    create :loan, player: player, origin: player.team.name
+    expect(player).to be_injured
   end
 
   describe 'when created for Injured Player' do
@@ -95,6 +112,7 @@ describe Loan, type: :model do
       create :loan,
              player: player,
              origin: player.team.name,
+             signed_on: player.team.currently_on,
              started_on: player.team.currently_on
     end
 
@@ -112,6 +130,7 @@ describe Loan, type: :model do
       create :loan,
              player: player,
              origin: player.team.name,
+             signed_on: player.team.currently_on,
              started_on: player.team.currently_on,
              transfer_fee: Faker::Number.within(range: 50_000..10_000_000),
              addon_clause: Faker::Number.within(range: 0..25)

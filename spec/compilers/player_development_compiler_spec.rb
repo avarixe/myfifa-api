@@ -73,6 +73,7 @@ describe PlayerDevelopmentCompiler do
       player = create :player, team: team
       create :contract,
              player: player,
+             signed_on: team.started_on,
              started_on: team.started_on,
              ended_on: team.end_of_season(1)
       (0..2).each do |season|

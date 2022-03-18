@@ -7,7 +7,7 @@ describe Types::TransferType do
 
   it { is_expected.to have_field(:id).of_type('ID!') }
   it { is_expected.to have_field(:player_id).of_type('ID!') }
-  it { is_expected.to have_field(:signed_on).of_type('ISO8601Date!') }
+  it { is_expected.to have_field(:signed_on).of_type('ISO8601Date') }
   it { is_expected.to have_field(:moved_on).of_type('ISO8601Date!') }
   it { is_expected.to have_field(:origin).of_type('String!') }
   it { is_expected.to have_field(:destination).of_type('String!') }

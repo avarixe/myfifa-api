@@ -43,6 +43,7 @@ class Contract < ApplicationRecord
   scope :active_for, lambda { |team:, date:|
     joins(:player)
       .where(players: { team_id: team.id })
+      .where.not(signed_on: nil)
       .where(started_on: nil..date)
       .where('ended_on > ?', date + 1.day)
   }
@@ -73,12 +74,10 @@ class Contract < ApplicationRecord
   #  VALIDATION  #
   ################
 
-  validates :signed_on, presence: true
   validates :started_on,
-            date: {
-              after_or_equal_to: :signed_on,
-              before_or_equal_to: :ended_on
-            }
+            date: { after_or_equal_to: :signed_on },
+            if: :signed?
+  validates :started_on, date: { before_or_equal_to: :ended_on }
   validates :ended_on, presence: true
   validates :wage, numericality: { only_integer: true }
   validates :bonus_req_type,
@@ -100,13 +99,10 @@ class Contract < ApplicationRecord
   #  CALLBACK  #
   ##############
 
-  before_validation :set_signed_on
-  after_create :close_previous_contract
-  after_create :update_status
-
-  def set_signed_on
-    self.signed_on ||= team.currently_on
-  end
+  after_save :close_previous_contract,
+             if: -> { saved_change_to_signed_on? && signed? }
+  after_save :update_status,
+             if: -> { saved_change_to_signed_on? && signed? }
 
   def close_previous_contract
     Contract
@@ -151,8 +147,12 @@ class Contract < ApplicationRecord
 
   delegate :team, :update_status, to: :player
 
+  def signed?
+    signed_on.present?
+  end
+
   def current?
-    pending? || active?
+    signed? && (pending? || active?)
   end
 
   def active?

@@ -5,7 +5,7 @@ module InputObjects
     description 'Attributes to create/update a Transfer record'
 
     argument :signed_on, GraphQL::Types::ISO8601Date,
-             'Date this Transfer was signed', required: true
+             'Date this Transfer was signed', required: false
     argument :moved_on, GraphQL::Types::ISO8601Date,
              'Date when Player moved to a different Team', required: true
     argument :origin, String,

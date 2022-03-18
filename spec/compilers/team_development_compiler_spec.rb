@@ -32,6 +32,7 @@ describe TeamDevelopmentCompiler do
                         contracts_count: 0
         create :contract,
                player: player,
+               signed_on: team.currently_on,
                ended_on: team.end_of_season(5)
         set[:player] = player
         3.times do |i|

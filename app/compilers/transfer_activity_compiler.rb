@@ -20,7 +20,10 @@ class TransferActivityCompiler
   private
 
     def base_query(model)
-      model.joins(:player).where(players: { team_id: team.id })
+      model
+        .joins(:player)
+        .where(players: { team_id: team.id })
+        .where.not(signed_on: nil)
     end
 
     def arrivals

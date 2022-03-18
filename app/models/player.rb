@@ -41,10 +41,18 @@ class Player < ApplicationRecord
            -> { order :started_on },
            inverse_of: :player,
            dependent: :destroy
+  has_many :signed_loans, # rubocop:disable Rails/HasManyOrHasOneDependent
+           -> { where.not(signed_on: nil).order(:started_on) },
+           class_name: 'Loan',
+           inverse_of: :player
   has_many :contracts,
            -> { order :started_on },
            inverse_of: :player,
            dependent: :destroy
+  has_many :signed_contracts, # rubocop:disable Rails/HasManyOrHasOneDependent
+           -> { where.not(signed_on: nil).order(:started_on) },
+           class_name: 'Contract',
+           inverse_of: :player
   has_many :transfers,
            -> { order :moved_on },
            inverse_of: :player,
@@ -186,11 +194,19 @@ class Player < ApplicationRecord
     end
   end
 
-  %w[contract injury loan].each do |record|
-    define_method "last_#{record}" do
-      public_send(record.pluralize).last
-    end
+  def last_contract
+    signed_contracts.last
+  end
 
+  def last_injury
+    injuries.last
+  end
+
+  def last_loan
+    signed_loans.last
+  end
+
+  %w[contract injury loan].each do |record|
     define_method "current_#{record}" do
       last_record = public_send("last_#{record}")
       last_record if last_record&.current?

@@ -25,6 +25,7 @@ describe TransferActivityCompiler do
           player = create :player, team: team, contracts_count: 0
           create :contract,
                  player: player,
+                 signed_on: team.currently_on + set[:season].years,
                  started_on: team.currently_on + set[:season].years,
                  ended_on: team.currently_on + 10.years
         end
@@ -32,26 +33,31 @@ describe TransferActivityCompiler do
           player = create :player, team: team, contracts_count: 0
           create :contract,
                  player: player,
+                 signed_on: team.currently_on,
                  ended_on: team.end_of_season(set[:season])
         end
         set[:transfers].times do
           player = create :player, team: team, contracts_count: 0
           create :contract,
                  player: player,
+                 signed_on: team.currently_on,
                  ended_on: team.currently_on + 10.years
           create :transfer,
                  player: player,
                  origin: team.name,
+                 signed_on: team.currently_on + set[:season].years,
                  moved_on: team.currently_on + set[:season].years
         end
         set[:loans].times do
           player = create :player, team: team, contracts_count: 0
           create :contract,
                  player: player,
+                 signed_on: team.currently_on,
                  ended_on: team.currently_on + 10.years
           create :loan,
                  player: player,
                  origin: team.name,
+                 signed_on: team.currently_on + set[:season].years,
                  started_on: team.currently_on + set[:season].years,
                  ended_on: team.end_of_season(set[:season])
         end
