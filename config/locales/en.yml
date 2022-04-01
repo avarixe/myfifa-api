@@ -120,3 +120,7 @@ en:
           attributes:
             player_id:
               taken: is already in this Match.
+        fixture:
+          attributes:
+            legs:
+              too_short: are missing for Fixture

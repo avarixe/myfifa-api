@@ -35,7 +35,7 @@ gem 'devise'
 gem 'cancancan'
 
 # GraphQL
-gem 'graphql'
+gem 'graphql', '~> 1.12.16'
 # for multipart file upload in GraphQL
 gem 'apollo_upload_server'
 
