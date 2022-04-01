@@ -81,7 +81,7 @@ describe Competition, type: :model do
 
   describe 'if League' do
     let(:num_teams) { Faker::Number.between(from: 2, to: 30).to_i }
-    let(:league) { create :league, num_teams: num_teams }
+    let(:league) { create :league, num_teams: }
 
     it 'creates 1 stage' do
       expect(league.stages.count).to be == 1
@@ -95,7 +95,7 @@ describe Competition, type: :model do
   describe 'if Cup' do
     let(:num_rounds) { Faker::Number.between(from: 1, to: 6).to_i }
     let(:num_teams) { 2**num_rounds }
-    let(:cup) { create :cup, num_teams: num_teams }
+    let(:cup) { create :cup, num_teams: }
 
     it 'creates log(2) Knockout stages' do
       expect(cup.stages.size).to be == num_rounds

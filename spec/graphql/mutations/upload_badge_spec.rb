@@ -6,7 +6,7 @@ describe Mutations::UpdateUser, type: :request do
   subject { described_class }
 
   let(:user) { create :user }
-  let(:team) { create :team, user: user }
+  let(:team) { create :team, user: }
   let(:test_badge) do
     test_badge_path = Rails.root.join('spec/support/test-badge.png')
     Rack::Test::UploadedFile.new test_badge_path, 'image/png'
@@ -21,10 +21,10 @@ describe Mutations::UpdateUser, type: :request do
       }
     GQL
     {
-      query: query,
+      query:,
       variables: { teamId: team.id, badge: nil }.to_json,
       operations: {
-        query: query,
+        query:,
         operationName: 'uploadBadge',
         variables: { teamId: team.id, badge: test_badge }
       }.to_json,
@@ -42,7 +42,7 @@ describe Mutations::UpdateUser, type: :request do
       token = create :access_token, user: user
       post graphql_url,
            headers: { 'Authorization' => "Bearer #{token.token}" },
-           params: params
+           params:
     end
 
     it 'uploads the Team Badge' do

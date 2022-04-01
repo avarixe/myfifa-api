@@ -14,7 +14,7 @@ module Mutations
       current_ability = Ability.new(context[:current_user])
       player = Player.accessible_by(current_ability).find(id)
       player.current_contract&.retire!
-      { player: player }
+      { player: }
     end
   end
 end

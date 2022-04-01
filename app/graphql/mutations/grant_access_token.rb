@@ -17,14 +17,14 @@ module Mutations
           'Errors preventing User from being authenticated', null: true
 
     def resolve(username:, password:)
-      user = User.find_by(username: username)
+      user = User.find_by(username:)
 
       if user&.valid_password? password
         token = user.access_tokens.create!
         {
           token: token.token,
           expires_at: token.expires_at,
-          user: user
+          user:
         }
       else
         {

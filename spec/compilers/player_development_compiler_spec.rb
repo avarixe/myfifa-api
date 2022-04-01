@@ -45,7 +45,7 @@ describe PlayerDevelopmentCompiler do
 
     it 'filters results by Player ID if provided' do
       sample_set.each do |set|
-        compiler = described_class.new(team: team, player_ids: [set[:player].id])
+        compiler = described_class.new(team:, player_ids: [set[:player].id])
         compiler.results.each do |result|
           expect(result[:player_id]).to be == set[:player].id
         end
@@ -54,11 +54,11 @@ describe PlayerDevelopmentCompiler do
 
     it 'only provides Player ovr/value changes for Season if provided' do
       (0..2).each do |season|
-        compiler = described_class.new(team: team, season: season)
+        compiler = described_class.new(team:, season:)
         results = compiler.results
         sample_set.each do |set|
           expected_data = {
-            season: season,
+            season:,
             player_id: set[:player].id,
             ovr: [set[:ovr][season], set[:ovr][season + 1]],
             value: [set[:value][season], set[:value][season + 1]]
@@ -77,7 +77,7 @@ describe PlayerDevelopmentCompiler do
              started_on: team.started_on,
              ended_on: team.end_of_season(1)
       (0..2).each do |season|
-        compiler = described_class.new(team: team, season: season)
+        compiler = described_class.new(team:, season:)
         player_results = compiler.results.find do |result|
           result[:player_id] == player.id
         end
@@ -91,7 +91,7 @@ describe PlayerDevelopmentCompiler do
     end
 
     it 'provides Player ovr/value changes for all Seasons if provided' do
-      compiler = described_class.new(team: team)
+      compiler = described_class.new(team:)
       (0..2).each do |season|
         results_include_season = compiler.results.any? do |result|
           result[:season] == season

@@ -10,10 +10,10 @@ class TransferActivityCompiler
 
   def results
     @results ||= {
-      arrivals: arrivals,
-      departures: departures,
-      transfers: transfers,
-      loans: loans
+      arrivals:,
+      departures:,
+      transfers:,
+      loans:
     }
   end
 

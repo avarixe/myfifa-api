@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe TeamChannel, type: :channel do
   let(:user) { create :user }
-  let(:team) { create :team, user: user }
+  let(:team) { create :team, user: }
 
   before do
     # initialize connection with identifiers

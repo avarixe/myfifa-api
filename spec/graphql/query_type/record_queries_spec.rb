@@ -28,7 +28,7 @@ describe QueryType, type: :graphql do
           if type == 'team'
             create :team, user: user
           else
-            create type.to_sym, team: create(:team, user: user)
+            create type.to_sym, team: create(:team, user:)
           end
         end
 

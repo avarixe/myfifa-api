@@ -11,7 +11,7 @@ class ApplicationRecord < ActiveRecord::Base
 
       define_method cache_method do
         Option.create user_id: team.user_id,
-                      category: category,
+                      category:,
                       value: public_send(attribute)
       end
     end

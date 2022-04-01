@@ -15,7 +15,7 @@ module Mutations
       match = Match.accessible_by(current_ability).find(match_id)
       squad = Squad.accessible_by(current_ability).find(squad_id)
       match.apply squad
-      { match: match }
+      { match: }
     end
   end
 end

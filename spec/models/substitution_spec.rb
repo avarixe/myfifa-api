@@ -28,11 +28,11 @@ describe Substitution, type: :model do
   let(:match) { create :match }
   let(:cap) do
     player = create :player, team: match.team
-    create :cap, start: 0, stop: 90, match: match, player: player
+    create :cap, start: 0, stop: 90, match:, player:
   end
   let(:sub) do
     replacement = create :player, team: match.team
-    create :substitution, player_id: cap.player_id, replacement_id: replacement.id, match: match
+    create :substitution, player_id: cap.player_id, replacement_id: replacement.id, match:
   end
 
   it 'has a valid factory' do
@@ -78,7 +78,7 @@ describe Substitution, type: :model do
       create :substitution,
              player_id: cap.player_id,
              replacement_id: replacement.id,
-             match: match,
+             match:,
              minute: Faker::Number.between(from: 91, to: 120)
     end
 

@@ -63,10 +63,10 @@ class Loan < ApplicationRecord
   }
 
   def activate_buy_option
-    player.transfers.create origin: origin,
-                            destination: destination,
+    player.transfers.create origin:,
+                            destination:,
                             fee: transfer_fee,
-                            addon_clause: addon_clause,
+                            addon_clause:,
                             moved_on: team.currently_on
   end
 
@@ -82,15 +82,11 @@ class Loan < ApplicationRecord
 
   delegate :team, to: :player
 
-  def signed?
-    signed_on.present?
-  end
+  def signed? = signed_on.present?
 
   def current?
     started_on <= team.currently_on && team.currently_on < ended_on
   end
 
-  def loaned_out?
-    team.name == origin
-  end
+  def loaned_out? = team.name == origin
 end

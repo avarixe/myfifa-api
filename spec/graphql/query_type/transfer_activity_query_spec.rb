@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe QueryType, type: :graphql do
   let(:user) { create :user }
-  let(:team) { create :team, user: user }
+  let(:team) { create :team, user: }
 
   graphql_operation <<-GQL
     query fetchTransferActivity($id: ID!) {

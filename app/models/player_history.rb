@@ -33,7 +33,7 @@ class PlayerHistory < ApplicationRecord
 
   def remove_duplicates
     PlayerHistory
-      .where(player_id: player_id, recorded_on: team.currently_on)
+      .where(player_id:, recorded_on: team.currently_on)
       .delete_all
   end
 

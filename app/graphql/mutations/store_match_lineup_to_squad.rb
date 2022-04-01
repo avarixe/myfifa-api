@@ -16,7 +16,7 @@ module Mutations
       match = Match.accessible_by(current_ability).find(match_id)
       squad = Squad.accessible_by(current_ability).find(squad_id)
       squad.store_lineup match
-      { squad: squad }
+      { squad: }
     end
   end
 end

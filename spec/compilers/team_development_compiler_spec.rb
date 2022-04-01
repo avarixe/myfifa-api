@@ -50,7 +50,7 @@ describe TeamDevelopmentCompiler do
 
     it 'calculates the average Player OVR at season start' do
       (0..2).each do |season|
-        compiler = described_class.new(team: team, season: season)
+        compiler = described_class.new(team:, season:)
         results = compiler.results
 
         start_ovrs = sample_set.map { |set| set[:ovr][season] }
@@ -61,7 +61,7 @@ describe TeamDevelopmentCompiler do
     it 'calculates the average Player OVR at season end' do
       team.update currently_on: team.end_of_season(2)
       (0..2).each do |season|
-        compiler = described_class.new(team: team, season: season)
+        compiler = described_class.new(team:, season:)
         results = compiler.results
 
         end_ovrs = sample_set.map { |set| set[:ovr][season + 1] }
@@ -71,7 +71,7 @@ describe TeamDevelopmentCompiler do
 
     it 'calculates the total Player value at season start' do
       (0..2).each do |season|
-        compiler = described_class.new(team: team, season: season)
+        compiler = described_class.new(team:, season:)
         results = compiler.results
 
         start_values = sample_set.map { |set| set[:value][season] }
@@ -82,7 +82,7 @@ describe TeamDevelopmentCompiler do
     it 'calculates the total Player value at season end' do
       team.update currently_on: team.end_of_season(2)
       (0..2).each do |season|
-        compiler = described_class.new(team: team, season: season)
+        compiler = described_class.new(team:, season:)
         results = compiler.results
 
         end_values = sample_set.map { |set| set[:value][season + 1] }

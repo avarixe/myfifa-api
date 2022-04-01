@@ -10,11 +10,11 @@ class TeamDevelopmentCompiler
 
   def results
     {
-      season: season,
-      start_ovr: start_ovr,
-      start_value: start_value,
-      end_ovr: end_ovr,
-      end_value: end_value
+      season:,
+      start_ovr:,
+      start_value:,
+      end_ovr:,
+      end_value:
     }
   end
 
@@ -41,7 +41,7 @@ class TeamDevelopmentCompiler
 
     define_method "player_ids_at_#{time}" do
       Contract
-        .active_for(team: team, date: public_send("season_#{time}"))
+        .active_for(team:, date: public_send("season_#{time}"))
         .select(:player_id)
     end
   end

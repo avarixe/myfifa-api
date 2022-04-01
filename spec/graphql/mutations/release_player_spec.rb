@@ -8,7 +8,7 @@ describe Mutations::ReleasePlayer, type: :graphql do
   let(:user) { create :user }
   let(:player) do
     team = create :team, user: user
-    create :player, team: team
+    create :player, team:
   end
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }

@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe QueryType, type: :graphql do
   let(:user) { create :user }
-  let(:team) { create :team, user: user }
+  let(:team) { create :team, user: }
 
   graphql_operation <<-GQL
     query fetchTeamDevelopmentStats($id: ID!, $season: Int!) {
@@ -41,7 +41,7 @@ describe QueryType, type: :graphql do
   end
 
   it 'returns Team average OVR and total Value data' do
-    compiled_stats = TeamDevelopmentCompiler.new(team: team, season: 0).results
+    compiled_stats = TeamDevelopmentCompiler.new(team:, season: 0).results
     stats = response_data['team']['teamDevelopmentStats']
             .transform_keys { |k| k.underscore.to_sym }
             .transform_values(&:to_i)

@@ -24,7 +24,7 @@ describe Injury, type: :model do
     player = create :player
     create :injury,
            started_on: player.team.currently_on,
-           player: player
+           player:
   end
 
   it 'has a valid factory' do
@@ -62,7 +62,7 @@ describe Injury, type: :model do
 
   %w[Days Weeks Months Years].each do |timespan|
     it "automatically sets ended_on when #{timespan} duration is provided" do
-      injury.duration = { length: 3, timespan: timespan }
+      injury.duration = { length: 3, timespan: }
       expect(injury.ended_on)
         .to be == injury.team.currently_on + 3.public_send(timespan.downcase)
     end
