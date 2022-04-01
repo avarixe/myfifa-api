@@ -4,7 +4,7 @@ require 'rails_helper'
 
 describe PlayerPerformanceCompiler do
   let(:team) { Team.last }
-  let(:compiler) { described_class.new(team: team) }
+  let(:compiler) { described_class.new(team:) }
   let(:results) { compiler.results }
 
   it 'requires a team' do
@@ -47,7 +47,7 @@ describe PlayerPerformanceCompiler do
                     home: set[:home]
         create_list :goal,
                     set[:num_assists],
-                    match: match,
+                    match:,
                     assisting_player: set[:player],
                     home: set[:home]
       end
@@ -59,7 +59,7 @@ describe PlayerPerformanceCompiler do
 
     it 'filters results by Player ID if provided' do
       team.players.each do |player|
-        compiler = described_class.new(team: team, player_ids: [player.id])
+        compiler = described_class.new(team:, player_ids: [player.id])
         num_in_set = sample_set.count { |set| set[:player] == player }
         num_in_results = compiler.results.pluck(:num_matches).sum
         expect(num_in_results).to be == num_in_set
@@ -68,7 +68,7 @@ describe PlayerPerformanceCompiler do
 
     it 'filters results by Competition if provided' do
       sample_competitions.each do |competition|
-        compiler = described_class.new(team: team, competition: competition)
+        compiler = described_class.new(team:, competition:)
         num_in_set = sample_set.count { |set| set[:competition] == competition }
         num_in_results = compiler.results.pluck(:num_matches).sum
         expect(num_in_results).to be == num_in_set
@@ -77,7 +77,7 @@ describe PlayerPerformanceCompiler do
 
     it 'filters results by Season if provided' do
       (0..3).each do |season|
-        compiler = described_class.new(team: team, season: season)
+        compiler = described_class.new(team:, season:)
         num_in_set = sample_set.count { |set| set[:season] == season }
         num_in_results = compiler.results.pluck(:num_matches).sum
         expect(num_in_results).to be == num_in_set

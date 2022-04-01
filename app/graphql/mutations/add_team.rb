@@ -16,7 +16,7 @@ module Mutations
       team = context[:current_user].teams.new(attributes.to_h)
 
       if team.save
-        { team: team }
+        { team: }
       else
         { errors: team.errors }
       end

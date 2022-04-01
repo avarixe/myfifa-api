@@ -16,7 +16,7 @@ module Mutations
       user = User.new(attributes.to_h)
 
       if user.save
-        { user: user }
+        { user: }
       else
         { errors: user.errors }
       end

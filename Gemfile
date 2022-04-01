@@ -7,7 +7,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-ruby '2.7.2'
+ruby '3.1.1'
 
 gem 'bootsnap'
 
@@ -35,7 +35,7 @@ gem 'devise'
 gem 'cancancan'
 
 # GraphQL
-gem 'graphql'
+gem 'graphql', '~> 1.12.16'
 # for multipart file upload in GraphQL
 gem 'apollo_upload_server'
 
@@ -51,7 +51,7 @@ gem 'date_validator'
 gem 'rack-cors'
 
 group :development, :test do
-  gem 'byebug', platform: :mri
+  gem 'debug', platform: :mri
 
   gem 'factory_bot_rails'
   gem 'faker'

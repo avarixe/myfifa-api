@@ -26,7 +26,7 @@ describe CompetitionCompiler do
       team = create :team
       sample_set.each do |set|
         create :match,
-               team: team,
+               team:,
                home: set[:home] ? team.name : 'Home Team',
                away: set[:home] ? 'Away Team' : team.name,
                home_score: set[:home_score],
@@ -43,7 +43,7 @@ describe CompetitionCompiler do
     it 'filters results by Competition if provided' do
       team = Team.last
       sample_competitions.each do |competition|
-        compiler = described_class.new(team: team, competition: competition)
+        compiler = described_class.new(team:, competition:)
         num_in_set = sample_set.count { |set| set[:competition] == competition }
         num_in_results = compiler.results.pluck(:wins, :draws, :losses).sum(&:sum)
         expect(num_in_results).to be == num_in_set
@@ -53,7 +53,7 @@ describe CompetitionCompiler do
     it 'filters results by Season if provided' do
       team = Team.last
       (0..3).each do |season|
-        compiler = described_class.new(team: team, season: season)
+        compiler = described_class.new(team:, season:)
         num_in_set = sample_set.count { |set| set[:season] == season }
         num_in_results = compiler.results.pluck(:wins, :draws, :losses).sum(&:sum)
         expect(num_in_results).to be == num_in_set

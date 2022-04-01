@@ -11,6 +11,8 @@ module Mutations
     }.each do |parent_model, models|
       models.each do |model|
         add_mutation = Class.new(BaseMutation) do
+          graphql_name "Add#{model}"
+
           description "Create new #{model} in database " \
                       'with the provided attributes'
 

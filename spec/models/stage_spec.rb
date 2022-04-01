@@ -49,7 +49,7 @@ describe Stage, type: :model do
 
   it 'sets default name depending on number of teams' do
     num_teams = Faker::Number.between(from: 9, to: 20)
-    expect(build(:stage, num_teams: num_teams).name).to be == "Round of #{num_teams}"
+    expect(build(:stage, num_teams:).name).to be == "Round of #{num_teams}"
   end
 
   describe 'if table' do

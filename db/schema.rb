@@ -10,18 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_10_12_000302) do
-
+ActiveRecord::Schema[7.0].define(version: 2022_04_01_164732) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
+  enable_extension "uuid-ossp"
 
   create_table "access_tokens", force: :cascade do |t|
     t.bigint "user_id"
     t.string "token"
-    t.datetime "expires_at"
-    t.datetime "revoked_at"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
+    t.datetime "expires_at", precision: nil
+    t.datetime "revoked_at", precision: nil
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
     t.index ["token"], name: "index_access_tokens_on_token"
     t.index ["user_id"], name: "index_access_tokens_on_user_id"
   end
@@ -31,7 +31,7 @@ ActiveRecord::Schema.define(version: 2021_10_12_000302) do
     t.string "record_type", null: false
     t.bigint "record_id", null: false
     t.bigint "blob_id", null: false
-    t.datetime "created_at", null: false
+    t.datetime "created_at", precision: nil, null: false
     t.index ["blob_id"], name: "index_active_storage_attachments_on_blob_id"
     t.index ["record_type", "record_id", "name", "blob_id"], name: "index_active_storage_attachments_uniqueness", unique: true
   end
@@ -42,8 +42,8 @@ ActiveRecord::Schema.define(version: 2021_10_12_000302) do
     t.string "content_type"
     t.text "metadata"
     t.bigint "byte_size", null: false
-    t.string "checksum", null: false
-    t.datetime "created_at", null: false
+    t.string "checksum"
+    t.datetime "created_at", precision: nil, null: false
     t.string "service_name", null: false
     t.index ["key"], name: "index_active_storage_blobs_on_key", unique: true
   end
@@ -59,8 +59,8 @@ ActiveRecord::Schema.define(version: 2021_10_12_000302) do
     t.integer "minute"
     t.bigint "player_id"
     t.boolean "red_card", default: false, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "player_name"
     t.boolean "home", default: false, null: false
     t.index ["match_id"], name: "index_bookings_on_match_id"
@@ -73,8 +73,8 @@ ActiveRecord::Schema.define(version: 2021_10_12_000302) do
     t.string "pos"
     t.integer "start", default: 0
     t.integer "stop", default: 90
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "subbed_out", default: false, null: false
     t.integer "rating"
     t.index ["match_id"], name: "index_caps_on_match_id"
@@ -88,8 +88,8 @@ ActiveRecord::Schema.define(version: 2021_10_12_000302) do
     t.integer "season"
     t.string "name"
     t.string "champion"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["season"], name: "index_competitions_on_season"
     t.index ["team_id"], name: "index_competitions_on_team_id"
   end
@@ -103,8 +103,8 @@ ActiveRecord::Schema.define(version: 2021_10_12_000302) do
     t.integer "performance_bonus"
     t.integer "bonus_req"
     t.string "bonus_req_type"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.date "ended_on"
     t.date "started_on"
     t.string "conclusion"
@@ -117,8 +117,8 @@ ActiveRecord::Schema.define(version: 2021_10_12_000302) do
     t.bigint "fixture_id"
     t.string "home_score"
     t.string "away_score"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["fixture_id"], name: "index_fixture_legs_on_fixture_id"
   end
 
@@ -126,8 +126,8 @@ ActiveRecord::Schema.define(version: 2021_10_12_000302) do
     t.bigint "stage_id"
     t.string "home_team"
     t.string "away_team"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["stage_id"], name: "index_fixtures_on_stage_id"
   end
 
@@ -140,8 +140,8 @@ ActiveRecord::Schema.define(version: 2021_10_12_000302) do
     t.boolean "home", default: false, null: false
     t.boolean "own_goal", default: false, null: false
     t.boolean "penalty", default: false, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "assisted_by"
     t.index ["assist_id"], name: "index_goals_on_assist_id"
     t.index ["match_id"], name: "index_goals_on_match_id"
@@ -153,8 +153,8 @@ ActiveRecord::Schema.define(version: 2021_10_12_000302) do
     t.date "started_on"
     t.date "ended_on"
     t.string "description"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["player_id"], name: "index_injuries_on_player_id"
   end
 
@@ -163,8 +163,8 @@ ActiveRecord::Schema.define(version: 2021_10_12_000302) do
     t.date "started_on"
     t.date "ended_on"
     t.string "destination"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "origin"
     t.date "signed_on"
     t.integer "wage_percentage"
@@ -179,8 +179,8 @@ ActiveRecord::Schema.define(version: 2021_10_12_000302) do
     t.string "away"
     t.string "competition"
     t.date "played_on"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "extra_time", default: false, null: false
     t.integer "home_score", default: 0
     t.integer "away_score", default: 0
@@ -202,8 +202,8 @@ ActiveRecord::Schema.define(version: 2021_10_12_000302) do
     t.bigint "match_id"
     t.integer "home_score"
     t.integer "away_score"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["match_id"], name: "index_penalty_shootouts_on_match_id"
   end
 
@@ -212,8 +212,8 @@ ActiveRecord::Schema.define(version: 2021_10_12_000302) do
     t.date "recorded_on"
     t.integer "ovr"
     t.integer "value"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.integer "kit_no"
     t.index ["player_id"], name: "index_player_histories_on_player_id"
   end
@@ -227,8 +227,8 @@ ActiveRecord::Schema.define(version: 2021_10_12_000302) do
     t.integer "ovr"
     t.integer "value"
     t.integer "birth_year"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "status"
     t.boolean "youth", default: false, null: false
     t.integer "kit_no"
@@ -239,8 +239,8 @@ ActiveRecord::Schema.define(version: 2021_10_12_000302) do
     t.bigint "squad_id"
     t.bigint "player_id"
     t.string "pos"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["player_id"], name: "index_squad_players_on_player_id"
     t.index ["squad_id"], name: "index_squad_players_on_squad_id"
   end
@@ -248,8 +248,8 @@ ActiveRecord::Schema.define(version: 2021_10_12_000302) do
   create_table "squads", force: :cascade do |t|
     t.bigint "team_id"
     t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["team_id"], name: "index_squads_on_team_id"
   end
 
@@ -259,8 +259,8 @@ ActiveRecord::Schema.define(version: 2021_10_12_000302) do
     t.integer "num_teams"
     t.integer "num_fixtures"
     t.boolean "table", default: false, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["competition_id"], name: "index_stages_on_competition_id"
   end
 
@@ -270,8 +270,8 @@ ActiveRecord::Schema.define(version: 2021_10_12_000302) do
     t.bigint "player_id"
     t.bigint "replacement_id"
     t.boolean "injury", default: false, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "player_name"
     t.string "replaced_by"
     t.index ["match_id"], name: "index_substitutions_on_match_id"
@@ -287,9 +287,16 @@ ActiveRecord::Schema.define(version: 2021_10_12_000302) do
     t.integer "losses", default: 0
     t.integer "goals_for", default: 0
     t.integer "goals_against", default: 0
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["stage_id"], name: "index_table_rows_on_stage_id"
+  end
+
+  create_table "team", id: :serial, force: :cascade do |t|
+    t.string "name", null: false
+    t.datetime "startedOn", precision: nil, null: false
+    t.datetime "currentlyOn", precision: nil, null: false
+    t.string "currency", null: false
   end
 
   create_table "teams", force: :cascade do |t|
@@ -298,8 +305,8 @@ ActiveRecord::Schema.define(version: 2021_10_12_000302) do
     t.date "started_on"
     t.date "currently_on"
     t.boolean "active", default: true, null: false
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.string "currency", default: "$"
     t.index ["user_id"], name: "index_teams_on_user_id"
   end
@@ -313,8 +320,8 @@ ActiveRecord::Schema.define(version: 2021_10_12_000302) do
     t.integer "fee"
     t.string "traded_player"
     t.integer "addon_clause"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.index ["player_id"], name: "index_transfers_on_player_id"
   end
 
@@ -323,15 +330,15 @@ ActiveRecord::Schema.define(version: 2021_10_12_000302) do
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
     t.string "reset_password_token"
-    t.datetime "reset_password_sent_at"
-    t.datetime "remember_created_at"
+    t.datetime "reset_password_sent_at", precision: nil
+    t.datetime "remember_created_at", precision: nil
     t.integer "sign_in_count", default: 0, null: false
-    t.datetime "current_sign_in_at"
-    t.datetime "last_sign_in_at"
+    t.datetime "current_sign_in_at", precision: nil
+    t.datetime "last_sign_in_at", precision: nil
     t.inet "current_sign_in_ip"
     t.inet "last_sign_in_ip"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.datetime "created_at", precision: nil, null: false
+    t.datetime "updated_at", precision: nil, null: false
     t.boolean "admin", default: false, null: false
     t.string "username"
     t.boolean "dark_mode", default: false, null: false

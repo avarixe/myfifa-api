@@ -42,13 +42,9 @@ class TableRow < ApplicationRecord
 
   delegate :team, to: :stage
 
-  def goal_difference
-    goals_for - goals_against
-  end
+  def goal_difference = goals_for - goals_against
 
-  def points
-    (3 * wins) + draws
-  end
+  def points = (3 * wins) + draws
 
   def as_json(options = {})
     options[:methods] ||= []

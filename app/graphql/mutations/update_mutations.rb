@@ -21,6 +21,8 @@ module Mutations
       Transfer
     ].each do |model|
       update_mutation = Class.new(BaseMutation) do
+        graphql_name "Update#{model}"
+
         description "Update #{model} with the provided attributes"
 
         argument :id, GraphQL::Types::ID,

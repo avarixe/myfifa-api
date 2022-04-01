@@ -22,6 +22,8 @@ module Mutations
       Transfer
     ].each do |model|
       remove_mutation = Class.new(BaseMutation) do
+        graphql_name "Remove#{model}"
+
         description "Remove #{model} from database"
 
         argument :id, GraphQL::Types::ID,

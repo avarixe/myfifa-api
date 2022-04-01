@@ -14,7 +14,7 @@ describe GraphqlController, type: :request do
     end
 
     describe 'with fetchTeam query' do
-      let(:team) { create :team, user: user }
+      let(:team) { create :team, user: }
 
       team_query = <<-GQL
         query fetchTeam($id: ID!) {

@@ -53,9 +53,7 @@ class Competition < ApplicationRecord
     errors.add(:base, 'Preset Format parameters are invalid')
   end
 
-  def valid_preset?
-    num_teams.to_i > 1
-  end
+  def valid_preset? = num_teams.to_i > 1
 
   def valid_knockout_stage?
     valid_preset? && 2**num_rounds == num_knockout_teams
@@ -87,7 +85,7 @@ class Competition < ApplicationRecord
 
   def load_league
     stages.create name: 'League Table',
-                  num_teams: num_teams,
+                  num_teams:,
                   table: true
   end
 

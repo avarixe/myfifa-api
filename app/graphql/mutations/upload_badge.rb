@@ -22,7 +22,7 @@ module Mutations
       )
 
       if team.update(badge: blob)
-        { team: team }
+        { team: }
       else
         { errors: team.errors }
       end

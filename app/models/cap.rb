@@ -92,25 +92,15 @@ class Cap < ApplicationRecord
     sub_ins.destroy_all
   end
 
-  def goals
-    Goal.where(match_id: match_id, player_id: player_id)
-  end
+  def goals = Goal.where(match_id:, player_id:)
 
-  def assists
-    Goal.where(match_id: match_id, assist_id: player_id)
-  end
+  def assists = Goal.where(match_id:, assist_id: player_id)
 
-  def bookings
-    Booking.where(match_id: match_id, player_id: player_id)
-  end
+  def bookings = Booking.where(match_id:, player_id:)
 
-  def sub_outs
-    Substitution.where(match_id: match_id, player_id: player_id)
-  end
+  def sub_outs = Substitution.where(match_id:, player_id:)
 
-  def sub_ins
-    Substitution.where(match_id: match_id, replacement_id: player_id)
-  end
+  def sub_ins = Substitution.where(match_id:, replacement_id: player_id)
 
   delegate :team, to: :player
 end

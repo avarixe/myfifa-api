@@ -59,11 +59,7 @@ class Transfer < ApplicationRecord
 
   delegate :team, to: :player
 
-  def signed?
-    signed_on.present?
-  end
+  def signed? = signed_on.present?
 
-  def out?
-    team.name == origin
-  end
+  def out? = team.name == origin
 end

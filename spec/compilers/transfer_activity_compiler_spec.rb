@@ -10,7 +10,7 @@ describe TransferActivityCompiler do
   describe 'result' do
     sample_set = (1..3).map do |season|
       {
-        season: season,
+        season:,
         arrivals: Faker::Number.within(range: 0..3),
         departures: Faker::Number.within(range: 0..3),
         transfers: Faker::Number.within(range: 0..3),
@@ -24,7 +24,7 @@ describe TransferActivityCompiler do
         set[:arrivals].times do
           player = create :player, team: team, contracts_count: 0
           create :contract,
-                 player: player,
+                 player:,
                  signed_on: team.currently_on + set[:season].years,
                  started_on: team.currently_on + set[:season].years,
                  ended_on: team.currently_on + 10.years
@@ -32,7 +32,7 @@ describe TransferActivityCompiler do
         set[:departures].times do
           player = create :player, team: team, contracts_count: 0
           create :contract,
-                 player: player,
+                 player:,
                  signed_on: team.currently_on,
                  ended_on: team.end_of_season(set[:season])
         end
@@ -43,7 +43,7 @@ describe TransferActivityCompiler do
                  signed_on: team.currently_on,
                  ended_on: team.currently_on + 10.years
           create :transfer,
-                 player: player,
+                 player:,
                  origin: team.name,
                  signed_on: team.currently_on + set[:season].years,
                  moved_on: team.currently_on + set[:season].years
@@ -55,7 +55,7 @@ describe TransferActivityCompiler do
                  signed_on: team.currently_on,
                  ended_on: team.currently_on + 10.years
           create :loan,
-                 player: player,
+                 player:,
                  origin: team.name,
                  signed_on: team.currently_on + set[:season].years,
                  started_on: team.currently_on + set[:season].years,
@@ -71,7 +71,7 @@ describe TransferActivityCompiler do
 
     (1..3).each do |season|
       describe "if Season #{season} provided" do
-        let(:compiler) { described_class.new(team: Team.last, season: season) }
+        let(:compiler) { described_class.new(team: Team.last, season:) }
         let(:set) { sample_set[season - 1] }
 
         it "returns arriving Contracts in Season #{season}" do

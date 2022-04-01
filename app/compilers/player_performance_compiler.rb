@@ -31,8 +31,8 @@ class PlayerPerformanceCompiler
       @base_player_query ||= team.players.where({
         id: player_ids.presence,
         matches: {
-          competition: competition,
-          season: season
+          competition:,
+          season:
         }.compact.presence
       }.compact).group(:id, 'matches.season', 'matches.competition')
     end

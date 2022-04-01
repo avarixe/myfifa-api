@@ -16,7 +16,7 @@ module Mutations
       user = context[:current_user]
 
       if user.update_without_password(attributes.to_h)
-        { user: user }
+        { user: }
       else
         { errors: user.errors }
       end

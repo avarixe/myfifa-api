@@ -59,7 +59,7 @@ describe Transfer, type: :model do
   describe 'if unsigned' do
     before do
       create :transfer,
-             player: player,
+             player:,
              origin: player.team.name,
              moved_on: player.team.currently_on
     end
@@ -80,7 +80,7 @@ describe Transfer, type: :model do
   describe 'if immediate' do
     before do
       create :transfer,
-             player: player,
+             player:,
              origin: player.team.name,
              signed_on: player.team.currently_on,
              moved_on: player.team.currently_on
@@ -102,7 +102,7 @@ describe Transfer, type: :model do
   describe 'in future' do
     before do
       create :transfer,
-             player: player,
+             player:,
              origin: player.team.name,
              signed_on: player.team.currently_on,
              moved_on: player.team.currently_on + 1.week

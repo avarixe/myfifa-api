@@ -56,11 +56,11 @@ describe Contract, type: :model do
   end
 
   it 'rejects bonus req if no performance bonus or bonus req type' do
-    expect(build(:contract, bonus_req: bonus_req)).not_to be_valid
+    expect(build(:contract, bonus_req:)).not_to be_valid
   end
 
   it 'rejects bonus req type if no performance bonus or bonus req' do
-    expect(build(:contract, bonus_req_type: bonus_req_type)).not_to be_valid
+    expect(build(:contract, bonus_req_type:)).not_to be_valid
   end
 
   it 'rejects performance bonus and bonus req if no bonus req type' do
@@ -239,7 +239,7 @@ describe Contract, type: :model do
   describe 'when terminated' do
     let(:contract) do
       create :contract,
-             player: player,
+             player:,
              signed_on: player.team.currently_on,
              ended_on: player.team.currently_on + 2.years
     end
@@ -260,7 +260,7 @@ describe Contract, type: :model do
   describe 'when retired' do
     let(:contract) do
       create :contract,
-             player: player,
+             player:,
              signed_on: player.team.currently_on,
              ended_on: player.team.currently_on + 2.years
     end
@@ -284,7 +284,7 @@ describe Contract, type: :model do
       contract.team.increment_date(1.month)
       player = contract.player
       create :contract,
-             player: player,
+             player:,
              signed_on: player.team.currently_on,
              started_on: player.team.currently_on
     end

@@ -106,9 +106,9 @@ class Contract < ApplicationRecord
 
   def close_previous_contract
     Contract
-      .where(player_id: player_id)
+      .where(player_id:)
       .where('ended_on > ?', started_on)
-      .where.not(id: id)
+      .where.not(id:)
       .find_each do |contract|
         contract.update! ended_on: started_on, conclusion: 'Renewed'
         update! previous_id: contract.id
@@ -147,13 +147,9 @@ class Contract < ApplicationRecord
 
   delegate :team, :update_status, to: :player
 
-  def signed?
-    signed_on.present?
-  end
+  def signed? = signed_on.present?
 
-  def current?
-    signed? && (pending? || active?)
-  end
+  def current? = signed? && (pending? || active?)
 
   def active?
     started_on <= team.currently_on && team.currently_on < ended_on

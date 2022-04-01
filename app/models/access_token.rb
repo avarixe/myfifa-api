@@ -30,7 +30,5 @@ class AccessToken < ApplicationRecord
     self.expires_at = 2.weeks.from_now
   end
 
-  def revoked?
-    revoked_at.present?
-  end
+  def revoked? = revoked_at.present?
 end

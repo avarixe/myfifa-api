@@ -82,8 +82,8 @@ module Types
     def competition_stats(competition: nil, season: nil)
       CompetitionCompiler.new(
         team: object,
-        competition: competition,
-        season: season
+        competition:,
+        season:
       ).results
     end
 
@@ -94,31 +94,31 @@ module Types
     )
       PlayerPerformanceCompiler.new(
         team: object,
-        player_ids: player_ids,
-        competition: competition,
-        season: season
+        player_ids:,
+        competition:,
+        season:
       ).results
     end
 
     def player_development_stats(player_ids: [], season: nil)
       PlayerDevelopmentCompiler.new(
         team: object,
-        player_ids: player_ids,
-        season: season
+        player_ids:,
+        season:
       ).results
     end
 
     def transfer_activity(season: nil)
       TransferActivityCompiler.new(
         team: object,
-        season: season
+        season:
       ).results
     end
 
     def team_development_stats(season:)
       TeamDevelopmentCompiler.new(
         team: object,
-        season: season
+        season:
       ).results
     end
   end

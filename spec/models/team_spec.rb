@@ -62,7 +62,7 @@ describe Team, type: :model do
   end
 
   describe '#injured_players' do
-    let(:player) { create :player, team: team }
+    let(:player) { create :player, team: }
 
     it 'includes injured Players bound to it' do
       create :injury, player: player, started_on: team.currently_on
@@ -75,7 +75,7 @@ describe Team, type: :model do
   end
 
   describe '#loaned_players' do
-    let(:player) { create :player, team: team }
+    let(:player) { create :player, team: }
 
     it 'includes Players loaned from it' do
       create :loan,
@@ -100,7 +100,7 @@ describe Team, type: :model do
   end
 
   describe '#expiring_players' do
-    let(:player) { create :player, team: team, contracts_count: 0 }
+    let(:player) { create :player, team:, contracts_count: 0 }
 
     it 'includes Players with contracts ending after the current season' do
       create :contract,

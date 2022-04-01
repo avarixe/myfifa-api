@@ -74,15 +74,9 @@ class Substitution < ApplicationRecord
 
   delegate :team, to: :match
 
-  def subbed_cap
-    match.caps.find_by(player_id: player_id)
-  end
+  def subbed_cap = match.caps.find_by(player_id:)
 
-  def sub_cap
-    match.caps.find_by(player_id: replacement_id)
-  end
+  def sub_cap = match.caps.find_by(player_id: replacement_id)
 
-  def match_stop
-    match.extra_time? ? 120 : 90
-  end
+  def match_stop = match.extra_time? ? 120 : 90
 end

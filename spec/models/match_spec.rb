@@ -28,7 +28,7 @@ require 'rails_helper'
 
 describe Match, type: :model do
   let(:team) { create :team }
-  let(:match) { create :match, team: team }
+  let(:match) { create :match, team: }
 
   it 'has a valid factory' do
     expect(match).to be_valid
@@ -91,7 +91,7 @@ describe Match, type: :model do
   it 'cannot have two Performance records for the same player' do
     player = create :player, team: team
     create :cap, match: match, player: player
-    expect(build(:cap, match: match, player: player)).not_to be_valid
+    expect(build(:cap, match:, player:)).not_to be_valid
   end
 
   it 'sets Match times to 120 minutes if extra time' do

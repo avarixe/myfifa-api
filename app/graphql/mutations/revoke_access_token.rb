@@ -13,7 +13,7 @@ module Mutations
 
     def resolve(token:)
       user = context[:current_user]
-      user.access_tokens.find_by(token: token)&.update(revoked_at: Time.current)
+      user.access_tokens.find_by(token:)&.update(revoked_at: Time.current)
       { confirmation: 'Access Token has successfully been revoked!' }
     rescue
       {

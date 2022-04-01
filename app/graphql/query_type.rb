@@ -58,7 +58,7 @@ class QueryType < BaseTypes::BaseObject
   def options(category:, search: nil)
     context[:current_user]
       .options
-      .where(category: category)
+      .where(category:)
       .where('LOWER(value) LIKE ?', "%#{search&.downcase}%")
       .pluck(:value)
   end

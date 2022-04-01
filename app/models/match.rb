@@ -106,21 +106,13 @@ class Match < ApplicationRecord
   #  ACCESSORS  #
   ###############
 
-  def team_played?
-    [home, away].include? team.name
-  end
+  def team_played? = [home, away].include? team.name
 
-  def team_home?
-    team.name == home
-  end
+  def team_home? = team.name == home
 
-  def team_score
-    team_home? ? home_score : away_score
-  end
+  def team_score = team_home? ? home_score : away_score
 
-  def other_score
-    team_home? ? away_score : home_score
-  end
+  def other_score = team_home? ? away_score : home_score
 
   def team_result
     return unless team_played?

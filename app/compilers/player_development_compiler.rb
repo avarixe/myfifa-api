@@ -50,7 +50,7 @@ class PlayerDevelopmentCompiler
                     records.last
       last_value = records.first
       {
-        season: season,
+        season:,
         player_id: records.first[0],
         ovr: [first_value[2], last_value[2]],
         value: [first_value[3], last_value[3]]

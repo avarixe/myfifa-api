@@ -110,7 +110,7 @@ describe Loan, type: :model do
              player: player,
              started_on: player.team.currently_on
       create :loan,
-             player: player,
+             player:,
              origin: player.team.name,
              signed_on: player.team.currently_on,
              started_on: player.team.currently_on
@@ -128,7 +128,7 @@ describe Loan, type: :model do
   describe 'when Loan-to-Buy is activated' do
     let(:loan) do
       create :loan,
-             player: player,
+             player:,
              origin: player.team.name,
              signed_on: player.team.currently_on,
              started_on: player.team.currently_on,

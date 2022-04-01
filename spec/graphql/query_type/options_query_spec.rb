@@ -27,7 +27,7 @@ describe QueryType, type: :graphql do
 
     before do
       create_list :team, 3
-      create_list :team, 3, user: user
+      create_list :team, 3, user:
     end
 
     it 'returns the name of all entered Teams' do
@@ -55,7 +55,7 @@ describe QueryType, type: :graphql do
 
     before do
       3.times do |i|
-        create :team, user: user, name: "Team #{i}"
+        create :team, user:, name: "Team #{i}"
       end
     end
 

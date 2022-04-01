@@ -54,7 +54,7 @@ describe Squad, type: :model do
     before do
       11.times do |i|
         player = create :player, team: match.team
-        create :cap, match: match, player: player, start: 0, pos: Cap::POSITIONS[i]
+        create :cap, match:, player:, start: 0, pos: Cap::POSITIONS[i]
       end
     end
 
