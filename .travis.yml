@@ -15,8 +15,7 @@ rvm:
 script:
   - bundle exec rails db:create db:schema:load RAILS_ENV=test
   - bundle exec rubocop
-  # TODO: reenable when brakeman has support for ruby 3.1 syntax
-  # - bundle exec brakeman -z -q
+  - bundle exec brakeman -z -q
   - bundle exec rspec
 services:
   - postgresql
