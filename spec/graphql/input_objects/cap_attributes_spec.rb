@@ -7,4 +7,5 @@ describe InputObjects::CapAttributes do
 
   it { is_expected.to accept_argument(:player_id).of_type('ID') }
   it { is_expected.to accept_argument(:pos).of_type('CapPosition') }
+  it { is_expected.to accept_argument(:rating).of_type('Int') }
 end
