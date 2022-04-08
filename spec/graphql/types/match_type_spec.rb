@@ -28,4 +28,7 @@ describe Types::MatchType do
   it { is_expected.to have_field(:substitutions).of_type('[Substitution!]!') }
   it { is_expected.to have_field(:bookings).of_type('[Booking!]!') }
   it { is_expected.to have_field(:penalty_shootout).of_type('PenaltyShootout') }
+
+  it { is_expected.to have_field(:previous_match).of_type('Match') }
+  it { is_expected.to have_field(:next_match).of_type('Match') }
 end

@@ -38,5 +38,17 @@ module Types
           'List of Bookings made in this Match', null: false
     field :penalty_shootout, PenaltyShootoutType,
           'Penalty Shootout bound to this Match', null: true
+
+    field :previous_match, MatchType,
+          'Previous Match played by same Team', null: true
+    field :next_match, MatchType, 'Next Match played by same Team', null: true
+
+    def previous_match
+      object.team.matches.where(played_on: ...object.played_on).last
+    end
+
+    def next_match
+      object.team.matches.where('played_on > ?', object.played_on).first
+    end
   end
 end
