@@ -1,0 +1,55 @@
+name: build
+on: [push, pull_request]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:9
+        ports:
+          - 5432:5432
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    env:
+      NOKOGIRI_USE_SYSTEM_LIBRARIES:  true
+      CC_TEST_REPORTER_ID: 0f4eda86cc3fd760c43559690e5260b382565742c07c3313d77f69fbfb62b198
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Install Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.1.1
+
+      # - name: Install libpg-dev
+      #   run: sudo apt-get install libpg-dev
+
+      - name: Install gems
+        run: |
+          gem install bundler
+          bundle install --jobs 4 --retry 3
+
+      - name: Setup Code Climate test-reporter
+        run: |
+          curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+          chmod +x ./cc-test-reporter
+          GIT_BRANCH=$GITHUB_REF GIT_COMMIT_SHA=$GITHUB_SHA ./cc-test-reporter before-build
+
+      - name: scan with Rubocop
+        run: bundle exec rubocop
+
+      - name: scan with Brakeman
+        run: bundle exec brakeman -z -q
+
+      - name: test with RSpec
+        run:  |
+          bundle exec rails db:create db:schema:load RAILS_ENV=test
+          bundle exec rspec
+        env:
+          db_username: postgres
+          db_password: postgres
+
+      - name: Publish code coverage
+        run: GIT_BRANCH=$GITHUB_REF GIT_COMMIT_SHA=$GITHUB_SHA ./cc-test-reporter after-build -t simplecov --exit-code $?
