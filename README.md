@@ -1,6 +1,6 @@
 # README
 
-[![Build Status](https://travis-ci.com/avarixe/myfifa-api.svg?branch=master)](https://travis-ci.com/avarixe/myfifa-api)
+![Build Status](https://github.com/avarixe/myfifa-api/actions/workflows/build.yml/badge.svg)
 [![Maintainability](https://api.codeclimate.com/v1/badges/59317b38d79678780205/maintainability)](https://codeclimate.com/github/l33j00n325/myfifa-api/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/59317b38d79678780205/test_coverage)](https://codeclimate.com/github/l33j00n325/myfifa-api/test_coverage)
 
