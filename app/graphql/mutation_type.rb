@@ -4,9 +4,9 @@ class MutationType < BaseTypes::BaseObject
   field :grant_access_token, mutation: Mutations::GrantAccessToken
   field :revoke_access_token, mutation: Mutations::RevokeAccessToken
 
-  field :register_user, mutation: Mutations::RegisterUser
-  field :update_user, mutation: Mutations::UpdateUser
-  field :change_password, mutation: Mutations::ChangePassword
+  field :register_user, mutation: Mutations::UserMutations::AddUser
+  field :update_user, mutation: Mutations::UserMutations::UpdateUser
+  field :change_password, mutation: Mutations::UserMutations::ChangePassword
 
   %w[
     Booking
@@ -26,24 +26,20 @@ class MutationType < BaseTypes::BaseObject
     Team
     Transfer
   ].each do |model|
-    if model == 'Team'
-      field :add_team, mutation: Mutations::AddTeam
-    else
-      field "add_#{model.underscore}".to_sym,
-            mutation: Mutations::AddMutations.const_get("Add#{model}")
-    end
+    field "add_#{model.underscore}".to_sym,
+          mutation: Mutations.const_get("#{model}Mutations").const_get("Add#{model}")
     field "update_#{model.underscore}".to_sym,
-          mutation: Mutations::UpdateMutations.const_get("Update#{model}")
+          mutation: Mutations.const_get("#{model}Mutations").const_get("Update#{model}")
     field "remove_#{model.underscore}".to_sym,
-          mutation: Mutations::RemoveMutations.const_get("Remove#{model}")
+          mutation: Mutations.const_get("#{model}Mutations").const_get("Remove#{model}")
   end
 
-  field :upload_badge, mutation: Mutations::UploadBadge
-  field :release_player, mutation: Mutations::ReleasePlayer
-  field :retire_player, mutation: Mutations::RetirePlayer
-  field :apply_squad_to_match, mutation: Mutations::ApplySquadToMatch
+  field :upload_badge, mutation: Mutations::TeamMutations::UploadBadge
+  field :release_player, mutation: Mutations::PlayerMutations::ReleasePlayer
+  field :retire_player, mutation: Mutations::PlayerMutations::RetirePlayer
+  field :apply_squad_to_match, mutation: Mutations::MatchMutations::ApplySquadToMatch
   field :store_match_lineup_to_squad,
-        mutation: Mutations::StoreMatchLineupToSquad
+        mutation: Mutations::SquadMutations::StoreMatchLineupToSquad
   field :remove_penalty_shootout,
-        mutation: Mutations::RemoveMutations::RemovePenaltyShootout
+        mutation: Mutations::PenaltyShootoutMutations::RemovePenaltyShootout
 end

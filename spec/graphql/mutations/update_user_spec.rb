@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Mutations::UpdateUser, type: :graphql do
+describe Mutations::UserMutations::UpdateUser, type: :graphql do
   subject { described_class }
 
   let(:user) { create :user }
@@ -12,8 +12,8 @@ describe Mutations::UpdateUser, type: :graphql do
   it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
 
   graphql_operation <<-GQL
-    mutation updateUser($attributes: UserAttributes!) {
-      updateUser(attributes: $attributes) {
+    mutation updateUser($id: ID!, $attributes: UserAttributes!) {
+      updateUser(id: $id, attributes: $attributes) {
         user { id }
         errors { fullMessages }
       }
@@ -27,6 +27,7 @@ describe Mutations::UpdateUser, type: :graphql do
   describe 'with valid attributes' do
     graphql_variables do
       {
+        id: user.id,
         attributes:
           graphql_attributes_for(:user).except('password', 'passwordConfirmation')
       }
@@ -49,6 +50,7 @@ describe Mutations::UpdateUser, type: :graphql do
 
     graphql_variables do
       {
+        id: user.id,
         attributes: {
           username: unavailable_username
         }

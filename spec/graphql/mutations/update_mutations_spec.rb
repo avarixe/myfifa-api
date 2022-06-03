@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Mutations::UpdateMutations do
+describe Mutations do
   %w[
     Booking
     Cap
@@ -21,7 +21,7 @@ describe Mutations::UpdateMutations do
     Team
     Transfer
   ].each do |model|
-    describe described_class.const_get("Update#{model}"), type: :graphql do
+    describe described_class.const_get("#{model}Mutations::Update#{model}"), type: :graphql do
       subject { described_class }
 
       let(:record) { create model.underscore.to_sym }

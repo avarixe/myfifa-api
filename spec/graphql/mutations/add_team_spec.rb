@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Mutations::AddTeam, type: :graphql do
+describe Mutations::TeamMutations::AddTeam, type: :graphql do
   subject { described_class }
 
   let(:user) { create :user }

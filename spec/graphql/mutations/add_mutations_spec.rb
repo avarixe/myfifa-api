@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Mutations::AddMutations do
+describe Mutations do
   {
     # 'Team' => ['Player']
     'Team' => %w[Competition Match Player Squad],
@@ -14,7 +14,7 @@ describe Mutations::AddMutations do
     parent = parent_model.camelize(:lower)
 
     models.each do |model|
-      describe described_class.const_get("Add#{model}"), type: :graphql do
+      describe described_class.const_get("#{model}Mutations::Add#{model}"), type: :graphql do
         subject { described_class }
 
         let(:parent_record) { create parent_model.underscore.to_sym }

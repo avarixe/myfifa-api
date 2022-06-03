@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Mutations::UpdateUser, type: :request do
+describe Mutations::TeamMutations::UploadBadge, type: :request do
   subject { described_class }
 
   let(:user) { create :user }
@@ -33,8 +33,8 @@ describe Mutations::UpdateUser, type: :request do
     }
   end
 
-  it { is_expected.to accept_argument(:attributes).of_type('UserAttributes!') }
-  it { is_expected.to have_a_field(:user).returning('User') }
+  it { is_expected.to accept_argument(:badge).of_type('Upload!') }
+  it { is_expected.to have_a_field(:team).returning('Team') }
   it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
 
   describe 'when execution' do

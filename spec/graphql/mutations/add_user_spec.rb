@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Mutations::RegisterUser, type: :graphql do
+describe Mutations::UserMutations::AddUser, type: :graphql do
   subject(:mutation) { described_class }
 
   it 'accepts argument `attributes` of type `UserRegistrationAttributes!`' do

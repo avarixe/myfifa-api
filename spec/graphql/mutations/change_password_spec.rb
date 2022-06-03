@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Mutations::ChangePassword, type: :graphql do
+describe Mutations::UserMutations::ChangePassword, type: :graphql do
   subject(:mutation) { described_class }
 
   let(:password) { Faker::Internet.password }

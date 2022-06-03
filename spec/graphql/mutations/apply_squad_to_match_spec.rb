@@ -2,7 +2,7 @@
 
 require 'rails_helper'
 
-describe Mutations::ApplySquadToMatch, type: :graphql do
+describe Mutations::MatchMutations::ApplySquadToMatch, type: :graphql do
   subject { described_class }
 
   let(:user) { create :user }
