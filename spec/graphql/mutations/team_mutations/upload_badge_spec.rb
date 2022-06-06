@@ -37,7 +37,7 @@ describe Mutations::TeamMutations::UploadBadge, type: :request do
   it { is_expected.to have_a_field(:team).returning('Team') }
   it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
 
-  describe 'when execution' do
+  describe 'when executed' do
     before do
       token = create :access_token, user: user
       post graphql_url,

@@ -62,4 +62,31 @@ describe Mutations::UserMutations::UpdateUser, type: :graphql do
       expect(user.reload.username).not_to be == unavailable_username
     end
   end
+
+  describe 'for a different User' do
+    let(:other_user) { create :user }
+
+    graphql_variables do
+      {
+        id: other_user.id,
+        attributes:
+          graphql_attributes_for(:user).except('password', 'passwordConfirmation')
+      }
+    end
+
+    it 'raises authorization error' do
+      expect do
+        execute_graphql
+      end.to raise_error CanCan::AccessDenied
+    end
+
+    it 'does not update the User' do
+      old_username = other_user.username
+      begin
+        execute_graphql
+      rescue CanCan::AccessDenied
+        expect(other_user.reload.username).to be == old_username
+      end
+    end
+  end
 end

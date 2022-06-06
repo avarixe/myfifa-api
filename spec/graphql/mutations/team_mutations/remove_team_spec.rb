@@ -37,4 +37,15 @@ describe Mutations::TeamMutations::RemoveTeam, type: :graphql do
     expect(response_data.dig('removeTeam', 'team', 'id'))
       .to be == team.id.to_s
   end
+
+  it 'returns error messages when failed' do
+    team_stub = build_stubbed :team
+    allow(team).to receive(:destroy).and_return(false)
+    allow(Team).to receive(:find).and_return(team)
+    execute_graphql(
+      variables: { id: team_stub.id },
+      context: { current_user: team_stub.user }
+    )
+    expect(response_data.dig('removeTeam', 'errors')).to be_present
+  end
 end

@@ -44,11 +44,8 @@ module Mutations
           content_type: badge.content_type
         )
 
-        if team.update(badge: blob)
-          { team: }
-        else
-          { errors: team.errors }
-        end
+        team.update(badge: blob)
+        { team: }
       end
     end
   end

@@ -21,25 +21,46 @@ describe Mutations::TeamMutations::UpdateTeam, type: :graphql do
     }
   "
 
-  graphql_variables do
-    {
-      id: team.id,
-      attributes: graphql_attributes_for(:team)
-    }
-  end
-
   graphql_context do
     { current_user: team.user }
   end
 
-  it 'updates the Team' do
-    old_attributes = team.attributes
-    execute_graphql
-    expect(team.reload.attributes).not_to be == old_attributes
+  describe 'with valid attributes' do
+    graphql_variables do
+      {
+        id: team.id,
+        attributes: graphql_attributes_for(:team)
+      }
+    end
+
+    it 'updates the Team' do
+      old_attributes = team.attributes
+      execute_graphql
+      expect(team.reload.attributes).not_to be == old_attributes
+    end
+
+    it 'returns the update Team' do
+      expect(response_data.dig('updateTeam', 'team', 'id'))
+        .to be == team.id.to_s
+    end
   end
 
-  it 'returns the update Team' do
-    expect(response_data.dig('updateTeam', 'team', 'id'))
-      .to be == team.id.to_s
+  describe 'with invalid attributes' do
+    graphql_variables do
+      {
+        id: team.id,
+        attributes: { name: nil }
+      }
+    end
+
+    it 'does not update the Team' do
+      execute_graphql
+      expect(team.reload.name).not_to be_nil
+    end
+
+    it 'returns an error message' do
+      execute_graphql
+      expect(response_data.dig('updateTeam', 'errors')).to be_present
+    end
   end
 end
