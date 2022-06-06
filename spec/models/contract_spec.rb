@@ -130,9 +130,10 @@ describe Contract, type: :model do
     end
 
     it 'does not affect the previous contract' do
-      first_contract_end_on = player.contracts.first.ended_on
+      original_contract = player.contracts.first
+      first_contract_end_on = original_contract.ended_on
       create :contract, player: player
-      expect(player.contracts.reload.first.ended_on).to be == first_contract_end_on
+      expect(original_contract.reload.ended_on).to be == first_contract_end_on
     end
   end
 

@@ -63,7 +63,7 @@ describe Mutations::GrantAccessToken, type: :graphql do
 
     it 'does not create a Token' do
       execute_graphql
-      expect(user.access_tokens.count).to be == 0
+      expect(user.access_tokens.count).to be_zero
     end
   end
 end
