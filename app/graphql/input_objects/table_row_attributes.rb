@@ -4,6 +4,9 @@ module InputObjects
   class TableRowAttributes < BaseTypes::BaseInputObject
     description 'Attributes to create/update a Table Row record'
 
+    argument :id, ID, 'Unique Identifer of record', required: false
+    argument :_destroy, Boolean,
+             'Whether to destroy this record', required: false
     argument :name, String, 'Name of Team for this row', required: false
     argument :wins, Integer,
              'Number of Matches Won by this Team', required: false
