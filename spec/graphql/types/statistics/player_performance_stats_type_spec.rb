@@ -13,4 +13,5 @@ describe Types::Statistics::PlayerPerformanceStatsType do
   it { is_expected.to have_field(:num_goals).of_type('Int!') }
   it { is_expected.to have_field(:num_assists).of_type('Int!') }
   it { is_expected.to have_field(:num_clean_sheets).of_type('Int!') }
+  it { is_expected.to have_field(:avg_rating).of_type('Float!') }
 end

@@ -18,6 +18,7 @@ describe QueryType, type: :graphql do
           numGoals
           numAssists
           numCleanSheets
+          avgRating
         }
       }
     }

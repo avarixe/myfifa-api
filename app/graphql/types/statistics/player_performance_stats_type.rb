@@ -23,6 +23,8 @@ module Types
       field :num_clean_sheets, Integer,
             "Number of Matches with Clean Sheets capped #{stats_field_suffix}",
             null: false
+      field :avg_rating, Float,
+            "Average Rating #{stats_field_suffix}", null: false
     end
   end
 end
