@@ -10,5 +10,11 @@ module InputObjects
     argument :num_fixtures, Integer,
              'Number of Fixtures in this Stage', required: false
     argument :table, Boolean, 'Whether this Stage is a Table', required: false
+
+    argument :table_rows_attributes, [TableRowAttributes],
+             'List of attributes for rows bound to this Stage', required: false
+    argument :fixtures_attributes, [FixtureAttributes],
+             'List of attributes for fixtures bound to this Stage',
+             required: false
   end
 end

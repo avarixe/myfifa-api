@@ -30,7 +30,7 @@ class Fixture < ApplicationRecord
 
   cache_options 'Team', :home_team, :away_team
 
-  validates :legs, length: { minimum: 1 }
+  validates :legs, length: { minimum: 1 }, on: :create
 
   delegate :team, to: :stage
 end

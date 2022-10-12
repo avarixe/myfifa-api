@@ -20,7 +20,8 @@ class PlayerPerformanceCompiler
         num_minutes: num_minutes[key],
         num_goals: num_goals[key] || 0,
         num_assists: num_assists[key] || 0,
-        num_clean_sheets: num_clean_sheets[key] || 0
+        num_clean_sheets: num_clean_sheets[key] || 0,
+        avg_rating: avg_rating[key] || 0
       }
     end
   end
@@ -56,6 +57,24 @@ class PlayerPerformanceCompiler
           .or(query.where(matches: { home_score: 0, away: team.name }))
           .count
       end
+    end
+
+    def avg_rating
+      @avg_rating ||=
+        base_player_query
+        .joins(caps: :match)
+        .where.not(caps: { rating: nil })
+        .pluck(
+          Arel.sql(
+            <<~SQL.squish
+              players.id,
+              matches.season,
+              matches.competition,
+              SUM(rating * (stop - start)) / SUM(stop - start)
+            SQL
+          )
+        )
+        .reduce({}) { |hash, res| hash.merge(res[...-1] => res[-1]) }
     end
 
     def num_matches
