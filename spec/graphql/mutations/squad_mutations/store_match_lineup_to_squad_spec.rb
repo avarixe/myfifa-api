@@ -10,20 +10,20 @@ describe Mutations::SquadMutations::StoreMatchLineupToSquad do
   it { is_expected.to have_a_field(:squad).returning('Squad!') }
 
   describe 'execution', type: :graphql do
-    let(:user) { create :user }
-    let(:team) { create :team, user: }
-    let(:match) { create :match, team: }
-    let(:squad) { create :squad, team: }
+    let(:user) { create(:user) }
+    let(:team) { create(:team, user:) }
+    let(:match) { create(:match, team:) }
+    let(:squad) { create(:squad, team:) }
 
     before do
       11.times do |i|
-        player = create :player, team: team
-        create :cap,
+        player = create(:player, team:)
+        create(:cap,
                match:,
                player:,
                start: 0,
                stop: 90,
-               pos: Cap::POSITIONS[i]
+               pos: Cap::POSITIONS[i])
       end
     end
 

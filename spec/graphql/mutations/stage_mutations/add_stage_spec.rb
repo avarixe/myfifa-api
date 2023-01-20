@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Mutations::StageMutations::AddStage, type: :graphql do
   subject { described_class }
 
-  let(:competition) { create :competition }
+  let(:competition) { create(:competition) }
 
   it { is_expected.to accept_argument(:competition_id).of_type('ID!') }
   it { is_expected.to accept_argument(:attributes).of_type('StageAttributes!') }

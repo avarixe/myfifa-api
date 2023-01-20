@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Mutations::SquadMutations::UpdateSquad, type: :graphql do
   subject { described_class }
 
-  let(:squad) { create :squad }
+  let(:squad) { create(:squad) }
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
   it { is_expected.to accept_argument(:attributes).of_type('SquadAttributes!') }

@@ -18,7 +18,7 @@
 
 require 'rails_helper'
 
-describe Fixture, type: :model do
+describe Fixture do
   let(:fixture) { create(:fixture) }
 
   it 'has a valid factory' do

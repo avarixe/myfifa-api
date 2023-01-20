@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Mutations::TeamMutations::RemoveTeam, type: :graphql do
   subject { described_class }
 
-  let(:team) { create :team }
+  let(:team) { create(:team) }
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
   it { is_expected.to have_a_field(:team).returning('Team') }
@@ -39,7 +39,7 @@ describe Mutations::TeamMutations::RemoveTeam, type: :graphql do
   end
 
   it 'returns error messages when failed' do
-    team_stub = build_stubbed :team
+    team_stub = build_stubbed(:team)
     allow(team).to receive(:destroy).and_return(false)
     allow(Team).to receive(:find).and_return(team)
     execute_graphql(

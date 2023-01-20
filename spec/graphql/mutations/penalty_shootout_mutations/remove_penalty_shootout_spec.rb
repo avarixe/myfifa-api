@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Mutations::PenaltyShootoutMutations::RemovePenaltyShootout, type: :graphql do
   subject { described_class }
 
-  let(:penalty_shootout) { create :penalty_shootout }
+  let(:penalty_shootout) { create(:penalty_shootout) }
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
   it { is_expected.to have_a_field(:penalty_shootout).returning('PenaltyShootout') }

@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Mutations::TransferMutations::RemoveTransfer, type: :graphql do
   subject { described_class }
 
-  let(:transfer) { create :transfer }
+  let(:transfer) { create(:transfer) }
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
   it { is_expected.to have_a_field(:transfer).returning('Transfer') }

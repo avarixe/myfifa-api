@@ -16,8 +16,8 @@
 #
 require 'rails_helper'
 
-RSpec.describe Option, type: :model do
-  let(:option) { create :option }
+RSpec.describe Option do
+  let(:option) { create(:option) }
 
   it 'has a valid factory' do
     expect(option).to be_valid
@@ -36,10 +36,10 @@ RSpec.describe Option, type: :model do
   end
 
   it 'requires a unique set of attributes' do
-    new_option = build :option,
+    new_option = build(:option,
                        user: option.user,
                        category: option.category,
-                       value: option.value
+                       value: option.value)
     expect(new_option).not_to be_valid
   end
 end

@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Mutations::ContractMutations::UpdateContract, type: :graphql do
   subject { described_class }
 
-  let(:contract) { create :contract }
+  let(:contract) { create(:contract) }
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
   it { is_expected.to accept_argument(:attributes).of_type('ContractAttributes!') }

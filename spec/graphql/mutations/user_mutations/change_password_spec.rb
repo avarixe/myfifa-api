@@ -6,7 +6,7 @@ describe Mutations::UserMutations::ChangePassword, type: :graphql do
   subject(:mutation) { described_class }
 
   let(:password) { Faker::Internet.password }
-  let(:user) { create :user, password: }
+  let(:user) { create(:user, password:) }
 
   it 'accepts argument `attributes` of type `UserPasswordChangeAttributes!`' do
     expect(mutation)

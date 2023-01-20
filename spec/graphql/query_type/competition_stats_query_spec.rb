@@ -3,11 +3,11 @@
 require 'rails_helper'
 
 describe QueryType, type: :graphql do
-  let(:user) { create :user }
-  let(:team) { create :team, user: }
+  let(:user) { create(:user) }
+  let(:team) { create(:team, user:) }
 
   before do
-    create_list :match, 10, team:
+    create_list(:match, 10, team:)
   end
 
   graphql_operation <<-GQL

@@ -12,7 +12,7 @@ class Ability
   private
 
     def can_manage_team(user)
-      can :manage, Team, user: user
+      can(:manage, Team, user:)
       can_manage_player user
       can_manage_match user
       can_manage_squad user

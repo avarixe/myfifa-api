@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Mutations::LoanMutations::AddLoan, type: :graphql do
   subject { described_class }
 
-  let(:player) { create :player }
+  let(:player) { create(:player) }
 
   it { is_expected.to accept_argument(:player_id).of_type('ID!') }
   it { is_expected.to accept_argument(:attributes).of_type('LoanAttributes!') }

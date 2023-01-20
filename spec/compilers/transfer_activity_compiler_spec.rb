@@ -19,47 +19,47 @@ describe TransferActivityCompiler do
     end
 
     before :all do
-      team = create :team
+      team = create(:team)
       sample_set.each do |set|
         set[:arrivals].times do
-          player = create :player, team: team, contracts_count: 0
-          create :contract,
+          player = create(:player, team:, contracts_count: 0)
+          create(:contract,
                  player:,
                  signed_on: team.currently_on + set[:season].years,
                  started_on: team.currently_on + set[:season].years,
-                 ended_on: team.currently_on + 10.years
+                 ended_on: team.currently_on + 10.years)
         end
         set[:departures].times do
-          player = create :player, team: team, contracts_count: 0
-          create :contract,
+          player = create(:player, team:, contracts_count: 0)
+          create(:contract,
                  player:,
                  signed_on: team.currently_on,
-                 ended_on: team.end_of_season(set[:season])
+                 ended_on: team.end_of_season(set[:season]))
         end
         set[:transfers].times do
-          player = create :player, team: team, contracts_count: 0
-          create :contract,
-                 player: player,
+          player = create(:player, team:, contracts_count: 0)
+          create(:contract,
+                 player:,
                  signed_on: team.currently_on,
-                 ended_on: team.currently_on + 10.years
-          create :transfer,
+                 ended_on: team.currently_on + 10.years)
+          create(:transfer,
                  player:,
                  origin: team.name,
                  signed_on: team.currently_on + set[:season].years,
-                 moved_on: team.currently_on + set[:season].years
+                 moved_on: team.currently_on + set[:season].years)
         end
         set[:loans].times do
-          player = create :player, team: team, contracts_count: 0
-          create :contract,
-                 player: player,
+          player = create(:player, team:, contracts_count: 0)
+          create(:contract,
+                 player:,
                  signed_on: team.currently_on,
-                 ended_on: team.currently_on + 10.years
-          create :loan,
+                 ended_on: team.currently_on + 10.years)
+          create(:loan,
                  player:,
                  origin: team.name,
                  signed_on: team.currently_on + set[:season].years,
                  started_on: team.currently_on + set[:season].years,
-                 ended_on: team.end_of_season(set[:season])
+                 ended_on: team.end_of_season(set[:season]))
         end
       end
       team.increment_date 5.years

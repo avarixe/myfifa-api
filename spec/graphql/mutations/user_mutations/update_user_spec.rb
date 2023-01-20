@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Mutations::UserMutations::UpdateUser, type: :graphql do
   subject { described_class }
 
-  let(:user) { create :user }
+  let(:user) { create(:user) }
 
   it { is_expected.to accept_argument(:attributes).of_type('UserAttributes!') }
   it { is_expected.to have_a_field(:user).returning('User') }
@@ -64,7 +64,7 @@ describe Mutations::UserMutations::UpdateUser, type: :graphql do
   end
 
   describe 'for a different User' do
-    let(:other_user) { create :user }
+    let(:other_user) { create(:user) }
 
     graphql_variables do
       {

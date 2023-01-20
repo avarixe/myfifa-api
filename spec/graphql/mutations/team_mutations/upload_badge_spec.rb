@@ -5,8 +5,8 @@ require 'rails_helper'
 describe Mutations::TeamMutations::UploadBadge, type: :request do
   subject { described_class }
 
-  let(:user) { create :user }
-  let(:team) { create :team, user: }
+  let(:user) { create(:user) }
+  let(:team) { create(:team, user:) }
   let(:test_badge) do
     test_badge_path = Rails.root.join('spec/support/test-badge.png')
     Rack::Test::UploadedFile.new test_badge_path, 'image/png'
@@ -39,7 +39,7 @@ describe Mutations::TeamMutations::UploadBadge, type: :request do
 
   describe 'when executed' do
     before do
-      token = create :access_token, user: user
+      token = create(:access_token, user:)
       post graphql_url,
            headers: { 'Authorization' => "Bearer #{token.token}" },
            params:

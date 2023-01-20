@@ -5,10 +5,10 @@ require 'rails_helper'
 describe Mutations::PlayerMutations::ReleasePlayer, type: :graphql do
   subject { described_class }
 
-  let(:user) { create :user }
+  let(:user) { create(:user) }
   let(:player) do
-    team = create :team, user: user
-    create :player, team:
+    team = create(:team, user:)
+    create(:player, team:)
   end
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
@@ -41,7 +41,7 @@ describe Mutations::PlayerMutations::ReleasePlayer, type: :graphql do
   end
 
   it 'does not release a Player not owned by user' do
-    player = create :player
+    player = create(:player)
     execute_graphql
     expect(player.last_contract.conclusion).not_to be == 'Released'
   end

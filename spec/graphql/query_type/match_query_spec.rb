@@ -5,17 +5,17 @@ require 'rails_helper'
 describe QueryType, type: :graphql do
   subject { described_class }
 
-  let(:user) { create :user }
-  let(:team) { create :team, user: }
-  let(:match) { create :match, team: }
+  let(:user) { create(:user) }
+  let(:team) { create(:team, user:) }
+  let(:match) { create(:match, team:) }
 
   before do
     3.times do |i|
-      create :match, team:, played_on: match.played_on - (i + 2).days
-      create :match, team:, played_on: match.played_on + (i + 2).days
+      create(:match, team:, played_on: match.played_on - (i + 2).days)
+      create(:match, team:, played_on: match.played_on + (i + 2).days)
     end
-    create :match, played_on: match.played_on - 1.day
-    create :match, played_on: match.played_on + 1.day
+    create(:match, played_on: match.played_on - 1.day)
+    create(:match, played_on: match.played_on + 1.day)
   end
 
   graphql_operation <<-GQL

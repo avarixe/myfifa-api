@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Mutations::CompetitionMutations::AddCompetition, type: :graphql do
   subject { described_class }
 
-  let(:team) { create :team }
+  let(:team) { create(:team) }
 
   it { is_expected.to accept_argument(:team_id).of_type('ID!') }
   it { is_expected.to accept_argument(:attributes).of_type('CompetitionAttributes!') }

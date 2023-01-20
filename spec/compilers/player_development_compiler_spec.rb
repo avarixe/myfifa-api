@@ -18,17 +18,17 @@ describe PlayerDevelopmentCompiler do
     end
 
     before :all do
-      team = create :team
+      team = create(:team)
       sample_set.each do |set|
         team.update currently_on: team.started_on
-        player = create :player,
-                        team: team,
+        player = create(:player,
+                        team:,
                         ovr: set[:ovr][0],
                         value: set[:value][0],
-                        contracts_count: 0
-        create :contract,
-               player: player,
-               ended_on: team.end_of_season(5)
+                        contracts_count: 0)
+        create(:contract,
+               player:,
+               ended_on: team.end_of_season(5))
         set[:player] = player
         3.times do |i|
           team.update currently_on: team.started_on +
@@ -53,7 +53,7 @@ describe PlayerDevelopmentCompiler do
     end
 
     it 'only provides Player ovr/value changes for Season if provided' do
-      (0..2).each do |season|
+      3.times do |season|
         compiler = described_class.new(team:, season:)
         results = compiler.results
         sample_set.each do |set|
@@ -70,13 +70,13 @@ describe PlayerDevelopmentCompiler do
 
     it 'will not include Players not active during a Season if provided' do
       team.update currently_on: team.started_on
-      player = create :player, team: team
-      create :contract,
-             player: player,
+      player = create(:player, team:)
+      create(:contract,
+             player:,
              signed_on: team.started_on,
              started_on: team.started_on,
-             ended_on: team.end_of_season(1)
-      (0..2).each do |season|
+             ended_on: team.end_of_season(1))
+      3.times do |season|
         compiler = described_class.new(team:, season:)
         player_results = compiler.results.find do |result|
           result[:player_id] == player.id
@@ -92,7 +92,7 @@ describe PlayerDevelopmentCompiler do
 
     it 'provides Player ovr/value changes for all Seasons if provided' do
       compiler = described_class.new(team:)
-      (0..2).each do |season|
+      3.times do |season|
         results_include_season = compiler.results.any? do |result|
           result[:season] == season
         end

@@ -22,7 +22,7 @@
 
 require 'rails_helper'
 
-describe Booking, type: :model do
+describe Booking do
   let(:booking) { create(:booking) }
 
   it 'has a valid factory' do
@@ -35,14 +35,14 @@ describe Booking, type: :model do
 
   it 'automatically sets player name if player_id set' do
     player = create(:player)
-    player_booking = create :booking, player_id: player.id
+    player_booking = create(:booking, player_id: player.id)
     expect(player_booking.player_name).to be == player.name
   end
 
   it 'changes player name if player_id changed' do
-    player = create :player
-    player2 = create :player, team: player.team
-    player_booking = create :booking, player_id: player.id
+    player = create(:player)
+    player2 = create(:player, team: player.team)
+    player_booking = create(:booking, player_id: player.id)
     player_booking.update(player_id: player2.id)
     expect(player_booking.player_name).to be == player2.name
   end

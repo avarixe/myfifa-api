@@ -2,9 +2,9 @@
 
 require 'rails_helper'
 
-describe TeamChannel, type: :channel do
-  let(:user) { create :user }
-  let(:team) { create :team, user: }
+describe TeamChannel do
+  let(:user) { create(:user) }
+  let(:team) { create(:team, user:) }
 
   before do
     # initialize connection with identifiers
@@ -17,7 +17,7 @@ describe TeamChannel, type: :channel do
   end
 
   it 'does not subscribe to a stream for Team not bound to user' do
-    team = create :team
+    team = create(:team)
     expect { subscribe(id: team.id) }.to raise_error(ActiveRecord::RecordNotFound)
   end
 end

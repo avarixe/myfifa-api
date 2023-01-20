@@ -19,8 +19,8 @@
 #
 require 'rails_helper'
 
-RSpec.describe AccessToken, type: :model do
-  let(:token) { create :access_token }
+RSpec.describe AccessToken do
+  let(:token) { create(:access_token) }
 
   it 'has a valid factory' do
     expect(token).to be_valid

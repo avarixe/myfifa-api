@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 describe QueryType, type: :graphql do
-  let(:user) { create :user }
-  let(:team) { create :team, user: }
+  let(:user) { create(:user) }
+  let(:team) { create(:team, user:) }
 
   graphql_operation <<-GQL
     query fetchTeamDevelopmentStats($id: ID!, $season: Int!) {
@@ -32,7 +32,7 @@ describe QueryType, type: :graphql do
   end
 
   before do
-    players = create_list :player, 3, team: team
+    players = create_list(:player, 3, team:)
     team.increment_date 6.months
     players.each do |player|
       player.update ovr: Faker::Number.between(from: 50, to: 90),

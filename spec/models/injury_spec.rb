@@ -19,12 +19,12 @@
 
 require 'rails_helper'
 
-describe Injury, type: :model do
+describe Injury do
   let(:injury) do
-    player = create :player
-    create :injury,
+    player = create(:player)
+    create(:injury,
            started_on: player.team.currently_on,
-           player:
+           player:)
   end
 
   it 'has a valid factory' do
@@ -36,16 +36,16 @@ describe Injury, type: :model do
   end
 
   it 'has an end date after start date' do
-    injury = build :injury,
+    injury = build(:injury,
                    started_on: Faker::Date.forward(days: 1),
-                   ended_on: Faker::Date.backward(days: 1)
+                   ended_on: Faker::Date.backward(days: 1))
     expect(injury).not_to be_valid
   end
 
   it 'is rejected for already injured Players' do
-    injury2 = build :injury,
+    injury2 = build(:injury,
                     started_on: injury.team.currently_on,
-                    player: injury.player
+                    player: injury.player)
     expect(injury2).not_to be_valid
   end
 

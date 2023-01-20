@@ -7,7 +7,7 @@ describe QueryType, type: :graphql do
     describe "#{type} query" do
       subject(:field) { described_class.fields[type] }
 
-      let(:user) { create :user }
+      let(:user) { create(:user) }
 
       it 'requires an ID' do
         expect(field).to accept_argument(:id).of_type('ID!')
@@ -26,9 +26,9 @@ describe QueryType, type: :graphql do
       describe 'for user owned Team' do
         let(:record) do
           if type == 'team'
-            create :team, user: user
+            create(:team, user:)
           else
-            create type.to_sym, team: create(:team, user:)
+            create(type.to_sym, team: create(:team, user:))
           end
         end
 
@@ -42,7 +42,7 @@ describe QueryType, type: :graphql do
       end
 
       describe "for #{type.titleize} not owned by user" do
-        let(:record) { create type.to_sym }
+        let(:record) { create(type.to_sym) }
 
         graphql_variables do
           { id: record.id }

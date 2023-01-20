@@ -26,9 +26,9 @@
 
 require 'rails_helper'
 
-describe Match, type: :model do
-  let(:team) { create :team }
-  let(:match) { create :match, team: }
+describe Match do
+  let(:team) { create(:team) }
+  let(:match) { create(:match, team:) }
 
   it 'has a valid factory' do
     expect(match).to be_valid
@@ -60,19 +60,19 @@ describe Match, type: :model do
   end
 
   it 'detects when user team is playing home' do
-    match = build :match, team: team, home: team.name
+    match = build(:match, team:, home: team.name)
     expect(match.team_played?).to be true
   end
 
   it 'automatically sets the season based on Team start' do
-    match = create :match,
-                   team: team,
-                   played_on: team.currently_on + 1.year
+    match = create(:match,
+                   team:,
+                   played_on: team.currently_on + 1.year)
     expect(match.season).to be == 1
   end
 
   it 'detects when user team is playing away' do
-    match = build :match, team: team, away: team.name
+    match = build(:match, team:, away: team.name)
     expect(match.team_played?).to be true
   end
 
@@ -89,22 +89,22 @@ describe Match, type: :model do
   end
 
   it 'cannot have two Performance records for the same player' do
-    player = create :player, team: team
-    create :cap, match: match, player: player
+    player = create(:player, team:)
+    create(:cap, match:, player:)
     expect(build(:cap, match:, player:)).not_to be_valid
   end
 
   it 'sets Match times to 120 minutes if extra time' do
-    player = create :player, team: team
-    cap = create :cap, match: match, player: player
+    player = create(:player, team:)
+    cap = create(:cap, match:, player:)
     match.update(extra_time: true)
     expect(cap.reload.stop).to be == 120
   end
 
   it 'sets Match times to 90 minutes if not extra time' do
-    match = create :match, extra_time: true
-    player = create :player, team: match.team
-    cap = create :cap, match: match, player: player
+    match = create(:match, extra_time: true)
+    player = create(:player, team: match.team)
+    cap = create(:cap, match:, player:)
     match.update(extra_time: false)
     expect(cap.reload.stop).to be == 90
   end
@@ -114,29 +114,29 @@ describe Match, type: :model do
 
     describe "when Team is #{side}" do
       it 'detects team win' do
-        match = create :match,
-                       team: team,
+        match = create(:match,
+                       team:,
                        side => team.name,
                        "#{side}_score" => 1,
-                       "#{opposite_side}_score" => 0
+                       "#{opposite_side}_score" => 0)
         expect(match.team_result).to be == 'win'
       end
 
       it 'detects team draw' do
-        match = create :match,
-                       team: team,
+        match = create(:match,
+                       team:,
                        side => team.name,
                        "#{side}_score" => 1,
-                       "#{opposite_side}_score" => 1
+                       "#{opposite_side}_score" => 1)
         expect(match.team_result).to be == 'draw'
       end
 
       it 'detects team loss' do
-        match = create :match,
-                       team: team,
+        match = create(:match,
+                       team:,
                        side => team.name,
                        "#{side}_score" => 0,
-                       "#{opposite_side}_score" => 1
+                       "#{opposite_side}_score" => 1)
         expect(match.team_result).to be == 'loss'
       end
     end
@@ -153,11 +153,11 @@ describe Match, type: :model do
   end
 
   describe 'when Squad is applied' do
-    let(:squad) { create :squad, team: match.team }
+    let(:squad) { create(:squad, team: match.team) }
 
     it 'removes previous Caps' do
-      player = create :player, team: match.team
-      cap = create :cap, match: match, player: player
+      player = create(:player, team: match.team)
+      cap = create(:cap, match:, player:)
       match.apply(squad)
       expect { cap.reload }.to raise_error(ActiveRecord::RecordNotFound)
     end

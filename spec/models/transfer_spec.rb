@@ -23,8 +23,8 @@
 
 require 'rails_helper'
 
-describe Transfer, type: :model do
-  let(:player) { create :player }
+describe Transfer do
+  let(:player) { create(:player) }
 
   it 'has a valid factory' do
     expect(create(:transfer)).to be_valid
@@ -43,12 +43,12 @@ describe Transfer, type: :model do
   end
 
   it 'caches the Origin as a Team Option' do
-    transfer = create :transfer, player: player
+    transfer = create(:transfer, player:)
     expect(Option.where(category: 'Team', value: transfer.origin)).to be_present
   end
 
   it 'caches the Destination as a Team Option' do
-    transfer = create :transfer, player: player
+    transfer = create(:transfer, player:)
     expect(Option.where(category: 'Team', value: transfer.destination)).to be_present
   end
 
@@ -58,10 +58,10 @@ describe Transfer, type: :model do
 
   describe 'if unsigned' do
     before do
-      create :transfer,
+      create(:transfer,
              player:,
              origin: player.team.name,
-             moved_on: player.team.currently_on
+             moved_on: player.team.currently_on)
     end
 
     it 'does not affect Player status' do
@@ -79,11 +79,11 @@ describe Transfer, type: :model do
 
   describe 'if immediate' do
     before do
-      create :transfer,
+      create(:transfer,
              player:,
              origin: player.team.name,
              signed_on: player.team.currently_on,
-             moved_on: player.team.currently_on
+             moved_on: player.team.currently_on)
     end
 
     it 'clears Player status' do
@@ -101,11 +101,11 @@ describe Transfer, type: :model do
 
   describe 'in future' do
     before do
-      create :transfer,
+      create(:transfer,
              player:,
              origin: player.team.name,
              signed_on: player.team.currently_on,
-             moved_on: player.team.currently_on + 1.week
+             moved_on: player.team.currently_on + 1.week)
     end
 
     it 'does not immediately clear Player status' do
@@ -115,11 +115,11 @@ describe Transfer, type: :model do
 
   describe 'in future once current date == effective date' do
     before do
-      create :transfer,
-             player: player,
+      create(:transfer,
+             player:,
              origin: player.team.name,
              signed_on: player.team.currently_on,
-             moved_on: player.team.currently_on + 1.week
+             moved_on: player.team.currently_on + 1.week)
       player.team.increment_date 1.week
     end
 
