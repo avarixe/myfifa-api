@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe GraphqlController, type: :request do
-  let(:token) { create :access_token }
+  let(:token) { create(:access_token) }
   let(:user) { token.user }
 
   describe 'POST graphql#execute' do
@@ -14,7 +14,7 @@ describe GraphqlController, type: :request do
     end
 
     describe 'with fetchTeam query' do
-      let(:team) { create :team, user: }
+      let(:team) { create(:team, user:) }
 
       team_query = <<-GQL
         query fetchTeam($id: ID!) {

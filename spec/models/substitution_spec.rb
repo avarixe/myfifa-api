@@ -24,15 +24,15 @@
 
 require 'rails_helper'
 
-describe Substitution, type: :model do
-  let(:match) { create :match }
+describe Substitution do
+  let(:match) { create(:match) }
   let(:cap) do
-    player = create :player, team: match.team
-    create :cap, start: 0, stop: 90, match:, player:
+    player = create(:player, team: match.team)
+    create(:cap, start: 0, stop: 90, match:, player:)
   end
   let(:sub) do
-    replacement = create :player, team: match.team
-    create :substitution, player_id: cap.player_id, replacement_id: replacement.id, match:
+    replacement = create(:player, team: match.team)
+    create(:substitution, player_id: cap.player_id, replacement_id: replacement.id, match:)
   end
 
   it 'has a valid factory' do
@@ -72,14 +72,14 @@ describe Substitution, type: :model do
   end
 
   describe 'in extra time' do
-    let(:match) { create :match, extra_time: true }
+    let(:match) { create(:match, extra_time: true) }
     let(:sub) do
-      replacement = create :player, team: match.team
-      create :substitution,
+      replacement = create(:player, team: match.team)
+      create(:substitution,
              player_id: cap.player_id,
              replacement_id: replacement.id,
              match:,
-             minute: Faker::Number.between(from: 91, to: 120)
+             minute: Faker::Number.between(from: 91, to: 120))
     end
 
     it 'creates a Cap record upon creation' do
@@ -102,11 +102,11 @@ describe Substitution, type: :model do
   end
 
   describe 'upon player_id change' do
-    let(:player2) { create :player, team: match.team }
+    let(:player2) { create(:player, team: match.team) }
 
     before do
       pos2 = Cap::POSITIONS[Cap::POSITIONS.index(cap.pos) - 1]
-      create :cap, start: 0, stop: 90, match: match, player: player2, pos: pos2
+      create(:cap, start: 0, stop: 90, match:, player: player2, pos: pos2)
       sub.update!(player_id: player2.id)
     end
 
@@ -125,7 +125,7 @@ describe Substitution, type: :model do
   end
 
   describe 'upon replacement_id change' do
-    let(:player2) { create :player, team: match.team }
+    let(:player2) { create(:player, team: match.team) }
 
     before do
       sub.update(replacement_id: player2.id)

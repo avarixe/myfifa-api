@@ -6,7 +6,7 @@ describe Mutations::GrantAccessToken, type: :graphql do
   subject { described_class }
 
   let(:password) { Faker::Internet.password }
-  let(:user) { create :user, password: }
+  let(:user) { create(:user, password:) }
 
   it { is_expected.to accept_argument(:username).of_type('String!') }
   it { is_expected.to accept_argument(:password).of_type('String!') }

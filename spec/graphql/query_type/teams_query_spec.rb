@@ -5,7 +5,7 @@ require 'rails_helper'
 describe QueryType, type: :graphql do
   subject { described_class }
 
-  let(:user) { create :user }
+  let(:user) { create(:user) }
 
   graphql_operation <<-GQL
     query fetchTeams {
@@ -18,8 +18,8 @@ describe QueryType, type: :graphql do
   end
 
   it 'returns all Teams for user' do
-    create_list :team, 3
-    create_list :team, 3, user: user
+    create_list(:team, 3)
+    create_list(:team, 3, user:)
     expect(response_data['teams'].pluck('id'))
       .to be == user.teams.pluck(:id).map(&:to_s)
   end

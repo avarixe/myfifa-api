@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Mutations::MatchMutations::UpdateMatch, type: :graphql do
   subject { described_class }
 
-  let(:match) { create :match }
+  let(:match) { create(:match) }
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
   it { is_expected.to accept_argument(:attributes).of_type('MatchAttributes!') }

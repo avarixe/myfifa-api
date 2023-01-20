@@ -27,29 +27,29 @@ describe PlayerPerformanceCompiler do
     end
 
     before :all do
-      team = create :team
-      players = create_list :player, 3, team: team
+      team = create(:team)
+      players = create_list(:player, 3, team:)
       sample_set.each do |set|
         set[:player] = players[set[:player]]
-        match = create :match,
-                       team: team,
+        match = create(:match,
+                       team:,
                        home: set[:home] ? team.name : 'Home Team',
                        away: set[:home] ? 'Away Team' : team.name,
                        home_score: set[:clean_sheet] ? 0 : 1,
                        away_score: set[:clean_sheet] ? 0 : 1,
                        competition: set[:competition],
-                       played_on: team.started_on + set[:season].years
-        create :cap, match: match, player: set[:player], start: 0, stop: set[:num_minutes]
-        create_list :goal,
+                       played_on: team.started_on + set[:season].years)
+        create(:cap, match:, player: set[:player], start: 0, stop: set[:num_minutes])
+        create_list(:goal,
                     set[:num_goals],
-                    match: match,
+                    match:,
                     player: set[:player],
-                    home: set[:home]
-        create_list :goal,
+                    home: set[:home])
+        create_list(:goal,
                     set[:num_assists],
                     match:,
                     assisting_player: set[:player],
-                    home: set[:home]
+                    home: set[:home])
       end
     end
 
@@ -76,7 +76,7 @@ describe PlayerPerformanceCompiler do
     end
 
     it 'filters results by Season if provided' do
-      (0..3).each do |season|
+      4.times do |season|
         compiler = described_class.new(team:, season:)
         num_in_set = sample_set.count { |set| set[:season] == season }
         num_in_results = compiler.results.pluck(:num_matches).sum
@@ -87,7 +87,7 @@ describe PlayerPerformanceCompiler do
     it 'reports num matches per player/season/competition set' do
       team.players.each do |player|
         sample_competitions.each do |competition|
-          (0..3).each do |season|
+          4.times do |season|
             num_in_set = sample_set.count do |set|
               set[:player] == player &&
                 set[:competition] == competition &&
@@ -108,7 +108,7 @@ describe PlayerPerformanceCompiler do
       it "reports #{metric} per player/season/competition set" do
         team.players.each do |player|
           sample_competitions.each do |competition|
-            (0..3).each do |season|
+            4.times do |season|
               num_in_set = sample_set.sum do |set|
                 if set[:player] == player &&
                    set[:competition] == competition &&
@@ -133,7 +133,7 @@ describe PlayerPerformanceCompiler do
     it 'reports num clean sheets per player/season/competition set' do
       team.players.each do |player|
         sample_competitions.each do |competition|
-          (0..3).each do |season|
+          4.times do |season|
             num_in_set = sample_set.count do |set|
               set[:player] == player &&
                 set[:competition] == competition &&

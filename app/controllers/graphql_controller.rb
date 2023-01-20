@@ -14,10 +14,7 @@ class GraphqlController < ApplicationController
       # Query context goes here, for example:
       current_user:
     }
-    result = MyfifaApiSchema.execute query,
-                                     variables: variables,
-                                     context: context,
-                                     operation_name: operation_name
+    result = MyfifaApiSchema.execute(query, variables:, context:, operation_name:)
     render json: result
   end
 

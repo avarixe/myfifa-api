@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Mutations::GoalMutations::UpdateGoal, type: :graphql do
   subject { described_class }
 
-  let(:goal) { create :goal }
+  let(:goal) { create(:goal) }
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
   it { is_expected.to accept_argument(:attributes).of_type('GoalAttributes!') }

@@ -18,7 +18,7 @@
 
 require 'rails_helper'
 
-describe FixtureLeg, type: :model do
+describe FixtureLeg do
   let(:fixture_leg) { create(:fixture_leg) }
 
   it 'has a valid factory' do

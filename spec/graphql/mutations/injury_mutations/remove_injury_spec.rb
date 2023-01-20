@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Mutations::InjuryMutations::RemoveInjury, type: :graphql do
   subject { described_class }
 
-  let(:injury) { create :injury }
+  let(:injury) { create(:injury) }
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
   it { is_expected.to have_a_field(:injury).returning('Injury') }

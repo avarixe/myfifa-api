@@ -18,7 +18,7 @@
 
 require 'rails_helper'
 
-describe PenaltyShootout, type: :model do
+describe PenaltyShootout do
   it 'has a valid factory' do
     expect(create(:penalty_shootout)).to be_valid
   end

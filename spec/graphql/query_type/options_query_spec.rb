@@ -5,7 +5,7 @@ require 'rails_helper'
 describe QueryType, type: :graphql do
   subject(:field) { described_class.fields['options'] }
 
-  let(:user) { create :user }
+  let(:user) { create(:user) }
 
   it { is_expected.to accept_argument(:category).of_type('OptionCategory!') }
   it { is_expected.to accept_argument(:search).of_type('String') }
@@ -26,8 +26,8 @@ describe QueryType, type: :graphql do
     end
 
     before do
-      create_list :team, 3
-      create_list :team, 3, user:
+      create_list(:team, 3)
+      create_list(:team, 3, user:)
     end
 
     it 'returns the name of all entered Teams' do
@@ -55,7 +55,7 @@ describe QueryType, type: :graphql do
 
     before do
       3.times do |i|
-        create :team, user:, name: "Team #{i}"
+        create(:team, user:, name: "Team #{i}")
       end
     end
 

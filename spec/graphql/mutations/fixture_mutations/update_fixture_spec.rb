@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Mutations::FixtureMutations::UpdateFixture, type: :graphql do
   subject { described_class }
 
-  let(:fixture) { create :fixture }
+  let(:fixture) { create(:fixture) }
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
   it { is_expected.to accept_argument(:attributes).of_type('FixtureAttributes!') }

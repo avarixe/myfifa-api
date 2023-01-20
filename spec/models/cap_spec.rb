@@ -25,11 +25,11 @@
 
 require 'rails_helper'
 
-describe Cap, type: :model do
-  let(:team) { create :team }
-  let(:player) { create :player, team: }
-  let(:match) { create :match, team: }
-  let(:cap) { create :cap, player:, match: }
+describe Cap do
+  let(:team) { create(:team) }
+  let(:player) { create(:player, team:) }
+  let(:match) { create(:match, team:) }
+  let(:cap) { create(:cap, player:, match:) }
 
   it 'has a valid factory' do
     expect(create(:cap)).to be_valid
@@ -56,31 +56,25 @@ describe Cap, type: :model do
   end
 
   it 'only accepts Active players' do
-    player = create :player, contracts_count: 0
+    player = create(:player, contracts_count: 0)
     expect(build(:cap, player:)).not_to be_valid
   end
 
   it 'must be associated with a Player and Match of the same team' do
-    other_team = create :team
-    match = create :match, team: other_team
+    other_team = create(:team)
+    match = create(:match, team: other_team)
     expect(build(:cap, player:, match:)).not_to be_valid
   end
 
-  it 'removes all Match events concerning the player upon destruction' do
-    create :goal,
-           match: match,
-           player: player
-    create :goal,
-           match: match,
-           assisting_player: player
-    create :booking,
-           match:,
-           player:
-    # create :substitution,
-    #                   match: match,
-    #                   player: player
-    # create :substitution,
-    #                   match: match,
-    #                   replacement: player
-  end
+  # it 'removes all Match events concerning the player upon destruction' do
+  #   create(:goal, match:, player:)
+  #   create(:goal, match:, assisting_player: player)
+  #   create(:booking, match:, player:)
+  #   # create :substitution,
+  #   #                   match: match,
+  #   #                   player: player
+  #   # create :substitution,
+  #   #                   match: match,
+  #   #                   replacement: player
+  # end
 end

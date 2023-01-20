@@ -39,7 +39,7 @@ describe Mutations::UserMutations::AddUser, type: :graphql do
   end
 
   describe 'with invalid attributes' do
-    let(:user) { create :user }
+    let(:user) { create(:user) }
 
     graphql_variables do
       { attributes: graphql_attributes_for(:user, email: user.email) }

@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-describe ApplicationCable::Connection, type: :channel do
-  let(:token) { create :access_token }
+describe ApplicationCable::Connection do
+  let(:token) { create(:access_token) }
 
   it 'successfully connects with token' do
     connect '/cable', params: { access_token: token.token }

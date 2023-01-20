@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Mutations::TeamMutations::AddTeam, type: :graphql do
   subject { described_class }
 
-  let(:user) { create :user }
+  let(:user) { create(:user) }
 
   it { is_expected.to accept_argument(:attributes).of_type('TeamAttributes!') }
   it { is_expected.to have_a_field(:team).returning('Team') }

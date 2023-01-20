@@ -20,8 +20,8 @@
 
 require 'rails_helper'
 
-describe Stage, type: :model do
-  let(:stage) { create :stage }
+describe Stage do
+  let(:stage) { create(:stage) }
 
   it 'has a valid factory' do
     expect(stage).to be_valid
@@ -53,7 +53,7 @@ describe Stage, type: :model do
   end
 
   describe 'if table' do
-    let(:stage) { create :stage, table: true }
+    let(:stage) { create(:stage, table: true) }
 
     it 'creates table rows' do
       expect(stage.table_rows.size).to be == stage.num_teams

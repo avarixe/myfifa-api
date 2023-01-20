@@ -5,7 +5,7 @@ require 'rails_helper'
 describe QueryType, type: :graphql do
   subject { described_class }
 
-  let(:user) { create :user }
+  let(:user) { create(:user) }
 
   graphql_operation <<-GQL
     query fetchUser {

@@ -24,7 +24,7 @@
 
 require 'rails_helper'
 
-describe Loan, type: :model do
+describe Loan do
   let(:player) { create(:player) }
 
   it 'has a valid factory' do
@@ -40,80 +40,80 @@ describe Loan, type: :model do
   end
 
   it 'has an end date after start date' do
-    loan = build :loan,
+    loan = build(:loan,
                  started_on: Faker::Date.forward(days: 1),
-                 ended_on: Faker::Date.backward(days: 1)
+                 ended_on: Faker::Date.backward(days: 1))
     expect(loan).not_to be_valid
   end
 
   it 'requires a start date if signed' do
-    loan = build :loan, signed_on: Time.zone.today
+    loan = build(:loan, signed_on: Time.zone.today)
     loan.started_on = nil
     expect(loan).not_to be_valid
   end
 
   it 'caches the Origin as a Team Option' do
-    loan = create :loan, player: player
+    loan = create(:loan, player:)
     expect(Option.where(category: 'Team', value: loan.origin)).to be_present
   end
 
   it 'caches the Destination as a Team Option' do
-    loan = create :loan, player: player
+    loan = create(:loan, player:)
     expect(Option.where(category: 'Team', value: loan.destination)).to be_present
   end
 
   it 'changes status to loaned when loaned out' do
-    create :loan,
-           player: player,
+    create(:loan,
+           player:,
            signed_on: player.team.currently_on,
            started_on: player.team.currently_on,
-           origin: player.team.name
+           origin: player.team.name)
     expect(player.loaned?).to be true
   end
 
   it 'does not change status to loaned when loaned in' do
-    create :loan,
-           player: player,
+    create(:loan,
+           player:,
            signed_on: player.team.currently_on,
            started_on: player.team.currently_on,
-           destination: player.team.name
+           destination: player.team.name)
     expect(player.loaned?).not_to be true
   end
 
   it 'changes status when loaned Player returns to team' do
-    create :loan,
-           player: player,
+    create(:loan,
+           player:,
            origin: player.team.name,
            signed_on: player.team.currently_on,
            started_on: player.team.currently_on,
-           ended_on: player.team.currently_on + 1.week
+           ended_on: player.team.currently_on + 1.week)
     player.team.increment_date 1.week
     expect(player.reload.active?).to be true
   end
 
   it 'does not affect Player status if unsigned' do
-    create :loan,
-           player: player,
-           origin: player.team.name
+    create(:loan,
+           player:,
+           origin: player.team.name)
     expect(player).to be_active
   end
 
   it 'does not affect injuries if unsigned' do
-    create :injury, player: player, started_on: player.team.currently_on
-    create :loan, player: player, origin: player.team.name
+    create(:injury, player:, started_on: player.team.currently_on)
+    create(:loan, player:, origin: player.team.name)
     expect(player).to be_injured
   end
 
   describe 'when created for Injured Player' do
     before do
-      create :injury,
-             player: player,
-             started_on: player.team.currently_on
-      create :loan,
+      create(:injury,
+             player:,
+             started_on: player.team.currently_on)
+      create(:loan,
              player:,
              origin: player.team.name,
              signed_on: player.team.currently_on,
-             started_on: player.team.currently_on
+             started_on: player.team.currently_on)
     end
 
     it 'stops regarding Player as injured' do
@@ -127,13 +127,13 @@ describe Loan, type: :model do
 
   describe 'when Loan-to-Buy is activated' do
     let(:loan) do
-      create :loan,
+      create(:loan,
              player:,
              origin: player.team.name,
              signed_on: player.team.currently_on,
              started_on: player.team.currently_on,
              transfer_fee: Faker::Number.within(range: 50_000..10_000_000),
-             addon_clause: Faker::Number.within(range: 0..25)
+             addon_clause: Faker::Number.within(range: 0..25))
     end
 
     before do

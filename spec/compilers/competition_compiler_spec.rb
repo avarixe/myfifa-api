@@ -23,16 +23,16 @@ describe CompetitionCompiler do
     end
 
     before :all do
-      team = create :team
+      team = create(:team)
       sample_set.each do |set|
-        create :match,
+        create(:match,
                team:,
                home: set[:home] ? team.name : 'Home Team',
                away: set[:home] ? 'Away Team' : team.name,
                home_score: set[:home_score],
                away_score: set[:away_score],
                competition: set[:competition],
-               played_on: team.started_on + set[:season].years
+               played_on: team.started_on + set[:season].years)
       end
     end
 
@@ -52,7 +52,7 @@ describe CompetitionCompiler do
 
     it 'filters results by Season if provided' do
       team = Team.last
-      (0..3).each do |season|
+      4.times do |season|
         compiler = described_class.new(team:, season:)
         num_in_set = sample_set.count { |set| set[:season] == season }
         num_in_results = compiler.results.pluck(:wins, :draws, :losses).sum(&:sum)
@@ -62,7 +62,7 @@ describe CompetitionCompiler do
 
     it 'reports wins per season/competition set' do
       sample_competitions.each do |competition|
-        (0..3).each do |season|
+        4.times do |season|
           num_in_set = sample_set.count do |set|
             if set[:competition] == competition && set[:season] == season
               if set[:home_score] > set[:away_score]
@@ -84,7 +84,7 @@ describe CompetitionCompiler do
 
     it 'reports draws per season/competition set' do
       sample_competitions.each do |competition|
-        (0..3).each do |season|
+        4.times do |season|
           num_in_set = sample_set.count do |set|
             if set[:competition] == competition && set[:season] == season
               set[:home_score] == set[:away_score]
@@ -102,7 +102,7 @@ describe CompetitionCompiler do
 
     it 'reports losses per season/competition set' do
       sample_competitions.each do |competition|
-        (0..3).each do |season|
+        4.times do |season|
           num_in_set = sample_set.count do |set|
             if set[:competition] == competition && set[:season] == season
               if set[:home_score] > set[:away_score]
@@ -124,7 +124,7 @@ describe CompetitionCompiler do
 
     it 'reports goals for per season/competition set' do
       sample_competitions.each do |competition|
-        (0..3).each do |season|
+        4.times do |season|
           num_in_set = sample_set.sum do |set|
             if set[:competition] == competition && set[:season] == season
               set[:home] ? set[:home_score] : set[:away_score]
@@ -142,7 +142,7 @@ describe CompetitionCompiler do
 
     it 'reports goals against per season/competition set' do
       sample_competitions.each do |competition|
-        (0..3).each do |season|
+        4.times do |season|
           num_in_set = sample_set.sum do |set|
             if set[:competition] == competition && set[:season] == season
               set[:home] ? set[:away_score] : set[:home_score]

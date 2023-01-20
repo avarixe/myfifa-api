@@ -5,7 +5,7 @@ require 'rails_helper'
 describe Mutations::TableRowMutations::AddTableRow, type: :graphql do
   subject { described_class }
 
-  let(:stage) { create :stage }
+  let(:stage) { create(:stage) }
 
   it { is_expected.to accept_argument(:stage_id).of_type('ID!') }
   it { is_expected.to accept_argument(:attributes).of_type('TableRowAttributes!') }

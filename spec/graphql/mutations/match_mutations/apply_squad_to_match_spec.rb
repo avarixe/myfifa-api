@@ -5,10 +5,10 @@ require 'rails_helper'
 describe Mutations::MatchMutations::ApplySquadToMatch, type: :graphql do
   subject { described_class }
 
-  let(:user) { create :user }
-  let(:team) { create :team, user: }
-  let(:match) { create :match, team: }
-  let(:squad) { create :squad, team: }
+  let(:user) { create(:user) }
+  let(:team) { create(:team, user:) }
+  let(:match) { create(:match, team:) }
+  let(:squad) { create(:squad, team:) }
 
   it { is_expected.to accept_argument(:match_id).of_type('ID!') }
   it { is_expected.to accept_argument(:squad_id).of_type('ID!') }
