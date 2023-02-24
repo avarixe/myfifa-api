@@ -10,10 +10,9 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_04_01_164732) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_21_004400) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-  enable_extension "uuid-ossp"
 
   create_table "access_tokens", force: :cascade do |t|
     t.bigint "user_id"
@@ -77,6 +76,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_01_164732) do
     t.datetime "updated_at", precision: nil, null: false
     t.boolean "subbed_out", default: false, null: false
     t.integer "rating"
+    t.integer "ovr"
     t.index ["match_id"], name: "index_caps_on_match_id"
     t.index ["player_id", "match_id"], name: "index_caps_on_player_id_and_match_id", unique: true
     t.index ["player_id"], name: "index_caps_on_player_id"
@@ -290,13 +290,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_04_01_164732) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["stage_id"], name: "index_table_rows_on_stage_id"
-  end
-
-  create_table "team", id: :serial, force: :cascade do |t|
-    t.string "name", null: false
-    t.datetime "startedOn", precision: nil, null: false
-    t.datetime "currentlyOn", precision: nil, null: false
-    t.string "currency", null: false
   end
 
   create_table "teams", force: :cascade do |t|
