@@ -30,6 +30,11 @@ class PlayerHistory < ApplicationRecord
 
   before_validation :set_recorded_on
   before_create :remove_duplicates
+  after_save :update_cached_cap_ovrs, if: :saved_change_to_ovr?
+
+  def set_recorded_on
+    self.recorded_on ||= team.currently_on
+  end
 
   def remove_duplicates
     PlayerHistory
@@ -37,8 +42,14 @@ class PlayerHistory < ApplicationRecord
       .delete_all
   end
 
-  def set_recorded_on
-    self.recorded_on ||= team.currently_on
+  def update_cached_cap_ovrs
+    next_on = player.histories
+                    .where('recorded_on > ?', recorded_on)
+                    .order(:recorded_on)
+                    .pick(:recorded_on)
+    player.caps.joins(:match)
+          .where(matches: { played_on: recorded_on...next_on })
+          .update_all(ovr:) # rubocop:disable Rails/SkipsModelValidations
   end
 
   delegate :team, to: :player

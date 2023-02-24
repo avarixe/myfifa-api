@@ -5,6 +5,7 @@
 # Table name: caps
 #
 #  id         :bigint           not null, primary key
+#  ovr        :integer
 #  pos        :string
 #  rating     :integer
 #  start      :integer          default(0)

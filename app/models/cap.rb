@@ -5,6 +5,7 @@
 # Table name: caps
 #
 #  id         :bigint           not null, primary key
+#  ovr        :integer
 #  pos        :string
 #  rating     :integer
 #  start      :integer          default(0)
@@ -67,6 +68,7 @@ class Cap < ApplicationRecord
             inclusion: { in: POSITIONS },
             uniqueness: { scope: %i[match_id start] }
   validates :rating, inclusion: 1..5, allow_nil: true
+  validates :ovr, inclusion: 0..100
   validate :same_team?
   validate :active_player?, if: :player_id
 
@@ -82,7 +84,14 @@ class Cap < ApplicationRecord
     errors.add(:player, 'must be active') unless player.active?
   end
 
+  before_validation :cache_ovr, if: :player_id_changed?
   after_destroy :remove_events
+
+  def cache_ovr
+    self.ovr = PlayerHistory.order(:recorded_on)
+                            .find_by(player_id:, recorded_on: ..match.played_on)
+                            &.ovr
+  end
 
   def remove_events
     goals.destroy_all

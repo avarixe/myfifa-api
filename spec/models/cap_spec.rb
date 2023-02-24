@@ -5,6 +5,7 @@
 # Table name: caps
 #
 #  id         :bigint           not null, primary key
+#  ovr        :integer
 #  pos        :string
 #  rating     :integer
 #  start      :integer          default(0)
@@ -64,6 +65,36 @@ describe Cap do
     other_team = create(:team)
     match = create(:match, team: other_team)
     expect(build(:cap, player:, match:)).not_to be_valid
+  end
+
+  it 'caches the Player OVR when created' do
+    expect(cap.ovr).to be == cap.player.ovr
+  end
+
+  it 'caches the Player old OVR when created in the past' do
+    team = create(:team)
+    player = create(:player, team:, ovr: 70)
+    team.increment_date 1.month
+    player.update(ovr: 71)
+    match = create(:match, team:, played_on: team.currently_on - 1.month)
+    cap = create(:cap, player:, match:)
+    expect(cap.ovr).to be == 70
+  end
+
+  it 'updates the Player OVR cache when Player is changed' do
+    other_player = create(:player, team: cap.player.team)
+    cap.update player: other_player
+    expect(cap.ovr).to be == other_player.ovr
+  end
+
+  it 'does not change OVR if Player changes after date' do
+    team = create(:team)
+    player = create(:player, team:, ovr: 70)
+    match = create(:match, team:, played_on: team.currently_on)
+    cap = create(:cap, player:, match:)
+    team.increment_date 1.month
+    player.update(ovr: 71)
+    expect(cap.reload.ovr).to be == 70
   end
 
   # it 'removes all Match events concerning the player upon destruction' do
