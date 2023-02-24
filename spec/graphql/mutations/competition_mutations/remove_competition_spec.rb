@@ -8,14 +8,12 @@ describe Mutations::CompetitionMutations::RemoveCompetition, type: :graphql do
   let(:competition) { create(:competition) }
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
-  it { is_expected.to have_a_field(:competition).returning('Competition') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:competition).returning('Competition!') }
 
   graphql_operation "
     mutation removeCompetition($id: ID!) {
       removeCompetition(id: $id) {
         competition { id }
-        errors { fullMessages }
       }
     }
   "

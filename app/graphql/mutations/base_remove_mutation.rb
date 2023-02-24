@@ -20,9 +20,7 @@ module Mutations
 
       field record_field_name, entity_type,
             "#{entity_klass_name} that was removed if deleted from the database",
-            null: true
-      field :errors, Types::ValidationErrorsType,
-            "Errors preventing #{entity_klass_name} from being removed", null: true
+            null: false
     end
 
     def current_user
@@ -35,14 +33,13 @@ module Mutations
 
     def resolve(id:)
       record = self.class.model_klass.find(id)
-
       current_ability.authorize! :destroy, record
 
-      if record.destroy
-        { self.class.record_field_name => record }
-      else
-        { errors: record.errors }
-      end
+      record.destroy!
+
+      { self.class.record_field_name => record }
+    rescue ActiveRecord::RecordNotDestroyed => e
+      GraphQL::ExecutionError.new(e.record.errors.full_messages.first)
     end
   end
 end

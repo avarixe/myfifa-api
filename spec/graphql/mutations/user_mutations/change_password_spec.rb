@@ -13,14 +13,12 @@ describe Mutations::UserMutations::ChangePassword, type: :graphql do
       .to accept_argument(:attributes).of_type('UserPasswordChangeAttributes!')
   end
 
-  it { is_expected.to have_a_field(:confirmation).returning('String') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:confirmation).returning('String!') }
 
   graphql_operation <<-GQL
     mutation changePassword($attributes: UserPasswordChangeAttributes!) {
       changePassword(attributes: $attributes) {
         confirmation
-        errors { fullMessages }
       }
     }
   GQL
@@ -66,7 +64,7 @@ describe Mutations::UserMutations::ChangePassword, type: :graphql do
     end
 
     it 'will return an error message' do
-      expect(response_data.dig('changePassword', 'errors')).to be_present
+      expect(response['errors']).to be_present
     end
   end
 
@@ -88,7 +86,7 @@ describe Mutations::UserMutations::ChangePassword, type: :graphql do
     end
 
     it 'will return an error message' do
-      expect(response_data.dig('changePassword', 'errors')).to be_present
+      expect(response['errors']).to be_present
     end
   end
 end

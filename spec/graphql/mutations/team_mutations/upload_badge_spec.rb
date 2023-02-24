@@ -16,8 +16,7 @@ describe Mutations::TeamMutations::UploadBadge, type: :request do
       mutation uploadBadge($teamId: ID!, $badge: Upload!) {
         uploadBadge(teamId: $teamId, badge: $badge) {
           team { badgePath }
-          errors { fullMessages }
-        }
+          }
       }
     GQL
     {
@@ -34,8 +33,7 @@ describe Mutations::TeamMutations::UploadBadge, type: :request do
   end
 
   it { is_expected.to accept_argument(:badge).of_type('Upload!') }
-  it { is_expected.to have_a_field(:team).returning('Team') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:team).returning('Team!') }
 
   describe 'when executed' do
     before do

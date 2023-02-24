@@ -9,14 +9,12 @@ describe Mutations::InjuryMutations::UpdateInjury, type: :graphql do
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
   it { is_expected.to accept_argument(:attributes).of_type('InjuryAttributes!') }
-  it { is_expected.to have_a_field(:injury).returning('Injury') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:injury).returning('Injury!') }
 
   graphql_operation "
     mutation updateInjury($id: ID!, $attributes: InjuryAttributes!) {
       updateInjury(id: $id, attributes: $attributes) {
         injury { id }
-        errors { fullMessages }
       }
     }
   "

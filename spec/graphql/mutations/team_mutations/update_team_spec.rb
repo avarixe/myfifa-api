@@ -9,14 +9,12 @@ describe Mutations::TeamMutations::UpdateTeam, type: :graphql do
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
   it { is_expected.to accept_argument(:attributes).of_type('TeamAttributes!') }
-  it { is_expected.to have_a_field(:team).returning('Team') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:team).returning('Team!') }
 
   graphql_operation "
     mutation updateTeam($id: ID!, $attributes: TeamAttributes!) {
       updateTeam(id: $id, attributes: $attributes) {
         team { id }
-        errors { fullMessages }
       }
     }
   "
@@ -59,8 +57,7 @@ describe Mutations::TeamMutations::UpdateTeam, type: :graphql do
     end
 
     it 'returns an error message' do
-      execute_graphql
-      expect(response_data.dig('updateTeam', 'errors')).to be_present
+      expect(response['errors']).to be_present
     end
   end
 end

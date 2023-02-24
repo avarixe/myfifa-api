@@ -8,14 +8,12 @@ describe Mutations::ContractMutations::RemoveContract, type: :graphql do
   let(:contract) { create(:contract) }
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
-  it { is_expected.to have_a_field(:contract).returning('Contract') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:contract).returning('Contract!') }
 
   graphql_operation "
     mutation removeContract($id: ID!) {
       removeContract(id: $id) {
         contract { id }
-        errors { fullMessages }
       }
     }
   "

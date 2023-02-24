@@ -9,14 +9,12 @@ describe Mutations::TableRowMutations::AddTableRow, type: :graphql do
 
   it { is_expected.to accept_argument(:stage_id).of_type('ID!') }
   it { is_expected.to accept_argument(:attributes).of_type('TableRowAttributes!') }
-  it { is_expected.to have_a_field(:table_row).returning('TableRow') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:table_row).returning('TableRow!') }
 
   graphql_operation "
     mutation addTableRow($stageId: ID!, $attributes: TableRowAttributes!) {
       addTableRow(stageId: $stageId, attributes: $attributes) {
         tableRow { id }
-        errors { fullMessages }
       }
     }
   "

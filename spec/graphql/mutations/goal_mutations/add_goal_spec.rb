@@ -9,14 +9,12 @@ describe Mutations::GoalMutations::AddGoal, type: :graphql do
 
   it { is_expected.to accept_argument(:match_id).of_type('ID!') }
   it { is_expected.to accept_argument(:attributes).of_type('GoalAttributes!') }
-  it { is_expected.to have_a_field(:goal).returning('Goal') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:goal).returning('Goal!') }
 
   graphql_operation "
     mutation addGoal($matchId: ID!, $attributes: GoalAttributes!) {
       addGoal(matchId: $matchId, attributes: $attributes) {
         goal { id }
-        errors { fullMessages }
       }
     }
   "

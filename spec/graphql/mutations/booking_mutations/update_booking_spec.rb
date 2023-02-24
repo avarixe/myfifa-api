@@ -9,14 +9,12 @@ describe Mutations::BookingMutations::UpdateBooking, type: :graphql do
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
   it { is_expected.to accept_argument(:attributes).of_type('BookingAttributes!') }
-  it { is_expected.to have_a_field(:booking).returning('Booking') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:booking).returning('Booking!') }
 
   graphql_operation "
     mutation updateBooking($id: ID!, $attributes: BookingAttributes!) {
       updateBooking(id: $id, attributes: $attributes) {
         booking { id }
-        errors { fullMessages }
       }
     }
   "

@@ -9,14 +9,12 @@ describe Mutations::SquadMutations::UpdateSquad, type: :graphql do
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
   it { is_expected.to accept_argument(:attributes).of_type('SquadAttributes!') }
-  it { is_expected.to have_a_field(:squad).returning('Squad') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:squad).returning('Squad!') }
 
   graphql_operation "
     mutation updateSquad($id: ID!, $attributes: SquadAttributes!) {
       updateSquad(id: $id, attributes: $attributes) {
         squad { id }
-        errors { fullMessages }
       }
     }
   "

@@ -9,14 +9,12 @@ describe Mutations::ContractMutations::AddContract, type: :graphql do
 
   it { is_expected.to accept_argument(:player_id).of_type('ID!') }
   it { is_expected.to accept_argument(:attributes).of_type('ContractAttributes!') }
-  it { is_expected.to have_a_field(:contract).returning('Contract') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:contract).returning('Contract!') }
 
   graphql_operation "
     mutation addContract($playerId: ID!, $attributes: ContractAttributes!) {
       addContract(playerId: $playerId, attributes: $attributes) {
         contract { id }
-        errors { fullMessages }
       }
     }
   "

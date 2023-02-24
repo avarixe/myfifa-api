@@ -11,7 +11,7 @@ module Mutations
         if team.save
           { team: }
         else
-          { errors: team.errors }
+          GraphQL::ExecutionError.new(team.errors.full_messages.first)
         end
       end
     end
@@ -31,9 +31,7 @@ module Mutations
       argument :badge, ApolloUploadServer::Upload, required: true
 
       field :team, Types::TeamType,
-            'Team that was updated if saved to database', null: true
-      field :errors, Types::ValidationErrorsType,
-            'Errors preventing Team from being created', null: true
+            'Team that was updated if saved to database', null: false
 
       def resolve(team_id:, badge:)
         team = context[:current_user].teams.find(team_id)
@@ -44,8 +42,10 @@ module Mutations
           content_type: badge.content_type
         )
 
-        team.update(badge: blob)
+        team.update!(badge: blob)
         { team: }
+      rescue ActiveRecord::RecordInvalid => e
+        GraphQL::ExecutionError.new(e.record.errors.full_messages.first)
       end
     end
   end

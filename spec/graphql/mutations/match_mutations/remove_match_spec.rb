@@ -8,14 +8,12 @@ describe Mutations::MatchMutations::RemoveMatch, type: :graphql do
   let(:match) { create(:match) }
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
-  it { is_expected.to have_a_field(:match).returning('Match') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:match).returning('Match!') }
 
   graphql_operation "
     mutation removeMatch($id: ID!) {
       removeMatch(id: $id) {
         match { id }
-        errors { fullMessages }
       }
     }
   "

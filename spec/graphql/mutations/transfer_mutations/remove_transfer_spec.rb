@@ -8,14 +8,12 @@ describe Mutations::TransferMutations::RemoveTransfer, type: :graphql do
   let(:transfer) { create(:transfer) }
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
-  it { is_expected.to have_a_field(:transfer).returning('Transfer') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:transfer).returning('Transfer!') }
 
   graphql_operation "
     mutation removeTransfer($id: ID!) {
       removeTransfer(id: $id) {
         transfer { id }
-        errors { fullMessages }
       }
     }
   "

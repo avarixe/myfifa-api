@@ -8,14 +8,12 @@ describe Mutations::FixtureMutations::RemoveFixture, type: :graphql do
   let(:fixture) { create(:fixture) }
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
-  it { is_expected.to have_a_field(:fixture).returning('Fixture') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:fixture).returning('Fixture!') }
 
   graphql_operation "
     mutation removeFixture($id: ID!) {
       removeFixture(id: $id) {
         fixture { id }
-        errors { fullMessages }
       }
     }
   "

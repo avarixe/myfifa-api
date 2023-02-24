@@ -8,14 +8,12 @@ describe Mutations::BookingMutations::RemoveBooking, type: :graphql do
   let(:booking) { create(:booking) }
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
-  it { is_expected.to have_a_field(:booking).returning('Booking') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:booking).returning('Booking!') }
 
   graphql_operation "
     mutation removeBooking($id: ID!) {
       removeBooking(id: $id) {
         booking { id }
-        errors { fullMessages }
       }
     }
   "

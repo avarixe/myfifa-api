@@ -8,14 +8,12 @@ describe Mutations::PlayerMutations::RemovePlayer, type: :graphql do
   let(:player) { create(:player) }
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
-  it { is_expected.to have_a_field(:player).returning('Player') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:player).returning('Player!') }
 
   graphql_operation "
     mutation removePlayer($id: ID!) {
       removePlayer(id: $id) {
         player { id }
-        errors { fullMessages }
       }
     }
   "

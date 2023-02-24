@@ -9,14 +9,12 @@ describe Mutations::StageMutations::AddStage, type: :graphql do
 
   it { is_expected.to accept_argument(:competition_id).of_type('ID!') }
   it { is_expected.to accept_argument(:attributes).of_type('StageAttributes!') }
-  it { is_expected.to have_a_field(:stage).returning('Stage') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:stage).returning('Stage!') }
 
   graphql_operation "
     mutation addStage($competitionId: ID!, $attributes: StageAttributes!) {
       addStage(competitionId: $competitionId, attributes: $attributes) {
         stage { id }
-        errors { fullMessages }
       }
     }
   "

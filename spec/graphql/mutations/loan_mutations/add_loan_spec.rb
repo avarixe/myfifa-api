@@ -9,14 +9,12 @@ describe Mutations::LoanMutations::AddLoan, type: :graphql do
 
   it { is_expected.to accept_argument(:player_id).of_type('ID!') }
   it { is_expected.to accept_argument(:attributes).of_type('LoanAttributes!') }
-  it { is_expected.to have_a_field(:loan).returning('Loan') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:loan).returning('Loan!') }
 
   graphql_operation "
     mutation addLoan($playerId: ID!, $attributes: LoanAttributes!) {
       addLoan(playerId: $playerId, attributes: $attributes) {
         loan { id }
-        errors { fullMessages }
       }
     }
   "

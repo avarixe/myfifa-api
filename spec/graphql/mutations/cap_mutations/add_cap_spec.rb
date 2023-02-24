@@ -9,14 +9,12 @@ describe Mutations::CapMutations::AddCap, type: :graphql do
 
   it { is_expected.to accept_argument(:match_id).of_type('ID!') }
   it { is_expected.to accept_argument(:attributes).of_type('CapAttributes!') }
-  it { is_expected.to have_a_field(:cap).returning('Cap') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:cap).returning('Cap!') }
 
   graphql_operation "
     mutation addCap($matchId: ID!, $attributes: CapAttributes!) {
       addCap(matchId: $matchId, attributes: $attributes) {
         cap { id }
-        errors { fullMessages }
       }
     }
   "

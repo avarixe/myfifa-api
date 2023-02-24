@@ -8,14 +8,12 @@ describe Mutations::GoalMutations::RemoveGoal, type: :graphql do
   let(:goal) { create(:goal) }
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
-  it { is_expected.to have_a_field(:goal).returning('Goal') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:goal).returning('Goal!') }
 
   graphql_operation "
     mutation removeGoal($id: ID!) {
       removeGoal(id: $id) {
         goal { id }
-        errors { fullMessages }
       }
     }
   "

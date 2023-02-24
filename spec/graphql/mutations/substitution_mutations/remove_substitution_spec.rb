@@ -8,14 +8,12 @@ describe Mutations::SubstitutionMutations::RemoveSubstitution, type: :graphql do
   let(:substitution) { create(:substitution) }
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
-  it { is_expected.to have_a_field(:substitution).returning('Substitution') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:substitution).returning('Substitution!') }
 
   graphql_operation "
     mutation removeSubstitution($id: ID!) {
       removeSubstitution(id: $id) {
         substitution { id }
-        errors { fullMessages }
       }
     }
   "

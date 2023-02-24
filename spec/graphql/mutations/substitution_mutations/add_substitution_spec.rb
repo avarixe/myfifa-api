@@ -9,14 +9,12 @@ describe Mutations::SubstitutionMutations::AddSubstitution, type: :graphql do
 
   it { is_expected.to accept_argument(:match_id).of_type('ID!') }
   it { is_expected.to accept_argument(:attributes).of_type('SubstitutionAttributes!') }
-  it { is_expected.to have_a_field(:substitution).returning('Substitution') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:substitution).returning('Substitution!') }
 
   graphql_operation "
     mutation addSubstitution($matchId: ID!, $attributes: SubstitutionAttributes!) {
       addSubstitution(matchId: $matchId, attributes: $attributes) {
         substitution { id }
-        errors { fullMessages }
       }
     }
   "

@@ -8,14 +8,12 @@ describe Mutations::TeamMutations::RemoveTeam, type: :graphql do
   let(:team) { create(:team) }
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
-  it { is_expected.to have_a_field(:team).returning('Team') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:team).returning('Team!') }
 
   graphql_operation "
     mutation removeTeam($id: ID!) {
       removeTeam(id: $id) {
         team { id }
-        errors { fullMessages }
       }
     }
   "
@@ -46,6 +44,6 @@ describe Mutations::TeamMutations::RemoveTeam, type: :graphql do
       variables: { id: team_stub.id },
       context: { current_user: team_stub.user }
     )
-    expect(response_data.dig('removeTeam', 'errors')).to be_present
+    expect(response['errors']).to be_present
   end
 end

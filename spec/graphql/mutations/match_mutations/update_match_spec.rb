@@ -9,14 +9,12 @@ describe Mutations::MatchMutations::UpdateMatch, type: :graphql do
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
   it { is_expected.to accept_argument(:attributes).of_type('MatchAttributes!') }
-  it { is_expected.to have_a_field(:match).returning('Match') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:match).returning('Match!') }
 
   graphql_operation "
     mutation updateMatch($id: ID!, $attributes: MatchAttributes!) {
       updateMatch(id: $id, attributes: $attributes) {
         match { id }
-        errors { fullMessages }
       }
     }
   "
