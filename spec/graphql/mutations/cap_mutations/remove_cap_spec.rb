@@ -8,14 +8,12 @@ describe Mutations::CapMutations::RemoveCap, type: :graphql do
   let(:cap) { create(:cap) }
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
-  it { is_expected.to have_a_field(:cap).returning('Cap') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:cap).returning('Cap!') }
 
   graphql_operation "
     mutation removeCap($id: ID!) {
       removeCap(id: $id) {
         cap { id }
-        errors { fullMessages }
       }
     }
   "

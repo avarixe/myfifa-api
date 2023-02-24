@@ -8,14 +8,12 @@ describe Mutations::UserMutations::UpdateUser, type: :graphql do
   let(:user) { create(:user) }
 
   it { is_expected.to accept_argument(:attributes).of_type('UserAttributes!') }
-  it { is_expected.to have_a_field(:user).returning('User') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:user).returning('User!') }
 
   graphql_operation <<-GQL
     mutation updateUser($id: ID!, $attributes: UserAttributes!) {
       updateUser(id: $id, attributes: $attributes) {
         user { id }
-        errors { fullMessages }
       }
     }
   GQL

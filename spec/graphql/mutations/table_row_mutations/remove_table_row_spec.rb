@@ -8,14 +8,12 @@ describe Mutations::TableRowMutations::RemoveTableRow, type: :graphql do
   let(:table_row) { create(:table_row) }
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
-  it { is_expected.to have_a_field(:table_row).returning('TableRow') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:table_row).returning('TableRow!') }
 
   graphql_operation "
     mutation removeTableRow($id: ID!) {
       removeTableRow(id: $id) {
         tableRow { id }
-        errors { fullMessages }
       }
     }
   "

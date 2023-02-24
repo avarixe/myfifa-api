@@ -10,14 +10,12 @@ describe Mutations::UserMutations::AddUser, type: :graphql do
       .to accept_argument(:attributes).of_type('UserRegistrationAttributes!')
   end
 
-  it { is_expected.to have_a_field(:user).returning('User') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:user).returning('User!') }
 
   graphql_operation <<-GQL
     mutation registerUser($attributes: UserRegistrationAttributes!) {
       registerUser(attributes: $attributes) {
         user { id }
-        errors { fullMessages }
       }
     }
   GQL
@@ -46,8 +44,7 @@ describe Mutations::UserMutations::AddUser, type: :graphql do
     end
 
     it 'returns errors if attributes are not valid' do
-      expect(response_data.dig('registerUser', 'errors', 'fullMessages'))
-        .to be_present
+      expect(response['errors']).to be_present
     end
   end
 end

@@ -9,14 +9,12 @@ describe Mutations::FixtureMutations::AddFixture, type: :graphql do
 
   it { is_expected.to accept_argument(:stage_id).of_type('ID!') }
   it { is_expected.to accept_argument(:attributes).of_type('FixtureAttributes!') }
-  it { is_expected.to have_a_field(:fixture).returning('Fixture') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:fixture).returning('Fixture!') }
 
   graphql_operation "
     mutation addFixture($stageId: ID!, $attributes: FixtureAttributes!) {
       addFixture(stageId: $stageId, attributes: $attributes) {
         fixture { id }
-        errors { fullMessages }
       }
     }
   "

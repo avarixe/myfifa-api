@@ -24,9 +24,7 @@ module Mutations
 
       field record_field_name, entity_type,
             "#{entity_klass_name} that was updated if attributes were saved",
-            null: true
-      field :errors, Types::ValidationErrorsType,
-            'Errors preventing changes from being applied', null: true
+            null: false
     end
 
     def current_user
@@ -39,14 +37,13 @@ module Mutations
 
     def resolve(id:, attributes:)
       record = self.class.model_klass.find(id)
-
       current_ability.authorize! :update, record
 
-      if record.skip_preload.update(attributes.to_h)
-        { self.class.record_field_name => record }
-      else
-        { errors: record.errors }
-      end
+      record.skip_preload.update!(attributes.to_h)
+
+      { self.class.record_field_name => record }
+    rescue ActiveRecord::RecordInvalid => e
+      GraphQL::ExecutionError.new(e.record.errors.full_messages.first)
     end
   end
 end

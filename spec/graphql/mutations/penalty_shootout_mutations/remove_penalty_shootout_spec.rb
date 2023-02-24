@@ -8,14 +8,12 @@ describe Mutations::PenaltyShootoutMutations::RemovePenaltyShootout, type: :grap
   let(:penalty_shootout) { create(:penalty_shootout) }
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
-  it { is_expected.to have_a_field(:penalty_shootout).returning('PenaltyShootout') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:penalty_shootout).returning('PenaltyShootout!') }
 
   graphql_operation "
     mutation removePenaltyShootout($id: ID!) {
       removePenaltyShootout(id: $id) {
         penaltyShootout { id }
-        errors { fullMessages }
       }
     }
   "

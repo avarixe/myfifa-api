@@ -9,14 +9,12 @@ describe Mutations::CompetitionMutations::AddCompetition, type: :graphql do
 
   it { is_expected.to accept_argument(:team_id).of_type('ID!') }
   it { is_expected.to accept_argument(:attributes).of_type('CompetitionAttributes!') }
-  it { is_expected.to have_a_field(:competition).returning('Competition') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:competition).returning('Competition!') }
 
   graphql_operation "
     mutation addCompetition($teamId: ID!, $attributes: CompetitionAttributes!) {
       addCompetition(teamId: $teamId, attributes: $attributes) {
         competition { id }
-        errors { fullMessages }
       }
     }
   "

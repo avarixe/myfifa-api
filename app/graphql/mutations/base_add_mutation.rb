@@ -25,9 +25,7 @@ module Mutations
 
       field record_field_name, entity_type,
             "#{entity_klass_name} that was created if saved to database",
-            null: true
-      field :errors, Types::ValidationErrorsType,
-            "Errors preventing #{entity_klass_name} from being created", null: true
+            null: false
     end
 
     def self.parent_type=(parent_type)
@@ -53,16 +51,14 @@ module Mutations
       record = parent_record
                .public_send(self.class.record_field_name.to_s.pluralize)
                .new
-
       current_ability.authorize! :create, record
 
       record.attributes = args[:attributes].to_h
+      record.save!
 
-      if record.save
-        { self.class.record_field_name => record }
-      else
-        { errors: record.errors }
-      end
+      { self.class.record_field_name => record }
+    rescue ActiveRecord::RecordInvalid => e
+      GraphQL::ExecutionError.new(e.record.errors.full_messages.first)
     end
   end
 end

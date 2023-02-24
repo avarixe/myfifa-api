@@ -10,10 +10,9 @@ describe Mutations::GrantAccessToken, type: :graphql do
 
   it { is_expected.to accept_argument(:username).of_type('String!') }
   it { is_expected.to accept_argument(:password).of_type('String!') }
-  it { is_expected.to have_a_field(:token).returning('String') }
-  it { is_expected.to have_a_field(:expires_at).returning('ISO8601DateTime') }
-  it { is_expected.to have_a_field(:user).returning('User') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:token).returning('String!') }
+  it { is_expected.to have_a_field(:expires_at).returning('ISO8601DateTime!') }
+  it { is_expected.to have_a_field(:user).returning('User!') }
 
   graphql_operation <<-GQL
     mutation grantAccessToken($username: String!, $password: String!) {
@@ -21,7 +20,6 @@ describe Mutations::GrantAccessToken, type: :graphql do
         token
         expiresAt
         user { id }
-        errors { fullMessages }
       }
     }
   GQL

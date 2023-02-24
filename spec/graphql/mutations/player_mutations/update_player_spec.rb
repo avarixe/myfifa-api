@@ -9,14 +9,12 @@ describe Mutations::PlayerMutations::UpdatePlayer, type: :graphql do
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
   it { is_expected.to accept_argument(:attributes).of_type('PlayerAttributes!') }
-  it { is_expected.to have_a_field(:player).returning('Player') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:player).returning('Player!') }
 
   graphql_operation "
     mutation updatePlayer($id: ID!, $attributes: PlayerAttributes!) {
       updatePlayer(id: $id, attributes: $attributes) {
         player { id }
-        errors { fullMessages }
       }
     }
   "

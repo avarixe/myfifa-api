@@ -9,14 +9,12 @@ describe Mutations::TransferMutations::UpdateTransfer, type: :graphql do
 
   it { is_expected.to accept_argument(:id).of_type('ID!') }
   it { is_expected.to accept_argument(:attributes).of_type('TransferAttributes!') }
-  it { is_expected.to have_a_field(:transfer).returning('Transfer') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:transfer).returning('Transfer!') }
 
   graphql_operation "
     mutation updateTransfer($id: ID!, $attributes: TransferAttributes!) {
       updateTransfer(id: $id, attributes: $attributes) {
         transfer { id }
-        errors { fullMessages }
       }
     }
   "

@@ -8,14 +8,12 @@ describe Mutations::TeamMutations::AddTeam, type: :graphql do
   let(:user) { create(:user) }
 
   it { is_expected.to accept_argument(:attributes).of_type('TeamAttributes!') }
-  it { is_expected.to have_a_field(:team).returning('Team') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:team).returning('Team!') }
 
   graphql_operation <<-GQL
     mutation addTeam($attributes: TeamAttributes!) {
       addTeam(attributes: $attributes) {
         team { id }
-        errors { details fullMessages }
       }
     }
   GQL
@@ -46,7 +44,7 @@ describe Mutations::TeamMutations::AddTeam, type: :graphql do
     end
 
     it 'returns errors if attributes are not valid' do
-      expect(response_data.dig('addTeam', 'errors', 'fullMessages')).to be_present
+      expect(response['errors']).to be_present
     end
   end
 end

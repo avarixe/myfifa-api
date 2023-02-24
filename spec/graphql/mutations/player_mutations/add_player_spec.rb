@@ -9,14 +9,12 @@ describe Mutations::PlayerMutations::AddPlayer, type: :graphql do
 
   it { is_expected.to accept_argument(:team_id).of_type('ID!') }
   it { is_expected.to accept_argument(:attributes).of_type('PlayerAttributes!') }
-  it { is_expected.to have_a_field(:player).returning('Player') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:player).returning('Player!') }
 
   graphql_operation "
     mutation addPlayer($teamId: ID!, $attributes: PlayerAttributes!) {
       addPlayer(teamId: $teamId, attributes: $attributes) {
         player { id }
-        errors { fullMessages }
       }
     }
   "
@@ -61,8 +59,7 @@ describe Mutations::PlayerMutations::AddPlayer, type: :graphql do
     end
 
     it 'returns an error message' do
-      execute_graphql
-      expect(response_data.dig('addPlayer', 'errors')).to be_present
+      expect(response['errors']).to be_present
     end
   end
 end

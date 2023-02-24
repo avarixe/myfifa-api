@@ -8,12 +8,11 @@ module Mutations
 
       def resolve(attributes:)
         user = User.new(attributes.to_h)
+        user.save!
 
-        if user.save
-          { user: }
-        else
-          { errors: user.errors }
-        end
+        { user: }
+      rescue ActiveRecord::RecordInvalid => e
+        GraphQL::ExecutionError.new(e.record.errors.full_messages.first)
       end
     end
 
@@ -22,13 +21,12 @@ module Mutations
 
       def resolve(id:, attributes:)
         user = User.find(id)
-
         current_ability.authorize! :update, user
 
         if user.update_without_password(attributes.to_h)
           { user: }
         else
-          { errors: user.errors }
+          GraphQL::ExecutionError.new(user.errors.full_messages.first)
         end
       end
     end
@@ -40,9 +38,7 @@ module Mutations
                'Data object to change the password for User', required: true
 
       field :confirmation, String,
-            'Message confirming password has been changed', null: true
-      field :errors, Types::ValidationErrorsType,
-            'Errors preventing password from being changed', null: true
+            'Message confirming password has been changed', null: false
 
       def resolve(attributes:)
         user = context[:current_user]
@@ -50,7 +46,7 @@ module Mutations
         if user.update_with_password(attributes.to_h)
           { confirmation: 'Password has been successfully changed!' }
         else
-          { errors: user.errors }
+          GraphQL::ExecutionError.new(user.errors.full_messages.first)
         end
       end
     end

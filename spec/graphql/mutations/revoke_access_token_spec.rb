@@ -8,14 +8,12 @@ describe Mutations::RevokeAccessToken, type: :graphql do
   let(:token) { create(:access_token) }
 
   it { is_expected.to accept_argument(:token).of_type('String!') }
-  it { is_expected.to have_a_field(:confirmation).returning('String') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  it { is_expected.to have_a_field(:confirmation).returning('String!') }
 
   graphql_operation <<-GQL
     mutation revokeAccessToken($token: String!) {
       revokeAccessToken(token: $token) {
         confirmation
-        errors { fullMessages }
       }
     }
   GQL
