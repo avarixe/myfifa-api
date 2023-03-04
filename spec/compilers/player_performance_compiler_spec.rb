@@ -12,7 +12,7 @@ describe PlayerPerformanceCompiler do
   end
 
   describe 'result' do
-    sample_competitions = %w[A B C].freeze
+    sample_competitions = (0..2).map { Faker::Sports::Football.competition }
     sample_set = (0...Faker::Number.within(range: 5..10)).map do
       {
         player: Faker::Number.within(range: 0..2),
@@ -21,6 +21,7 @@ describe PlayerPerformanceCompiler do
         num_minutes: Faker::Number.within(range: 60..90),
         num_goals: Faker::Number.within(range: 0..3),
         num_assists: Faker::Number.within(range: 0..3),
+        avg_rating: Faker::Number.within(range: 1..5),
         clean_sheet: Faker::Boolean.boolean,
         home: Faker::Boolean.boolean
       }
@@ -39,7 +40,12 @@ describe PlayerPerformanceCompiler do
                        away_score: set[:clean_sheet] ? 0 : 1,
                        competition: set[:competition],
                        played_on: team.started_on + set[:season].years)
-        create(:cap, match:, player: set[:player], start: 0, stop: set[:num_minutes])
+        create(:cap,
+               match:,
+               player: set[:player],
+               start: 0,
+               stop: set[:num_minutes],
+               rating: set[:avg_rating])
         create_list(:goal,
                     set[:num_goals],
                     match:,
@@ -125,6 +131,32 @@ describe PlayerPerformanceCompiler do
               end&.dig(metric.to_sym) || 0
               expect(num_in_results).to be == num_in_set
             end
+          end
+        end
+      end
+    end
+
+    it 'reports avg_rating per player/season/competition set' do
+      team.players.each do |player|
+        sample_competitions.each do |competition|
+          4.times do |season|
+            set_data = sample_set.select do |set|
+              set[:player] == player &&
+                set[:competition] == competition &&
+                set[:season] == season
+            end
+            num_in_set =
+              if set_data.any?
+                set_data.sum { |data| data[:avg_rating] } / set_data.size
+              else
+                0
+              end
+            num_in_results = compiler.results.find do |result|
+              result[:player_id] == player.id &&
+                result[:competition] == competition &&
+                result[:season] == season
+            end&.dig(:avg_rating) || 0
+            expect(num_in_results).to be == num_in_set
           end
         end
       end

@@ -28,6 +28,14 @@ describe Types::TeamType do
   it { is_expected.to have_field(:injured_players).of_type('[Player!]!') }
   it { is_expected.to have_field(:expiring_players).of_type('[Player!]!') }
 
+  describe 'matchSet field' do
+    subject(:field) { described_class.fields['matchSet'] }
+
+    it { is_expected.to be_of_type('MatchSet!') }
+    it { is_expected.to accept_argument(:pagination).of_type('PaginationAttributes') }
+    it { is_expected.to accept_argument(:filters).of_type('MatchFilterAttributes') }
+  end
+
   describe 'competitionStats field' do
     subject(:field) { described_class.fields['competitionStats'] }
 
