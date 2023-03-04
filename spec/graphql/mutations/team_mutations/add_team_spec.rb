@@ -40,7 +40,7 @@ describe Mutations::TeamMutations::AddTeam, type: :graphql do
 
   describe 'with invalid attributes' do
     graphql_variables do
-      { attributes: { name: Faker::Team.name } }
+      { attributes: { name: nil } }
     end
 
     it 'returns errors if attributes are not valid' do

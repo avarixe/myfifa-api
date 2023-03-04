@@ -11,7 +11,9 @@ module InputObjects
     argument :team, String, 'Name of Home or Away Team', required: false
     argument :result, [Enums::MatchResultEnum],
              'Result relative to tracked Team', required: false
-    argument :played_on, GraphQL::Types::ISO8601Date,
-             'Date this Match was played', required: false
+    argument :start_on, GraphQL::Types::ISO8601Date,
+             'Start of Date Range', required: false
+    argument :end_on, GraphQL::Types::ISO8601Date,
+             'End of Date Range', required: false
   end
 end

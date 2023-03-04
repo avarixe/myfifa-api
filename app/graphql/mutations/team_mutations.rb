@@ -42,10 +42,8 @@ module Mutations
           content_type: badge.content_type
         )
 
-        team.update!(badge: blob)
+        team.update(badge: blob)
         { team: }
-      rescue ActiveRecord::RecordInvalid => e
-        GraphQL::ExecutionError.new(e.record.errors.full_messages.first)
       end
     end
   end
