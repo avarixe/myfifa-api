@@ -71,6 +71,20 @@ describe Cap do
     expect(cap.ovr).to be == cap.player.ovr
   end
 
+  it 'caches the latest Player OVR when created' do
+    player = create(:player, ovr: 60)
+    3.times do
+      player.team.increment_date 1.year
+      player.ovr += 10
+      player.save!
+    end
+
+    match = create(:match, team: player.team, played_on: player.team.currently_on)
+    cap = create(:cap, player:, match:)
+
+    expect(cap.ovr).to be == 90
+  end
+
   it 'caches the Player old OVR when created in the past' do
     team = create(:team)
     player = create(:player, team:, ovr: 70)

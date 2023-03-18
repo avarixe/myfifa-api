@@ -88,7 +88,7 @@ class Cap < ApplicationRecord
   after_destroy :remove_events
 
   def cache_ovr
-    self.ovr = PlayerHistory.order(:recorded_on)
+    self.ovr = PlayerHistory.order(recorded_on: :desc)
                             .find_by(player_id:, recorded_on: ..match.played_on)
                             &.ovr
   end
