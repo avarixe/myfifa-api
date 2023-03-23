@@ -70,7 +70,7 @@ class PlayerPerformanceCompiler
               players.id,
               matches.season,
               matches.competition,
-              SUM(rating * (stop - start)) / SUM(stop - start)
+              CAST(SUM(rating * (stop - start)) AS decimal) / SUM(stop - start)
             SQL
           )
         )
