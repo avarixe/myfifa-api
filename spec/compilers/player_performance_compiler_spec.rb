@@ -147,7 +147,8 @@ describe PlayerPerformanceCompiler do
             end
             num_in_set =
               if set_data.any?
-                set_data.sum { |data| data[:avg_rating] } / set_data.size
+                set_data.sum { |data| data[:avg_rating] * data[:num_minutes] }.to_f /
+                  set_data.sum { |data| data[:num_minutes] }
               else
                 0
               end
@@ -156,7 +157,7 @@ describe PlayerPerformanceCompiler do
                 result[:competition] == competition &&
                 result[:season] == season
             end&.dig(:avg_rating) || 0
-            expect(num_in_results).to be == num_in_set
+            expect(num_in_results.round(3)).to be == num_in_set.round(3)
           end
         end
       end
