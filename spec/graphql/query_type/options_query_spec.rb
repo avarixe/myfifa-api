@@ -60,7 +60,7 @@ describe QueryType, type: :graphql do
     end
 
     it 'filters results to only matched Teams' do
-      expect(response_data(:options)).to match_array(['Team 0'])
+      expect(response_data(:options)).to contain_exactly('Team 0')
     end
   end
 end
