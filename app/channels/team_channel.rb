@@ -6,5 +6,7 @@ class TeamChannel < ApplicationCable::Channel
     current_ability = Ability.new(current_user)
     team = Team.accessible_by(current_ability).find(params[:id])
     stream_for team
+  rescue ActiveRecord::RecordNotFound
+    reject
   end
 end

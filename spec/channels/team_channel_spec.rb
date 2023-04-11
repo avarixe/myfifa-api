@@ -11,13 +11,14 @@ describe TeamChannel do
     stub_connection current_user: user
   end
 
-  it 'subscribes to a stream when team id is provided' do
+  it 'subscribes when team id is provided' do
     subscribe(id: team.id)
     expect(subscription).to have_stream_for(team)
   end
 
-  it 'does not subscribe to a stream for Team not bound to user' do
+  it 'rejects Team not bound to user' do
     team = create(:team)
-    expect { subscribe(id: team.id) }.to raise_error(ActiveRecord::RecordNotFound)
+    subscribe(id: team.id)
+    expect(subscription).to be_rejected
   end
 end
