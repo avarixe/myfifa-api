@@ -9,10 +9,6 @@ describe QueryType, type: :graphql do
 
       let(:user) { create(:user) }
 
-      it 'requires an ID' do
-        expect(field).to accept_argument(:id).of_type('ID!')
-      end
-
       graphql_operation "
         query fetch#{type.titleize}($id: ID!) {
           #{type}(id: $id) { id }

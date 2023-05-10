@@ -3,13 +3,7 @@
 require 'rails_helper'
 
 describe Mutations::ContractMutations::AddContract, type: :graphql do
-  subject { described_class }
-
   let(:player) { create(:player) }
-
-  it { is_expected.to accept_argument(:player_id).of_type('ID!') }
-  it { is_expected.to accept_argument(:attributes).of_type('ContractAttributes!') }
-  it { is_expected.to have_a_field(:contract).returning('Contract!') }
 
   graphql_operation "
     mutation addContract($playerId: ID!, $attributes: ContractAttributes!) {

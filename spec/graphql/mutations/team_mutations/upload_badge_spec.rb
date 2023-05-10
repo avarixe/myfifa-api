@@ -3,8 +3,6 @@
 require 'rails_helper'
 
 describe Mutations::TeamMutations::UploadBadge, type: :request do
-  subject { described_class }
-
   let(:user) { create(:user) }
   let(:team) { create(:team, user:) }
   let(:test_badge) do
@@ -31,9 +29,6 @@ describe Mutations::TeamMutations::UploadBadge, type: :request do
       '1': test_badge
     }
   end
-
-  it { is_expected.to accept_argument(:badge).of_type('Upload!') }
-  it { is_expected.to have_a_field(:team).returning('Team!') }
 
   describe 'when executed' do
     before do

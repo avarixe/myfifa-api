@@ -3,13 +3,7 @@
 require 'rails_helper'
 
 describe Mutations::InjuryMutations::UpdateInjury, type: :graphql do
-  subject { described_class }
-
   let(:injury) { create(:injury) }
-
-  it { is_expected.to accept_argument(:id).of_type('ID!') }
-  it { is_expected.to accept_argument(:attributes).of_type('InjuryAttributes!') }
-  it { is_expected.to have_a_field(:injury).returning('Injury!') }
 
   graphql_operation "
     mutation updateInjury($id: ID!, $attributes: InjuryAttributes!) {

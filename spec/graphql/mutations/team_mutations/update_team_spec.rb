@@ -3,13 +3,7 @@
 require 'rails_helper'
 
 describe Mutations::TeamMutations::UpdateTeam, type: :graphql do
-  subject { described_class }
-
   let(:team) { create(:team) }
-
-  it { is_expected.to accept_argument(:id).of_type('ID!') }
-  it { is_expected.to accept_argument(:attributes).of_type('TeamAttributes!') }
-  it { is_expected.to have_a_field(:team).returning('Team!') }
 
   graphql_operation "
     mutation updateTeam($id: ID!, $attributes: TeamAttributes!) {

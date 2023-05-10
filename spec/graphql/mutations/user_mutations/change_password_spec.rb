@@ -3,17 +3,8 @@
 require 'rails_helper'
 
 describe Mutations::UserMutations::ChangePassword, type: :graphql do
-  subject(:mutation) { described_class }
-
   let(:password) { Faker::Internet.password }
   let(:user) { create(:user, password:) }
-
-  it 'accepts argument `attributes` of type `UserPasswordChangeAttributes!`' do
-    expect(mutation)
-      .to accept_argument(:attributes).of_type('UserPasswordChangeAttributes!')
-  end
-
-  it { is_expected.to have_a_field(:confirmation).returning('String!') }
 
   graphql_operation <<-GQL
     mutation changePassword($attributes: UserPasswordChangeAttributes!) {

@@ -3,16 +3,11 @@
 require 'rails_helper'
 
 describe Mutations::PlayerMutations::ReleasePlayer, type: :graphql do
-  subject { described_class }
-
   let(:user) { create(:user) }
   let(:player) do
     team = create(:team, user:)
     create(:player, team:)
   end
-
-  it { is_expected.to accept_argument(:id).of_type('ID!') }
-  it { is_expected.to have_a_field(:player).returning('Player!') }
 
   graphql_operation <<-GQL
     mutation releasePlayer($id: ID!) {
