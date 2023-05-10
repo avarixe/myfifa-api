@@ -3,13 +3,7 @@
 require 'rails_helper'
 
 describe Mutations::BookingMutations::UpdateBooking, type: :graphql do
-  subject { described_class }
-
   let(:booking) { create(:booking) }
-
-  it { is_expected.to accept_argument(:id).of_type('ID!') }
-  it { is_expected.to accept_argument(:attributes).of_type('BookingAttributes!') }
-  it { is_expected.to have_a_field(:booking).returning('Booking!') }
 
   graphql_operation "
     mutation updateBooking($id: ID!, $attributes: BookingAttributes!) {

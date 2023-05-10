@@ -35,7 +35,7 @@ gem 'devise'
 gem 'cancancan'
 
 # GraphQL
-gem 'graphql', '~> 1.12.16'
+gem 'graphql'
 # for multipart file upload in GraphQL
 gem 'apollo_upload_server'
 
@@ -56,7 +56,6 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'faker'
 
-  gem 'rspec-graphql_matchers'
   gem 'rspec-graphql_response'
   gem 'rspec-rails'
 

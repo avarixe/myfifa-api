@@ -3,15 +3,6 @@
 require 'rails_helper'
 
 describe Mutations::UserMutations::AddUser, type: :graphql do
-  subject(:mutation) { described_class }
-
-  it 'accepts argument `attributes` of type `UserRegistrationAttributes!`' do
-    expect(mutation)
-      .to accept_argument(:attributes).of_type('UserRegistrationAttributes!')
-  end
-
-  it { is_expected.to have_a_field(:user).returning('User!') }
-
   graphql_operation <<-GQL
     mutation registerUser($attributes: UserRegistrationAttributes!) {
       registerUser(attributes: $attributes) {

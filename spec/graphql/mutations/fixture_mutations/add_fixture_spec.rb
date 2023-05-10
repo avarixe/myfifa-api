@@ -3,13 +3,7 @@
 require 'rails_helper'
 
 describe Mutations::FixtureMutations::AddFixture, type: :graphql do
-  subject { described_class }
-
   let(:stage) { create(:stage) }
-
-  it { is_expected.to accept_argument(:stage_id).of_type('ID!') }
-  it { is_expected.to accept_argument(:attributes).of_type('FixtureAttributes!') }
-  it { is_expected.to have_a_field(:fixture).returning('Fixture!') }
 
   graphql_operation "
     mutation addFixture($stageId: ID!, $attributes: FixtureAttributes!) {

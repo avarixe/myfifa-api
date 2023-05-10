@@ -3,12 +3,6 @@
 require 'rails_helper'
 
 describe Mutations::SquadMutations::StoreMatchLineupToSquad do
-  subject { described_class }
-
-  it { is_expected.to accept_argument(:match_id).of_type('ID!') }
-  it { is_expected.to accept_argument(:squad_id).of_type('ID!') }
-  it { is_expected.to have_a_field(:squad).returning('Squad!') }
-
   describe 'execution', type: :graphql do
     let(:user) { create(:user) }
     let(:team) { create(:team, user:) }

@@ -3,12 +3,7 @@
 require 'rails_helper'
 
 describe Mutations::CapMutations::RemoveCap, type: :graphql do
-  subject { described_class }
-
   let(:cap) { create(:cap) }
-
-  it { is_expected.to accept_argument(:id).of_type('ID!') }
-  it { is_expected.to have_a_field(:cap).returning('Cap!') }
 
   graphql_operation "
     mutation removeCap($id: ID!) {

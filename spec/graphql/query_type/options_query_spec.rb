@@ -3,12 +3,7 @@
 require 'rails_helper'
 
 describe QueryType, type: :graphql do
-  subject(:field) { described_class.fields['options'] }
-
   let(:user) { create(:user) }
-
-  it { is_expected.to accept_argument(:category).of_type('OptionCategory!') }
-  it { is_expected.to accept_argument(:search).of_type('String') }
 
   describe 'when executed for Team' do
     graphql_operation <<-GQL

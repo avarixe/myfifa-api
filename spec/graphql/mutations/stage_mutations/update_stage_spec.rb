@@ -3,13 +3,7 @@
 require 'rails_helper'
 
 describe Mutations::StageMutations::UpdateStage, type: :graphql do
-  subject { described_class }
-
   let(:stage) { create(:stage) }
-
-  it { is_expected.to accept_argument(:id).of_type('ID!') }
-  it { is_expected.to accept_argument(:attributes).of_type('StageAttributes!') }
-  it { is_expected.to have_a_field(:stage).returning('Stage!') }
 
   graphql_operation "
     mutation updateStage($id: ID!, $attributes: StageAttributes!) {

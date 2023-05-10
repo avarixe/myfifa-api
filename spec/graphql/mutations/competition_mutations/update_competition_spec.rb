@@ -3,13 +3,7 @@
 require 'rails_helper'
 
 describe Mutations::CompetitionMutations::UpdateCompetition, type: :graphql do
-  subject { described_class }
-
   let(:competition) { create(:competition) }
-
-  it { is_expected.to accept_argument(:id).of_type('ID!') }
-  it { is_expected.to accept_argument(:attributes).of_type('CompetitionAttributes!') }
-  it { is_expected.to have_a_field(:competition).returning('Competition!') }
 
   graphql_operation "
     mutation updateCompetition($id: ID!, $attributes: CompetitionAttributes!) {

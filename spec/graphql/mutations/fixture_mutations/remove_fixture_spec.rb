@@ -3,12 +3,7 @@
 require 'rails_helper'
 
 describe Mutations::FixtureMutations::RemoveFixture, type: :graphql do
-  subject { described_class }
-
   let(:fixture) { create(:fixture) }
-
-  it { is_expected.to accept_argument(:id).of_type('ID!') }
-  it { is_expected.to have_a_field(:fixture).returning('Fixture!') }
 
   graphql_operation "
     mutation removeFixture($id: ID!) {

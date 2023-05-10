@@ -3,12 +3,7 @@
 require 'rails_helper'
 
 describe Mutations::TableRowMutations::RemoveTableRow, type: :graphql do
-  subject { described_class }
-
   let(:table_row) { create(:table_row) }
-
-  it { is_expected.to accept_argument(:id).of_type('ID!') }
-  it { is_expected.to have_a_field(:table_row).returning('TableRow!') }
 
   graphql_operation "
     mutation removeTableRow($id: ID!) {

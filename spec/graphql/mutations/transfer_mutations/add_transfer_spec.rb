@@ -3,13 +3,7 @@
 require 'rails_helper'
 
 describe Mutations::TransferMutations::AddTransfer, type: :graphql do
-  subject { described_class }
-
   let(:player) { create(:player) }
-
-  it { is_expected.to accept_argument(:player_id).of_type('ID!') }
-  it { is_expected.to accept_argument(:attributes).of_type('TransferAttributes!') }
-  it { is_expected.to have_a_field(:transfer).returning('Transfer!') }
 
   graphql_operation "
     mutation addTransfer($playerId: ID!, $attributes: TransferAttributes!) {

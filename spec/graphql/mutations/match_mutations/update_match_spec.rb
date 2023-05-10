@@ -3,13 +3,7 @@
 require 'rails_helper'
 
 describe Mutations::MatchMutations::UpdateMatch, type: :graphql do
-  subject { described_class }
-
   let(:match) { create(:match) }
-
-  it { is_expected.to accept_argument(:id).of_type('ID!') }
-  it { is_expected.to accept_argument(:attributes).of_type('MatchAttributes!') }
-  it { is_expected.to have_a_field(:match).returning('Match!') }
 
   graphql_operation "
     mutation updateMatch($id: ID!, $attributes: MatchAttributes!) {

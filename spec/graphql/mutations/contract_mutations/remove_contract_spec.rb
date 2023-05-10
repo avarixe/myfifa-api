@@ -3,12 +3,7 @@
 require 'rails_helper'
 
 describe Mutations::ContractMutations::RemoveContract, type: :graphql do
-  subject { described_class }
-
   let(:contract) { create(:contract) }
-
-  it { is_expected.to accept_argument(:id).of_type('ID!') }
-  it { is_expected.to have_a_field(:contract).returning('Contract!') }
 
   graphql_operation "
     mutation removeContract($id: ID!) {

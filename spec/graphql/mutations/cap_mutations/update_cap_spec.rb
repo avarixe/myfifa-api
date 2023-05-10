@@ -3,13 +3,7 @@
 require 'rails_helper'
 
 describe Mutations::CapMutations::UpdateCap, type: :graphql do
-  subject { described_class }
-
   let(:cap) { create(:cap) }
-
-  it { is_expected.to accept_argument(:id).of_type('ID!') }
-  it { is_expected.to accept_argument(:attributes).of_type('CapAttributes!') }
-  it { is_expected.to have_a_field(:cap).returning('Cap!') }
 
   graphql_operation "
     mutation updateCap($id: ID!, $attributes: CapAttributes!) {

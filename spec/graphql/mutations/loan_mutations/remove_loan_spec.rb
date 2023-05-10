@@ -3,12 +3,7 @@
 require 'rails_helper'
 
 describe Mutations::LoanMutations::RemoveLoan, type: :graphql do
-  subject { described_class }
-
   let(:loan) { create(:loan) }
-
-  it { is_expected.to accept_argument(:id).of_type('ID!') }
-  it { is_expected.to have_a_field(:loan).returning('Loan!') }
 
   graphql_operation "
     mutation removeLoan($id: ID!) {
