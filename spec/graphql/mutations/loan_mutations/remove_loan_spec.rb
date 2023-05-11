@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::LoanMutations::RemoveLoan, type: :graphql do
   let(:loan) { create(:loan) }
+  let!(:user) { loan.team.user }
 
   graphql_operation "
     mutation removeLoan($id: ID!) {
@@ -18,7 +19,7 @@ describe Mutations::LoanMutations::RemoveLoan, type: :graphql do
   end
 
   graphql_context do
-    { current_user: loan.team.user }
+    { current_user: user }
   end
 
   it 'removes the Loan' do

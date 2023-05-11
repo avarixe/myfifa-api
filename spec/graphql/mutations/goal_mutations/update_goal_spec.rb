@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::GoalMutations::UpdateGoal, type: :graphql do
   let(:goal) { create(:goal) }
+  let!(:user) { goal.team.user }
 
   graphql_operation "
     mutation updateGoal($id: ID!, $attributes: GoalAttributes!) {
@@ -21,7 +22,7 @@ describe Mutations::GoalMutations::UpdateGoal, type: :graphql do
   end
 
   graphql_context do
-    { current_user: goal.team.user }
+    { current_user: user }
   end
 
   it 'updates the Goal' do

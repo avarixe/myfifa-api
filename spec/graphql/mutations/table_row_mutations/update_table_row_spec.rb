@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::TableRowMutations::UpdateTableRow, type: :graphql do
   let(:table_row) { create(:table_row) }
+  let!(:user) { table_row.team.user }
 
   graphql_operation "
     mutation updateTableRow($id: ID!, $attributes: TableRowAttributes!) {
@@ -21,7 +22,7 @@ describe Mutations::TableRowMutations::UpdateTableRow, type: :graphql do
   end
 
   graphql_context do
-    { current_user: table_row.team.user }
+    { current_user: user }
   end
 
   it 'updates the TableRow' do

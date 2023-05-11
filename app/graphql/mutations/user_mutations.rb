@@ -21,12 +21,15 @@ module Mutations
 
       def resolve(id:, attributes:)
         user = User.find(id)
-        current_ability.authorize! :update, user
 
-        if user.update_without_password(attributes.to_h)
-          { user: }
+        if policy.new(current_user, user).update?
+          if user.update_without_password(attributes.to_h)
+            { user: }
+          else
+            GraphQL::ExecutionError.new(user.errors.full_messages.first)
+          end
         else
-          GraphQL::ExecutionError.new(user.errors.full_messages.first)
+          GraphQL::ExecutionError.new('You are not allowed to perform this action')
         end
       end
     end

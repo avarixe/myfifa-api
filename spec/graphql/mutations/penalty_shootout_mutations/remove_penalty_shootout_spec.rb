@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::PenaltyShootoutMutations::RemovePenaltyShootout, type: :graphql do
   let(:penalty_shootout) { create(:penalty_shootout) }
+  let!(:user) { penalty_shootout.team.user }
 
   graphql_operation "
     mutation removePenaltyShootout($id: ID!) {
@@ -18,7 +19,7 @@ describe Mutations::PenaltyShootoutMutations::RemovePenaltyShootout, type: :grap
   end
 
   graphql_context do
-    { current_user: penalty_shootout.team.user }
+    { current_user: user }
   end
 
   it 'removes the PenaltyShootout' do

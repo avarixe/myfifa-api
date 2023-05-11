@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::SubstitutionMutations::UpdateSubstitution, type: :graphql do
   let(:substitution) { create(:substitution) }
+  let!(:user) { substitution.team.user }
 
   graphql_operation "
     mutation updateSubstitution($id: ID!, $attributes: SubstitutionAttributes!) {
@@ -24,7 +25,7 @@ describe Mutations::SubstitutionMutations::UpdateSubstitution, type: :graphql do
   end
 
   graphql_context do
-    { current_user: substitution.team.user }
+    { current_user: user }
   end
 
   it 'updates the Substitution' do

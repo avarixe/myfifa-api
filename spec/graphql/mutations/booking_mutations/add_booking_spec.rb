@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::BookingMutations::AddBooking, type: :graphql do
   let(:match) { create(:match) }
+  let!(:user) { match.team.user }
 
   graphql_operation "
     mutation addBooking($matchId: ID!, $attributes: BookingAttributes!) {
@@ -23,7 +24,7 @@ describe Mutations::BookingMutations::AddBooking, type: :graphql do
   end
 
   graphql_context do
-    { current_user: match.team.user }
+    { current_user: user }
   end
 
   it 'creates a Booking for the Match' do

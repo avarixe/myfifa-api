@@ -24,10 +24,13 @@ module Mutations
             'Player who was released', null: false
 
       def resolve(id:)
-        current_ability = Ability.new(context[:current_user])
-        player = Player.accessible_by(current_ability).find(id)
-        player.current_contract&.terminate!
-        { player: }
+        player = Player.find(id)
+        if PlayerPolicy.new(context[:current_user], player).manage?
+          player.current_contract&.terminate!
+          { player: }
+        else
+          GraphQL::ExecutionError.new('You are not allowed to perform this action')
+        end
       end
     end
 
@@ -41,10 +44,13 @@ module Mutations
             'Player that was marked as Retiring', null: false
 
       def resolve(id:)
-        current_ability = Ability.new(context[:current_user])
-        player = Player.accessible_by(current_ability).find(id)
-        player.current_contract&.retire!
-        { player: }
+        player = Player.find(id)
+        if PlayerPolicy.new(context[:current_user], player).manage?
+          player.current_contract&.retire!
+          { player: }
+        else
+          GraphQL::ExecutionError.new('You are not allowed to perform this action')
+        end
       end
     end
   end

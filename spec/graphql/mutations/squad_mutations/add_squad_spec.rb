@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::SquadMutations::AddSquad, type: :graphql do
   let(:team) { create(:team) }
+  let!(:user) { team.user }
 
   graphql_operation "
     mutation addSquad($teamId: ID!, $attributes: SquadAttributes!) {
@@ -29,7 +30,7 @@ describe Mutations::SquadMutations::AddSquad, type: :graphql do
   end
 
   graphql_context do
-    { current_user: team.team.user }
+    { current_user: user }
   end
 
   it 'creates a Squad for the Team' do

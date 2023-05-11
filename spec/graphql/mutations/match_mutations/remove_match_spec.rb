@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::MatchMutations::RemoveMatch, type: :graphql do
   let(:match) { create(:match) }
+  let!(:user) { match.team.user }
 
   graphql_operation "
     mutation removeMatch($id: ID!) {
@@ -18,7 +19,7 @@ describe Mutations::MatchMutations::RemoveMatch, type: :graphql do
   end
 
   graphql_context do
-    { current_user: match.team.user }
+    { current_user: user }
   end
 
   it 'removes the Match' do

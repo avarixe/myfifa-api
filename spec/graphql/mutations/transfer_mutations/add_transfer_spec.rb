@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::TransferMutations::AddTransfer, type: :graphql do
   let(:player) { create(:player) }
+  let!(:user) { player.team.user }
 
   graphql_operation "
     mutation addTransfer($playerId: ID!, $attributes: TransferAttributes!) {
@@ -23,7 +24,7 @@ describe Mutations::TransferMutations::AddTransfer, type: :graphql do
   end
 
   graphql_context do
-    { current_user: player.team.user }
+    { current_user: user }
   end
 
   it 'creates a Transfer for the Player' do

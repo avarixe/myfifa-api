@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::TableRowMutations::RemoveTableRow, type: :graphql do
   let(:table_row) { create(:table_row) }
+  let!(:user) { table_row.team.user }
 
   graphql_operation "
     mutation removeTableRow($id: ID!) {
@@ -18,7 +19,7 @@ describe Mutations::TableRowMutations::RemoveTableRow, type: :graphql do
   end
 
   graphql_context do
-    { current_user: table_row.team.user }
+    { current_user: user }
   end
 
   it 'removes the TableRow' do

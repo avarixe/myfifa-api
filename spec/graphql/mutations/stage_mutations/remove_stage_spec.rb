@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::StageMutations::RemoveStage, type: :graphql do
   let(:stage) { create(:stage) }
+  let!(:user) { stage.team.user }
 
   graphql_operation "
     mutation removeStage($id: ID!) {
@@ -18,7 +19,7 @@ describe Mutations::StageMutations::RemoveStage, type: :graphql do
   end
 
   graphql_context do
-    { current_user: stage.team.user }
+    { current_user: user }
   end
 
   it 'removes the Stage' do

@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::PlayerMutations::AddPlayer, type: :graphql do
   let(:team) { create(:team) }
+  let!(:user) { team.user }
 
   graphql_operation "
     mutation addPlayer($teamId: ID!, $attributes: PlayerAttributes!) {
@@ -14,7 +15,7 @@ describe Mutations::PlayerMutations::AddPlayer, type: :graphql do
   "
 
   graphql_context do
-    { current_user: team.team.user }
+    { current_user: user }
   end
 
   describe 'with valid attributes' do
@@ -36,6 +37,13 @@ describe Mutations::PlayerMutations::AddPlayer, type: :graphql do
     it 'returns the created Player' do
       expect(response_data.dig('addPlayer', 'player', 'id'))
         .to be_present
+    end
+
+    it 'does not create a Player if Team is not owned by User' do
+      allow(team).to receive(:user).and_return(create(:user))
+      allow(Team).to receive(:find).and_return(team)
+      execute_graphql
+      expect(response['errors']).to be_present
     end
   end
 

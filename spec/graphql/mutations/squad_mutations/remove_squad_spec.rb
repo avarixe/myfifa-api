@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::SquadMutations::RemoveSquad, type: :graphql do
   let(:squad) { create(:squad) }
+  let!(:user) { squad.team.user }
 
   graphql_operation "
     mutation removeSquad($id: ID!) {
@@ -18,7 +19,7 @@ describe Mutations::SquadMutations::RemoveSquad, type: :graphql do
   end
 
   graphql_context do
-    { current_user: squad.team.user }
+    { current_user: user }
   end
 
   it 'removes the Squad' do

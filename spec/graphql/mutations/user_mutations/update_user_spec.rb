@@ -68,18 +68,13 @@ describe Mutations::UserMutations::UpdateUser, type: :graphql do
     end
 
     it 'raises authorization error' do
-      expect do
-        execute_graphql
-      end.to raise_error CanCan::AccessDenied
+      expect(response['errors']).to be_present
     end
 
     it 'does not update the User' do
       old_username = other_user.username
-      begin
-        execute_graphql
-      rescue CanCan::AccessDenied
-        expect(other_user.reload.username).to be == old_username
-      end
+      execute_graphql
+      expect(other_user.reload.username).to be == old_username
     end
   end
 end

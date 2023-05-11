@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::FixtureMutations::RemoveFixture, type: :graphql do
   let(:fixture) { create(:fixture) }
+  let!(:user) { fixture.team.user }
 
   graphql_operation "
     mutation removeFixture($id: ID!) {
@@ -18,7 +19,7 @@ describe Mutations::FixtureMutations::RemoveFixture, type: :graphql do
   end
 
   graphql_context do
-    { current_user: fixture.team.user }
+    { current_user: user }
   end
 
   it 'removes the Fixture' do

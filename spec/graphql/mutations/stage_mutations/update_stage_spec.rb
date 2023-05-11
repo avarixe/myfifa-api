@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::StageMutations::UpdateStage, type: :graphql do
   let(:stage) { create(:stage) }
+  let!(:user) { stage.team.user }
 
   graphql_operation "
     mutation updateStage($id: ID!, $attributes: StageAttributes!) {
@@ -21,7 +22,7 @@ describe Mutations::StageMutations::UpdateStage, type: :graphql do
   end
 
   graphql_context do
-    { current_user: stage.team.user }
+    { current_user: user }
   end
 
   it 'updates the Stage' do

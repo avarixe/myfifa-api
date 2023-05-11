@@ -25,9 +25,8 @@ module Mutations
             'Match that was updated based on Squad', null: false
 
       def resolve(match_id:, squad_id:)
-        current_ability = Ability.new(context[:current_user])
-        match = Match.accessible_by(current_ability).find(match_id)
-        squad = Squad.accessible_by(current_ability).find(squad_id)
+        match = MatchPolicy::Scope.new(context[:current_user], Match).resolve.find(match_id)
+        squad = SquadPolicy::Scope.new(context[:current_user], Squad).resolve.find(squad_id)
         match.apply squad
         { match: }
       end

@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::CapMutations::RemoveCap, type: :graphql do
   let(:cap) { create(:cap) }
+  let!(:user) { cap.team.user }
 
   graphql_operation "
     mutation removeCap($id: ID!) {
@@ -18,7 +19,7 @@ describe Mutations::CapMutations::RemoveCap, type: :graphql do
   end
 
   graphql_context do
-    { current_user: cap.team.user }
+    { current_user: user }
   end
 
   it 'removes the Cap' do

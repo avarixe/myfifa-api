@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 describe Mutations::TeamMutations::UploadBadge, type: :request do
-  let(:user) { create(:user) }
-  let(:team) { create(:team, user:) }
+  let(:team) { create(:team) }
+  let!(:user) { team.user }
   let(:test_badge) do
     test_badge_path = Rails.root.join('spec/support/test-badge.png')
     Rack::Test::UploadedFile.new test_badge_path, 'image/png'

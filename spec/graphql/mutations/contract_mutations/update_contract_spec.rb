@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::ContractMutations::UpdateContract, type: :graphql do
   let(:contract) { create(:contract) }
+  let!(:user) { contract.team.user }
 
   graphql_operation "
     mutation updateContract($id: ID!, $attributes: ContractAttributes!) {
@@ -23,7 +24,7 @@ describe Mutations::ContractMutations::UpdateContract, type: :graphql do
   end
 
   graphql_context do
-    { current_user: contract.team.user }
+    { current_user: user }
   end
 
   it 'updates the Contract' do

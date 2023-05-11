@@ -8,7 +8,8 @@ module Mutations
                     :entity_klass_name,
                     :entity_type,
                     :entity_attributes,
-                    :model_klass
+                    :model_klass,
+                    :policy
 
     def self.set_entity
       self.entity_klass_name ||= to_s.demodulize.gsub('Add', '')
@@ -16,6 +17,7 @@ module Mutations
       self.entity_type ||= Types.const_get("#{entity_klass_name}Type")
       self.entity_attributes ||= InputObjects.const_get("#{entity_klass_name}Attributes")
       self.model_klass ||= entity_klass_name.constantize
+      self.policy ||= "#{entity_klass_name}Policy".constantize
 
       description "Create new #{entity_klass_name} in database " \
                   'with the provided attributes'
@@ -41,22 +43,20 @@ module Mutations
       @current_user ||= context[:current_user]
     end
 
-    def current_ability
-      @current_ability ||= Ability.new(current_user)
-    end
-
     def resolve(**args)
       parent_id = args[self.class.parent_id]
       parent_record = self.class.parent_model_klass.find(parent_id)
       record = parent_record
                .public_send(self.class.record_field_name.to_s.pluralize)
                .new
-      current_ability.authorize! :create, record
 
-      record.attributes = args[:attributes].to_h
-      record.save!
-
-      { self.class.record_field_name => record }
+      if policy.new(current_user, record).create?
+        record.attributes = args[:attributes].to_h
+        record.save!
+        { self.class.record_field_name => record }
+      else
+        GraphQL::ExecutionError.new('You are not allow to perform this action')
+      end
     rescue ActiveRecord::RecordInvalid => e
       GraphQL::ExecutionError.new(e.record.errors.full_messages.first)
     end

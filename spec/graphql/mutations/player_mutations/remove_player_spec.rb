@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::PlayerMutations::RemovePlayer, type: :graphql do
   let(:player) { create(:player) }
+  let!(:user) { player.team.user }
 
   graphql_operation "
     mutation removePlayer($id: ID!) {
@@ -18,7 +19,7 @@ describe Mutations::PlayerMutations::RemovePlayer, type: :graphql do
   end
 
   graphql_context do
-    { current_user: player.team.user }
+    { current_user: user }
   end
 
   it 'removes the Player' do

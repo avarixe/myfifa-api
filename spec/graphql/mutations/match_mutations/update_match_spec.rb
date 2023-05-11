@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::MatchMutations::UpdateMatch, type: :graphql do
   let(:match) { create(:match) }
+  let!(:user) { match.team.user }
 
   graphql_operation "
     mutation updateMatch($id: ID!, $attributes: MatchAttributes!) {
@@ -21,7 +22,7 @@ describe Mutations::MatchMutations::UpdateMatch, type: :graphql do
   end
 
   graphql_context do
-    { current_user: match.team.user }
+    { current_user: user }
   end
 
   it 'updates the Match' do

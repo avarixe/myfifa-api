@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::TransferMutations::RemoveTransfer, type: :graphql do
   let(:transfer) { create(:transfer) }
+  let!(:user) { transfer.team.user }
 
   graphql_operation "
     mutation removeTransfer($id: ID!) {
@@ -18,7 +19,7 @@ describe Mutations::TransferMutations::RemoveTransfer, type: :graphql do
   end
 
   graphql_context do
-    { current_user: transfer.team.user }
+    { current_user: user }
   end
 
   it 'removes the Transfer' do

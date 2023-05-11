@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::StageMutations::AddStage, type: :graphql do
   let(:competition) { create(:competition) }
+  let!(:user) { competition.team.user }
 
   graphql_operation "
     mutation addStage($competitionId: ID!, $attributes: StageAttributes!) {
@@ -21,7 +22,7 @@ describe Mutations::StageMutations::AddStage, type: :graphql do
   end
 
   graphql_context do
-    { current_user: competition.team.user }
+    { current_user: user }
   end
 
   it 'creates a Stage for the Competition' do

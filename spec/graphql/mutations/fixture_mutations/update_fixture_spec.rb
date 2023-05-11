@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::FixtureMutations::UpdateFixture, type: :graphql do
   let(:fixture) { create(:fixture) }
+  let!(:user) { fixture.team.user }
 
   graphql_operation "
     mutation updateFixture($id: ID!, $attributes: FixtureAttributes!) {
@@ -23,7 +24,7 @@ describe Mutations::FixtureMutations::UpdateFixture, type: :graphql do
   end
 
   graphql_context do
-    { current_user: fixture.team.user }
+    { current_user: user }
   end
 
   it 'updates the Fixture' do

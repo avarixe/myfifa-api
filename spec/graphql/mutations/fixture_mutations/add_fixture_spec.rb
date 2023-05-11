@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::FixtureMutations::AddFixture, type: :graphql do
   let(:stage) { create(:stage) }
+  let!(:user) { stage.team.user }
 
   graphql_operation "
     mutation addFixture($stageId: ID!, $attributes: FixtureAttributes!) {
@@ -23,7 +24,7 @@ describe Mutations::FixtureMutations::AddFixture, type: :graphql do
   end
 
   graphql_context do
-    { current_user: stage.team.user }
+    { current_user: user }
   end
 
   it 'creates a Fixture for the Stage' do

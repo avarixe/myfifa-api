@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::ContractMutations::RemoveContract, type: :graphql do
   let(:contract) { create(:contract) }
+  let!(:user) { contract.team.user }
 
   graphql_operation "
     mutation removeContract($id: ID!) {
@@ -18,7 +19,7 @@ describe Mutations::ContractMutations::RemoveContract, type: :graphql do
   end
 
   graphql_context do
-    { current_user: contract.team.user }
+    { current_user: user }
   end
 
   it 'removes the Contract' do

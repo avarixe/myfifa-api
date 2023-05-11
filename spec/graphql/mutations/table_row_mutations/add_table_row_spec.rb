@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::TableRowMutations::AddTableRow, type: :graphql do
   let(:stage) { create(:stage) }
+  let!(:user) { stage.team.user }
 
   graphql_operation "
     mutation addTableRow($stageId: ID!, $attributes: TableRowAttributes!) {
@@ -21,7 +22,7 @@ describe Mutations::TableRowMutations::AddTableRow, type: :graphql do
   end
 
   graphql_context do
-    { current_user: stage.team.user }
+    { current_user: user }
   end
 
   it 'creates a TableRow for the Stage' do

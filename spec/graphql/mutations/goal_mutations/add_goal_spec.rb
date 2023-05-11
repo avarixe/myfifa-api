@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::GoalMutations::AddGoal, type: :graphql do
   let(:match) { create(:match) }
+  let!(:user) { match.team.user }
 
   graphql_operation "
     mutation addGoal($matchId: ID!, $attributes: GoalAttributes!) {
@@ -21,7 +22,7 @@ describe Mutations::GoalMutations::AddGoal, type: :graphql do
   end
 
   graphql_context do
-    { current_user: match.team.user }
+    { current_user: user }
   end
 
   it 'creates a Goal for the Match' do

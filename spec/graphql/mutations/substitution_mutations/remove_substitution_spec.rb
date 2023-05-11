@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::SubstitutionMutations::RemoveSubstitution, type: :graphql do
   let(:substitution) { create(:substitution) }
+  let!(:user) { substitution.team.user }
 
   graphql_operation "
     mutation removeSubstitution($id: ID!) {
@@ -18,7 +19,7 @@ describe Mutations::SubstitutionMutations::RemoveSubstitution, type: :graphql do
   end
 
   graphql_context do
-    { current_user: substitution.team.user }
+    { current_user: user }
   end
 
   it 'removes the Substitution' do

@@ -3,11 +3,8 @@
 require 'rails_helper'
 
 describe Mutations::PlayerMutations::RetirePlayer, type: :graphql do
-  let(:user) { create(:user) }
-  let(:player) do
-    team = create(:team, user:)
-    create(:player, team:)
-  end
+  let(:player) { create(:player) }
+  let!(:user) { player.team.user }
 
   graphql_operation <<-GQL
     mutation retirePlayer($id: ID!) {
@@ -36,7 +33,9 @@ describe Mutations::PlayerMutations::RetirePlayer, type: :graphql do
   end
 
   it 'does not release a Player not owned by user' do
-    player = create(:player)
+    allow(Player).to receive(:find).and_return(player)
+    allow(player).to receive(:team).and_return(player.team)
+    allow(player.team).to receive(:user).and_return(create(:user))
     execute_graphql
     expect(player.last_contract.conclusion).not_to be == 'Retired'
   end

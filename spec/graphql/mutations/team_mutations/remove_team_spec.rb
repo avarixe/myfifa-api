@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::TeamMutations::RemoveTeam, type: :graphql do
   let(:team) { create(:team) }
+  let!(:user) { team.user }
 
   graphql_operation "
     mutation removeTeam($id: ID!) {
@@ -18,7 +19,7 @@ describe Mutations::TeamMutations::RemoveTeam, type: :graphql do
   end
 
   graphql_context do
-    { current_user: team.user }
+    { current_user: user }
   end
 
   it 'removes the Team' do
@@ -32,13 +33,14 @@ describe Mutations::TeamMutations::RemoveTeam, type: :graphql do
   end
 
   it 'returns error messages when failed' do
-    team_stub = build_stubbed(:team)
     allow(team).to receive(:destroy).and_return(false)
     allow(Team).to receive(:find).and_return(team)
-    execute_graphql(
-      variables: { id: team_stub.id },
-      context: { current_user: team_stub.user }
-    )
+    expect(response['errors']).to be_present
+  end
+
+  it 'returns error message when Team not owned by User' do
+    allow(team).to receive(:user).and_return(create(:user))
+    allow(Team).to receive(:find).and_return(team)
     expect(response['errors']).to be_present
   end
 end

@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::CapMutations::UpdateCap, type: :graphql do
   let(:cap) { create(:cap) }
+  let!(:user) { cap.team.user }
 
   graphql_operation "
     mutation updateCap($id: ID!, $attributes: CapAttributes!) {
@@ -24,7 +25,7 @@ describe Mutations::CapMutations::UpdateCap, type: :graphql do
   end
 
   graphql_context do
-    { current_user: cap.team.user }
+    { current_user: user }
   end
 
   it 'updates the Cap' do

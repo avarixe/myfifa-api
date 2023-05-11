@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::BookingMutations::RemoveBooking, type: :graphql do
   let(:booking) { create(:booking) }
+  let!(:user) { booking.team.user }
 
   graphql_operation "
     mutation removeBooking($id: ID!) {
@@ -18,7 +19,7 @@ describe Mutations::BookingMutations::RemoveBooking, type: :graphql do
   end
 
   graphql_context do
-    { current_user: booking.team.user }
+    { current_user: user }
   end
 
   it 'removes the Booking' do

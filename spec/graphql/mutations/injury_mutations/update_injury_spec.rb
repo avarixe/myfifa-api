@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::InjuryMutations::UpdateInjury, type: :graphql do
   let(:injury) { create(:injury) }
+  let!(:user) { injury.team.user }
 
   graphql_operation "
     mutation updateInjury($id: ID!, $attributes: InjuryAttributes!) {
@@ -24,7 +25,7 @@ describe Mutations::InjuryMutations::UpdateInjury, type: :graphql do
   end
 
   graphql_context do
-    { current_user: injury.team.user }
+    { current_user: user }
   end
 
   it 'updates the Injury' do

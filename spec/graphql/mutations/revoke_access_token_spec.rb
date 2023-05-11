@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::RevokeAccessToken, type: :graphql do
   let(:token) { create(:access_token) }
+  let!(:user) { token.user }
 
   graphql_operation <<-GQL
     mutation revokeAccessToken($token: String!) {
@@ -19,7 +20,7 @@ describe Mutations::RevokeAccessToken, type: :graphql do
     end
 
     graphql_context do
-      { current_user: token.user }
+      { current_user: user }
     end
 
     it 'revokes the Access Token' do

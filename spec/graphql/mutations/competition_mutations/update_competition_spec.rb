@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe Mutations::CompetitionMutations::UpdateCompetition, type: :graphql do
   let(:competition) { create(:competition) }
+  let!(:user) { competition.team.user }
 
   graphql_operation "
     mutation updateCompetition($id: ID!, $attributes: CompetitionAttributes!) {
@@ -21,7 +22,7 @@ describe Mutations::CompetitionMutations::UpdateCompetition, type: :graphql do
   end
 
   graphql_context do
-    { current_user: competition.team.user }
+    { current_user: user }
   end
 
   it 'updates the Competition' do

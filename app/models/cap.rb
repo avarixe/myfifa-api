@@ -111,5 +111,5 @@ class Cap < ApplicationRecord
 
   def sub_ins = Substitution.where(match_id:, replacement_id: player_id)
 
-  delegate :team, to: :player
+  delegate :team, to: :match
 end
