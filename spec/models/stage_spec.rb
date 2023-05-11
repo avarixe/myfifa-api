@@ -20,8 +20,8 @@
 
 require 'rails_helper'
 
-describe Stage, type: :model do
-  let(:stage) { create :stage }
+describe Stage do
+  let(:stage) { create(:stage) }
 
   it 'has a valid factory' do
     expect(stage).to be_valid
@@ -49,11 +49,11 @@ describe Stage, type: :model do
 
   it 'sets default name depending on number of teams' do
     num_teams = Faker::Number.between(from: 9, to: 20)
-    expect(build(:stage, num_teams: num_teams).name).to be == "Round of #{num_teams}"
+    expect(build(:stage, num_teams:).name).to be == "Round of #{num_teams}"
   end
 
   describe 'if table' do
-    let(:stage) { create :stage, table: true }
+    let(:stage) { create(:stage, table: true) }
 
     it 'creates table rows' do
       expect(stage.table_rows.size).to be == stage.num_teams

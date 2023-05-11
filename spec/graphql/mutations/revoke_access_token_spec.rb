@@ -3,19 +3,13 @@
 require 'rails_helper'
 
 describe Mutations::RevokeAccessToken, type: :graphql do
-  subject { described_class }
-
-  let(:token) { create :access_token }
-
-  it { is_expected.to accept_argument(:token).of_type('String!') }
-  it { is_expected.to have_a_field(:confirmation).returning('String') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  let(:token) { create(:access_token) }
+  let!(:user) { token.user }
 
   graphql_operation <<-GQL
     mutation revokeAccessToken($token: String!) {
       revokeAccessToken(token: $token) {
         confirmation
-        errors { fullMessages }
       }
     }
   GQL
@@ -26,7 +20,7 @@ describe Mutations::RevokeAccessToken, type: :graphql do
     end
 
     graphql_context do
-      { current_user: token.user, pundit: PunditProvider.new(user: token.user) }
+      { current_user: user }
     end
 
     it 'revokes the Access Token' do

@@ -3,26 +3,26 @@
 class ApplicationPolicy
   attr_reader :user, :record
 
-  # def initialize(user, record)
-  #   @user = user
-  #   @record = record
-  # end
+  def initialize(user, record)
+    @user = user
+    @record = record
+  end
 
-  # def show?
-  #   false
-  # end
+  def manage?
+    record.team.user == user
+  end
 
-  # def create?
-  #   false
-  # end
+  def create?
+    manage?
+  end
 
-  # def update?
-  #   false
-  # end
+  def update?
+    manage?
+  end
 
-  # def destroy?
-  #   false
-  # end
+  def destroy?
+    manage?
+  end
 
   class Scope
     def initialize(user, scope)

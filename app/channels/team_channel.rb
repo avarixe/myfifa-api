@@ -5,5 +5,7 @@ class TeamChannel < ApplicationCable::Channel
     reject unless current_user
     team = current_user.teams.find(params[:id])
     stream_for team
+  rescue ActiveRecord::RecordNotFound
+    reject
   end
 end

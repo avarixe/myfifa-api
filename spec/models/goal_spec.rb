@@ -26,7 +26,7 @@
 
 require 'rails_helper'
 
-describe Goal, type: :model do
+describe Goal do
   let(:goal) { create(:goal) }
 
   it 'has a valid factory' do
@@ -42,63 +42,63 @@ describe Goal, type: :model do
   end
 
   it 'increments home score if home' do
-    goal = create :home_goal
+    goal = create(:home_goal)
     expect(goal.match.score).to be == '1 - 0'
   end
 
   it 'increments away score if away' do
-    goal = create :away_goal
+    goal = create(:away_goal)
     expect(goal.match.score).to be == '0 - 1'
   end
 
   it 'increments away score if home own goal' do
-    goal = create :own_home_goal
+    goal = create(:own_home_goal)
     expect(goal.match.score).to be == '0 - 1'
   end
 
   it 'increments home score if away own goal' do
-    goal = create :own_away_goal
+    goal = create(:own_away_goal)
     expect(goal.match.score).to be == '1 - 0'
   end
 
   it 'automatically sets player name if player_id set' do
-    player = create :player
-    player_goal = create :goal, player_id: player.id
+    player = create(:player)
+    player_goal = create(:goal, player_id: player.id)
     expect(player_goal.player_name).to be == player.name
   end
 
   it 'changes player name if player_id changed' do
-    player = create :player
-    player2 = create :player, team: player.team
-    player_goal = create :goal, player_id: player.id
+    player = create(:player)
+    player2 = create(:player, team: player.team)
+    player_goal = create(:goal, player_id: player.id)
     player_goal.update(player_id: player2.id)
     expect(player_goal.player_name).to be == player2.name
   end
 
   it 'automatically sets assisted by if assist_id set' do
-    player = create :player
-    player_assist = create :goal, assist_id: player.id
+    player = create(:player)
+    player_assist = create(:goal, assist_id: player.id)
     expect(player_assist.assisted_by).to be == player.name
   end
 
   it 'changes assisted by if assist_id changed' do
-    player = create :player
-    player2 = create :player, team: player.team
-    player_assist = create :goal, assist_id: player.id
+    player = create(:player)
+    player2 = create(:player, team: player.team)
+    player_assist = create(:goal, assist_id: player.id)
     player_assist.update(assist_id: player2.id)
     expect(player_assist.assisted_by).to be == player2.name
   end
 
   it 'decrements score if goal is destroyed' do
-    match = create :match
-    goal = create :home_goal, match: match
+    match = create(:match)
+    goal = create(:home_goal, match:)
     goal.destroy
     expect(match.reload.score).to be == '0 - 0'
   end
 
   %i[home_goal away_goal own_home_goal own_away_goal].each do |goal_type|
     describe "if #{goal_type}" do
-      let(:goal) { create goal_type }
+      let(:goal) { create(goal_type) }
 
       it 'changes score if home/away is toggled' do
         score = goal.match.score

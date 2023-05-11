@@ -8,7 +8,7 @@ class ApplicationController < ActionController::API
 
     def current_user
       @current_user ||= authenticate_with_http_token do |token|
-        AccessToken.active.find_by(token: token)&.user
+        AccessToken.active.find_by(token:)&.user
       end
     end
 end

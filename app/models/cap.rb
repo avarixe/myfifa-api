@@ -5,6 +5,7 @@
 # Table name: caps
 #
 #  id         :bigint           not null, primary key
+#  ovr        :integer
 #  pos        :string
 #  rating     :integer
 #  start      :integer          default(0)
@@ -67,6 +68,7 @@ class Cap < ApplicationRecord
             inclusion: { in: POSITIONS },
             uniqueness: { scope: %i[match_id start] }
   validates :rating, inclusion: 1..5, allow_nil: true
+  validates :ovr, inclusion: 0..100
   validate :same_team?
   validate :active_player?, if: :player_id
 
@@ -82,7 +84,14 @@ class Cap < ApplicationRecord
     errors.add(:player, 'must be active') unless player.active?
   end
 
+  before_validation :cache_ovr, if: :player_id_changed?
   after_destroy :remove_events
+
+  def cache_ovr
+    self.ovr = PlayerHistory.order(recorded_on: :desc)
+                            .find_by(player_id:, recorded_on: ..match.played_on)
+                            &.ovr
+  end
 
   def remove_events
     goals.destroy_all
@@ -92,25 +101,15 @@ class Cap < ApplicationRecord
     sub_ins.destroy_all
   end
 
-  def goals
-    Goal.where(match_id: match_id, player_id: player_id)
-  end
+  def goals = Goal.where(match_id:, player_id:)
 
-  def assists
-    Goal.where(match_id: match_id, assist_id: player_id)
-  end
+  def assists = Goal.where(match_id:, assist_id: player_id)
 
-  def bookings
-    Booking.where(match_id: match_id, player_id: player_id)
-  end
+  def bookings = Booking.where(match_id:, player_id:)
 
-  def sub_outs
-    Substitution.where(match_id: match_id, player_id: player_id)
-  end
+  def sub_outs = Substitution.where(match_id:, player_id:)
 
-  def sub_ins
-    Substitution.where(match_id: match_id, replacement_id: player_id)
-  end
+  def sub_ins = Substitution.where(match_id:, replacement_id: player_id)
 
-  delegate :team, to: :player
+  delegate :team, to: :match
 end

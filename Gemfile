@@ -7,7 +7,7 @@ git_source(:github) do |repo_name|
   "https://github.com/#{repo_name}.git"
 end
 
-ruby '2.7.2'
+ruby '3.1.1'
 
 gem 'bootsnap'
 
@@ -52,12 +52,11 @@ gem 'date_validator'
 gem 'rack-cors'
 
 group :development, :test do
-  gem 'byebug', platform: :mri
+  gem 'debug', platform: :mri
 
   gem 'factory_bot_rails'
   gem 'faker'
 
-  gem 'rspec-graphql_matchers'
   gem 'rspec-graphql_response'
   gem 'rspec-rails'
 

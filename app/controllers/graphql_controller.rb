@@ -12,17 +12,11 @@ class GraphqlController < ApplicationController
     operation_name = params[:operationName]
     context = {
       # Query context goes here, for example:
-      current_user: current_user,
-      pundit: self
+      current_user:
     }
-    result = MyfifaApiSchema.execute query,
-                                     variables: variables,
-                                     context: context,
-                                     operation_name: operation_name
+    result = MyfifaApiSchema.execute(query, variables:, context:, operation_name:)
     render json: result
   end
-
-  public :policy_scope
 
   private
 

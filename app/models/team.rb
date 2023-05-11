@@ -77,9 +77,7 @@ class Team < ApplicationRecord
     update(currently_on: currently_on + amount)
   end
 
-  def team
-    self
-  end
+  def team = self
 
   def badge_path
     return unless badge.attached?
@@ -87,13 +85,9 @@ class Team < ApplicationRecord
     Rails.application.routes.url_helpers.rails_blob_url badge, only_path: true
   end
 
-  def current_season
-    ((currently_on - started_on) / 365).to_i
-  end
+  def current_season = ((currently_on - started_on) / 365).to_i
 
-  def end_of_current_season
-    end_of_season(current_season)
-  end
+  def end_of_current_season = end_of_season(current_season)
 
   def end_of_season(season)
     started_on + (season + 1).years - 1.day
@@ -103,17 +97,11 @@ class Team < ApplicationRecord
     team.matches.pluck(:home, :away).flatten.uniq.sort
   end
 
-  def last_match
-    matches.last
-  end
+  def last_match = matches.last
 
-  def loaned_players
-    players.where(status: 'Loaned')
-  end
+  def loaned_players = players.where(status: 'Loaned')
 
-  def injured_players
-    players.where(status: 'Injured')
-  end
+  def injured_players = players.where(status: 'Injured')
 
   def expiring_players
     players.joins(:contracts).where(

@@ -5,7 +5,7 @@ module InputObjects
     description 'Attributes to create/update a Loan record'
 
     argument :signed_on, GraphQL::Types::ISO8601Date,
-             'Date this Loan was signed', required: true
+             'Date this Loan was signed', required: false
     argument :started_on, GraphQL::Types::ISO8601Date,
              'Date Player departs to Destination Team', required: true
     argument :ended_on, GraphQL::Types::ISO8601Date,

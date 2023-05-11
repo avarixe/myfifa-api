@@ -27,10 +27,8 @@ class AccessToken < ApplicationRecord
   before_create :set_expires_at
 
   def set_expires_at
-    self.expires_at = Time.current + 2.weeks
+    self.expires_at = 2.weeks.from_now
   end
 
-  def revoked?
-    revoked_at.present?
-  end
+  def revoked? = revoked_at.present?
 end

@@ -22,17 +22,18 @@ describe TeamDevelopmentCompiler do
     end
 
     before :all do
-      team = create :team
+      team = create(:team)
       sample_set.each do |set|
         team.update currently_on: team.started_on
-        player = create :player,
-                        team: team,
+        player = create(:player,
+                        team:,
                         ovr: set[:ovr][0],
                         value: set[:value][0],
-                        contracts_count: 0
-        create :contract,
-               player: player,
-               ended_on: team.end_of_season(5)
+                        contracts_count: 0)
+        create(:contract,
+               player:,
+               signed_on: team.currently_on,
+               ended_on: team.end_of_season(5))
         set[:player] = player
         3.times do |i|
           team.update currently_on: team.started_on +
@@ -48,44 +49,44 @@ describe TeamDevelopmentCompiler do
     end
 
     it 'calculates the average Player OVR at season start' do
-      (0..2).each do |season|
-        compiler = described_class.new(team: team, season: season)
+      3.times do |season|
+        compiler = described_class.new(team:, season:)
         results = compiler.results
 
         start_ovrs = sample_set.map { |set| set[:ovr][season] }
-        expect(results[:start_ovr]).to be == start_ovrs.sum(0) / start_ovrs.size
+        expect(results[:start_ovr]).to be == start_ovrs.sum / start_ovrs.size
       end
     end
 
     it 'calculates the average Player OVR at season end' do
       team.update currently_on: team.end_of_season(2)
-      (0..2).each do |season|
-        compiler = described_class.new(team: team, season: season)
+      3.times do |season|
+        compiler = described_class.new(team:, season:)
         results = compiler.results
 
         end_ovrs = sample_set.map { |set| set[:ovr][season + 1] }
-        expect(results[:end_ovr]).to be == end_ovrs.sum(0) / end_ovrs.size
+        expect(results[:end_ovr]).to be == end_ovrs.sum / end_ovrs.size
       end
     end
 
     it 'calculates the total Player value at season start' do
-      (0..2).each do |season|
-        compiler = described_class.new(team: team, season: season)
+      3.times do |season|
+        compiler = described_class.new(team:, season:)
         results = compiler.results
 
         start_values = sample_set.map { |set| set[:value][season] }
-        expect(results[:start_value]).to be == start_values.sum(0)
+        expect(results[:start_value]).to be == start_values.sum
       end
     end
 
     it 'calculates the total Player value at season end' do
       team.update currently_on: team.end_of_season(2)
-      (0..2).each do |season|
-        compiler = described_class.new(team: team, season: season)
+      3.times do |season|
+        compiler = described_class.new(team:, season:)
         results = compiler.results
 
         end_values = sample_set.map { |set| set[:value][season + 1] }
-        expect(results[:end_value]).to be == end_values.sum(0)
+        expect(results[:end_value]).to be == end_values.sum
       end
     end
   end

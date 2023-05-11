@@ -17,6 +17,8 @@ module Types
           'Whether the Player was substituted out of the Match', null: false
     field :rating, Integer,
           'Performance Rating of the Player in this Match', null: true
+    field :ovr, Integer,
+          'Overall Rating of the Player in this Match', null: false
 
     field :match, MatchType, 'Match pertaining to this Cap', null: false
     field :player, PlayerType, 'Player pertaining to this Cap', null: false

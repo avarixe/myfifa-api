@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 describe QueryType, type: :graphql do
-  let(:user) { create :user }
-  let(:team) { create :team, user: user }
+  let(:user) { create(:user) }
+  let(:team) { create(:team, user:) }
 
   graphql_operation <<-GQL
     query fetchTransferActivity($id: ID!) {
@@ -20,7 +20,7 @@ describe QueryType, type: :graphql do
   GQL
 
   graphql_context do
-    { current_user: user, pundit: PunditProvider.new(user: user) }
+    { current_user: user }
   end
 
   graphql_variables do
@@ -28,9 +28,9 @@ describe QueryType, type: :graphql do
   end
 
   before do
-    players = create_list :player, 3, team: team
-    create :transfer, player: players[0], origin: team.name
-    create :loan, player: players[1]
+    players = create_list(:player, 3, team:)
+    create(:transfer, player: players[0], origin: team.name, signed_on: team.currently_on)
+    create(:loan, player: players[1], signed_on: team.currently_on)
     players[2].current_contract.terminate!
   end
 

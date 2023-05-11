@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 describe QueryType, type: :graphql do
-  let(:user) { create :user }
-  let(:team) { create :team, user: user }
+  let(:user) { create(:user) }
+  let(:team) { create(:team, user:) }
 
   graphql_operation <<-GQL
     query fetchPlayerPerformanceStats($id: ID!) {
@@ -18,13 +18,14 @@ describe QueryType, type: :graphql do
           numGoals
           numAssists
           numCleanSheets
+          avgRating
         }
       }
     }
   GQL
 
   graphql_context do
-    { current_user: user, pundit: PunditProvider.new(user: user) }
+    { current_user: user }
   end
 
   graphql_variables do
@@ -32,18 +33,18 @@ describe QueryType, type: :graphql do
   end
 
   before do
-    players = create_list :player, 3, team: team
-    matches = create_list :match, 3, team: team
-    create_list :goal, 3, player: players.sample, match: matches.sample
+    players = create_list(:player, 3, team:)
+    matches = create_list(:match, 3, team:)
+    create_list(:goal, 3, player: players.sample, match: matches.sample)
     matches.each do |match|
       players.each do |player|
-        create :cap, player: player, match: match
+        create(:cap, player:, match:)
       end
     end
   end
 
   it 'returns compiled Player data' do
-    compiled_stats = PlayerPerformanceCompiler.new(team: team).results
+    compiled_stats = PlayerPerformanceCompiler.new(team:).results
     response_data['team']['playerPerformanceStats'].each do |stats|
       stats = stats.transform_keys { |k| k.underscore.to_sym }
       stats[:player_id] = stats[:player_id].to_i

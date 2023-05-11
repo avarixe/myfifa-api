@@ -3,12 +3,7 @@
 require 'rails_helper'
 
 describe QueryType, type: :graphql do
-  subject(:field) { described_class.fields['options'] }
-
-  let(:user) { create :user }
-
-  it { is_expected.to accept_argument(:category).of_type('OptionCategory!') }
-  it { is_expected.to accept_argument(:search).of_type('String') }
+  let(:user) { create(:user) }
 
   describe 'when executed for Team' do
     graphql_operation <<-GQL
@@ -22,12 +17,12 @@ describe QueryType, type: :graphql do
     end
 
     graphql_context do
-      { current_user: user, pundit: PunditProvider.new(user: user) }
+      { current_user: user }
     end
 
     before do
-      create_list :team, 3
-      create_list :team, 3, user: user
+      create_list(:team, 3)
+      create_list(:team, 3, user:)
     end
 
     it 'returns the name of all entered Teams' do
@@ -55,12 +50,12 @@ describe QueryType, type: :graphql do
 
     before do
       3.times do |i|
-        create :team, user: user, name: "Team #{i}"
+        create(:team, user:, name: "Team #{i}")
       end
     end
 
     it 'filters results to only matched Teams' do
-      expect(response_data(:options)).to match_array(['Team 0'])
+      expect(response_data(:options)).to contain_exactly('Team 0')
     end
   end
 end

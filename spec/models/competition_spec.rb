@@ -20,7 +20,7 @@
 
 require 'rails_helper'
 
-describe Competition, type: :model do
+describe Competition do
   let(:competition) { create(:competition) }
 
   it 'has a valid factory' do
@@ -81,7 +81,7 @@ describe Competition, type: :model do
 
   describe 'if League' do
     let(:num_teams) { Faker::Number.between(from: 2, to: 30).to_i }
-    let(:league) { create :league, num_teams: num_teams }
+    let(:league) { create(:league, num_teams:) }
 
     it 'creates 1 stage' do
       expect(league.stages.count).to be == 1
@@ -95,7 +95,7 @@ describe Competition, type: :model do
   describe 'if Cup' do
     let(:num_rounds) { Faker::Number.between(from: 1, to: 6).to_i }
     let(:num_teams) { 2**num_rounds }
-    let(:cup) { create :cup, num_teams: num_teams }
+    let(:cup) { create(:cup, num_teams:) }
 
     it 'creates log(2) Knockout stages' do
       expect(cup.stages.size).to be == num_rounds
@@ -115,7 +115,7 @@ describe Competition, type: :model do
     { num_teams: 24, num_teams_per_group: 3, num_advances_from_group: 2 }
   ].each do |preset|
     describe "if Group+Knockout with preset (#{preset})" do
-      let(:tournament) { create :tournament, preset }
+      let(:tournament) { create(:tournament, preset) }
 
       num_groups = preset[:num_teams] / preset[:num_teams_per_group]
       num_rounds = Math.log(num_groups * preset[:num_advances_from_group], 2).to_i

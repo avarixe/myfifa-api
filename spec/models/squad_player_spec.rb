@@ -19,7 +19,7 @@
 
 require 'rails_helper'
 
-describe SquadPlayer, type: :model do
+describe SquadPlayer do
   let(:squad_player) { create(:squad_player) }
 
   it 'has a valid factory' do
@@ -39,9 +39,9 @@ describe SquadPlayer, type: :model do
   end
 
   it 'requires a player and squad of the same team' do
-    squad_player = build :squad_player,
+    squad_player = build(:squad_player,
                          player: create(:player),
-                         squad: create(:squad)
+                         squad: create(:squad))
     expect(squad_player).not_to be_valid
   end
 end

@@ -32,6 +32,14 @@ module Types
           'List of Competitions bound to this Team', null: false
     field :squads, [SquadType], 'List of Squads bound to this Team', null: false
 
+    field :match_set, MatchSetType,
+          'Subset of Matches bound to this Team', null: false do
+      argument :pagination, InputObjects::PaginationAttributes,
+               'Pagination options for Match results', required: false
+      argument :filters, InputObjects::MatchFilterAttributes,
+               'Filters for Match results', required: false
+    end
+
     field :loaned_players, [PlayerType],
           'List of Loaned Players bound to this Team', null: false
     field :injured_players, [PlayerType],
@@ -79,11 +87,16 @@ module Types
                'Specific Season indicator to filter results', required: true
     end
 
+    def match_set(pagination: {}, filters: {})
+      set = MatchesCompiler.new(team: object, pagination:, filters:)
+      { matches: set.results, total: set.total }
+    end
+
     def competition_stats(competition: nil, season: nil)
       CompetitionCompiler.new(
         team: object,
-        competition: competition,
-        season: season
+        competition:,
+        season:
       ).results
     end
 
@@ -94,31 +107,31 @@ module Types
     )
       PlayerPerformanceCompiler.new(
         team: object,
-        player_ids: player_ids,
-        competition: competition,
-        season: season
+        player_ids:,
+        competition:,
+        season:
       ).results
     end
 
     def player_development_stats(player_ids: [], season: nil)
       PlayerDevelopmentCompiler.new(
         team: object,
-        player_ids: player_ids,
-        season: season
+        player_ids:,
+        season:
       ).results
     end
 
     def transfer_activity(season: nil)
       TransferActivityCompiler.new(
         team: object,
-        season: season
+        season:
       ).results
     end
 
     def team_development_stats(season:)
       TeamDevelopmentCompiler.new(
         team: object,
-        season: season
+        season:
       ).results
     end
   end

@@ -26,7 +26,7 @@
 
 require 'rails_helper'
 
-describe Player, type: :model do
+describe Player do
   let(:player) { create(:player) }
 
   it 'has a valid factory' do

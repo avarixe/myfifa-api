@@ -32,6 +32,7 @@ class Loan < ApplicationRecord
   scope :active_for, lambda { |team:|
     joins(:player)
       .where(players: { team_id: team.id })
+      .where.not(signed_on: nil)
       .where(started_on: nil..team.currently_on)
       .where('ended_on > ?', team.currently_on)
   }
@@ -45,31 +46,27 @@ class Loan < ApplicationRecord
   validates :origin, presence: true
   validates :destination, presence: true
   validates :started_on,
-            date: {
-              after_or_equal_to: :signed_on,
-              before_or_equal_to: :ended_on
-            }
-  validates :ended_on, date: { after_or_equal_to: :started_on }
+            date: { after_or_equal_to: :signed_on },
+            if: :signed?
+  validates :started_on, date: { before_or_equal_to: :ended_on }
+  validates :ended_on, presence: true
   validates :wage_percentage, inclusion: { in: 0..100, allow_nil: true }
 
   ###############
   #  CALLBACKS  #
   ###############
 
-  before_validation :set_signed_on
-  after_create :update_status
-  after_update :update_status, if: :saved_change_to_ended_on?
   after_update :activate_buy_option, if: :activated_buy_option
-
-  def set_signed_on
-    self.signed_on ||= team.currently_on
-  end
+  after_save :update_status, if: lambda {
+    (saved_change_to_signed_on? && signed?) ||
+      (persisted? && saved_change_to_ended_on?)
+  }
 
   def activate_buy_option
-    player.transfers.create origin: origin,
-                            destination: destination,
+    player.transfers.create origin:,
+                            destination:,
                             fee: transfer_fee,
-                            addon_clause: addon_clause,
+                            addon_clause:,
                             moved_on: team.currently_on
   end
 
@@ -85,11 +82,11 @@ class Loan < ApplicationRecord
 
   delegate :team, to: :player
 
+  def signed? = signed_on.present?
+
   def current?
     started_on <= team.currently_on && team.currently_on < ended_on
   end
 
-  def loaned_out?
-    team.name == origin
-  end
+  def loaned_out? = team.name == origin
 end

@@ -7,7 +7,7 @@ module Types
     field :id, ID, 'Unique Identifer of record', null: false
     field :player_id, ID, 'ID of Player', null: false
     field :signed_on, GraphQL::Types::ISO8601Date,
-          'Date of Team when Transfer is created', null: false
+          'Date of Team when Transfer is created', null: true
     field :moved_on, GraphQL::Types::ISO8601Date,
           'Date when Player moved to a different Team', null: false
     field :origin, String,

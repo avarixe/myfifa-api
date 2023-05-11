@@ -10,17 +10,20 @@ class TransferActivityCompiler
 
   def results
     @results ||= {
-      arrivals: arrivals,
-      departures: departures,
-      transfers: transfers,
-      loans: loans
+      arrivals:,
+      departures:,
+      transfers:,
+      loans:
     }
   end
 
   private
 
     def base_query(model)
-      model.joins(:player).where(players: { team_id: team.id })
+      model
+        .joins(:player)
+        .where(players: { team_id: team.id })
+        .where.not(signed_on: nil)
     end
 
     def arrivals

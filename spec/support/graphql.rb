@@ -16,8 +16,14 @@ module GraphQL
   end
 end
 
+class SchemaWrapper
+  def self.execute(query, options)
+    MyfifaApiSchema.execute(query, **options)
+  end
+end
+
 RSpec::GraphQLResponse.configure do |config|
-  config.graphql_schema = MyfifaApiSchema
+  config.graphql_schema = SchemaWrapper
 end
 
 RSpec.configure do |config|

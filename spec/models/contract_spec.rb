@@ -28,9 +28,9 @@
 
 require 'rails_helper'
 
-describe Contract, type: :model do
-  let(:player) { create :player }
-  let(:contract) { create :contract }
+describe Contract do
+  let(:player) { create(:player) }
+  let(:contract) { create(:contract) }
   let(:perf_bonus) { Faker::Number.between from: 10_000, to: 1_000_000 }
   let(:bonus_req) { Faker::Number.between from: 1, to: 25 }
   let(:bonus_req_type) { Contract::BONUS_REQUIREMENT_TYPES.sample }
@@ -56,93 +56,115 @@ describe Contract, type: :model do
   end
 
   it 'rejects bonus req if no performance bonus or bonus req type' do
-    expect(build(:contract, bonus_req: bonus_req)).not_to be_valid
+    expect(build(:contract, bonus_req:)).not_to be_valid
   end
 
   it 'rejects bonus req type if no performance bonus or bonus req' do
-    expect(build(:contract, bonus_req_type: bonus_req_type)).not_to be_valid
+    expect(build(:contract, bonus_req_type:)).not_to be_valid
   end
 
   it 'rejects performance bonus and bonus req if no bonus req type' do
-    contract = build :contract,
+    contract = build(:contract,
                      performance_bonus: perf_bonus,
-                     bonus_req: bonus_req
+                     bonus_req:)
     expect(contract).not_to be_valid
   end
 
   it 'rejects performance bonus and bonus req type if no bonus req' do
-    contract = build :contract,
+    contract = build(:contract,
                      performance_bonus: perf_bonus,
-                     bonus_req_type: bonus_req_type
+                     bonus_req_type:)
     expect(contract).not_to be_valid
   end
 
   it 'rejects bonus req and bonus req type if no performance bonus' do
-    contract = build :contract,
-                     bonus_req: bonus_req,
-                     bonus_req_type: bonus_req_type
+    contract = build(:contract,
+                     bonus_req:,
+                     bonus_req_type:)
     expect(contract).not_to be_valid
   end
 
   it 'accepts performance bonus, bonus req and bonus req type' do
-    contract = create :contract,
-                      bonus_req: bonus_req,
-                      bonus_req_type: bonus_req_type,
-                      performance_bonus: perf_bonus
+    contract = create(:contract,
+                      bonus_req:,
+                      bonus_req_type:,
+                      performance_bonus: perf_bonus)
     expect(contract).to be_valid
   end
 
   it 'rejects ended_on if num_seasons is provided' do
-    contract = build :contract,
-                     player: player,
+    contract = build(:contract,
+                     player:,
                      ended_on: 365.days.from_now,
-                     num_seasons: 2
+                     num_seasons: 2)
     expect(contract.ended_on).not_to be == 365.days.from_now
   end
 
   it 'sets ended_on automatically if num_seasons is set' do
-    contract = build :contract, player: player, num_seasons: 3
+    contract = build(:contract, player:, num_seasons: 3)
     expect(contract.ended_on).to be == player.team.started_on + 3.years
   end
 
   it 'sets ended_on correctly if started during 2nd half of season and num_seasons is set' do
-    contract = build :contract,
-                     player: player,
+    contract = build(:contract,
+                     player:,
                      started_on: player.team.started_on + 7.months,
-                     num_seasons: 3
+                     num_seasons: 3)
     expect(contract.ended_on).to be == player.team.started_on + 4.years
   end
 
   it 'sets ended_on to end of season ' \
      'if started during 2nd half of season with no years and num_seasons is set to 0' do
-    contract = build :contract,
-                     player: player,
+    contract = build(:contract,
+                     player:,
                      started_on: player.team.started_on + 7.months,
-                     num_seasons: 0
+                     num_seasons: 0)
     expect(contract.ended_on).to be == player.team.started_on + 1.year
   end
 
-  it 'sets Player as Pending if started_on > current date' do
-    future_date = Faker::Date.between from: 1.day.from_now,
-                                      to: 365.days.from_now
-    contract = create :contract, started_on: future_date
-    expect(contract.player.status).to be == 'Pending'
+  describe 'when unsigned' do
+    it 'does not affect Player status' do
+      player = create(:player, contracts_count: 0)
+      create(:contract, player:)
+      expect(player.reload).not_to be_active
+    end
+
+    it 'does not affect the previous contract' do
+      original_contract = player.contracts.first
+      first_contract_end_on = original_contract.ended_on
+      create(:contract, player:)
+      expect(original_contract.reload.ended_on).to be == first_contract_end_on
+    end
   end
 
-  it 'sets Pending Player as Active once current date reaches effective date' do
-    future_date = Faker::Date.between from: 1.day.from_now,
-                                      to: 365.days.from_now
-    contract = create :contract,
-                      started_on: future_date,
-                      ended_on: future_date + 1.year
-    contract.player.team.update(currently_on: future_date)
-    expect(contract.player.reload.active?).to be == true
-  end
+  describe 'when signed' do
+    it 'sets Player as Pending if started_on > current date' do
+      future_date = Faker::Date.between from: 1.day.from_now,
+                                        to: 365.days.from_now
+      contract = create(:contract,
+                        player: create(:player, contracts_count: 0),
+                        signed_on: Time.zone.today,
+                        started_on: future_date)
+      expect(contract.player.status).to be == 'Pending'
+    end
 
-  it 'sets new Player as Active if effective date < current date' do
-    player = create :player, contracts_count: 0
-    create :contract, player: player
-    expect(player.active?).to be true
+    it 'sets Pending Player as Active once current date reaches effective date' do
+      future_date = Faker::Date.between from: 1.day.from_now,
+                                        to: 365.days.from_now
+      contract = create(:contract,
+                        player: create(:player, contracts_count: 0),
+                        signed_on: Time.zone.today,
+                        started_on: future_date,
+                        ended_on: future_date + 1.year)
+      contract.player.team.update(currently_on: future_date)
+      expect(contract.player.reload.active?).to be == true
+    end
+
+    it 'sets new Player as Active if effective date < current date' do
+      player = create(:player, contracts_count: 0)
+      create(:contract, player:, signed_on: Time.zone.today)
+      expect(player.active?).to be true
+    end
   end
 
   describe 'once expired' do
@@ -162,17 +184,18 @@ describe Contract, type: :model do
   end
 
   describe 'when expired for Injured Player' do
-    let(:player) { create :player, contracts_count: 0 }
+    let(:player) { create(:player, contracts_count: 0) }
 
     before do
-      create :contract,
-             player: player,
+      create(:contract,
+             player:,
+             signed_on: player.team.currently_on,
              started_on: player.team.currently_on,
-             ended_on: player.team.currently_on + 1.week
-      create :injury,
-             player: player,
+             ended_on: player.team.currently_on + 1.week)
+      create(:injury,
+             player:,
              started_on: player.team.currently_on,
-             ended_on: player.team.currently_on + 3.months
+             ended_on: player.team.currently_on + 3.months)
       player.team.increment_date 1.week
       player.reload
     end
@@ -187,18 +210,20 @@ describe Contract, type: :model do
   end
 
   describe 'when expired for Loaned Player' do
-    let(:player) { create :player, contracts_count: 0 }
+    let(:player) { create(:player, contracts_count: 0) }
 
     before do
-      create :contract,
-             player: player,
+      create(:contract,
+             player:,
+             signed_on: player.team.currently_on,
              started_on: player.team.currently_on,
-             ended_on: player.team.currently_on + 1.week
-      create :loan,
-             player: player,
+             ended_on: player.team.currently_on + 1.week)
+      create(:loan,
+             player:,
              origin: player.team.name,
+             signed_on: player.team.currently_on,
              started_on: player.team.currently_on,
-             ended_on: player.team.currently_on + 1.year
+             ended_on: player.team.currently_on + 1.year)
       player.team.increment_date 1.week
       player.reload
     end
@@ -214,9 +239,10 @@ describe Contract, type: :model do
 
   describe 'when terminated' do
     let(:contract) do
-      create :contract,
-             player: player,
-             ended_on: player.team.currently_on + 2.years
+      create(:contract,
+             player:,
+             signed_on: player.team.currently_on,
+             ended_on: player.team.currently_on + 2.years)
     end
 
     before do
@@ -234,9 +260,10 @@ describe Contract, type: :model do
 
   describe 'when retired' do
     let(:contract) do
-      create :contract,
-             player: player,
-             ended_on: player.team.currently_on + 2.years
+      create(:contract,
+             player:,
+             signed_on: player.team.currently_on,
+             ended_on: player.team.currently_on + 2.years)
     end
 
     before do
@@ -257,7 +284,10 @@ describe Contract, type: :model do
     before do
       contract.team.increment_date(1.month)
       player = contract.player
-      create :contract, player: player, started_on: player.team.currently_on
+      create(:contract,
+             player:,
+             signed_on: player.team.currently_on,
+             started_on: player.team.currently_on)
     end
 
     it 'keeps the player as Active' do

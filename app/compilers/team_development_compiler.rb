@@ -10,11 +10,11 @@ class TeamDevelopmentCompiler
 
   def results
     {
-      season: season,
-      start_ovr: start_ovr,
-      start_value: start_value,
-      end_ovr: end_ovr,
-      end_value: end_value
+      season:,
+      start_ovr:,
+      start_value:,
+      end_ovr:,
+      end_value:
     }
   end
 
@@ -26,7 +26,7 @@ class TeamDevelopmentCompiler
                     .where(recorded_on: nil..public_send("season_#{time}"))
                     .pluck(Arel.sql(query_last_value_per_player_id('ovr')))
                     .pluck(1)
-      player_ovrs.sum(0) / player_ovrs.size
+      player_ovrs.sum / player_ovrs.size
     end
 
     define_method "#{time}_value" do
@@ -36,12 +36,12 @@ class TeamDevelopmentCompiler
                       .where(recorded_on: nil..public_send("season_#{time}"))
                       .pluck(Arel.sql(query_last_value_per_player_id('value')))
                       .pluck(1)
-      player_values.sum(0)
+      player_values.sum
     end
 
     define_method "player_ids_at_#{time}" do
       Contract
-        .active_for(team: team, date: public_send("season_#{time}"))
+        .active_for(team:, date: public_send("season_#{time}"))
         .select(:player_id)
     end
   end

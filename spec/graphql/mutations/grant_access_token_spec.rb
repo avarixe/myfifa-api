@@ -3,17 +3,8 @@
 require 'rails_helper'
 
 describe Mutations::GrantAccessToken, type: :graphql do
-  subject { described_class }
-
   let(:password) { Faker::Internet.password }
-  let(:user) { create :user, password: password }
-
-  it { is_expected.to accept_argument(:username).of_type('String!') }
-  it { is_expected.to accept_argument(:password).of_type('String!') }
-  it { is_expected.to have_a_field(:token).returning('String') }
-  it { is_expected.to have_a_field(:expires_at).returning('ISO8601DateTime') }
-  it { is_expected.to have_a_field(:user).returning('User') }
-  it { is_expected.to have_a_field(:errors).returning('ValidationErrors') }
+  let(:user) { create(:user, password:) }
 
   graphql_operation <<-GQL
     mutation grantAccessToken($username: String!, $password: String!) {
@@ -21,7 +12,6 @@ describe Mutations::GrantAccessToken, type: :graphql do
         token
         expiresAt
         user { id }
-        errors { fullMessages }
       }
     }
   GQL
@@ -30,7 +20,7 @@ describe Mutations::GrantAccessToken, type: :graphql do
     graphql_variables do
       {
         username: user.username,
-        password: password
+        password:
       }
     end
 
@@ -63,7 +53,7 @@ describe Mutations::GrantAccessToken, type: :graphql do
 
     it 'does not create a Token' do
       execute_graphql
-      expect(user.access_tokens.count).to be == 0
+      expect(user.access_tokens.count).to be_zero
     end
   end
 end

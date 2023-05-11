@@ -7,5 +7,6 @@ module InputObjects
     argument :player_id, ID, 'ID of Player', required: false
     argument :pos, Enums::CapPositionEnum,
              'Position assigned to Player during Match', required: false
+    argument :rating, Integer, 'Rating of Player Performance', required: false
   end
 end

@@ -21,7 +21,7 @@
 FactoryBot.define do
   factory :competition do
     season { Faker::Number.digit }
-    name { Faker::Lorem.word }
+    name { Faker::Sports::Football.competition }
     team
 
     factory :league do

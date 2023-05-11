@@ -3,8 +3,8 @@
 require 'rails_helper'
 
 describe QueryType, type: :graphql do
-  let(:user) { create :user }
-  let(:team) { create :team, user: user }
+  let(:user) { create(:user) }
+  let(:team) { create(:team, user:) }
 
   graphql_operation <<-GQL
     query fetchTeamDevelopmentStats($id: ID!, $season: Int!) {
@@ -21,7 +21,7 @@ describe QueryType, type: :graphql do
   GQL
 
   graphql_context do
-    { current_user: user, pundit: PunditProvider.new(user: user) }
+    { current_user: user }
   end
 
   graphql_variables do
@@ -32,7 +32,7 @@ describe QueryType, type: :graphql do
   end
 
   before do
-    players = create_list :player, 3, team: team
+    players = create_list(:player, 3, team:)
     team.increment_date 6.months
     players.each do |player|
       player.update ovr: Faker::Number.between(from: 50, to: 90),
@@ -41,7 +41,7 @@ describe QueryType, type: :graphql do
   end
 
   it 'returns Team average OVR and total Value data' do
-    compiled_stats = TeamDevelopmentCompiler.new(team: team, season: 0).results
+    compiled_stats = TeamDevelopmentCompiler.new(team:, season: 0).results
     stats = response_data['team']['teamDevelopmentStats']
             .transform_keys { |k| k.underscore.to_sym }
             .transform_values(&:to_i)

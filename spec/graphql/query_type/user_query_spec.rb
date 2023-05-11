@@ -5,7 +5,7 @@ require 'rails_helper'
 describe QueryType, type: :graphql do
   subject { described_class }
 
-  let(:user) { create :user }
+  let(:user) { create(:user) }
 
   graphql_operation <<-GQL
     query fetchUser {
@@ -14,7 +14,7 @@ describe QueryType, type: :graphql do
   GQL
 
   graphql_context do
-    { current_user: user, pundit: PunditProvider.new(user: user) }
+    { current_user: user }
   end
 
   it 'returns User' do

@@ -12,8 +12,8 @@ class CompetitionCompiler
   def results
     matches_by_competition_and_season.map do |(competition, season), matches|
       {
-        competition: competition,
-        season: season,
+        competition:,
+        season:,
         wins: 0,
         draws: 0,
         losses: 0,
@@ -35,8 +35,8 @@ class CompetitionCompiler
 
     def matches_by_competition_and_season
       team.matches.where({
-        competition: competition,
-        season: season
+        competition:,
+        season:
       }.compact).group_by { |match| [match.competition, match.season] }
     end
 end

@@ -5,7 +5,7 @@ require:
 Rails:
   Enabled: true
 AllCops:
-  TargetRubyVersion: 2.7
+  TargetRubyVersion: 3.1
   NewCops: enable
   Exclude:
     - bin/*
@@ -21,18 +21,18 @@ Lint/ElseLayout:
   Enabled: false
 Metrics/AbcSize:
   Exclude:
-    - app/graphql/mutations/add_mutations.rb
+    - app/graphql/mutations/base_*_mutation.rb
 Metrics/ClassLength:
   Enabled: false
 Metrics/MethodLength:
   CountAsOne: ['array', 'hash', 'heredoc']
   Exclude:
     - app/controllers/graphql_controller.rb
-    - app/graphql/mutations/add_mutations.rb
+    - app/graphql/mutations/base_*_mutation.rb
 Metrics/BlockLength:
   CountAsOne: ['array', 'hash']
   Exclude:
-    - app/graphql/mutations/add_mutations.rb
+    - app/graphql/mutations/base_*_mutation.rb
 Style/Documentation:
   Enabled: false
 Style/RescueStandardError:

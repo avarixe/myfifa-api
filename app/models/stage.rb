@@ -29,6 +29,9 @@ class Stage < ApplicationRecord
            inverse_of: :stage,
            dependent: :destroy
 
+  accepts_nested_attributes_for :table_rows, allow_destroy: true
+  accepts_nested_attributes_for :fixtures, allow_destroy: true
+
   validates :name, presence: true
   validates :num_teams, numericality: { greater_than: 0 }
   validates :num_fixtures, numericality: { greater_than: 0 }, unless: :table?

@@ -3,7 +3,7 @@
 require 'rails_helper'
 
 describe GraphqlController, type: :request do
-  let(:token) { create :access_token }
+  let(:token) { create(:access_token) }
   let(:user) { token.user }
 
   describe 'POST graphql#execute' do
@@ -14,7 +14,7 @@ describe GraphqlController, type: :request do
     end
 
     describe 'with fetchTeam query' do
-      let(:team) { create :team, user: user }
+      let(:team) { create(:team, user:) }
 
       team_query = <<-GQL
         query fetchTeam($id: ID!) {
@@ -40,7 +40,7 @@ describe GraphqlController, type: :request do
       end
 
       it 'rejects expired tokens' do
-        token.update(expires_at: Time.current - 1.second)
+        token.update(expires_at: 1.second.ago)
         post graphql_url,
              headers: { 'Authorization' => "Bearer #{token.token}" },
              params: { query: team_query, variables: { id: team.id }.to_json }

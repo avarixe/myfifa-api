@@ -40,10 +40,11 @@ FactoryBot.define do
     end
 
     after :create do |player, evaluator|
-      create_list :contract,
+      create_list(:contract,
                   evaluator.contracts_count,
-                  player: player,
-                  started_on: player.team.currently_on
+                  player:,
+                  signed_on: player.team.currently_on,
+                  started_on: player.team.currently_on)
     end
   end
 end

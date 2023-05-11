@@ -20,7 +20,7 @@
 
 require 'rails_helper'
 
-describe PlayerHistory, type: :model do
+describe PlayerHistory do
   it 'has a valid factory' do
     expect(create(:player_history)).to be_valid
   end
@@ -35,5 +35,19 @@ describe PlayerHistory, type: :model do
 
   it 'requires a value' do
     expect(build(:player_history, value: nil)).not_to be_valid
+  end
+
+  it 'updates Player Cap OVR when created' do
+    player = create(:player, ovr: 70)
+    cap = create(:cap, player:)
+    player.update(ovr: 71)
+    expect(cap.reload.ovr).to be == 71
+  end
+
+  it 'updates Player Cap OVR when updated' do
+    player = create(:player, ovr: 70)
+    cap = create(:cap, player:)
+    player.histories.last.update ovr: 71
+    expect(cap.reload.ovr).to be == 71
   end
 end

@@ -5,6 +5,7 @@
 # Table name: caps
 #
 #  id         :bigint           not null, primary key
+#  ovr        :integer
 #  pos        :string
 #  rating     :integer
 #  start      :integer          default(0)
@@ -25,11 +26,11 @@
 
 require 'rails_helper'
 
-describe Cap, type: :model do
-  let(:team) { create :team }
-  let(:player) { create :player, team: team }
-  let(:match) { create :match, team: team }
-  let(:cap) { create :cap, player: player, match: match }
+describe Cap do
+  let(:team) { create(:team) }
+  let(:player) { create(:player, team:) }
+  let(:match) { create(:match, team:) }
+  let(:cap) { create(:cap, player:, match:) }
 
   it 'has a valid factory' do
     expect(create(:cap)).to be_valid
@@ -56,31 +57,69 @@ describe Cap, type: :model do
   end
 
   it 'only accepts Active players' do
-    player = create :player, contracts_count: 0
-    expect(build(:cap, player: player)).not_to be_valid
+    player = create(:player, contracts_count: 0)
+    expect(build(:cap, player:)).not_to be_valid
   end
 
   it 'must be associated with a Player and Match of the same team' do
-    other_team = create :team
-    match = create :match, team: other_team
-    expect(build(:cap, player: player, match: match)).not_to be_valid
+    other_team = create(:team)
+    match = create(:match, team: other_team)
+    expect(build(:cap, player:, match:)).not_to be_valid
   end
 
-  it 'removes all Match events concerning the player upon destruction' do
-    create :goal,
-           match: match,
-           player: player
-    create :goal,
-           match: match,
-           assisting_player: player
-    create :booking,
-           match: match,
-           player: player
-    # create :substitution,
-    #                   match: match,
-    #                   player: player
-    # create :substitution,
-    #                   match: match,
-    #                   replacement: player
+  it 'caches the Player OVR when created' do
+    expect(cap.ovr).to be == cap.player.ovr
   end
+
+  it 'caches the latest Player OVR when created' do
+    player = create(:player, ovr: 60)
+    3.times do
+      player.team.increment_date 1.year
+      player.ovr += 10
+      player.save!
+    end
+
+    match = create(:match, team: player.team, played_on: player.team.currently_on)
+    cap = create(:cap, player:, match:)
+
+    expect(cap.ovr).to be == 90
+  end
+
+  it 'caches the Player old OVR when created in the past' do
+    team = create(:team)
+    player = create(:player, team:, ovr: 70)
+    team.increment_date 1.month
+    player.update(ovr: 71)
+    match = create(:match, team:, played_on: team.currently_on - 1.month)
+    cap = create(:cap, player:, match:)
+    expect(cap.ovr).to be == 70
+  end
+
+  it 'updates the Player OVR cache when Player is changed' do
+    other_player = create(:player, team: cap.player.team)
+    cap.update player: other_player
+    expect(cap.ovr).to be == other_player.ovr
+  end
+
+  it 'does not change OVR if Player changes after date' do
+    team = create(:team)
+    player = create(:player, team:, ovr: 70)
+    match = create(:match, team:, played_on: team.currently_on)
+    cap = create(:cap, player:, match:)
+    team.increment_date 1.month
+    player.update(ovr: 71)
+    expect(cap.reload.ovr).to be == 70
+  end
+
+  # it 'removes all Match events concerning the player upon destruction' do
+  #   create(:goal, match:, player:)
+  #   create(:goal, match:, assisting_player: player)
+  #   create(:booking, match:, player:)
+  #   # create :substitution,
+  #   #                   match: match,
+  #   #                   player: player
+  #   # create :substitution,
+  #   #                   match: match,
+  #   #                   replacement: player
+  # end
 end
