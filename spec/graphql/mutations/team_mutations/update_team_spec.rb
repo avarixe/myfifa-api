@@ -63,13 +63,4 @@ describe Mutations::TeamMutations::UpdateTeam, type: :graphql do
       expect(response['errors']).to be_present
     end
   end
-
-  describe 'for Team not owned by User' do
-    graphql_variables do
-      {
-        id: create(:team).id,
-        attributes: graphql_attributes_for(:team)
-      }
-    end
-  end
 end
