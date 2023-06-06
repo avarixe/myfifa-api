@@ -8,20 +8,25 @@
 #  active       :boolean          default(TRUE), not null
 #  currency     :string           default("$")
 #  currently_on :date
+#  game         :string
+#  manager_name :string
 #  name         :string
 #  started_on   :date
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
+#  previous_id  :bigint
 #  user_id      :bigint
 #
 # Indexes
 #
-#  index_teams_on_user_id  (user_id)
+#  index_teams_on_previous_id  (previous_id)
+#  index_teams_on_user_id      (user_id)
 #
 
 FactoryBot.define do
   factory :team do
     name { Faker::Team.name }
+    manager_name { user&.full_name || Faker::Name.name }
     started_on { Time.zone.today }
     user
 

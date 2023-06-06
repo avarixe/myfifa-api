@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_02_21_004400) do
+ActiveRecord::Schema[7.0].define(version: 2023_06_05_170952) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -301,6 +301,10 @@ ActiveRecord::Schema[7.0].define(version: 2023_02_21_004400) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "currency", default: "$"
+    t.bigint "previous_id"
+    t.string "game"
+    t.string "manager_name"
+    t.index ["previous_id"], name: "index_teams_on_previous_id"
     t.index ["user_id"], name: "index_teams_on_user_id"
   end
 
