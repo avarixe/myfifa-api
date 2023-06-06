@@ -6,6 +6,9 @@ module Types
 
     field :id, ID, 'Unique Identifer of record', null: false
     field :user_id, ID, 'ID of User', null: false
+    field :previous_id, ID, 'ID of previous Team', null: true
+    field :game, String, 'Name of Game', null: true
+    field :manager_name, String, 'Name of Team manager', null: false
     field :name, String, 'Name of this Team', null: false
     field :started_on, GraphQL::Types::ISO8601Date,
           'Date the User started to manage this Team', null: false

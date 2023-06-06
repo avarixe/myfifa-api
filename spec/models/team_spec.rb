@@ -8,15 +8,19 @@
 #  active       :boolean          default(TRUE), not null
 #  currency     :string           default("$")
 #  currently_on :date
+#  game         :string
+#  manager_name :string
 #  name         :string
 #  started_on   :date
 #  created_at   :datetime         not null
 #  updated_at   :datetime         not null
+#  previous_id  :bigint
 #  user_id      :bigint
 #
 # Indexes
 #
-#  index_teams_on_user_id  (user_id)
+#  index_teams_on_previous_id  (previous_id)
+#  index_teams_on_user_id      (user_id)
 #
 
 require 'rails_helper'
@@ -30,6 +34,10 @@ describe Team do
 
   it 'requires a name' do
     expect(build(:team, name: nil)).not_to be_valid
+  end
+
+  it 'requires a manager name' do
+    expect(build(:team, manager_name: nil)).not_to be_valid
   end
 
   it 'requires a start date' do
