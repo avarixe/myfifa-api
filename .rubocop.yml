@@ -2,6 +2,7 @@ require:
   - rubocop-rspec
   - rubocop-performance
   - rubocop-rails
+  - rubocop-factory_bot
 Rails:
   Enabled: true
 AllCops:

@@ -2,7 +2,7 @@
 
 class ApplicationController < ActionController::API
   include ActionController::HttpAuthentication::Token::ControllerMethods
-  include Pundit
+  include Pundit::Authorization
 
   private
 
