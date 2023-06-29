@@ -50,5 +50,18 @@ module Types
           'Current Injury afficted by this Player', null: true
     field :current_loan, LoanType,
           'Currently active Loan bound to this Player', null: true
+
+    field :cap_set, CapSetType,
+          'Subset of Matches bound to this Team', null: false do
+      argument :pagination, InputObjects::PaginationAttributes,
+               'Pagination options for Match results', required: false
+      argument :filters, InputObjects::MatchFilterAttributes,
+               'Filters for Match results', required: false
+    end
+
+    def cap_set(pagination: {}, filters: {})
+      set = CapsCompiler.new(player: object, pagination:, filters:)
+      { caps: set.results, total: set.total }
+    end
   end
 end
