@@ -1,0 +1,27 @@
+
+
+# <type>(<scope>): <subject>
+#
+# <body>
+#
+# ----------------------------------------
+#
+# <type>: specify one of the following -
+#    feat     (new feature)
+#    fix      (bug fix)
+#    docs     (documentation only)
+#    refactor (refactoring production code)
+#    style    (formatting, missing semicolons, etc. no code change)
+#    test     (adding or refactoring tests; no production code change)
+#    chore    (updating npm scripts etc. no production code change)
+#    revert   (revert a commit
+#              <subject> must be the reverted commit's title
+#              <description> must contain "This reverts commit <hash>.")
+# <scope> (optional): module or otherwise related to subject.
+#    if module, use the namespace of the module (e.g. P139, Lms)
+# <subject>: brief summary of changes made
+#    must be written in imperative mood (fix, add, remove, etc.)
+#    first word must not be capitalize
+#    must not exceed 70 characters
+# <body> (optional): details of changes if necessary, or other changes to be mentioned
+#    must not exceed 80 characters

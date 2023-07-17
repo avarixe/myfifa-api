@@ -4,8 +4,8 @@ default: &default
   pool: 5
   timeout: 5000
   host: localhost
-  username: <%= ENV['db_username'] %>
-  password: <%= ENV['db_password'] %>
+  username: <%= ENV['DB_USERNAME'] %>
+  password: <%= ENV['DB_PASSWORD'] %>
 
 test:
   <<: *default

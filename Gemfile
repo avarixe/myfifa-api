@@ -25,7 +25,7 @@ gem 'redis'
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
 
-gem 'figaro'
+gem 'dotenv-rails'
 
 gem 'oj'
 
@@ -63,6 +63,8 @@ group :development, :test do
   gem 'annotate', require: false
   gem 'bullet'
   gem 'rails-erd'
+
+  gem 'overcommit'
 end
 
 group :test do

@@ -48,8 +48,8 @@ jobs:
           bundle exec rails db:create db:schema:load RAILS_ENV=test
           bundle exec rspec
         env:
-          db_username: postgres
-          db_password: postgres
+          DB_USERNAME: postgres
+          DB_PASSWORD: postgres
 
       - name: Publish code coverage
         run: GIT_BRANCH=$GITHUB_REF GIT_COMMIT_SHA=$GITHUB_SHA ./cc-test-reporter after-build -t simplecov --exit-code $?
