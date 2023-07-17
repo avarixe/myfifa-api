@@ -21,6 +21,8 @@ coverage
 
 public/assets/*
 *.dump
-# Ignore application configuration
-/config/application.yml
 *.pdf
+
+# Ignore application configuration
+.env
+.env.*
