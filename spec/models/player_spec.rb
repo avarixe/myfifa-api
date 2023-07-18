@@ -6,6 +6,7 @@
 #
 #  id          :bigint           not null, primary key
 #  birth_year  :integer
+#  coverage    :jsonb            not null
 #  kit_no      :integer
 #  name        :string
 #  nationality :string
@@ -21,7 +22,8 @@
 #
 # Indexes
 #
-#  index_players_on_team_id  (team_id)
+#  index_players_on_coverage  (coverage) USING gin
+#  index_players_on_team_id   (team_id)
 #
 
 require 'rails_helper'
@@ -55,6 +57,19 @@ describe Player do
 
   it 'requires all secondary positions to be valid' do
     expect(build(:player, sec_pos: [''])).not_to be_valid
+  end
+
+  it 'requires all coverage keys to be valid' do
+    expect(build(:player, coverage: { 'NA' => 1 })).not_to be_valid
+  end
+
+  it 'requires all coverage values to be valid' do
+    expect(build(:player, coverage: { 'CM' => 3 })).not_to be_valid
+  end
+
+  it 'filters out null values from coverage' do
+    player = create(:player, coverage: { 'CM' => nil })
+    expect(player.coverage).to be_blank
   end
 
   it 'starts with a history record' do

@@ -21,6 +21,8 @@ module Types
     field :youth, Boolean,
           'Whether this Player came from the Youth Academy', null: false
     field :kit_no, Integer, 'Kit Number assigned to this Player', null: true
+    field :coverage, PositionCoverageType,
+          'Positional coverage by this Player', null: false
 
     field :age, Integer, 'Age of this Player', null: false
 
