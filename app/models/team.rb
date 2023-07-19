@@ -108,6 +108,17 @@ class Team < ApplicationRecord
     team.matches.pluck(:home, :away).flatten.uniq.sort
   end
 
+  def coverage
+    {}.tap do |team_cov|
+      players.where(status: 'Active').pluck(:coverage).each do |player_cov|
+        player_cov.each do |pos, cov|
+          team_cov[pos] ||= 0
+          team_cov[pos] += cov == 1 ? 1 : 0.5
+        end
+      end
+    end
+  end
+
   def last_match = matches.last
 
   def loaned_players = players.where(status: 'Loaned')

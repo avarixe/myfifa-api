@@ -51,7 +51,9 @@ class Cap < ApplicationRecord
     CAM
     RAM
     LW
+    LF
     CF
+    RF
     LS
     ST
     RS

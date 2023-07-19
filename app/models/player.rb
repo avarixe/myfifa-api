@@ -6,6 +6,7 @@
 #
 #  id          :bigint           not null, primary key
 #  birth_year  :integer
+#  coverage    :jsonb            not null
 #  kit_no      :integer
 #  name        :string
 #  nationality :string
@@ -21,7 +22,8 @@
 #
 # Indexes
 #
-#  index_players_on_team_id  (team_id)
+#  index_players_on_coverage  (coverage) USING gin
+#  index_players_on_team_id   (team_id)
 #
 
 class Player < ApplicationRecord
@@ -110,15 +112,26 @@ class Player < ApplicationRecord
   validates :kit_no, numericality: { only_integer: true }, allow_nil: true
   validates :pos, inclusion: { in: POSITIONS }
   validates :status, inclusion: { in: STATUSES }, allow_nil: true
-  validate :valid_sec_pos
+  validate :validate_sec_pos
+  validate :validate_coverage
 
-  def valid_sec_pos
+  def validate_sec_pos
     return if sec_pos.nil?
 
     sec_pos.each do |pos|
       next if POSITIONS.include?(pos)
 
       errors.add(:sec_pos, "#{pos} is not a valid Position")
+    end
+  end
+
+  def validate_coverage
+    coverage.each do |pos, cov|
+      if Cap::POSITIONS.exclude?(pos)
+        errors.add(:coverage, "#{pos} is not a valid Position")
+      elsif [1, 2].exclude?(cov)
+        errors.add(:coverage, "#{pos} has an invalid coverage value")
+      end
     end
   end
 
@@ -145,9 +158,7 @@ class Player < ApplicationRecord
   end
 
   def save_history
-    histories.create ovr:,
-                     value:,
-                     kit_no:
+    histories.create ovr:, value:, kit_no:
   end
 
   def end_pending_injuries
@@ -182,6 +193,10 @@ class Player < ApplicationRecord
 
   def age=(val)
     self[:birth_year] = team.currently_on.year - val.to_i if team.present?
+  end
+
+  def coverage=(val)
+    self[:coverage] = val.compact_blank
   end
 
   ###############
