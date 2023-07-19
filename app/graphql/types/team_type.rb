@@ -43,6 +43,9 @@ module Types
                'Filters for Match results', required: false
     end
 
+    field :coverage, PositionCoverageType,
+          'Coverage of positions by active Players', null: false
+
     field :loaned_players, [PlayerType],
           'List of Loaned Players bound to this Team', null: false
     field :injured_players, [PlayerType],

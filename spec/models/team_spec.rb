@@ -69,6 +69,12 @@ describe Team do
     expect(team.last_match).to be == Match.order(:played_on).last
   end
 
+  it '#coverage collates the coverage of each active Player' do
+    create(:player, team:, coverage: { 'CM' => 1 })
+    create(:player, team:, coverage: { 'CDM' => 1, 'CM' => 2 })
+    expect(team.coverage).to match('CM' => 1.5, 'CDM' => 1)
+  end
+
   describe '#injured_players' do
     let(:player) { create(:player, team:) }
 
