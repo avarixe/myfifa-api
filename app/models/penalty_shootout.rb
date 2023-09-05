@@ -26,7 +26,7 @@ class PenaltyShootout < ApplicationRecord
   validate :no_draw?
 
   def no_draw?
-    return if home_score != away_score
+    return false if home_score != away_score
 
     errors.add :base, 'Penalty Shootout must have a winner'
   end

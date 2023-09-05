@@ -75,9 +75,9 @@ class Cap < ApplicationRecord
   validate :active_player?, if: :player_id
 
   def same_team?
-    return if match_id.nil? ||
-              player_id.nil? ||
-              match.team_id == player.team_id
+    return false if match_id.nil? ||
+                    player_id.nil? ||
+                    match.team_id == player.team_id
 
     errors.add(:base, 'Player Team does not match Match Team')
   end

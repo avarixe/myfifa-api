@@ -30,13 +30,13 @@ class Squad < ApplicationRecord
   validate :unique_players?
 
   def unique_positions?
-    return if squad_players.map(&:pos).uniq.size == 11
+    return false if squad_players.map(&:pos).uniq.size == 11
 
     errors.add :squad, 'includes at least one Position multiple times'
   end
 
   def unique_players?
-    return if squad_players.map(&:player_id).uniq.size == 11
+    return false if squad_players.map(&:player_id).uniq.size == 11
 
     errors.add :base, 'includes at least one Player multiple times'
   end

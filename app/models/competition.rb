@@ -43,7 +43,7 @@ class Competition < ApplicationRecord
   validate :valid_preset_format?, if: :preset_format
 
   def valid_preset_format?
-    return if
+    return false if
       case preset_format
       when 'League'           then valid_preset?
       when 'Knockout'         then valid_knockout_stage?
