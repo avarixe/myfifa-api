@@ -25,9 +25,9 @@ class SquadPlayer < ApplicationRecord
   validate :same_team?
 
   def same_team?
-    return if squad_id.nil? ||
-              player_id.nil? ||
-              squad.team_id == player.team_id
+    return false if squad_id.nil? ||
+                    player_id.nil? ||
+                    squad.team_id == player.team_id
 
     errors.add :base, 'Squad and Player are not of the same Team'
   end
