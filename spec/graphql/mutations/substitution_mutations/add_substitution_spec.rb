@@ -18,7 +18,7 @@ describe Mutations::SubstitutionMutations::AddSubstitution, type: :graphql do
     {
       matchId: match.id,
       attributes: graphql_attributes_for(:substitution).merge(
-        playerId: create(:player, team: match.team).id,
+        capId: create(:cap, player: create(:player, team: match.team)).id,
         replacementId: create(:player, team: match.team).id
       )
     }

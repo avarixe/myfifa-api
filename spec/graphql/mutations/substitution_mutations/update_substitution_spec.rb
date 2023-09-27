@@ -18,7 +18,7 @@ describe Mutations::SubstitutionMutations::UpdateSubstitution, type: :graphql do
     {
       id: substitution.id,
       attributes: graphql_attributes_for(:substitution).merge(
-        playerId: substitution.player_id,
+        capId: substitution.cap_id,
         replacementId: substitution.replacement_id
       )
     }

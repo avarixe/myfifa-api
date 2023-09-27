@@ -5,8 +5,8 @@ module InputObjects
     description 'Attributes to create/update a Substitution record'
 
     argument :minute, Integer, 'Minute of Match this occurred', required: true
-    argument :player_id, ID,
-             'ID of the Player who was replaced', required: true
+    argument :cap_id, ID,
+             'ID of the Player Cap who was replaced', required: true
     argument :replacement_id, ID,
              'ID of the replacement Player', required: true
     argument :injury, Boolean,

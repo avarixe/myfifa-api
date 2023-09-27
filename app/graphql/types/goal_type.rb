@@ -9,10 +9,14 @@ module Types
     field :minute, Integer, 'Minute of Match this occurred', null: false
     field :player_name, String,
           'Name of Player who scored this Goal', null: false
+    field :cap_id, ID,
+          'ID of Player Cap who scored this Goal if record exists', null: true
     field :player_id, ID,
           'ID of Player who scored this Goal if record exists', null: true
     field :assisted_by, String,
           'Name of the Player who assisted the Goal', null: true
+    field :assist_cap_id, ID,
+          'ID of Player Cap who assisted this Goal if record exists', null: true
     field :assist_id, ID,
           'ID of Player who assisted this Goal if record exists', null: true
     field :home, Boolean,

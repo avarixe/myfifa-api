@@ -29,6 +29,22 @@ class Cap < ApplicationRecord
 
   belongs_to :match
   belongs_to :player
+  has_many :bookings, dependent: :destroy
+  has_many :goals, dependent: :destroy
+  has_many :assists,
+           foreign_key: :assist_cap_id,
+           class_name: 'Goal',
+           inverse_of: :assist_cap,
+           dependent: :nullify
+  has_one :sub_out,
+          class_name: 'Substitution',
+          inverse_of: :subbed_cap,
+          dependent: :destroy
+  has_one :sub_in,
+          foreign_key: :sub_cap_id,
+          class_name: 'Substitution',
+          inverse_of: :sub_cap,
+          dependent: :destroy
 
   POSITIONS = %w[
     GK
@@ -86,32 +102,13 @@ class Cap < ApplicationRecord
     errors.add(:player, 'must be active') unless player.active?
   end
 
-  before_validation :cache_ovr, if: :player_id_changed?
-  after_destroy :remove_events
+  before_validation :cache_ovr
 
   def cache_ovr
     self.ovr = PlayerHistory.order(recorded_on: :desc)
                             .find_by(player_id:, recorded_on: ..match.played_on)
                             &.ovr
   end
-
-  def remove_events
-    goals.destroy_all
-    assists.destroy_all
-    bookings.destroy_all
-    sub_outs.destroy_all
-    sub_ins.destroy_all
-  end
-
-  def goals = Goal.where(match_id:, player_id:)
-
-  def assists = Goal.where(match_id:, assist_id: player_id)
-
-  def bookings = Booking.where(match_id:, player_id:)
-
-  def sub_outs = Substitution.where(match_id:, player_id:)
-
-  def sub_ins = Substitution.where(match_id:, replacement_id: player_id)
 
   delegate :team, to: :match
 end

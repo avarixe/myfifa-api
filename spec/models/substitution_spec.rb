@@ -11,36 +11,40 @@
 #  replaced_by    :string
 #  created_at     :datetime         not null
 #  updated_at     :datetime         not null
+#  cap_id         :bigint
 #  match_id       :bigint
 #  player_id      :bigint
 #  replacement_id :bigint
+#  sub_cap_id     :bigint
 #
 # Indexes
 #
+#  index_substitutions_on_cap_id          (cap_id)
 #  index_substitutions_on_match_id        (match_id)
 #  index_substitutions_on_player_id       (player_id)
 #  index_substitutions_on_replacement_id  (replacement_id)
+#  index_substitutions_on_sub_cap_id      (sub_cap_id)
 #
 
 require 'rails_helper'
 
 describe Substitution do
   let(:match) { create(:match) }
-  let(:cap) do
+  let(:subbed_cap) do
     player = create(:player, team: match.team)
     create(:cap, start: 0, stop: 90, match:, player:)
   end
   let(:sub) do
     replacement = create(:player, team: match.team)
-    create(:substitution, player_id: cap.player_id, replacement_id: replacement.id, match:)
+    create(:substitution, subbed_cap:, replacement:, match:)
   end
 
   it 'has a valid factory' do
     expect(create(:substitution)).to be_valid
   end
 
-  it 'requires a player' do
-    expect(build(:substitution, player: nil)).not_to be_valid
+  it 'requires a cap' do
+    expect(build(:substitution, subbed_cap: nil)).not_to be_valid
   end
 
   it 'requires a match' do
@@ -76,7 +80,7 @@ describe Substitution do
     let(:sub) do
       replacement = create(:player, team: match.team)
       create(:substitution,
-             player_id: cap.player_id,
+             player_id: subbed_cap.player_id,
              replacement_id: replacement.id,
              match:,
              minute: Faker::Number.between(from: 91, to: 120))
@@ -97,17 +101,21 @@ describe Substitution do
     end
 
     it 'marks replaced Cap record as not subbed_out' do
-      expect(cap).not_to be_subbed_out
+      expect(subbed_cap).not_to be_subbed_out
     end
   end
 
-  describe 'upon player_id change' do
+  describe 'upon cap_id change' do
     let(:player2) { create(:player, team: match.team) }
 
     before do
-      pos2 = Cap::POSITIONS[Cap::POSITIONS.index(cap.pos) - 1]
-      create(:cap, start: 0, stop: 90, match:, player: player2, pos: pos2)
-      sub.update!(player_id: player2.id)
+      pos2 = Cap::POSITIONS[Cap::POSITIONS.index(subbed_cap.pos) - 1]
+      cap2 = create(:cap, start: 0, stop: 90, match:, player: player2, pos: pos2)
+      sub.update!(cap_id: cap2.id)
+    end
+
+    it 'automatically changes player id' do
+      expect(sub.player_id).to be == player2.id
     end
 
     it 'automatically changes player name' do
@@ -115,7 +123,7 @@ describe Substitution do
     end
 
     it 'marks replaced Cap as not subbed_out' do
-      expect(cap).not_to be_subbed_out
+      expect(subbed_cap.reload).not_to be_subbed_out
     end
 
     it 'marks new Player Cap as subbed_out' do

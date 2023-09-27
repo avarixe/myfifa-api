@@ -7,7 +7,9 @@ module Types
     field :id, ID, 'Unique Identifer of record', null: false
     field :match_id, ID, 'ID of Match', null: false
     field :minute, Integer, 'Minute of Match this occurred', null: false
+    field :cap_id, ID, 'ID of the Player Cap who was replaced', null: false
     field :player_id, ID, 'ID of the Player who was replaced', null: false
+    field :sub_cap_id, ID, 'ID of the replacement Player Cap', null: false
     field :replacement_id, ID, 'ID of the replacement Player', null: false
     field :injury, Boolean,
           'Whether the Player was replaced due to injury', null: false

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_17_232805) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_26_050617) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -62,6 +62,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_17_232805) do
     t.datetime "updated_at", precision: nil, null: false
     t.string "player_name"
     t.boolean "home", default: false, null: false
+    t.bigint "cap_id"
+    t.index ["cap_id"], name: "index_bookings_on_cap_id"
     t.index ["match_id"], name: "index_bookings_on_match_id"
     t.index ["player_id"], name: "index_bookings_on_player_id"
   end
@@ -143,7 +145,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_17_232805) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "assisted_by"
+    t.bigint "cap_id"
+    t.bigint "assist_cap_id"
+    t.index ["assist_cap_id"], name: "index_goals_on_assist_cap_id"
     t.index ["assist_id"], name: "index_goals_on_assist_id"
+    t.index ["cap_id"], name: "index_goals_on_cap_id"
     t.index ["match_id"], name: "index_goals_on_match_id"
     t.index ["player_id"], name: "index_goals_on_player_id"
   end
@@ -276,9 +282,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_17_232805) do
     t.datetime "updated_at", precision: nil, null: false
     t.string "player_name"
     t.string "replaced_by"
+    t.bigint "cap_id"
+    t.bigint "sub_cap_id"
+    t.index ["cap_id"], name: "index_substitutions_on_cap_id"
     t.index ["match_id"], name: "index_substitutions_on_match_id"
     t.index ["player_id"], name: "index_substitutions_on_player_id"
     t.index ["replacement_id"], name: "index_substitutions_on_replacement_id"
+    t.index ["sub_cap_id"], name: "index_substitutions_on_sub_cap_id"
   end
 
   create_table "table_rows", force: :cascade do |t|
