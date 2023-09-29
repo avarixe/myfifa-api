@@ -88,10 +88,10 @@ describe Match do
     expect(match.score).to be == '0 - 0'
   end
 
-  it 'cannot have two Performance records for the same player' do
+  it 'cannot have two Performance records for the same player and start' do
     player = create(:player, team:)
-    create(:cap, match:, player:)
-    expect(build(:cap, match:, player:)).not_to be_valid
+    cap = create(:cap, match:, player:)
+    expect(build(:cap, match:, player:, start: cap.start)).not_to be_valid
   end
 
   it 'sets Match times to 120 minutes if extra time' do

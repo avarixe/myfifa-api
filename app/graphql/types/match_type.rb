@@ -32,8 +32,6 @@ module Types
     field :team, TeamType, 'Team pertaining to this Match', null: false
     field :caps, [CapType], 'List of Caps bound to this Match', null: false
     field :goals, [GoalType], 'List of Goals scored in this Match', null: false
-    field :substitutions, [SubstitutionType],
-          'List of Substitutions made in this Match', null: false
     field :bookings, [BookingType],
           'List of Bookings made in this Match', null: false
     field :penalty_shootout, PenaltyShootoutType,

@@ -21,7 +21,6 @@ class MutationType < BaseTypes::BaseObject
     Player
     Squad
     Stage
-    Substitution
     TableRow
     Team
     Transfer

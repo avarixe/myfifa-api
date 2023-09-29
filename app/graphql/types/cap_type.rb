@@ -13,8 +13,8 @@ module Types
     field :stop, Integer, 'Minute of Match Player stopped', null: false
     field :created_at, GraphQL::Types::ISO8601DateTime,
           'Timestamp this record was created', null: false
-    field :subbed_out, Boolean,
-          'Whether the Player was substituted out of the Match', null: false
+    field :injured, Boolean,
+          'Whether the Player was replaced due to injury', null: false
     field :rating, Integer,
           'Performance Rating of the Player in this Match', null: true
     field :ovr, Integer,

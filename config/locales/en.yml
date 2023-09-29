@@ -39,7 +39,6 @@ en:
         pos: Position
         start: Start Minute
         stop: Stop Minute
-        subbed_out: Subbed Out
       contract_history:
         signing_bonus: Signing Bonus
         release_clause: Release Clause
@@ -97,9 +96,6 @@ en:
       stage:
         num_teams: Number of Teams
         num_fixtures: Number of Fixtures
-      substitution:
-        player_name: Player Name
-        replaced_by: Replaced By
       table_row:
         goals_for: Goals For
         goals_against: Goals Against

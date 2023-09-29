@@ -33,10 +33,6 @@ class Match < ApplicationRecord
            -> { order :minute },
            inverse_of: :match,
            dependent: :destroy
-  has_many :substitutions,
-           -> { order :minute },
-           inverse_of: :match,
-           dependent: :destroy
   has_many :bookings,
            -> { order :minute },
            inverse_of: :match,
@@ -87,7 +83,7 @@ class Match < ApplicationRecord
   end
 
   def set_cap_stop_times
-    caps.where(subbed_out: false).find_each do |cap|
+    caps.where(next_id: nil).find_each do |cap|
       cap.update(stop: extra_time? ? 120 : 90)
     end
   end

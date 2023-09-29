@@ -5,23 +5,25 @@
 # Table name: caps
 #
 #  id         :bigint           not null, primary key
+#  injured    :boolean          default(FALSE), not null
 #  ovr        :integer
 #  pos        :string
 #  rating     :integer
 #  start      :integer          default(0)
 #  stop       :integer          default(90)
-#  subbed_out :boolean          default(FALSE), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  match_id   :bigint
+#  next_id    :bigint
 #  player_id  :bigint
 #
 # Indexes
 #
-#  index_caps_on_match_id                    (match_id)
-#  index_caps_on_player_id                   (player_id)
-#  index_caps_on_player_id_and_match_id      (player_id,match_id) UNIQUE
-#  index_caps_on_pos_and_match_id_and_start  (pos,match_id,start) UNIQUE
+#  index_caps_on_match_id                          (match_id)
+#  index_caps_on_next_id                           (next_id)
+#  index_caps_on_player_id                         (player_id)
+#  index_caps_on_player_id_and_match_id_and_start  (player_id,match_id,start) UNIQUE
+#  index_caps_on_pos_and_match_id_and_start        (pos,match_id,start) UNIQUE
 #
 
 class Cap < ApplicationRecord
@@ -29,6 +31,16 @@ class Cap < ApplicationRecord
 
   belongs_to :match
   belongs_to :player
+  has_one :previous,
+          foreign_key: :next_id,
+          class_name: 'Cap',
+          inverse_of: :next,
+          dependent: :nullify
+  belongs_to :next,
+             class_name: 'Cap',
+             inverse_of: :previous,
+             optional: true,
+             dependent: :destroy
   has_many :bookings, dependent: :destroy
   has_many :goals, dependent: :destroy
   has_many :assists,
@@ -36,15 +48,6 @@ class Cap < ApplicationRecord
            class_name: 'Goal',
            inverse_of: :assist_cap,
            dependent: :nullify
-  has_one :sub_out,
-          class_name: 'Substitution',
-          inverse_of: :subbed_cap,
-          dependent: :destroy
-  has_one :sub_in,
-          foreign_key: :sub_cap_id,
-          class_name: 'Substitution',
-          inverse_of: :sub_cap,
-          dependent: :destroy
 
   POSITIONS = %w[
     GK
@@ -81,7 +84,7 @@ class Cap < ApplicationRecord
             inclusion: 0..120,
             numericality: { greater_than_or_equal_to: :start },
             if: :start
-  validates :player_id, uniqueness: { scope: :match_id }
+  validates :player_id, uniqueness: { scope: %i[match_id start] }
   validates :pos,
             inclusion: { in: POSITIONS },
             uniqueness: { scope: %i[match_id start] }

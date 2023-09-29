@@ -5,23 +5,25 @@
 # Table name: caps
 #
 #  id         :bigint           not null, primary key
+#  injured    :boolean          default(FALSE), not null
 #  ovr        :integer
 #  pos        :string
 #  rating     :integer
 #  start      :integer          default(0)
 #  stop       :integer          default(90)
-#  subbed_out :boolean          default(FALSE), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  match_id   :bigint
+#  next_id    :bigint
 #  player_id  :bigint
 #
 # Indexes
 #
-#  index_caps_on_match_id                    (match_id)
-#  index_caps_on_player_id                   (player_id)
-#  index_caps_on_player_id_and_match_id      (player_id,match_id) UNIQUE
-#  index_caps_on_pos_and_match_id_and_start  (pos,match_id,start) UNIQUE
+#  index_caps_on_match_id                          (match_id)
+#  index_caps_on_next_id                           (next_id)
+#  index_caps_on_player_id                         (player_id)
+#  index_caps_on_player_id_and_match_id_and_start  (player_id,match_id,start) UNIQUE
+#  index_caps_on_pos_and_match_id_and_start        (pos,match_id,start) UNIQUE
 #
 
 require 'rails_helper'
@@ -110,16 +112,4 @@ describe Cap do
     player.update(ovr: 71)
     expect(cap.reload.ovr).to be == 70
   end
-
-  # it 'removes all Match events concerning the player upon destruction' do
-  #   create(:goal, match:, player:)
-  #   create(:goal, match:, assisting_player: player)
-  #   create(:booking, match:, player:)
-  #   # create :substitution,
-  #   #                   match: match,
-  #   #                   player: player
-  #   # create :substitution,
-  #   #                   match: match,
-  #   #                   replacement: player
-  # end
 end
