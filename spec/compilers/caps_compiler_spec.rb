@@ -45,7 +45,7 @@ describe CapsCompiler do
 
   it 'returns set of Caps' do
     compiler = described_class.new(player:)
-    expect(compiler.results).to match_array(Cap.all.to_a)
+    expect(compiler.results.to_a).to match_array(Cap.all.to_a)
   end
 
   it 'returns total of Caps' do

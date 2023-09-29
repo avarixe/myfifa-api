@@ -8,5 +8,7 @@ module InputObjects
     argument :pos, Enums::CapPositionEnum,
              'Position assigned to Player during Match', required: false
     argument :rating, Integer, 'Rating of Player Performance', required: false
+    argument :start, Integer, 'Minute Player entered the Match', required: false
+    argument :injured, Boolean, 'Whether Player got injured', required: false
   end
 end

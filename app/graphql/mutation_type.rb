@@ -41,4 +41,6 @@ class MutationType < BaseTypes::BaseObject
         mutation: Mutations::SquadMutations::StoreMatchLineupToSquad
   field :remove_penalty_shootout,
         mutation: Mutations::PenaltyShootoutMutations::RemovePenaltyShootout
+  field :substitute_cap,
+        mutation: Mutations::CapMutations::SubstituteCap
 end

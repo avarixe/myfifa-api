@@ -112,4 +112,21 @@ describe Cap do
     player.update(ovr: 71)
     expect(cap.reload.ovr).to be == 70
   end
+
+  it 'sets stop when next Cap is set' do
+    create(:cap, previous: cap, start: 60)
+    expect(cap.reload.stop).to be == 60
+  end
+
+  it 'sets stop to Match length when next Cap is removed' do
+    next_cap = create(:cap, previous: cap, start: 60)
+    next_cap.destroy
+    expect(cap.reload.stop).to be == 90
+  end
+
+  it 'changes stop when next Cap changes start' do
+    next_cap = create(:cap, previous: cap, start: 60, stop: 90)
+    next_cap.update!(start: 75)
+    expect(cap.reload.stop).to be == 75
+  end
 end

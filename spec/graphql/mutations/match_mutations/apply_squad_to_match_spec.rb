@@ -29,8 +29,8 @@ describe Mutations::MatchMutations::ApplySquadToMatch, type: :graphql do
 
   it 'populates Match caps based on Squad players' do
     execute_graphql
-    expect(match.caps.pluck(:player_id))
-      .to be == squad.squad_players.pluck(:player_id)
+    expect(match.caps.pluck(:player_id).sort)
+      .to be == squad.squad_players.pluck(:player_id).sort
   end
 
   it 'populates Match caps based on Squad positions' do

@@ -128,6 +128,10 @@ class Match < ApplicationRecord
     score
   end
 
+  def num_minutes
+    extra_time? ? 120 : 90
+  end
+
   def as_json(options = {})
     options[:methods] ||= []
     options[:methods] += %i[

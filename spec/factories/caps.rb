@@ -29,7 +29,7 @@
 FactoryBot.define do
   factory :cap do
     pos { Cap::POSITIONS.sample }
-    start { Faker::Number.between(from: 0, to: 90) }
+    start { 0 }
     stop { Faker::Number.between(from: start || 0, to: 90) }
     player
     match { Match.new(attributes_for(:match, team_id: player.team_id)) }
