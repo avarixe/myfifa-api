@@ -65,7 +65,7 @@ module Mutations
       def resolve(id:, attributes:)
         cap = Cap.find(id)
 
-        if CapPolicy.new(current_user, cap).substitute?
+        if CapPolicy.new(context[:current_user], cap).substitute?
           substitute_cap(cap, attributes)
           { cap:, replacement: @replacement }
         else
@@ -86,10 +86,6 @@ module Mutations
         Cap.transaction do
           cap.save! && @replacement.save!
         end
-      end
-
-      def current_user
-        @current_user ||= context[:current_user]
       end
     end
 

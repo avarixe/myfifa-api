@@ -7,6 +7,7 @@ module Types
     field :id, ID, 'Unique Identifier of record', null: false
     field :match_id, ID, 'ID of Match', null: false
     field :player_id, ID, 'ID of Player', null: false
+    field :next_id, ID, 'ID of replacement Cap', null: true
     field :pos, Enums::CapPositionEnum,
           'Position assigned to Player during Match', null: false
     field :start, Integer, 'Minute of Match Player started', null: false

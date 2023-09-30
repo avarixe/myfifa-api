@@ -122,7 +122,10 @@ class Cap < ApplicationRecord
   end
 
   def set_previous_step
-    previous&.update(stop: destroyed? ? match.num_minutes : start)
+    previous&.update(
+      stop: destroyed? ? match.num_minutes : start,
+      injured: destroyed? ? false : previous.injured
+    )
   end
 
   delegate :team, to: :match
