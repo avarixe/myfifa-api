@@ -110,6 +110,7 @@ class Cap < ApplicationRecord
   after_update :set_previous_step, if: :saved_change_to_start?
   after_destroy :set_previous_step
   after_save :set_stop, if: :saved_change_to_next_id?
+  after_save :propagate_rating, if: :saved_change_to_rating?
 
   def cache_ovr
     self.ovr = PlayerHistory.order(recorded_on: :desc)
@@ -126,6 +127,12 @@ class Cap < ApplicationRecord
       stop: destroyed? ? match.num_minutes : start,
       injured: destroyed? ? false : previous.injured
     )
+  end
+
+  def propagate_rating
+    match.caps.where(player_id:).where.not(id:).find_each do |cap|
+      cap.update(rating:)
+    end
   end
 
   delegate :team, to: :match

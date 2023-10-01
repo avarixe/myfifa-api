@@ -78,7 +78,7 @@ class PlayerPerformanceCompiler
     end
 
     def num_matches
-      @num_matches ||= base_player_query.joins(:matches).count
+      @num_matches ||= base_player_query.joins(:matches).count('DISTINCT(match_id)')
     end
 
     def num_minutes
