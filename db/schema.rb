@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_07_17_232805) do
+ActiveRecord::Schema[7.0].define(version: 2023_09_29_045841) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -62,6 +62,8 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_17_232805) do
     t.datetime "updated_at", precision: nil, null: false
     t.string "player_name"
     t.boolean "home", default: false, null: false
+    t.bigint "cap_id"
+    t.index ["cap_id"], name: "index_bookings_on_cap_id"
     t.index ["match_id"], name: "index_bookings_on_match_id"
     t.index ["player_id"], name: "index_bookings_on_player_id"
   end
@@ -74,11 +76,13 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_17_232805) do
     t.integer "stop", default: 90
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
-    t.boolean "subbed_out", default: false, null: false
     t.integer "rating"
     t.integer "ovr"
+    t.bigint "next_id"
+    t.boolean "injured", default: false, null: false
     t.index ["match_id"], name: "index_caps_on_match_id"
-    t.index ["player_id", "match_id"], name: "index_caps_on_player_id_and_match_id", unique: true
+    t.index ["next_id"], name: "index_caps_on_next_id"
+    t.index ["player_id", "match_id", "start"], name: "index_caps_on_player_id_and_match_id_and_start", unique: true
     t.index ["player_id"], name: "index_caps_on_player_id"
     t.index ["pos", "match_id", "start"], name: "index_caps_on_pos_and_match_id_and_start", unique: true
   end
@@ -143,7 +147,11 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_17_232805) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "assisted_by"
+    t.bigint "cap_id"
+    t.bigint "assist_cap_id"
+    t.index ["assist_cap_id"], name: "index_goals_on_assist_cap_id"
     t.index ["assist_id"], name: "index_goals_on_assist_id"
+    t.index ["cap_id"], name: "index_goals_on_cap_id"
     t.index ["match_id"], name: "index_goals_on_match_id"
     t.index ["player_id"], name: "index_goals_on_player_id"
   end
@@ -264,21 +272,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_07_17_232805) do
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.index ["competition_id"], name: "index_stages_on_competition_id"
-  end
-
-  create_table "substitutions", force: :cascade do |t|
-    t.bigint "match_id"
-    t.integer "minute"
-    t.bigint "player_id"
-    t.bigint "replacement_id"
-    t.boolean "injury", default: false, null: false
-    t.datetime "created_at", precision: nil, null: false
-    t.datetime "updated_at", precision: nil, null: false
-    t.string "player_name"
-    t.string "replaced_by"
-    t.index ["match_id"], name: "index_substitutions_on_match_id"
-    t.index ["player_id"], name: "index_substitutions_on_player_id"
-    t.index ["replacement_id"], name: "index_substitutions_on_replacement_id"
   end
 
   create_table "table_rows", force: :cascade do |t|

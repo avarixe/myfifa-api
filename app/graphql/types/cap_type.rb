@@ -7,14 +7,15 @@ module Types
     field :id, ID, 'Unique Identifier of record', null: false
     field :match_id, ID, 'ID of Match', null: false
     field :player_id, ID, 'ID of Player', null: false
+    field :next_id, ID, 'ID of replacement Cap', null: true
     field :pos, Enums::CapPositionEnum,
           'Position assigned to Player during Match', null: false
     field :start, Integer, 'Minute of Match Player started', null: false
     field :stop, Integer, 'Minute of Match Player stopped', null: false
     field :created_at, GraphQL::Types::ISO8601DateTime,
           'Timestamp this record was created', null: false
-    field :subbed_out, Boolean,
-          'Whether the Player was substituted out of the Match', null: false
+    field :injured, Boolean,
+          'Whether the Player was replaced due to injury', null: false
     field :rating, Integer,
           'Performance Rating of the Player in this Match', null: true
     field :ovr, Integer,

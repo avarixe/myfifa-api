@@ -4,24 +4,28 @@
 #
 # Table name: goals
 #
-#  id          :bigint           not null, primary key
-#  assisted_by :string
-#  home        :boolean          default(FALSE), not null
-#  minute      :integer
-#  own_goal    :boolean          default(FALSE), not null
-#  penalty     :boolean          default(FALSE), not null
-#  player_name :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  assist_id   :bigint
-#  match_id    :bigint
-#  player_id   :bigint
+#  id            :bigint           not null, primary key
+#  assisted_by   :string
+#  home          :boolean          default(FALSE), not null
+#  minute        :integer
+#  own_goal      :boolean          default(FALSE), not null
+#  penalty       :boolean          default(FALSE), not null
+#  player_name   :string
+#  created_at    :datetime         not null
+#  updated_at    :datetime         not null
+#  assist_cap_id :bigint
+#  assist_id     :bigint
+#  cap_id        :bigint
+#  match_id      :bigint
+#  player_id     :bigint
 #
 # Indexes
 #
-#  index_goals_on_assist_id  (assist_id)
-#  index_goals_on_match_id   (match_id)
-#  index_goals_on_player_id  (player_id)
+#  index_goals_on_assist_cap_id  (assist_cap_id)
+#  index_goals_on_assist_id      (assist_id)
+#  index_goals_on_cap_id         (cap_id)
+#  index_goals_on_match_id       (match_id)
+#  index_goals_on_player_id      (player_id)
 #
 
 FactoryBot.define do
@@ -31,7 +35,7 @@ FactoryBot.define do
     match
 
     factory :player_goal do
-      player
+      cap
     end
 
     factory :home_goal do

@@ -7,13 +7,13 @@ module InputObjects
     argument :minute, Integer, 'Minute of Match this occurred', required: true
     argument :player_name, String,
              'Name of Player who scored this Goal', required: false
-    argument :player_id, ID,
-             'ID of Player who scored this Goal if record exists',
+    argument :cap_id, ID,
+             'ID of Player Cap who scored this Goal if record exists',
              required: false
     argument :assisted_by, String,
              'Name of the Player who assisted the Goal', required: false
-    argument :assist_id, ID,
-             'ID of Player who assisted this Goal if record exists',
+    argument :assist_cap_id, ID,
+             'ID of Player Cap who assisted this Goal if record exists',
              required: false
     argument :home, Boolean,
              'Whether this Goal was scored by a Player on the Home Team',

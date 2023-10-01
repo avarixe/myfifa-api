@@ -21,7 +21,6 @@ class MutationType < BaseTypes::BaseObject
     Player
     Squad
     Stage
-    Substitution
     TableRow
     Team
     Transfer
@@ -38,6 +37,8 @@ class MutationType < BaseTypes::BaseObject
   field :release_player, mutation: Mutations::PlayerMutations::ReleasePlayer
   field :retire_player, mutation: Mutations::PlayerMutations::RetirePlayer
   field :apply_squad_to_match, mutation: Mutations::MatchMutations::ApplySquadToMatch
+  field :update_match_formation, mutation: Mutations::MatchMutations::UpdateMatchFormation
+  field :substitute_cap, mutation: Mutations::CapMutations::SubstituteCap
   field :store_match_lineup_to_squad,
         mutation: Mutations::SquadMutations::StoreMatchLineupToSquad
   field :remove_penalty_shootout,

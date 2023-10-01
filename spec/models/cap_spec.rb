@@ -5,23 +5,25 @@
 # Table name: caps
 #
 #  id         :bigint           not null, primary key
+#  injured    :boolean          default(FALSE), not null
 #  ovr        :integer
 #  pos        :string
 #  rating     :integer
 #  start      :integer          default(0)
 #  stop       :integer          default(90)
-#  subbed_out :boolean          default(FALSE), not null
 #  created_at :datetime         not null
 #  updated_at :datetime         not null
 #  match_id   :bigint
+#  next_id    :bigint
 #  player_id  :bigint
 #
 # Indexes
 #
-#  index_caps_on_match_id                    (match_id)
-#  index_caps_on_player_id                   (player_id)
-#  index_caps_on_player_id_and_match_id      (player_id,match_id) UNIQUE
-#  index_caps_on_pos_and_match_id_and_start  (pos,match_id,start) UNIQUE
+#  index_caps_on_match_id                          (match_id)
+#  index_caps_on_next_id                           (next_id)
+#  index_caps_on_player_id                         (player_id)
+#  index_caps_on_player_id_and_match_id_and_start  (player_id,match_id,start) UNIQUE
+#  index_caps_on_pos_and_match_id_and_start        (pos,match_id,start) UNIQUE
 #
 
 require 'rails_helper'
@@ -111,15 +113,31 @@ describe Cap do
     expect(cap.reload.ovr).to be == 70
   end
 
-  # it 'removes all Match events concerning the player upon destruction' do
-  #   create(:goal, match:, player:)
-  #   create(:goal, match:, assisting_player: player)
-  #   create(:booking, match:, player:)
-  #   # create :substitution,
-  #   #                   match: match,
-  #   #                   player: player
-  #   # create :substitution,
-  #   #                   match: match,
-  #   #                   replacement: player
-  # end
+  it 'sets stop when next Cap is set' do
+    create(:cap, previous: cap, start: 60)
+    expect(cap.reload.stop).to be == 60
+  end
+
+  it 'sets stop to Match length when next Cap is removed' do
+    next_cap = create(:cap, previous: cap, start: 60)
+    next_cap.destroy
+    expect(cap.reload.stop).to be == 90
+  end
+
+  it 'changes stop when next Cap changes start' do
+    next_cap = create(:cap, previous: cap, start: 60, stop: 90)
+    next_cap.update!(start: 75)
+    expect(cap.reload.stop).to be == 75
+  end
+
+  it 'propagates Cap ratings between siblings' do
+    next_cap = create(:cap,
+                      previous: cap,
+                      player_id: cap.player_id,
+                      match_id: cap.match_id,
+                      start: 60,
+                      stop: 90)
+    next_cap.update(rating: 5)
+    expect(cap.reload.rating).to be == 5
+  end
 end

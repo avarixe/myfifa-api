@@ -35,10 +35,10 @@ describe QueryType, type: :graphql do
   before do
     players = create_list(:player, 3, team:)
     matches = create_list(:match, 3, team:)
-    create_list(:goal, 3, player: players.sample, match: matches.sample)
+    # create_list(:goal, 3, player: players.sample, match: matches.sample)
     matches.each do |match|
-      players.each do |player|
-        create(:cap, player:, match:)
+      players.each_with_index do |player, i|
+        create(:cap, player:, match:, pos: Cap::POSITIONS[i])
       end
     end
   end

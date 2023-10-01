@@ -50,6 +50,45 @@ module Mutations
       end
     end
 
+    class SubstituteCap < BaseMutation
+      description 'Create Substitute Cap with the provided attributes'
+
+      argument :id, GraphQL::Types::ID,
+               'ID of Cap to substitute', required: true
+      argument :attributes, InputObjects::CapSubstitutionAttributes,
+               'Data object to substitute Cap', required: true
+
+      field :cap, Types::CapType, 'Cap that was substituted', null: false
+      field :replacement, Types::CapType,
+            'Replacement Cap that was created', null: false
+
+      def resolve(id:, attributes:)
+        cap = Cap.find(id)
+
+        if CapPolicy.new(context[:current_user], cap).substitute?
+          substitute_cap(cap, attributes)
+          { cap:, replacement: @replacement }
+        else
+          GraphQL::ExecutionError.new('You are not allowed to perform this action')
+        end
+      rescue ActiveRecord::RecordInvalid => e
+        GraphQL::ExecutionError.new(e.record.errors.full_messages.first)
+      end
+
+      def substitute_cap(cap, attributes)
+        cap.injured = attributes[:injured]
+        @replacement = cap.build_next(
+          match_id: cap.match_id,
+          player_id: attributes[:player_id],
+          start: attributes[:minute],
+          pos: attributes[:pos]
+        )
+        Cap.transaction do
+          cap.save! && @replacement.save!
+        end
+      end
+    end
+
     class RemoveCap < BaseRemoveMutation
       set_entity
     end

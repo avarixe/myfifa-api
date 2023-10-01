@@ -18,7 +18,7 @@ describe Mutations::BookingMutations::AddBooking, type: :graphql do
     {
       matchId: match.id,
       attributes: graphql_attributes_for(:booking).merge(
-        playerId: create(:player, team: match.team).id
+        capId: create(:cap, match:, player: create(:player, team: match.team)).id
       )
     }
   end
