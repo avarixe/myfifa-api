@@ -141,6 +141,7 @@ class Player < ApplicationRecord
 
   before_save :clear_kit_no,
               if: -> { status_changed? && (status.blank? || loaned?) }
+  before_create :init_coverage
   after_create :save_history
   after_update :save_history,
                if: -> { saved_change_to_ovr? || saved_change_to_value? }
@@ -152,6 +153,16 @@ class Player < ApplicationRecord
   }
   after_update :set_contract_conclusion,
                if: -> { saved_change_to_status? && status.blank? }
+
+  def init_coverage
+    return if coverage.present?
+
+    self.coverage = { pos => 1 }.tap do |cov|
+      sec_pos.each do |pos2|
+        cov[pos2] = 2
+      end
+    end
+  end
 
   def clear_kit_no
     self.kit_no = nil
