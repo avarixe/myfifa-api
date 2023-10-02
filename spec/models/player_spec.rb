@@ -68,8 +68,13 @@ describe Player do
   end
 
   it 'filters out null values from coverage' do
-    player = create(:player, coverage: { 'CM' => nil })
-    expect(player.coverage).to be_blank
+    player = create(:player, coverage: { 'CM' => 1, 'RCM' => nil })
+    expect(player.coverage).not_to have_key('RCM')
+  end
+
+  it 'sets default coverage with pos/sec_pos if blank' do
+    player = create(:player, pos: 'CM', sec_pos: %w[LM RM])
+    expect(player.coverage).to be == { 'CM' => 1, 'LM' => 2, 'RM' => 2 }
   end
 
   it 'starts with a history record' do
