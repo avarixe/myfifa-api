@@ -130,7 +130,7 @@ describe Cap do
     expect(cap.reload.stop).to be == 75
   end
 
-  it 'propagates Cap ratings between siblings' do
+  it 'propagates ratings between siblings' do
     next_cap = create(:cap,
                       previous: cap,
                       player_id: cap.player_id,
@@ -139,5 +139,17 @@ describe Cap do
                       stop: 90)
     next_cap.update(rating: 5)
     expect(cap.reload.rating).to be == 5
+  end
+
+  it 'inherits rating from previous with same playerId' do
+    cap.update(rating: 5)
+    next_cap = cap.create_next!(
+      player_id: cap.player_id,
+      match_id: cap.match_id,
+      pos: cap.pos,
+      start: 60,
+      stop: 90
+    )
+    expect(next_cap.rating).to be == 5
   end
 end

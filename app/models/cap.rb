@@ -107,6 +107,7 @@ class Cap < ApplicationRecord
   end
 
   before_validation :cache_ovr
+  before_create :inherit_rating
   after_update :set_previous_step, if: :saved_change_to_start?
   after_destroy :set_previous_step
   after_save :set_stop, if: :saved_change_to_next_id?
@@ -116,6 +117,10 @@ class Cap < ApplicationRecord
     self.ovr = PlayerHistory.order(recorded_on: :desc)
                             .find_by(player_id:, recorded_on: ..match.played_on)
                             &.ovr
+  end
+
+  def inherit_rating
+    self.rating ||= previous&.rating
   end
 
   def set_stop
