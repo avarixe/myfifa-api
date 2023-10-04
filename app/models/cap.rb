@@ -128,6 +128,8 @@ class Cap < ApplicationRecord
   end
 
   def set_previous_step
+    return if previous&.destroyed?
+
     previous&.update(
       stop: destroyed? ? match.num_minutes : start,
       injured: destroyed? ? false : previous.injured
