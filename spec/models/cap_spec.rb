@@ -152,4 +152,17 @@ describe Cap do
     )
     expect(next_cap.rating).to be == 5
   end
+
+  it 'does not inherit from previous with different playerId' do
+    cap.update(rating: 5)
+    player = create(:player, team: cap.team)
+    next_cap = cap.create_next!(
+      player_id: player.id,
+      match_id: cap.match_id,
+      pos: cap.pos,
+      start: 60,
+      stop: 90
+    )
+    expect(next_cap.rating).not_to be == 5
+  end
 end
