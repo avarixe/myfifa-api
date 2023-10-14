@@ -120,7 +120,7 @@ class Cap < ApplicationRecord
   end
 
   def inherit_rating
-    self.rating ||= previous&.rating
+    self.rating ||= previous&.rating if previous&.player_id == player_id
   end
 
   def set_stop
