@@ -146,4 +146,36 @@ describe Competition do
       end
     end
   end
+
+  describe 'when duplicating from Template' do
+    let(:dup_competition) do
+      user = competition.team.user
+      create(:competition, team: create(:team, user:), template_id: competition.id)
+    end
+
+    before do
+      competition.stages.create! name: 'Fixture Test', num_fixtures: 3, num_teams: 6
+      competition.stages.create! name: 'Table Test', num_teams: 7, table: true
+    end
+
+    it 'does not copy from inaccessible competitions' do
+      dup_competition = create(:competition, template_id: competition.id)
+      expect(dup_competition.stages).to be_blank
+    end
+
+    it 'creates stages with the same name' do
+      expect(dup_competition.stages.pluck(:name))
+        .to contain_exactly('Fixture Test', 'Table Test')
+    end
+
+    it 'builds fixtures' do
+      expect(dup_competition.stages.find_by(name: 'Fixture Test').fixtures.size)
+        .to be == 3
+    end
+
+    it 'builds table rows' do
+      expect(dup_competition.stages.find_by(name: 'Table Test').table_rows.size)
+        .to be == 7
+    end
+  end
 end

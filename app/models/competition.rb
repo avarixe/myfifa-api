@@ -114,6 +114,16 @@ class Competition < ApplicationRecord
   #  MUTATORS  #
   ##############
 
+  def template_id=(template_id)
+    template = accessible_scope.find_by(id: template_id)
+    template&.stages&.each do |stage|
+      stages.build name: stage.name,
+                   num_teams: stage.table? ? stage.table_rows.size : (stage.fixtures.size * 2),
+                   num_fixtures: stage.fixtures.size,
+                   table: stage.table?
+    end
+  end
+
   %w[
     num_teams
     num_teams_per_group
@@ -147,5 +157,9 @@ class Competition < ApplicationRecord
 
   def num_rounds
     @num_rounds ||= Math.log(num_knockout_teams, 2).to_i
+  end
+
+  def accessible_scope
+    CompetitionPolicy::Scope.new(team.user, Competition).resolve
   end
 end
