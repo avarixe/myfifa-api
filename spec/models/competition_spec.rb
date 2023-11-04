@@ -147,10 +147,10 @@ describe Competition do
     end
   end
 
-  describe 'when duplicating from Template' do
+  describe 'when loading from last version' do
     let(:dup_competition) do
       user = competition.team.user
-      create(:competition, team: create(:team, user:), template_id: competition.id)
+      create(:competition, team: create(:team, user:), name: competition.name)
     end
 
     before do
@@ -159,7 +159,7 @@ describe Competition do
     end
 
     it 'does not copy from inaccessible competitions' do
-      dup_competition = create(:competition, template_id: competition.id)
+      dup_competition = create(:competition, name: competition.name)
       expect(dup_competition.stages).to be_blank
     end
 

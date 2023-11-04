@@ -70,16 +70,14 @@ class Competition < ApplicationRecord
   #  CALLBACK  #
   ##############
 
-  after_save :load_preset_format, if: :preset_format
+  after_create :load_stages
 
-  def load_preset_format
-    # clear existing stages
-    stages.map(&:destroy)
-
+  def load_stages
     case preset_format
     when 'League'           then load_league
     when 'Knockout'         then load_knockout_stage
     when 'Group + Knockout' then load_group_knockout_stages
+    else load_from_last_version
     end
   end
 
@@ -110,19 +108,18 @@ class Competition < ApplicationRecord
     load_knockout_stage
   end
 
+  def load_from_last_version
+    previous&.stages&.each do |stage|
+      stages.create name: stage.name,
+                    num_teams: stage.table? ? stage.table_rows.size : (stage.fixtures.size * 2),
+                    num_fixtures: stage.fixtures.size,
+                    table: stage.table?
+    end
+  end
+
   ##############
   #  MUTATORS  #
   ##############
-
-  def template_id=(template_id)
-    template = accessible_scope.find_by(id: template_id)
-    template&.stages&.each do |stage|
-      stages.build name: stage.name,
-                   num_teams: stage.table? ? stage.table_rows.size : (stage.fixtures.size * 2),
-                   num_fixtures: stage.fixtures.size,
-                   table: stage.table?
-    end
-  end
 
   %w[
     num_teams
@@ -159,7 +156,7 @@ class Competition < ApplicationRecord
     @num_rounds ||= Math.log(num_knockout_teams, 2).to_i
   end
 
-  def accessible_scope
-    CompetitionPolicy::Scope.new(team.user, Competition).resolve
+  def previous
+    CompetitionPolicy::Scope.new(team.user, Competition).resolve.order(id: :desc).find_by(id: ...id, name:)
   end
 end

@@ -24,7 +24,5 @@ module InputObjects
              "Number of Teams to Advance to Knockout Stages\n" \
              '(Group + Knockout Only)',
              required: false
-    argument :template_id, Integer,
-             'ID of Competition to copy stages from', required: false
   end
 end
