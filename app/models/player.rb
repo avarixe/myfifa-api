@@ -6,7 +6,6 @@
 #
 #  id          :bigint           not null, primary key
 #  birth_year  :integer
-#  coverage    :jsonb            not null
 #  kit_no      :integer
 #  name        :string
 #  nationality :string
@@ -22,8 +21,7 @@
 #
 # Indexes
 #
-#  index_players_on_coverage  (coverage) USING gin
-#  index_players_on_team_id   (team_id)
+#  index_players_on_team_id  (team_id)
 #
 
 class Player < ApplicationRecord
@@ -113,7 +111,6 @@ class Player < ApplicationRecord
   validates :pos, inclusion: { in: POSITIONS }
   validates :status, inclusion: { in: STATUSES }, allow_nil: true
   validate :validate_sec_pos
-  validate :validate_coverage
 
   def validate_sec_pos
     return if sec_pos.nil?
@@ -125,23 +122,12 @@ class Player < ApplicationRecord
     end
   end
 
-  def validate_coverage
-    coverage.each do |pos, cov|
-      if Cap::POSITIONS.exclude?(pos)
-        errors.add(:coverage, "#{pos} is not a valid Position")
-      elsif [1, 2].exclude?(cov)
-        errors.add(:coverage, "#{pos} has an invalid coverage value")
-      end
-    end
-  end
-
   ##############
   #  CALLBACK  #
   ##############
 
   before_save :clear_kit_no,
               if: -> { status_changed? && (status.blank? || loaned?) }
-  before_create :init_coverage
   after_create :save_history
   after_update :save_history,
                if: -> { saved_change_to_ovr? || saved_change_to_value? }
@@ -153,16 +139,6 @@ class Player < ApplicationRecord
   }
   after_update :set_contract_conclusion,
                if: -> { saved_change_to_status? && status.blank? }
-
-  def init_coverage
-    return if coverage.present?
-
-    self.coverage = { pos => 1 }.tap do |cov|
-      sec_pos.each do |pos2|
-        cov[pos2] = 2
-      end
-    end
-  end
 
   def clear_kit_no
     self.kit_no = nil
@@ -204,10 +180,6 @@ class Player < ApplicationRecord
 
   def age=(val)
     self[:birth_year] = team.currently_on.year - val.to_i if team.present?
-  end
-
-  def coverage=(val)
-    self[:coverage] = val.compact_blank
   end
 
   ###############

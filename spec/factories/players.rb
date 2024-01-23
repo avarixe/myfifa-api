@@ -6,7 +6,6 @@
 #
 #  id          :bigint           not null, primary key
 #  birth_year  :integer
-#  coverage    :jsonb            not null
 #  kit_no      :integer
 #  name        :string
 #  nationality :string
@@ -22,8 +21,7 @@
 #
 # Indexes
 #
-#  index_players_on_coverage  (coverage) USING gin
-#  index_players_on_team_id   (team_id)
+#  index_players_on_team_id  (team_id)
 #
 
 FactoryBot.define do
