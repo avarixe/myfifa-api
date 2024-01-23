@@ -207,9 +207,13 @@ class Player < ApplicationRecord
 
   def age = team.currently_on.year - birth_year
 
+  def coverage
+    caps.group(:pos).sum('rating * (stop - start)')
+  end
+
   def as_json(options = {})
     options[:methods] ||= []
-    options[:methods] += %i[age]
+    options[:methods] += %i[age coverage]
     super
   end
 end

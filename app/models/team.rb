@@ -109,14 +109,12 @@ class Team < ApplicationRecord
   end
 
   def coverage
-    {}.tap do |team_cov|
-      players.where(status: 'Active').pluck(:coverage).each do |player_cov|
-        player_cov.each do |pos, cov|
-          team_cov[pos] ||= 0
-          team_cov[pos] += cov == 1 ? 1 : 0.5
-        end
-      end
-    end
+    Cap.joins(:player)
+       .where(players: { team_id: id, status: 'Active' })
+       .group(:pos, :player_id)
+       .pluck(Arel.sql('caps.pos, SUM(rating * (stop - start))'))
+       .group_by(&:first)
+       .transform_values { |v| v.map(&:last) }
   end
 
   def last_match = matches.last
