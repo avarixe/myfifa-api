@@ -111,6 +111,7 @@ class Team < ApplicationRecord
   def coverage
     Cap.joins(:player)
        .where(players: { team_id: id, status: 'Active' })
+       .where.not(rating: nil)
        .group(:pos, :player_id)
        .pluck(Arel.sql('caps.pos, SUM(rating * (stop - start))'))
        .group_by(&:first)

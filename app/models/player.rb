@@ -208,7 +208,7 @@ class Player < ApplicationRecord
   def age = team.currently_on.year - birth_year
 
   def coverage
-    caps.group(:pos).sum('rating * (stop - start)')
+    caps.group(:pos).where.not(rating: nil).sum('rating * (stop - start)')
   end
 
   def as_json(options = {})
