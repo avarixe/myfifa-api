@@ -70,9 +70,15 @@ describe Team do
   end
 
   it '#coverage collates the coverage of each active Player' do
-    create(:player, team:, coverage: { 'CM' => 1 })
-    create(:player, team:, coverage: { 'CDM' => 1, 'CM' => 2 })
-    expect(team.coverage).to match('CM' => 1.5, 'CDM' => 1)
+    player1 = create(:player, team:)
+    create(:cap, player: player1, pos: 'CM', stop: 90, rating: 3)
+    player2 = create(:player, team:)
+    create(:cap, player: player2, pos: 'CDM', stop: 90, rating: 5)
+    create(:cap, player: player2, pos: 'CM', stop: 30, rating: 4)
+    expect(team.coverage).to match(
+      'CM' => [3 * 90, 4 * 30],
+      'CDM' => [5 * 90]
+    )
   end
 
   describe '#injured_players' do

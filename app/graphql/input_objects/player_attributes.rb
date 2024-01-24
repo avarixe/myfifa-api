@@ -18,7 +18,6 @@ module InputObjects
              required: false
     argument :kit_no, Integer,
              'Kit Number assigned to this Player', required: false
-    argument :coverage, PositionCoverageAttributes, required: false
 
     argument :age, Integer, 'Age of this Player', required: false
 

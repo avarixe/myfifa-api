@@ -5,7 +5,7 @@ module Types
     description 'Positional coverage by a Player'
 
     Cap::POSITIONS.each do |pos|
-      field pos.to_sym, Float,
+      field pos.to_sym, Integer,
             "Coverage of #{pos} position", null: true
     end
   end

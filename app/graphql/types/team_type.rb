@@ -43,7 +43,7 @@ module Types
                'Filters for Match results', required: false
     end
 
-    field :coverage, PositionCoverageType,
+    field :coverage, TeamPositionCoverageType,
           'Coverage of positions by active Players', null: false
 
     field :loaned_players, [PlayerType],

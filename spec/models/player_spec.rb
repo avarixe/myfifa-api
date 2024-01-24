@@ -6,7 +6,6 @@
 #
 #  id          :bigint           not null, primary key
 #  birth_year  :integer
-#  coverage    :jsonb            not null
 #  kit_no      :integer
 #  name        :string
 #  nationality :string
@@ -22,8 +21,7 @@
 #
 # Indexes
 #
-#  index_players_on_coverage  (coverage) USING gin
-#  index_players_on_team_id   (team_id)
+#  index_players_on_team_id  (team_id)
 #
 
 require 'rails_helper'
@@ -59,24 +57,6 @@ describe Player do
     expect(build(:player, sec_pos: [''])).not_to be_valid
   end
 
-  it 'requires all coverage keys to be valid' do
-    expect(build(:player, coverage: { 'NA' => 1 })).not_to be_valid
-  end
-
-  it 'requires all coverage values to be valid' do
-    expect(build(:player, coverage: { 'CM' => 3 })).not_to be_valid
-  end
-
-  it 'filters out null values from coverage' do
-    player = create(:player, coverage: { 'CM' => 1, 'RCM' => nil })
-    expect(player.coverage).not_to have_key('RCM')
-  end
-
-  it 'sets default coverage with pos/sec_pos if blank' do
-    player = create(:player, pos: 'CM', sec_pos: %w[LM RM])
-    expect(player.coverage).to be == { 'CM' => 1, 'LM' => 2, 'RM' => 2 }
-  end
-
   it 'starts with a history record' do
     expect(player.histories.length).to be == 1
   end
@@ -91,6 +71,16 @@ describe Player do
     expected_age = Faker::Number.within(range: 18..30)
     player.birth_year = player.team.currently_on.year - expected_age
     expect(player.age).to be == expected_age
+  end
+
+  it 'collates positional coverage' do
+    create(:cap, player:, pos: 'GK', stop: 90, rating: 3)
+    create(:cap, player:, pos: 'CB', stop: 60, rating: 4)
+    create(:cap, player:, pos: 'CB', stop: 60, rating: 5)
+    expect(player.coverage).to match(
+      'GK' => 90 * 3,
+      'CB' => (60 * 4) + (60 * 5)
+    )
   end
 
   describe 'when ovr is changed' do
