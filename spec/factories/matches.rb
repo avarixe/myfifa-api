@@ -4,20 +4,24 @@
 #
 # Table name: matches
 #
-#  id          :bigint           not null, primary key
-#  away        :string
-#  away_score  :integer          default(0)
-#  competition :string
-#  extra_time  :boolean          default(FALSE), not null
-#  friendly    :boolean          default(FALSE), not null
-#  home        :string
-#  home_score  :integer          default(0)
-#  played_on   :date
-#  season      :integer
-#  stage       :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  team_id     :bigint
+#  id              :bigint           not null, primary key
+#  away            :string
+#  away_possession :integer          default(50)
+#  away_score      :integer          default(0)
+#  away_xg         :float
+#  competition     :string
+#  extra_time      :boolean          default(FALSE), not null
+#  friendly        :boolean          default(FALSE), not null
+#  home            :string
+#  home_possession :integer          default(50)
+#  home_score      :integer          default(0)
+#  home_xg         :float
+#  played_on       :date
+#  season          :integer
+#  stage           :string
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  team_id         :bigint
 #
 # Indexes
 #
