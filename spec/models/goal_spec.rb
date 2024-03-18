@@ -9,8 +9,8 @@
 #  home          :boolean          default(FALSE), not null
 #  minute        :integer
 #  own_goal      :boolean          default(FALSE), not null
-#  penalty       :boolean          default(FALSE), not null
 #  player_name   :string
+#  set_piece     :string(20)
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  assist_cap_id :bigint
@@ -43,6 +43,10 @@ describe Goal do
 
   it 'requires a player name' do
     expect(build(:goal, player_name: nil)).not_to be_valid
+  end
+
+  it 'rejects an invalid set piece' do
+    expect(build(:goal, set_piece: 'Throw In')).not_to be_valid
   end
 
   it 'increments home score if home' do

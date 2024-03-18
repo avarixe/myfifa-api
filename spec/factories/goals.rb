@@ -9,8 +9,8 @@
 #  home          :boolean          default(FALSE), not null
 #  minute        :integer
 #  own_goal      :boolean          default(FALSE), not null
-#  penalty       :boolean          default(FALSE), not null
 #  player_name   :string
+#  set_piece     :string(20)
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  assist_cap_id :bigint

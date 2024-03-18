@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2024_03_17_214241) do
+ActiveRecord::Schema[7.0].define(version: 2024_03_18_053425) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -143,12 +143,12 @@ ActiveRecord::Schema[7.0].define(version: 2024_03_17_214241) do
     t.bigint "assist_id"
     t.boolean "home", default: false, null: false
     t.boolean "own_goal", default: false, null: false
-    t.boolean "penalty", default: false, null: false
     t.datetime "created_at", precision: nil, null: false
     t.datetime "updated_at", precision: nil, null: false
     t.string "assisted_by"
     t.bigint "cap_id"
     t.bigint "assist_cap_id"
+    t.string "set_piece", limit: 20
     t.index ["assist_cap_id"], name: "index_goals_on_assist_cap_id"
     t.index ["assist_id"], name: "index_goals_on_assist_id"
     t.index ["cap_id"], name: "index_goals_on_cap_id"
