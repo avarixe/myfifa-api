@@ -23,7 +23,8 @@ module Types
           'Whether this Goal was scored by a Player on the Home Team',
           null: false
     field :own_goal, Boolean, 'Whether this Goal was an Own Goal', null: false
-    field :penalty, Boolean, 'Whether this Goal was a Penalty', null: false
+    field :set_piece, Enums::SetPieceEnum,
+          'Type of Set Piece this Goal was scored from', null: true
     field :created_at, GraphQL::Types::ISO8601DateTime,
           'Timestamp this record was created', null: false
 

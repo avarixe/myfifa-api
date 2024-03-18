@@ -9,8 +9,8 @@
 #  home          :boolean          default(FALSE), not null
 #  minute        :integer
 #  own_goal      :boolean          default(FALSE), not null
-#  penalty       :boolean          default(FALSE), not null
 #  player_name   :string
+#  set_piece     :string(20)
 #  created_at    :datetime         not null
 #  updated_at    :datetime         not null
 #  assist_cap_id :bigint
@@ -44,8 +44,16 @@ class Goal < ApplicationRecord
              optional: true,
              inverse_of: :assists
 
+  SET_PIECES = %w[
+    PK
+    CK
+    DFK
+    IFK
+  ].freeze
+
   validates :minute, inclusion: 1..120
   validates :player_name, presence: true
+  validates :set_piece, inclusion: { in: SET_PIECES }, allow_blank: true
 
   before_validation :set_player, if: -> { cap_id.present? }
   before_validation :set_assisting_player, if: -> { assist_cap_id.present? }

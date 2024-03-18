@@ -65,6 +65,7 @@ en:
         player_name: Player Name
         own_goal: Own Goal
         assisted_by: Assisted By
+        set_piece: Set Piece
       injury:
         start_date: Start Date
         end_date: End Date

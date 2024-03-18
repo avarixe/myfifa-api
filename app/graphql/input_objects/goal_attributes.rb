@@ -20,7 +20,7 @@ module InputObjects
              required: false
     argument :own_goal, Boolean,
              'Whether this Goal was an Own Goal', required: false
-    argument :penalty, Boolean,
-             'Whether this Goal was a Penalty', required: false
+    argument :set_piece, Enums::SetPieceEnum,
+             'Type of Set Piece this Goal was scored from', required: false
   end
 end
