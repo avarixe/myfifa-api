@@ -23,6 +23,12 @@ module Types
     field :stage, String, 'Name of Competition Stage', null: true
     field :friendly, Boolean,
           'Whether this record was non-Competitive', null: false
+    field :home_xg, Float, 'Expected Goals for Home Team', null: true
+    field :away_xg, Float, 'Expected Goals for Away Team', null: true
+    field :home_possession, Integer,
+          'Percentage of Possession for Home Team', null: true
+    field :away_possession, Integer,
+          'Percentage of Possession for Away Team', null: true
 
     field :score, String, 'Score Display of both Teams', null: false
     field :team_result, String,

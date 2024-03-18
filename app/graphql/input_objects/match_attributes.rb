@@ -13,6 +13,12 @@ module InputObjects
              'Whether this Match required an Extra 30 Minutes',
              required: false
     argument :stage, String, 'Name of Competition Stage', required: false
+    argument :home_xg, Float, 'Expected Goals for Home Team', required: false
+    argument :away_xg, Float, 'Expected Goals for Away Team', required: false
+    argument :home_possession, Integer,
+             'Percentage of Possession for Home Team', required: false
+    argument :away_possession, Integer,
+             'Percentage of Possession for Away Team', required: false
 
     argument :penalty_shootout_attributes, PenaltyShootoutAttributes,
              'Attributes for Penalty Shootout bound to this Match',

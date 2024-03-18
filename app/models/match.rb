@@ -4,20 +4,24 @@
 #
 # Table name: matches
 #
-#  id          :bigint           not null, primary key
-#  away        :string
-#  away_score  :integer          default(0)
-#  competition :string
-#  extra_time  :boolean          default(FALSE), not null
-#  friendly    :boolean          default(FALSE), not null
-#  home        :string
-#  home_score  :integer          default(0)
-#  played_on   :date
-#  season      :integer
-#  stage       :string
-#  created_at  :datetime         not null
-#  updated_at  :datetime         not null
-#  team_id     :bigint
+#  id              :bigint           not null, primary key
+#  away            :string
+#  away_possession :integer          default(50)
+#  away_score      :integer          default(0)
+#  away_xg         :float
+#  competition     :string
+#  extra_time      :boolean          default(FALSE), not null
+#  friendly        :boolean          default(FALSE), not null
+#  home            :string
+#  home_possession :integer          default(50)
+#  home_score      :integer          default(0)
+#  home_xg         :float
+#  played_on       :date
+#  season          :integer
+#  stage           :string
+#  created_at      :datetime         not null
+#  updated_at      :datetime         not null
+#  team_id         :bigint
 #
 # Indexes
 #
@@ -58,6 +62,10 @@ class Match < ApplicationRecord
   validates :away, presence: true
   validates :competition, presence: true, unless: :friendly?
   validates :played_on, presence: true
+  validates :home_xg, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
+  validates :away_xg, numericality: { greater_than_or_equal_to: 0 }, allow_nil: true
+  validates :home_possession, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }, allow_nil: true
+  validates :away_possession, numericality: { greater_than_or_equal_to: 0, less_than_or_equal_to: 100 }, allow_nil: true
   validate :different_teams
 
   def different_teams
