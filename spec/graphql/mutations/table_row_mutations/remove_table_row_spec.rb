@@ -29,6 +29,6 @@ describe Mutations::TableRowMutations::RemoveTableRow, type: :graphql do
 
   it 'returns the removed TableRow' do
     expect(response_data.dig('removeTableRow', 'tableRow', 'id'))
-      .to be == table_row.id.to_s
+      .to eq table_row.id.to_s
   end
 end

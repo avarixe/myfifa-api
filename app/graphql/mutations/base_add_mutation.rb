@@ -31,7 +31,7 @@ module Mutations
     end
 
     def self.parent_type=(parent_type)
-      self.parent_id ||= "#{parent_type.underscore}_id".to_sym
+      self.parent_id ||= :"#{parent_type.underscore}_id"
       self.parent_model_klass ||= parent_type.constantize
 
       argument parent_id, GraphQL::Types::ID,

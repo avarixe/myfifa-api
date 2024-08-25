@@ -75,19 +75,19 @@ describe TransferActivityCompiler do
         let(:set) { sample_set[season - 1] }
 
         it "returns arriving Contracts in Season #{season}" do
-          expect(compiler.results[:arrivals].count).to be == set[:arrivals]
+          expect(compiler.results[:arrivals].count).to eq set[:arrivals]
         end
 
         it "returns departing Contracts in Season #{season}" do
-          expect(compiler.results[:departures].count).to be == set[:departures]
+          expect(compiler.results[:departures].count).to eq set[:departures]
         end
 
         it "returns Transfers in Season #{season}" do
-          expect(compiler.results[:transfers].count).to be == set[:transfers]
+          expect(compiler.results[:transfers].count).to eq set[:transfers]
         end
 
         it "returns Loans in Season #{season}" do
-          expect(compiler.results[:loans].count).to be == set[:loans]
+          expect(compiler.results[:loans].count).to eq set[:loans]
         end
       end
     end
@@ -96,25 +96,25 @@ describe TransferActivityCompiler do
       let(:compiler) { described_class.new(team: Team.last) }
 
       it 'returns all arriving Contracts' do
-        Contract.where(previous_id: nil).each do |contract|
+        Contract.where(previous_id: nil).find_each do |contract|
           expect(compiler.results[:arrivals]).to include(contract)
         end
       end
 
       it 'returns all departing Contracts' do
-        Contract.where.not(conclusion: [nil, 'Renewed', 'Transferred']).each do |contract|
+        Contract.where.not(conclusion: [nil, 'Renewed', 'Transferred']).find_each do |contract|
           expect(compiler.results[:departures]).to include(contract)
         end
       end
 
       it 'returns all Transfers' do
-        Transfer.all.each do |transfer|
+        Transfer.find_each do |transfer|
           expect(compiler.results[:transfers]).to include(transfer)
         end
       end
 
       it 'returns all Loans' do
-        Loan.all.each do |loan|
+        Loan.find_each do |loan|
           expect(compiler.results[:loans]).to include(loan)
         end
       end

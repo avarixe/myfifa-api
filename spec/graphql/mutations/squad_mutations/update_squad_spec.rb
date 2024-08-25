@@ -36,11 +36,11 @@ describe Mutations::SquadMutations::UpdateSquad, type: :graphql do
   it 'updates the Squad' do
     old_attributes = squad.attributes
     execute_graphql
-    expect(squad.reload.attributes).not_to be == old_attributes
+    expect(squad.reload.attributes).not_to eq old_attributes
   end
 
   it 'returns the update Squad' do
     expect(response_data.dig('updateSquad', 'squad', 'id'))
-      .to be == squad.id.to_s
+      .to eq squad.id.to_s
   end
 end

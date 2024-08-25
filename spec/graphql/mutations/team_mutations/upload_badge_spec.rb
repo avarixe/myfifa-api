@@ -44,7 +44,7 @@ describe Mutations::TeamMutations::UploadBadge, type: :request do
 
     it 'returns the updated Team' do
       badge_path = json.dig('data', 'uploadBadge', 'team', 'badgePath')
-      expect(badge_path).to be == team.reload.badge_path
+      expect(badge_path).to eq team.reload.badge_path
     end
   end
 end

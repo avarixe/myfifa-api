@@ -29,6 +29,6 @@ describe Mutations::SquadMutations::RemoveSquad, type: :graphql do
 
   it 'returns the removed Squad' do
     expect(response_data.dig('removeSquad', 'squad', 'id'))
-      .to be == squad.id.to_s
+      .to eq squad.id.to_s
   end
 end

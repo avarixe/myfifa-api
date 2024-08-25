@@ -26,7 +26,7 @@ describe Mutations::GrantAccessToken, type: :graphql do
 
     it 'creates a new Access Token' do
       execute_graphql
-      expect(user.access_tokens.count).to be == 1
+      expect(user.access_tokens.count).to eq 1
     end
 
     it 'returns a Token' do
@@ -35,7 +35,7 @@ describe Mutations::GrantAccessToken, type: :graphql do
 
     it 'returns the authenticated User' do
       expect(response_data.dig('grantAccessToken', 'user', 'id'))
-        .to be == user.id.to_s
+        .to eq user.id.to_s
     end
 
     it 'returns the Token expiration date' do

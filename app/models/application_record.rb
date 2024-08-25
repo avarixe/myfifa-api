@@ -5,9 +5,9 @@ class ApplicationRecord < ActiveRecord::Base
 
   def self.cache_options(category, *attributes)
     attributes.each do |attribute|
-      cache_method = "cache_#{attribute}_as_#{category}_option".to_sym
+      cache_method = :"cache_#{attribute}_as_#{category}_option"
 
-      after_save cache_method, if: "saved_change_to_#{attribute}?".to_sym
+      after_save cache_method, if: :"saved_change_to_#{attribute}?"
 
       define_method cache_method do
         Option.create user_id: team.user_id,

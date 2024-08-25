@@ -117,11 +117,6 @@ GEM
       railties (>= 6.1)
     drb (2.2.1)
     erubi (1.13.0)
-    factory_bot (6.4.6)
-      activesupport (>= 5.0.0)
-    factory_bot_rails (6.4.3)
-      factory_bot (~> 6.4)
-      railties (>= 5.0.0)
     faker (3.4.2)
       i18n (>= 1.8.11, < 2)
     ffi (1.17.0)
@@ -295,6 +290,8 @@ GEM
       unicode-display_width (>= 2.4.0, < 3.0)
     rubocop-ast (1.32.1)
       parser (>= 3.3.1.0)
+    rubocop-factory_bot (2.26.1)
+      rubocop (~> 1.61)
     rubocop-performance (1.21.1)
       rubocop (>= 1.48.1, < 2.0)
       rubocop-ast (>= 1.31.1, < 2.0)
@@ -350,7 +347,6 @@ DEPENDENCIES
   debug
   devise
   dotenv-rails
-  factory_bot_rails
   faker
   graphiql-rails
   graphql
@@ -368,6 +364,7 @@ DEPENDENCIES
   rspec-graphql_response
   rspec-rails
   rubocop
+  rubocop-factory_bot
   rubocop-performance
   rubocop-rails
   rubocop-rspec

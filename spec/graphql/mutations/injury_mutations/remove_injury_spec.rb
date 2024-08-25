@@ -29,6 +29,6 @@ describe Mutations::InjuryMutations::RemoveInjury, type: :graphql do
 
   it 'returns the removed Injury' do
     expect(response_data.dig('removeInjury', 'injury', 'id'))
-      .to be == injury.id.to_s
+      .to eq injury.id.to_s
   end
 end

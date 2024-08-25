@@ -126,8 +126,8 @@ class Competition < ApplicationRecord
     num_teams_per_group
     num_advances_from_group
   ].each do |var|
-    define_method "#{var}=" do |val|
-      instance_variable_set "@#{var}", val.to_i
+    define_method :"#{var}=" do |val|
+      instance_variable_set :"@#{var}", val.to_i
     end
   end
 

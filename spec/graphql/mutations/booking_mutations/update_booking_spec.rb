@@ -28,11 +28,11 @@ describe Mutations::BookingMutations::UpdateBooking, type: :graphql do
   it 'updates the Booking' do
     old_attributes = booking.attributes
     execute_graphql
-    expect(booking.reload.attributes).not_to be == old_attributes
+    expect(booking.reload.attributes).not_to eq old_attributes
   end
 
   it 'returns the update Booking' do
     expect(response_data.dig('updateBooking', 'booking', 'id'))
-      .to be == booking.id.to_s
+      .to eq booking.id.to_s
   end
 end

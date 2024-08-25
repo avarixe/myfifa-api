@@ -39,14 +39,14 @@ describe Booking do
     player = create(:player)
     cap = create(:cap, player:)
     player_booking = create(:booking, cap_id: cap.id)
-    expect(player_booking.player_id).to be == player.id
+    expect(player_booking.player_id).to eq player.id
   end
 
   it 'automatically sets player name if cap_id set' do
     player = create(:player)
     cap = create(:cap, player:)
     player_booking = create(:booking, cap_id: cap.id)
-    expect(player_booking.player_name).to be == player.name
+    expect(player_booking.player_name).to eq player.name
   end
 
   it 'changes player id if cap_id changed' do
@@ -54,7 +54,7 @@ describe Booking do
     player2 = create(:player, team: player.team)
     player_booking = create(:booking, cap: create(:cap, player:))
     player_booking.update(cap: create(:cap, player: player2))
-    expect(player_booking.player_id).to be == player2.id
+    expect(player_booking.player_id).to eq player2.id
   end
 
   it 'changes player name if cap_id changed' do
@@ -62,6 +62,6 @@ describe Booking do
     player2 = create(:player, team: player.team)
     player_booking = create(:booking, cap: create(:cap, player:))
     player_booking.update(cap: create(:cap, player: player2))
-    expect(player_booking.player_name).to be == player2.name
+    expect(player_booking.player_name).to eq player2.name
   end
 end

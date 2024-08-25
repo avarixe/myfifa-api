@@ -28,11 +28,11 @@ describe Mutations::TableRowMutations::UpdateTableRow, type: :graphql do
   it 'updates the TableRow' do
     old_attributes = table_row.attributes
     execute_graphql
-    expect(table_row.reload.attributes).not_to be == old_attributes
+    expect(table_row.reload.attributes).not_to eq old_attributes
   end
 
   it 'returns the update TableRow' do
     expect(response_data.dig('updateTableRow', 'tableRow', 'id'))
-      .to be == table_row.id.to_s
+      .to eq table_row.id.to_s
   end
 end

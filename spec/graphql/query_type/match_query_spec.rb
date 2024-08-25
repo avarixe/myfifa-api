@@ -37,11 +37,11 @@ describe QueryType, type: :graphql do
 
   it 'returns the previous Match' do
     expect(response_data.dig('match', 'previousMatch', 'playedOn'))
-      .to be == (match.played_on - 2.days).to_s
+      .to eq (match.played_on - 2.days).to_s
   end
 
   it 'returns the next Match' do
     expect(response_data.dig('match', 'nextMatch', 'playedOn'))
-      .to be == (match.played_on + 2.days).to_s
+      .to eq (match.played_on + 2.days).to_s
   end
 end

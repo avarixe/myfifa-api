@@ -30,11 +30,11 @@ describe Mutations::FixtureMutations::UpdateFixture, type: :graphql do
   it 'updates the Fixture' do
     old_attributes = fixture.attributes
     execute_graphql
-    expect(fixture.reload.attributes).not_to be == old_attributes
+    expect(fixture.reload.attributes).not_to eq old_attributes
   end
 
   it 'returns the update Fixture' do
     expect(response_data.dig('updateFixture', 'fixture', 'id'))
-      .to be == fixture.id.to_s
+      .to eq fixture.id.to_s
   end
 end

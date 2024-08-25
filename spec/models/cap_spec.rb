@@ -70,7 +70,7 @@ describe Cap do
   end
 
   it 'caches the Player OVR when created' do
-    expect(cap.ovr).to be == cap.player.ovr
+    expect(cap.ovr).to eq cap.player.ovr
   end
 
   it 'caches the latest Player OVR when created' do
@@ -84,7 +84,7 @@ describe Cap do
     match = create(:match, team: player.team, played_on: player.team.currently_on)
     cap = create(:cap, player:, match:)
 
-    expect(cap.ovr).to be == 90
+    expect(cap.ovr).to eq 90
   end
 
   it 'caches the Player old OVR when created in the past' do
@@ -94,13 +94,13 @@ describe Cap do
     player.update(ovr: 71)
     match = create(:match, team:, played_on: team.currently_on - 1.month)
     cap = create(:cap, player:, match:)
-    expect(cap.ovr).to be == 70
+    expect(cap.ovr).to eq 70
   end
 
   it 'updates the Player OVR cache when Player is changed' do
     other_player = create(:player, team: cap.player.team)
     cap.update player: other_player
-    expect(cap.ovr).to be == other_player.ovr
+    expect(cap.ovr).to eq other_player.ovr
   end
 
   it 'does not change OVR if Player changes after date' do
@@ -110,24 +110,24 @@ describe Cap do
     cap = create(:cap, player:, match:)
     team.increment_date 1.month
     player.update(ovr: 71)
-    expect(cap.reload.ovr).to be == 70
+    expect(cap.reload.ovr).to eq 70
   end
 
   it 'sets stop when next Cap is set' do
     create(:cap, previous: cap, start: 60)
-    expect(cap.reload.stop).to be == 60
+    expect(cap.reload.stop).to eq 60
   end
 
   it 'sets stop to Match length when next Cap is removed' do
     next_cap = create(:cap, previous: cap, start: 60)
     next_cap.destroy
-    expect(cap.reload.stop).to be == 90
+    expect(cap.reload.stop).to eq 90
   end
 
   it 'changes stop when next Cap changes start' do
     next_cap = create(:cap, previous: cap, start: 60, stop: 90)
     next_cap.update!(start: 75)
-    expect(cap.reload.stop).to be == 75
+    expect(cap.reload.stop).to eq 75
   end
 
   it 'propagates ratings between siblings' do
@@ -138,7 +138,7 @@ describe Cap do
                       start: 60,
                       stop: 90)
     next_cap.update(rating: 5)
-    expect(cap.reload.rating).to be == 5
+    expect(cap.reload.rating).to eq 5
   end
 
   it 'inherits rating from previous with same playerId' do
@@ -150,7 +150,7 @@ describe Cap do
       start: 60,
       stop: 90
     )
-    expect(next_cap.rating).to be == 5
+    expect(next_cap.rating).to eq 5
   end
 
   it 'does not inherit from previous with different playerId' do
@@ -163,6 +163,6 @@ describe Cap do
       start: 60,
       stop: 90
     )
-    expect(next_cap.rating).not_to be == 5
+    expect(next_cap.rating).not_to eq 5
   end
 end

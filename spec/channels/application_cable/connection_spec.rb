@@ -7,7 +7,7 @@ describe ApplicationCable::Connection do
 
   it 'successfully connects with token' do
     connect '/cable', params: { access_token: token.token }
-    expect(connection.current_user).to be == token.user
+    expect(connection.current_user).to eq token.user
   end
 
   it 'rejects connection without token' do

@@ -30,11 +30,11 @@ describe Mutations::TransferMutations::UpdateTransfer, type: :graphql do
   it 'updates the Transfer' do
     old_attributes = transfer.attributes
     execute_graphql
-    expect(transfer.reload.attributes).not_to be == old_attributes
+    expect(transfer.reload.attributes).not_to eq old_attributes
   end
 
   it 'returns the update Transfer' do
     expect(response_data.dig('updateTransfer', 'transfer', 'id'))
-      .to be == transfer.id.to_s
+      .to eq transfer.id.to_s
   end
 end

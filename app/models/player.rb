@@ -187,7 +187,7 @@ class Player < ApplicationRecord
   ###############
 
   %w[active pending injured loaned].each do |condition|
-    define_method "#{condition}?" do
+    define_method :"#{condition}?" do
       status == condition.capitalize
     end
   end
@@ -199,8 +199,8 @@ class Player < ApplicationRecord
   def last_loan = signed_loans.last
 
   %w[contract injury loan].each do |record|
-    define_method "current_#{record}" do
-      last_record = public_send("last_#{record}")
+    define_method :"current_#{record}" do
+      last_record = public_send(:"last_#{record}")
       last_record if last_record&.current?
     end
   end

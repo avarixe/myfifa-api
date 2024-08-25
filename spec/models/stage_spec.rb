@@ -36,41 +36,41 @@ describe Stage do
   end
 
   it 'sets default name to Quarter-Finals if 8 teams' do
-    expect(build(:stage, num_teams: 8).name).to be == 'Quarter-Finals'
+    expect(build(:stage, num_teams: 8).name).to eq 'Quarter-Finals'
   end
 
   it 'sets default name to Semi-Finals if 4 teams' do
-    expect(build(:stage, num_teams: 4).name).to be == 'Semi-Finals'
+    expect(build(:stage, num_teams: 4).name).to eq 'Semi-Finals'
   end
 
   it 'sets default name to Final to 2 teams' do
-    expect(build(:stage, num_teams: 2).name).to be == 'Final'
+    expect(build(:stage, num_teams: 2).name).to eq 'Final'
   end
 
   it 'sets default name depending on number of teams' do
     num_teams = Faker::Number.between(from: 9, to: 20)
-    expect(build(:stage, num_teams:).name).to be == "Round of #{num_teams}"
+    expect(build(:stage, num_teams:).name).to eq "Round of #{num_teams}"
   end
 
   describe 'if table' do
     let(:stage) { create(:stage, table: true) }
 
     it 'creates table rows' do
-      expect(stage.table_rows.size).to be == stage.num_teams
+      expect(stage.table_rows.size).to eq stage.num_teams
     end
 
     it 'does not create fixtures' do
-      expect(stage.fixtures.size).to be == 0
+      expect(stage.fixtures.size).to eq 0
     end
   end
 
   describe 'if round' do
     it 'does not create table rows' do
-      expect(stage.table_rows.size).to be == 0
+      expect(stage.table_rows.size).to eq 0
     end
 
     it 'creates fixtures' do
-      expect(stage.fixtures.size).to be == stage.num_fixtures
+      expect(stage.fixtures.size).to eq stage.num_fixtures
     end
   end
 end

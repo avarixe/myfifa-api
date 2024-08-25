@@ -29,6 +29,6 @@ describe Mutations::GoalMutations::RemoveGoal, type: :graphql do
 
   it 'returns the removed Goal' do
     expect(response_data.dig('removeGoal', 'goal', 'id'))
-      .to be == goal.id.to_s
+      .to eq goal.id.to_s
   end
 end

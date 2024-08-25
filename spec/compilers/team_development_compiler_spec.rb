@@ -54,7 +54,7 @@ describe TeamDevelopmentCompiler do
         results = compiler.results
 
         start_ovrs = sample_set.map { |set| set[:ovr][season] }
-        expect(results[:start_ovr]).to be == start_ovrs.sum / start_ovrs.size
+        expect(results[:start_ovr]).to eq start_ovrs.sum / start_ovrs.size
       end
     end
 
@@ -65,7 +65,7 @@ describe TeamDevelopmentCompiler do
         results = compiler.results
 
         end_ovrs = sample_set.map { |set| set[:ovr][season + 1] }
-        expect(results[:end_ovr]).to be == end_ovrs.sum / end_ovrs.size
+        expect(results[:end_ovr]).to eq end_ovrs.sum / end_ovrs.size
       end
     end
 
@@ -75,7 +75,7 @@ describe TeamDevelopmentCompiler do
         results = compiler.results
 
         start_values = sample_set.map { |set| set[:value][season] }
-        expect(results[:start_value]).to be == start_values.sum
+        expect(results[:start_value]).to eq start_values.sum
       end
     end
 
@@ -86,7 +86,7 @@ describe TeamDevelopmentCompiler do
         results = compiler.results
 
         end_values = sample_set.map { |set| set[:value][season + 1] }
-        expect(results[:end_value]).to be == end_values.sum
+        expect(results[:end_value]).to eq end_values.sum
       end
     end
   end

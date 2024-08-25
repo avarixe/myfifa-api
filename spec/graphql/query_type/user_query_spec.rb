@@ -18,6 +18,6 @@ describe QueryType, type: :graphql do
   end
 
   it 'returns User' do
-    expect(response_data['user']['id']).to be == user.id.to_s
+    expect(response_data['user']['id']).to eq user.id.to_s
   end
 end

@@ -47,7 +47,7 @@ describe PlayerDevelopmentCompiler do
       sample_set.each do |set|
         compiler = described_class.new(team:, player_ids: [set[:player].id])
         compiler.results.each do |result|
-          expect(result[:player_id]).to be == set[:player].id
+          expect(result[:player_id]).to eq set[:player].id
         end
       end
     end
@@ -68,7 +68,7 @@ describe PlayerDevelopmentCompiler do
       end
     end
 
-    it 'will not include Players not active during a Season if provided' do
+    it 'does not include Players not active during a Season if provided' do
       team.update currently_on: team.started_on
       player = create(:player, team:)
       create(:contract,

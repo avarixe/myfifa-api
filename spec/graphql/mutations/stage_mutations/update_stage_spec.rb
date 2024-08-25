@@ -28,11 +28,11 @@ describe Mutations::StageMutations::UpdateStage, type: :graphql do
   it 'updates the Stage' do
     old_attributes = stage.attributes
     execute_graphql
-    expect(stage.reload.attributes).not_to be == old_attributes
+    expect(stage.reload.attributes).not_to eq old_attributes
   end
 
   it 'returns the update Stage' do
     expect(response_data.dig('updateStage', 'stage', 'id'))
-      .to be == stage.id.to_s
+      .to eq stage.id.to_s
   end
 end

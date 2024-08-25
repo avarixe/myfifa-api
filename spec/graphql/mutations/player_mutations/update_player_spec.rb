@@ -30,11 +30,11 @@ describe Mutations::PlayerMutations::UpdatePlayer, type: :graphql do
   it 'updates the Player' do
     old_attributes = player.attributes
     execute_graphql
-    expect(player.reload.attributes).not_to be == old_attributes
+    expect(player.reload.attributes).not_to eq old_attributes
   end
 
   it 'returns the update Player' do
     expect(response_data.dig('updatePlayer', 'player', 'id'))
-      .to be == player.id.to_s
+      .to eq player.id.to_s
   end
 end

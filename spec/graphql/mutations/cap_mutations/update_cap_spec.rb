@@ -32,12 +32,12 @@ describe Mutations::CapMutations::UpdateCap, type: :graphql do
   it 'updates the Cap' do
     old_attributes = cap.attributes
     execute_graphql
-    expect(cap.reload.attributes).not_to be == old_attributes
+    expect(cap.reload.attributes).not_to eq old_attributes
   end
 
   it 'returns the update Cap' do
     expect(response_data.dig('updateCap', 'cap', 'id'))
-      .to be == cap.id.to_s
+      .to eq cap.id.to_s
   end
 
   it 'does not update the Cap if not owned by User' do
@@ -45,7 +45,7 @@ describe Mutations::CapMutations::UpdateCap, type: :graphql do
     allow(cap).to receive(:team).and_return(create(:team))
     allow(Cap).to receive(:find).and_return(cap)
     execute_graphql
-    expect(cap.reload.pos).to be == old_attributes['pos']
+    expect(cap.reload.pos).to eq old_attributes['pos']
   end
 
   describe 'when conflicting with existing Position' do
@@ -65,13 +65,13 @@ describe Mutations::CapMutations::UpdateCap, type: :graphql do
 
     it 'sets new position to Cap' do
       execute_graphql
-      expect(cap.reload.pos).to be == other_pos
+      expect(cap.reload.pos).to eq other_pos
     end
 
     it 'gives old position to conflicting Cap' do
       other_cap = Cap.last
       execute_graphql
-      expect(other_cap.reload.pos).to be == cap.pos
+      expect(other_cap.reload.pos).to eq cap.pos
     end
 
     it 'resets Cap position if failed' do
@@ -100,13 +100,13 @@ describe Mutations::CapMutations::UpdateCap, type: :graphql do
 
     it 'sets new position to Cap' do
       execute_graphql
-      expect(cap.reload.pos).to be == other_pos
+      expect(cap.reload.pos).to eq other_pos
     end
 
     it 'gives old position to conflicting Cap' do
       other_cap = Cap.last
       execute_graphql
-      expect(other_cap.reload.pos).to be == cap.pos
+      expect(other_cap.reload.pos).to eq cap.pos
     end
 
     it 'resets Cap position if failed' do

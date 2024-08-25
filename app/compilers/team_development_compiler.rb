@@ -19,29 +19,29 @@ class TeamDevelopmentCompiler
   end
 
   %w[start end].each do |time|
-    define_method "#{time}_ovr" do
+    define_method :"#{time}_ovr" do
       player_ovrs = PlayerHistory
                     .unscope(:order)
-                    .where(player_id: public_send("player_ids_at_#{time}"))
-                    .where(recorded_on: nil..public_send("season_#{time}"))
+                    .where(player_id: public_send(:"player_ids_at_#{time}"))
+                    .where(recorded_on: nil..public_send(:"season_#{time}"))
                     .pluck(Arel.sql(query_last_value_per_player_id('ovr')))
                     .pluck(1)
       player_ovrs.sum / player_ovrs.size
     end
 
-    define_method "#{time}_value" do
+    define_method :"#{time}_value" do
       player_values = PlayerHistory
                       .unscope(:order)
-                      .where(player_id: public_send("player_ids_at_#{time}"))
-                      .where(recorded_on: nil..public_send("season_#{time}"))
+                      .where(player_id: public_send(:"player_ids_at_#{time}"))
+                      .where(recorded_on: nil..public_send(:"season_#{time}"))
                       .pluck(Arel.sql(query_last_value_per_player_id('value')))
                       .pluck(1)
       player_values.sum
     end
 
-    define_method "player_ids_at_#{time}" do
+    define_method :"player_ids_at_#{time}" do
       Contract
-        .active_for(team:, date: public_send("season_#{time}"))
+        .active_for(team:, date: public_send(:"season_#{time}"))
         .select(:player_id)
     end
   end

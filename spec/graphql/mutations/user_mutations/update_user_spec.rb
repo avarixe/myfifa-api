@@ -29,12 +29,12 @@ describe Mutations::UserMutations::UpdateUser, type: :graphql do
     it 'updates the User' do
       old_attributes = user.attributes
       execute_graphql
-      expect(user.reload.attributes).not_to be == old_attributes
+      expect(user.reload.attributes).not_to eq old_attributes
     end
 
     it 'returns the update User' do
       expect(response_data.dig('updateUser', 'user', 'id'))
-        .to be == user.id.to_s
+        .to eq user.id.to_s
     end
   end
 
@@ -52,7 +52,7 @@ describe Mutations::UserMutations::UpdateUser, type: :graphql do
 
     it 'does not update the User' do
       execute_graphql
-      expect(user.reload.username).not_to be == unavailable_username
+      expect(user.reload.username).not_to eq unavailable_username
     end
   end
 
@@ -74,7 +74,7 @@ describe Mutations::UserMutations::UpdateUser, type: :graphql do
     it 'does not update the User' do
       old_username = other_user.username
       execute_graphql
-      expect(other_user.reload.username).to be == old_username
+      expect(other_user.reload.username).to eq old_username
     end
   end
 end

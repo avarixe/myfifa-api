@@ -29,6 +29,6 @@ describe Mutations::StageMutations::RemoveStage, type: :graphql do
 
   it 'returns the removed Stage' do
     expect(response_data.dig('removeStage', 'stage', 'id'))
-      .to be == stage.id.to_s
+      .to eq stage.id.to_s
   end
 end

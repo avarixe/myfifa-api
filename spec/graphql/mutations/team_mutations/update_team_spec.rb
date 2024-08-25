@@ -29,12 +29,12 @@ describe Mutations::TeamMutations::UpdateTeam, type: :graphql do
     it 'updates the Team' do
       old_attributes = team.attributes
       execute_graphql
-      expect(team.reload.name).not_to be == old_attributes['name']
+      expect(team.reload.name).not_to eq old_attributes['name']
     end
 
     it 'returns the update Team' do
       expect(response_data.dig('updateTeam', 'team', 'id'))
-        .to be == team.id.to_s
+        .to eq team.id.to_s
     end
 
     it 'does not update the Team if not owned by User' do
@@ -42,7 +42,7 @@ describe Mutations::TeamMutations::UpdateTeam, type: :graphql do
       allow(team).to receive(:user).and_return(create(:user))
       allow(Team).to receive(:find).and_return(team)
       execute_graphql
-      expect(team.reload.name).to be == old_attributes['name']
+      expect(team.reload.name).to eq old_attributes['name']
     end
   end
 

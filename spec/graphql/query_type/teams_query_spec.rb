@@ -21,6 +21,6 @@ describe QueryType, type: :graphql do
     create_list(:team, 3)
     create_list(:team, 3, user:)
     expect(response_data['teams'].pluck('id'))
-      .to be == user.teams.pluck(:id).map(&:to_s)
+      .to eq user.teams.pluck(:id).map(&:to_s)
   end
 end

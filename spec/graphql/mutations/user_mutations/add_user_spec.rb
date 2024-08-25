@@ -18,12 +18,12 @@ describe Mutations::UserMutations::AddUser, type: :graphql do
 
     it 'creates a new User' do
       execute_graphql
-      expect(User.count).to be == 1
+      expect(User.count).to eq 1
     end
 
     it 'returns the created User' do
       expect(response_data.dig('registerUser', 'user', 'id'))
-        .to be == User.first.id.to_s
+        .to eq User.first.id.to_s
     end
   end
 

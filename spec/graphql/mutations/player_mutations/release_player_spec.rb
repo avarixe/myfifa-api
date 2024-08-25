@@ -24,12 +24,12 @@ describe Mutations::PlayerMutations::ReleasePlayer, type: :graphql do
 
   it 'terminates the Player contract' do
     execute_graphql
-    expect(player.last_contract.conclusion).to be == 'Released'
+    expect(player.last_contract.conclusion).to eq 'Released'
   end
 
   it 'returns the affected Player' do
     expect(response_data.dig('releasePlayer', 'player', 'id'))
-      .to be == player.id.to_s
+      .to eq player.id.to_s
   end
 
   it 'does not release a Player not owned by user' do
@@ -37,6 +37,6 @@ describe Mutations::PlayerMutations::ReleasePlayer, type: :graphql do
     allow(player).to receive(:team).and_return(player.team)
     allow(player.team).to receive(:user).and_return(create(:user))
     execute_graphql
-    expect(player.last_contract.conclusion).not_to be == 'Released'
+    expect(player.last_contract.conclusion).not_to eq 'Released'
   end
 end

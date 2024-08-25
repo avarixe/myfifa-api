@@ -84,11 +84,11 @@ describe Competition do
     let(:league) { create(:league, num_teams:) }
 
     it 'creates 1 stage' do
-      expect(league.stages.count).to be == 1
+      expect(league.stages.count).to eq 1
     end
 
     it 'creates table rows for number of teams' do
-      expect(league.stages.first.table_rows.size).to be == num_teams
+      expect(league.stages.first.table_rows.size).to eq num_teams
     end
   end
 
@@ -98,13 +98,13 @@ describe Competition do
     let(:cup) { create(:cup, num_teams:) }
 
     it 'creates log(2) Knockout stages' do
-      expect(cup.stages.size).to be == num_rounds
+      expect(cup.stages.size).to eq num_rounds
     end
 
     it 'creates a cascading number of fixtures for each Knockout stage' do
       cup.stages.includes(:fixtures).each_with_index do |round, i|
         num_round_teams = num_teams / (2**i)
-        expect(round.fixtures.size).to be == num_round_teams / 2
+        expect(round.fixtures.size).to eq num_round_teams / 2
       end
     end
   end
@@ -121,17 +121,17 @@ describe Competition do
       num_rounds = Math.log(num_groups * preset[:num_advances_from_group], 2).to_i
 
       it "creates #{num_groups} groups" do
-        expect(tournament.stages.where(table: true).size).to be == num_groups
+        expect(tournament.stages.where(table: true).size).to eq num_groups
       end
 
       it "creates groups of size #{preset[:num_teams_per_group]}" do
-        tournament.stages.includes(:table_rows).where(table: true).each do |group|
-          expect(group.table_rows.size).to be == preset[:num_teams_per_group]
+        tournament.stages.includes(:table_rows).where(table: true).find_each do |group|
+          expect(group.table_rows.size).to eq preset[:num_teams_per_group]
         end
       end
 
       it "creates #{num_rounds} knockout rounds" do
-        expect(tournament.stages.where(table: false).size).to be == num_rounds
+        expect(tournament.stages.where(table: false).size).to eq num_rounds
       end
 
       it 'creates a cascading number of fixtures for each Knockout stage' do
@@ -141,7 +141,7 @@ describe Competition do
           .where(table: false)
           .each_with_index do |round, i|
             num_round_teams = num_groups * preset[:num_advances_from_group] / (2**i)
-            expect(round.fixtures.size).to be == num_round_teams / 2
+            expect(round.fixtures.size).to eq num_round_teams / 2
           end
       end
     end
@@ -170,12 +170,12 @@ describe Competition do
 
     it 'builds fixtures' do
       expect(dup_competition.stages.find_by(name: 'Fixture Test').fixtures.size)
-        .to be == 3
+        .to eq 3
     end
 
     it 'builds table rows' do
       expect(dup_competition.stages.find_by(name: 'Table Test').table_rows.size)
-        .to be == 7
+        .to eq 7
     end
   end
 end

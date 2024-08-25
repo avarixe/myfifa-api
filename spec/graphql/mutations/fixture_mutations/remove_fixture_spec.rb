@@ -29,6 +29,6 @@ describe Mutations::FixtureMutations::RemoveFixture, type: :graphql do
 
   it 'returns the removed Fixture' do
     expect(response_data.dig('removeFixture', 'fixture', 'id'))
-      .to be == fixture.id.to_s
+      .to eq fixture.id.to_s
   end
 end

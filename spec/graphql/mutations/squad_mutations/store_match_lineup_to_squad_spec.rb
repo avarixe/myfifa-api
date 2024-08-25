@@ -43,18 +43,18 @@ describe Mutations::SquadMutations::StoreMatchLineupToSquad do
     it 'populates Match caps based on Squad players' do
       execute_graphql
       expect(match.caps.pluck(:player_id))
-        .to be == squad.reload.squad_players.pluck(:player_id)
+        .to eq squad.reload.squad_players.pluck(:player_id)
     end
 
     it 'populates Match caps based on Squad positions' do
       execute_graphql
       expect(match.caps.pluck(:pos))
-        .to be == squad.reload.squad_players.pluck(:pos)
+        .to eq squad.reload.squad_players.pluck(:pos)
     end
 
     it 'returns the affected Squad' do
       expect(response_data.dig('storeMatchLineupToSquad', 'squad', 'id'))
-        .to be == squad.id.to_s
+        .to eq squad.id.to_s
     end
   end
 end

@@ -31,11 +31,11 @@ describe Mutations::InjuryMutations::UpdateInjury, type: :graphql do
   it 'updates the Injury' do
     old_attributes = injury.attributes
     execute_graphql
-    expect(injury.reload.attributes).not_to be == old_attributes
+    expect(injury.reload.attributes).not_to eq old_attributes
   end
 
   it 'returns the update Injury' do
     expect(response_data.dig('updateInjury', 'injury', 'id'))
-      .to be == injury.id.to_s
+      .to eq injury.id.to_s
   end
 end

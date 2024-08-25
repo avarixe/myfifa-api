@@ -48,53 +48,53 @@ describe MatchesCompiler do
 
   it 'returns total of Matches' do
     compiler = described_class.new(team:)
-    expect(compiler.total).to be == Match.count
+    expect(compiler.total).to eq Match.count
   end
 
   it 'offsets by page' do
     compiler = described_class.new(team:, pagination: { items_per_page: 3, page: 1 })
-    expect(compiler.results).to be == team.matches.offset(3).limit(3).to_a
+    expect(compiler.results).to eq team.matches.offset(3).limit(3).to_a
   end
 
   it 'limits by items per page' do
     compiler = described_class.new(team:, pagination: { items_per_page: 3, page: 0 })
-    expect(compiler.results.size).to be == 3
+    expect(compiler.results.size).to eq 3
   end
 
   it 'sorts Matches' do
     compiler = described_class.new(team:, pagination: { sort_by: 'played_on', sort_desc: true })
-    expect(compiler.results.to_a).to be == Match.order(played_on: :desc).to_a
+    expect(compiler.results.to_a).to eq Match.order(played_on: :desc).to_a
   end
 
   it 'filters results by Season' do
     4.times do |season|
       compiler = described_class.new(team:, filters: { season: })
-      expect(compiler.results.to_a).to be == team.matches.where(season:).to_a
+      expect(compiler.results.to_a).to eq team.matches.where(season:).to_a
     end
   end
 
   it 'filters results by Competition' do
     sample_competitions.each do |competition|
       compiler = described_class.new(team:, filters: { competition: })
-      expect(compiler.results.to_a).to be == team.matches.where(competition:).to_a
+      expect(compiler.results.to_a).to eq team.matches.where(competition:).to_a
     end
   end
 
   it 'filters results by Stage' do
     sample_stages.each do |stage|
       compiler = described_class.new(team:, filters: { stage: stage.gsub('Stage ', '') })
-      expect(compiler.results.to_a).to be == team.matches.where(stage:).to_a
+      expect(compiler.results.to_a).to eq team.matches.where(stage:).to_a
     end
   end
 
   it 'filters results by Home Team' do
     compiler = described_class.new(team:, filters: { team: 'Home' })
-    expect(compiler.results.to_a).to be == team.matches.where(home: 'Home Team').to_a
+    expect(compiler.results.to_a).to eq team.matches.where(home: 'Home Team').to_a
   end
 
   it 'filters results by Away Team' do
     compiler = described_class.new(team:, filters: { team: 'Away' })
-    expect(compiler.results.to_a).to be == team.matches.where(away: 'Away Team').to_a
+    expect(compiler.results.to_a).to eq team.matches.where(away: 'Away Team').to_a
   end
 
   it 'filters results by Wins' do
@@ -120,7 +120,7 @@ describe MatchesCompiler do
 
   it 'allows multiple result filters' do
     compiler = described_class.new(team:, filters: { result: %w[win draw loss] })
-    expect(compiler.results.to_a).to be == team.matches.to_a
+    expect(compiler.results.to_a).to eq team.matches.to_a
   end
 
   it 'filters by date' do
@@ -128,7 +128,7 @@ describe MatchesCompiler do
       team:,
       filters: { start_on: team.started_on + 1.year, end_on: team.started_on + 2.years }
     )
-    expect(compiler.results.to_a).to be == (
+    expect(compiler.results.to_a).to eq(
       team.matches.where(played_on: team.started_on + 1.year..team.started_on + 2.years).to_a
     )
   end

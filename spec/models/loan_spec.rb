@@ -121,7 +121,7 @@ describe Loan do
     end
 
     it 'stops tracking injury' do
-      expect(player.last_injury.ended_on).to be == player.team.currently_on
+      expect(player.last_injury.ended_on).to eq player.team.currently_on
     end
   end
 
@@ -143,17 +143,17 @@ describe Loan do
 
     it 'creates a Transfer on the current Team date' do
       expect(loan.player.transfers.last.moved_on)
-        .to be == loan.team.currently_on
+        .to eq loan.team.currently_on
     end
 
     it 'creates a Transfer inheriting its Transfer Fee' do
-      expect(loan.player.transfers.last.fee).to be == loan.transfer_fee
+      expect(loan.player.transfers.last.fee).to eq loan.transfer_fee
     end
 
     it 'creates a Transfer inheriting Add-On Clause, Origin and Destination' do
       %i[addon_clause origin destination].each do |attribute|
         expect(loan.player.transfers.last.public_send(attribute))
-          .to be == loan.public_send(attribute)
+          .to eq loan.public_send(attribute)
       end
     end
   end

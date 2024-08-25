@@ -31,6 +31,6 @@ RSpec.describe AccessToken do
   end
 
   it 'sets the token expiration to 2 weeks after creation' do
-    expect(token.expires_at.to_i).to be == (token.created_at + 2.weeks).to_i
+    expect(token.expires_at.to_i).to eq (token.created_at + 2.weeks).to_i
   end
 end

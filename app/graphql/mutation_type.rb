@@ -25,11 +25,11 @@ class MutationType < BaseTypes::BaseObject
     Team
     Transfer
   ].each do |model|
-    field "add_#{model.underscore}".to_sym,
+    field :"add_#{model.underscore}",
           mutation: Mutations.const_get("#{model}Mutations").const_get("Add#{model}")
-    field "update_#{model.underscore}".to_sym,
+    field :"update_#{model.underscore}",
           mutation: Mutations.const_get("#{model}Mutations").const_get("Update#{model}")
-    field "remove_#{model.underscore}".to_sym,
+    field :"remove_#{model.underscore}",
           mutation: Mutations.const_get("#{model}Mutations").const_get("Remove#{model}")
   end
 

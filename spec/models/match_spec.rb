@@ -72,7 +72,7 @@ describe Match do
     match = create(:match,
                    team:,
                    played_on: team.currently_on + 1.year)
-    expect(match.season).to be == 1
+    expect(match.season).to eq 1
   end
 
   it 'detects when user team is playing away' do
@@ -89,7 +89,7 @@ describe Match do
   end
 
   it 'starts off 0 - 0' do
-    expect(match.score).to be == '0 - 0'
+    expect(match.score).to eq '0 - 0'
   end
 
   it 'cannot have two Performance records for the same player and start' do
@@ -102,7 +102,7 @@ describe Match do
     player = create(:player, team:)
     cap = create(:cap, match:, player:)
     match.update(extra_time: true)
-    expect(cap.reload.stop).to be == 120
+    expect(cap.reload.stop).to eq 120
   end
 
   it 'sets Match times to 90 minutes if not extra time' do
@@ -110,7 +110,7 @@ describe Match do
     player = create(:player, team: match.team)
     cap = create(:cap, match:, player:)
     match.update(extra_time: false)
-    expect(cap.reload.stop).to be == 90
+    expect(cap.reload.stop).to eq 90
   end
 
   %i[home away].each do |side|
@@ -123,7 +123,7 @@ describe Match do
                        side => team.name,
                        "#{side}_score" => 1,
                        "#{opposite_side}_score" => 0)
-        expect(match.team_result).to be == 'win'
+        expect(match.team_result).to eq 'win'
       end
 
       it 'detects team draw' do
@@ -132,7 +132,7 @@ describe Match do
                        side => team.name,
                        "#{side}_score" => 1,
                        "#{opposite_side}_score" => 1)
-        expect(match.team_result).to be == 'draw'
+        expect(match.team_result).to eq 'draw'
       end
 
       it 'detects team loss' do
@@ -141,19 +141,19 @@ describe Match do
                        side => team.name,
                        "#{side}_score" => 0,
                        "#{opposite_side}_score" => 1)
-        expect(match.team_result).to be == 'loss'
+        expect(match.team_result).to eq 'loss'
       end
     end
   end
 
   it 'does not move current date forward if date is behind current date' do
     match.update(played_on: match.team.currently_on - 1.day)
-    expect(match.team.reload.currently_on).not_to be == match.played_on
+    expect(match.team.reload.currently_on).not_to eq match.played_on
   end
 
   it 'moves current date forward if date is ahead of current date' do
     match.update(played_on: match.team.currently_on + 1.day)
-    expect(match.team.reload.currently_on).to be == match.played_on
+    expect(match.team.reload.currently_on).to eq match.played_on
   end
 
   describe 'when Squad is applied' do
