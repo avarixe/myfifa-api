@@ -69,7 +69,7 @@ describe Transfer do
     end
 
     it 'does not end the current contract' do
-      expect(player.last_contract.ended_on).not_to be == player.team.currently_on
+      expect(player.last_contract.ended_on).not_to eq player.team.currently_on
     end
 
     it 'does not add a conclusion to the current contract' do
@@ -91,11 +91,11 @@ describe Transfer do
     end
 
     it 'ends the current contract' do
-      expect(player.last_contract.ended_on).to be == player.team.currently_on
+      expect(player.last_contract.ended_on).to eq player.team.currently_on
     end
 
     it "concludes the current contract as 'Transferred'" do
-      expect(player.last_contract.conclusion).to be == 'Transferred'
+      expect(player.last_contract.conclusion).to eq 'Transferred'
     end
   end
 
@@ -128,11 +128,11 @@ describe Transfer do
     end
 
     it 'ends the current contract' do
-      expect(player.last_contract.ended_on).to be == player.team.currently_on
+      expect(player.last_contract.ended_on).to eq player.team.currently_on
     end
 
     it "concludes the current contract as 'Transferred'" do
-      expect(player.last_contract.conclusion).to be == 'Transferred'
+      expect(player.last_contract.conclusion).to eq 'Transferred'
     end
   end
 end

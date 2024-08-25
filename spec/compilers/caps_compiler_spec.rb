@@ -50,30 +50,30 @@ describe CapsCompiler do
 
   it 'returns total of Caps' do
     compiler = described_class.new(player:)
-    expect(compiler.total).to be == Cap.count
+    expect(compiler.total).to eq Cap.count
   end
 
   it 'offsets by page' do
     compiler = described_class.new(player:, pagination: { items_per_page: 3, page: 1 })
-    expect(compiler.results).to be == player.caps.offset(3).limit(3).to_a
+    expect(compiler.results).to eq player.caps.offset(3).limit(3).to_a
   end
 
   it 'limits by items per page' do
     compiler = described_class.new(player:, pagination: { items_per_page: 3, page: 0 })
-    expect(compiler.results.size).to be == 3
+    expect(compiler.results.size).to eq 3
   end
 
   it 'sorts Matches' do
     compiler = described_class.new(player:, pagination: { sort_by: 'played_on', sort_desc: true })
     expect(compiler.results.to_a)
-      .to be == Cap.joins(:match).order('matches.played_on' => :desc).to_a
+      .to eq Cap.joins(:match).order('matches.played_on' => :desc).to_a
   end
 
   it 'filters results by Season' do
     4.times do |season|
       compiler = described_class.new(player:, filters: { season: })
       expect(compiler.results.to_a)
-        .to be == player.caps.joins(:match).where(matches: { season: }).to_a
+        .to eq player.caps.joins(:match).where(matches: { season: }).to_a
     end
   end
 
@@ -81,7 +81,7 @@ describe CapsCompiler do
     sample_competitions.each do |competition|
       compiler = described_class.new(player:, filters: { competition: })
       expect(compiler.results.to_a)
-        .to be == player.caps.joins(:match).where(matches: { competition: }).to_a
+        .to eq player.caps.joins(:match).where(matches: { competition: }).to_a
     end
   end
 
@@ -89,20 +89,20 @@ describe CapsCompiler do
     sample_stages.each do |stage|
       compiler = described_class.new(player:, filters: { stage: stage.gsub('Stage ', '') })
       expect(compiler.results.to_a)
-        .to be == player.caps.joins(:match).where(matches: { stage: }).to_a
+        .to eq player.caps.joins(:match).where(matches: { stage: }).to_a
     end
   end
 
   it 'filters results by Home Team' do
     compiler = described_class.new(player:, filters: { team: 'Home' })
     expect(compiler.results.to_a)
-      .to be == player.caps.joins(:match).where(matches: { home: 'Home Team' }).to_a
+      .to eq player.caps.joins(:match).where(matches: { home: 'Home Team' }).to_a
   end
 
   it 'filters results by Away Team' do
     compiler = described_class.new(player:, filters: { team: 'Away' })
     expect(compiler.results.to_a)
-      .to be == player.caps.joins(:match).where(matches: { away: 'Away Team' }).to_a
+      .to eq player.caps.joins(:match).where(matches: { away: 'Away Team' }).to_a
   end
 
   it 'filters results by Wins' do
@@ -128,7 +128,7 @@ describe CapsCompiler do
 
   it 'allows multiple result filters' do
     compiler = described_class.new(player:, filters: { result: %w[win draw loss] })
-    expect(compiler.results.to_a).to be == player.caps.to_a
+    expect(compiler.results.to_a).to eq player.caps.to_a
   end
 
   it 'filters by date' do
@@ -136,7 +136,7 @@ describe CapsCompiler do
     start_on = team.started_on + 1.year
     end_on = team.started_on + 2.years
     compiler = described_class.new(player:, filters: { start_on:, end_on: })
-    expect(compiler.results.to_a).to be == (
+    expect(compiler.results.to_a).to eq(
       player.caps.joins(:match).where(matches: { played_on: start_on..end_on }).to_a
     )
   end

@@ -33,7 +33,7 @@ describe QueryType, type: :graphql do
         end
 
         it 'returns specific Team' do
-          expect(response_data.dig(type, 'id')).to be == record.id.to_s
+          expect(response_data.dig(type, 'id')).to eq record.id.to_s
         end
       end
 

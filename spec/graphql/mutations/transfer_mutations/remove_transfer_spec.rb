@@ -29,6 +29,6 @@ describe Mutations::TransferMutations::RemoveTransfer, type: :graphql do
 
   it 'returns the removed Transfer' do
     expect(response_data.dig('removeTransfer', 'transfer', 'id'))
-      .to be == transfer.id.to_s
+      .to eq transfer.id.to_s
   end
 end

@@ -29,6 +29,6 @@ describe Mutations::MatchMutations::RemoveMatch, type: :graphql do
 
   it 'returns the removed Match' do
     expect(response_data.dig('removeMatch', 'match', 'id'))
-      .to be == match.id.to_s
+      .to eq match.id.to_s
   end
 end

@@ -30,17 +30,17 @@ describe Mutations::MatchMutations::ApplySquadToMatch, type: :graphql do
   it 'populates Match caps based on Squad players' do
     execute_graphql
     expect(match.caps.pluck(:player_id).sort)
-      .to be == squad.squad_players.pluck(:player_id).sort
+      .to eq squad.squad_players.pluck(:player_id).sort
   end
 
   it 'populates Match caps based on Squad positions' do
     execute_graphql
     expect(match.caps.pluck(:pos).sort)
-      .to be == squad.squad_players.pluck(:pos).sort
+      .to eq squad.squad_players.pluck(:pos).sort
   end
 
   it 'returns the affected Squad' do
     expect(response_data.dig('applySquadToMatch', 'match', 'id'))
-      .to be == match.id.to_s
+      .to eq match.id.to_s
   end
 end

@@ -29,6 +29,6 @@ describe Mutations::BookingMutations::RemoveBooking, type: :graphql do
 
   it 'returns the removed Booking' do
     expect(response_data.dig('removeBooking', 'booking', 'id'))
-      .to be == booking.id.to_s
+      .to eq booking.id.to_s
   end
 end

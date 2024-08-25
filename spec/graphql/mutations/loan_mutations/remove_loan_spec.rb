@@ -29,6 +29,6 @@ describe Mutations::LoanMutations::RemoveLoan, type: :graphql do
 
   it 'returns the removed Loan' do
     expect(response_data.dig('removeLoan', 'loan', 'id'))
-      .to be == loan.id.to_s
+      .to eq loan.id.to_s
   end
 end

@@ -24,12 +24,12 @@ describe Mutations::TeamMutations::AddTeam, type: :graphql do
 
     it 'creates a new Team for the user' do
       execute_graphql
-      expect(user.reload.teams.count).to be == 1
+      expect(user.reload.teams.count).to eq 1
     end
 
     it 'returns the created Team' do
       expect(response_data.dig('addTeam', 'team', 'id'))
-        .to be == user.teams.first.id.to_s
+        .to eq user.teams.first.id.to_s
     end
   end
 

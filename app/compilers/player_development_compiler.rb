@@ -61,7 +61,7 @@ class PlayerDevelopmentCompiler
       team
         .players
         .joins(:contracts)
-        .where('contracts.started_on <= ?', season_end)
+        .where(contracts: { started_on: ..season_end })
         .where('contracts.ended_on > ?', season_start)
     end
 

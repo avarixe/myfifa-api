@@ -46,7 +46,7 @@ describe CompetitionCompiler do
         compiler = described_class.new(team:, competition:)
         num_in_set = sample_set.count { |set| set[:competition] == competition }
         num_in_results = compiler.results.pluck(:wins, :draws, :losses).sum(&:sum)
-        expect(num_in_results).to be == num_in_set
+        expect(num_in_results).to eq num_in_set
       end
     end
 
@@ -56,7 +56,7 @@ describe CompetitionCompiler do
         compiler = described_class.new(team:, season:)
         num_in_set = sample_set.count { |set| set[:season] == season }
         num_in_results = compiler.results.pluck(:wins, :draws, :losses).sum(&:sum)
-        expect(num_in_results).to be == num_in_set
+        expect(num_in_results).to eq num_in_set
       end
     end
 
@@ -77,7 +77,7 @@ describe CompetitionCompiler do
           num_in_results = results.find do |result|
             result[:competition] == competition && result[:season] == season
           end&.dig(:wins) || 0
-          expect(num_in_results).to be == num_in_set
+          expect(num_in_results).to eq num_in_set
         end
       end
     end
@@ -95,7 +95,7 @@ describe CompetitionCompiler do
           num_in_results = results.find do |result|
             result[:competition] == competition && result[:season] == season
           end&.dig(:draws) || 0
-          expect(num_in_results).to be == num_in_set
+          expect(num_in_results).to eq num_in_set
         end
       end
     end
@@ -117,7 +117,7 @@ describe CompetitionCompiler do
           num_in_results = results.find do |result|
             result[:competition] == competition && result[:season] == season
           end&.dig(:losses) || 0
-          expect(num_in_results).to be == num_in_set
+          expect(num_in_results).to eq num_in_set
         end
       end
     end
@@ -135,7 +135,7 @@ describe CompetitionCompiler do
           num_in_results = results.find do |result|
             result[:competition] == competition && result[:season] == season
           end&.dig(:goals_for) || 0
-          expect(num_in_results).to be == num_in_set
+          expect(num_in_results).to eq num_in_set
         end
       end
     end
@@ -153,7 +153,7 @@ describe CompetitionCompiler do
           num_in_results = results.find do |result|
             result[:competition] == competition && result[:season] == season
           end&.dig(:goals_against) || 0
-          expect(num_in_results).to be == num_in_set
+          expect(num_in_results).to eq num_in_set
         end
       end
     end

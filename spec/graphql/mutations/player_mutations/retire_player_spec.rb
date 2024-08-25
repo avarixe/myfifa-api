@@ -24,12 +24,12 @@ describe Mutations::PlayerMutations::RetirePlayer, type: :graphql do
 
   it 'updates the Player contract as Retiring' do
     execute_graphql
-    expect(player.last_contract.conclusion).to be == 'Retired'
+    expect(player.last_contract.conclusion).to eq 'Retired'
   end
 
   it 'returns the affected Player' do
     expect(response_data.dig('retirePlayer', 'player', 'id'))
-      .to be == player.id.to_s
+      .to eq player.id.to_s
   end
 
   it 'does not release a Player not owned by user' do
@@ -37,6 +37,6 @@ describe Mutations::PlayerMutations::RetirePlayer, type: :graphql do
     allow(player).to receive(:team).and_return(player.team)
     allow(player.team).to receive(:user).and_return(create(:user))
     execute_graphql
-    expect(player.last_contract.conclusion).not_to be == 'Retired'
+    expect(player.last_contract.conclusion).not_to eq 'Retired'
   end
 end

@@ -58,19 +58,19 @@ describe Player do
   end
 
   it 'starts with a history record' do
-    expect(player.histories.length).to be == 1
+    expect(player.histories.length).to eq 1
   end
 
   it 'sets birth_year automatically if age is provided' do
     player.birth_year = nil
     player.age = player.team.currently_on.year - player.birth_year_was
-    expect(player.birth_year).to be == player.birth_year_was
+    expect(player.birth_year).to eq player.birth_year_was
   end
 
   it 'sets age based on team date and birth year' do
     expected_age = Faker::Number.within(range: 18..30)
     player.birth_year = player.team.currently_on.year - expected_age
-    expect(player.age).to be == expected_age
+    expect(player.age).to eq expected_age
   end
 
   it 'collates positional coverage' do
@@ -91,11 +91,11 @@ describe Player do
     end
 
     it 'creates new history record' do
-      expect(player.histories.length).to be == 2
+      expect(player.histories.length).to eq 2
     end
 
     it 'stores new ovr in history' do
-      expect(player.histories.last.ovr).to be == player.ovr
+      expect(player.histories.last.ovr).to eq player.ovr
     end
   end
 
@@ -108,11 +108,11 @@ describe Player do
     end
 
     it 'does not create an extra history record' do
-      expect(player.histories.length).to be == 2
+      expect(player.histories.length).to eq 2
     end
 
     it 'stores new value in history' do
-      expect(player.histories.last.value).to be == player.value
+      expect(player.histories.last.value).to eq player.value
     end
   end
 end

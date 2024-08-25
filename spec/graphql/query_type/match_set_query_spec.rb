@@ -39,6 +39,6 @@ describe QueryType, type: :graphql do
 
   it 'returns total of Matches' do
     match_set = MatchesCompiler.new(team:, pagination:, filters:)
-    expect(response_data['team']['matchSet']['total']).to be == match_set.total
+    expect(response_data['team']['matchSet']['total']).to eq match_set.total
   end
 end

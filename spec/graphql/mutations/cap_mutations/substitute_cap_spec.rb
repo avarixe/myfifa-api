@@ -40,17 +40,17 @@ describe Mutations::CapMutations::SubstituteCap, type: :graphql do
 
   it 'sets start of replacement Cap' do
     execute_graphql
-    expect(cap.reload.next.start).to be == 60
+    expect(cap.reload.next.start).to eq 60
   end
 
   it 'sets player of replacement Cap' do
     execute_graphql
-    expect(cap.reload.next.player_id).to be == player.id
+    expect(cap.reload.next.player_id).to eq player.id
   end
 
   it 'sets position of replacement Cap' do
     execute_graphql
-    expect(cap.reload.next.pos).to be == other_pos
+    expect(cap.reload.next.pos).to eq other_pos
   end
 
   it 'marks Cap as injured if toggled' do
@@ -60,12 +60,12 @@ describe Mutations::CapMutations::SubstituteCap, type: :graphql do
 
   it 'returns the updated Cap' do
     expect(response_data.dig('substituteCap', 'cap', 'id'))
-      .to be == cap.id.to_s
+      .to eq cap.id.to_s
   end
 
   it 'returns the replacement Cap' do
     expect(response_data.dig('substituteCap', 'replacement', 'id'))
-      .to be == cap.reload.next_id.to_s
+      .to eq cap.reload.next_id.to_s
   end
 
   it 'does not update the Cap if not owned by User' do
@@ -90,7 +90,7 @@ describe Mutations::CapMutations::SubstituteCap, type: :graphql do
 
     it 'does not affect original Cap' do
       execute_graphql
-      expect(cap.reload.stop).to be == 90
+      expect(cap.reload.stop).to eq 90
     end
 
     it 'does not create a replacement Cap' do

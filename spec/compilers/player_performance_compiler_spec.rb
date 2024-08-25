@@ -68,7 +68,7 @@ describe PlayerPerformanceCompiler do
         compiler = described_class.new(team:, player_ids: [player.id])
         num_in_set = sample_set.count { |set| set[:player] == player }
         num_in_results = compiler.results.pluck(:num_matches).sum
-        expect(num_in_results).to be == num_in_set
+        expect(num_in_results).to eq num_in_set
       end
     end
 
@@ -77,7 +77,7 @@ describe PlayerPerformanceCompiler do
         compiler = described_class.new(team:, competition:)
         num_in_set = sample_set.count { |set| set[:competition] == competition }
         num_in_results = compiler.results.pluck(:num_matches).sum
-        expect(num_in_results).to be == num_in_set
+        expect(num_in_results).to eq num_in_set
       end
     end
 
@@ -86,7 +86,7 @@ describe PlayerPerformanceCompiler do
         compiler = described_class.new(team:, season:)
         num_in_set = sample_set.count { |set| set[:season] == season }
         num_in_results = compiler.results.pluck(:num_matches).sum
-        expect(num_in_results).to be == num_in_set
+        expect(num_in_results).to eq num_in_set
       end
     end
 
@@ -104,7 +104,7 @@ describe PlayerPerformanceCompiler do
                 result[:competition] == competition &&
                 result[:season] == season
             end&.dig(:num_matches) || 0
-            expect(num_in_results).to be == num_in_set
+            expect(num_in_results).to eq num_in_set
           end
         end
       end
@@ -129,7 +129,7 @@ describe PlayerPerformanceCompiler do
                   result[:competition] == competition &&
                   result[:season] == season
               end&.dig(metric.to_sym) || 0
-              expect(num_in_results).to be == num_in_set
+              expect(num_in_results).to eq num_in_set
             end
           end
         end
@@ -157,7 +157,7 @@ describe PlayerPerformanceCompiler do
                 result[:competition] == competition &&
                 result[:season] == season
             end&.dig(:avg_rating) || 0
-            expect(num_in_results.round(3)).to be == num_in_set.round(3)
+            expect(num_in_results.round(3)).to eq num_in_set.round(3)
           end
         end
       end
@@ -178,7 +178,7 @@ describe PlayerPerformanceCompiler do
                 result[:competition] == competition &&
                 result[:season] == season
             end&.dig(:num_clean_sheets) || 0
-            expect(num_in_results).to be == num_in_set
+            expect(num_in_results).to eq num_in_set
           end
         end
       end

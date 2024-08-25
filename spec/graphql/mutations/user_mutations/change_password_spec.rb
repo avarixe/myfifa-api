@@ -49,12 +49,12 @@ describe Mutations::UserMutations::ChangePassword, type: :graphql do
       }
     end
 
-    it 'will not update the Password' do
+    it 'does not update the Password' do
       execute_graphql
       expect(user.reload.valid_password?(password)).to be true
     end
 
-    it 'will return an error message' do
+    it 'returns an error message' do
       expect(response['errors']).to be_present
     end
   end
@@ -71,12 +71,12 @@ describe Mutations::UserMutations::ChangePassword, type: :graphql do
       }
     end
 
-    it 'will not update the Password' do
+    it 'does not update the Password' do
       execute_graphql
       expect(user.reload.valid_password?(password)).to be true
     end
 
-    it 'will return an error message' do
+    it 'returns an error message' do
       expect(response['errors']).to be_present
     end
   end

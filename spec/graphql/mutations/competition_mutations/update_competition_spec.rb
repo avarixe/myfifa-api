@@ -28,11 +28,11 @@ describe Mutations::CompetitionMutations::UpdateCompetition, type: :graphql do
   it 'updates the Competition' do
     old_attributes = competition.attributes
     execute_graphql
-    expect(competition.reload.attributes).not_to be == old_attributes
+    expect(competition.reload.attributes).not_to eq old_attributes
   end
 
   it 'returns the update Competition' do
     expect(response_data.dig('updateCompetition', 'competition', 'id'))
-      .to be == competition.id.to_s
+      .to eq competition.id.to_s
   end
 end

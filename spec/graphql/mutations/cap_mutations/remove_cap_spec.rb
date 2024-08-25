@@ -29,6 +29,6 @@ describe Mutations::CapMutations::RemoveCap, type: :graphql do
 
   it 'returns the removed Cap' do
     expect(response_data.dig('removeCap', 'cap', 'id'))
-      .to be == cap.id.to_s
+      .to eq cap.id.to_s
   end
 end

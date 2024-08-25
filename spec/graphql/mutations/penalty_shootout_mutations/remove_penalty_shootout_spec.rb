@@ -29,6 +29,6 @@ describe Mutations::PenaltyShootoutMutations::RemovePenaltyShootout, type: :grap
 
   it 'returns the removed PenaltyShootout' do
     expect(response_data.dig('removePenaltyShootout', 'penaltyShootout', 'id'))
-      .to be == penalty_shootout.id.to_s
+      .to eq penalty_shootout.id.to_s
   end
 end

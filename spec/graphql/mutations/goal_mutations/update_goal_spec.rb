@@ -28,11 +28,11 @@ describe Mutations::GoalMutations::UpdateGoal, type: :graphql do
   it 'updates the Goal' do
     old_attributes = goal.attributes
     execute_graphql
-    expect(goal.reload.attributes).not_to be == old_attributes
+    expect(goal.reload.attributes).not_to eq old_attributes
   end
 
   it 'returns the update Goal' do
     expect(response_data.dig('updateGoal', 'goal', 'id'))
-      .to be == goal.id.to_s
+      .to eq goal.id.to_s
   end
 end

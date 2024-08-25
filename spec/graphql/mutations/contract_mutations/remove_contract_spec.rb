@@ -29,6 +29,6 @@ describe Mutations::ContractMutations::RemoveContract, type: :graphql do
 
   it 'returns the removed Contract' do
     expect(response_data.dig('removeContract', 'contract', 'id'))
-      .to be == contract.id.to_s
+      .to eq contract.id.to_s
   end
 end

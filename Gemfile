@@ -54,8 +54,8 @@ gem 'rack-cors'
 group :development, :test do
   gem 'debug', platform: :mri
 
-  gem 'factory_bot_rails'
   gem 'faker'
+  gem 'rubocop-factory_bot'
 
   gem 'rspec-graphql_response'
   gem 'rspec-rails'

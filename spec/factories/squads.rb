@@ -18,7 +18,7 @@
 FactoryBot.define do
   factory :squad do
     name { Faker::Lorem.word }
-    association :team, factory: :team_with_players
+    team factory: %i[team_with_players]
 
     transient do
       players_count { 11 }

@@ -29,6 +29,6 @@ describe Mutations::CompetitionMutations::RemoveCompetition, type: :graphql do
 
   it 'returns the removed Competition' do
     expect(response_data.dig('removeCompetition', 'competition', 'id'))
-      .to be == competition.id.to_s
+      .to eq competition.id.to_s
   end
 end

@@ -61,12 +61,12 @@ describe Team do
   it '#opponents collects all teams from matches' do
     create_list(:match, 10, team:)
     expect(team.opponents)
-      .to be == team.matches.reload.pluck(:home, :away).flatten.uniq.sort
+      .to eq team.matches.reload.pluck(:home, :away).flatten.uniq.sort
   end
 
   it '#last_match returns the last Match bound to it' do
     create_list(:match, 2, team:)
-    expect(team.last_match).to be == Match.order(:played_on).last
+    expect(team.last_match).to eq Match.order(:played_on).last
   end
 
   it '#coverage collates the coverage of each active Player' do
@@ -167,7 +167,7 @@ describe Team do
              signed_on: team.currently_on + 1.week,
              started_on: team.currently_on + 1.month)
       team.increment_date 1.week
-      expect(player.reload.status).to be == 'Pending'
+      expect(player.reload.status).to eq 'Pending'
     end
 
     it 'does not change Player status if contract is unsigned' do
@@ -176,7 +176,7 @@ describe Team do
              player:,
              started_on: team.currently_on + 1.month)
       team.increment_date 1.week
-      expect(player.reload.status).not_to be == 'Pending'
+      expect(player.reload.status).not_to eq 'Pending'
     end
 
     it 'updates Player status to Active when applicable' do
@@ -186,7 +186,7 @@ describe Team do
              signed_on: team.currently_on,
              started_on: team.currently_on + 1.week)
       team.increment_date 1.week
-      expect(player.reload.status).to be == 'Active'
+      expect(player.reload.status).to eq 'Active'
     end
 
     it 'does not update Player status to Active if contract is unsigned' do
@@ -195,14 +195,14 @@ describe Team do
              player:,
              started_on: team.currently_on + 1.week)
       team.increment_date 1.week
-      expect(player.reload.status).not_to be == 'Active'
+      expect(player.reload.status).not_to eq 'Active'
     end
 
     it 'updates Player status to Injured when applicable' do
       player = create(:player, team:)
       create(:injury, player:, started_on: team.currently_on + 1.week)
       team.increment_date 1.week
-      expect(player.reload.status).to be == 'Injured'
+      expect(player.reload.status).to eq 'Injured'
     end
 
     it 'updates Player status to Loaned when applicable' do
@@ -212,14 +212,14 @@ describe Team do
              signed_on: team.currently_on,
              started_on: team.currently_on + 1.week)
       team.increment_date 1.week
-      expect(player.reload.status).to be == 'Loaned'
+      expect(player.reload.status).to eq 'Loaned'
     end
 
     it 'does not update Player status to Loaned if unsigned' do
       player = create(:player, team:)
       create(:loan, player:, started_on: team.currently_on + 1.week)
       team.increment_date 1.week
-      expect(player.reload.status).not_to be == 'Loaned'
+      expect(player.reload.status).not_to eq 'Loaned'
     end
 
     it 'updates Player status if signed Transfer occurs' do
@@ -240,7 +240,7 @@ describe Team do
              origin: team.name,
              moved_on: team.currently_on + 1.week)
       team.increment_date 1.week
-      expect(player.reload.status).to be == 'Active'
+      expect(player.reload.status).to eq 'Active'
     end
   end
 end

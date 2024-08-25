@@ -43,6 +43,6 @@ describe QueryType, type: :graphql do
 
   it 'returns total of Caps' do
     cap_set = CapsCompiler.new(player:, pagination:, filters:)
-    expect(response_data['player']['capSet']['total']).to be == cap_set.total
+    expect(response_data['player']['capSet']['total']).to eq cap_set.total
   end
 end

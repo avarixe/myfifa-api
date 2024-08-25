@@ -30,11 +30,11 @@ describe Mutations::ContractMutations::UpdateContract, type: :graphql do
   it 'updates the Contract' do
     old_attributes = contract.attributes
     execute_graphql
-    expect(contract.reload.attributes).not_to be == old_attributes
+    expect(contract.reload.attributes).not_to eq old_attributes
   end
 
   it 'returns the update Contract' do
     expect(response_data.dig('updateContract', 'contract', 'id'))
-      .to be == contract.id.to_s
+      .to eq contract.id.to_s
   end
 end

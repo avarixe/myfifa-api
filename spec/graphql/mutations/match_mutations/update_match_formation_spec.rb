@@ -63,11 +63,11 @@ describe Mutations::MatchMutations::UpdateMatch, type: :graphql do
       pos: caps[1].pos
     )
     execute_graphql
-    expect(caps[1].reload.next_id).to be == cap2.id
+    expect(caps[1].reload.next_id).to eq cap2.id
   end
 
   it 'returns the update Match' do
     expect(response_data.dig('updateMatchFormation', 'match', 'id'))
-      .to be == match.id.to_s
+      .to eq match.id.to_s
   end
 end

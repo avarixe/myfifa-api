@@ -97,12 +97,12 @@ describe Contract do
                      player:,
                      ended_on: 365.days.from_now,
                      num_seasons: 2)
-    expect(contract.ended_on).not_to be == 365.days.from_now
+    expect(contract.ended_on).not_to eq 365.days.from_now
   end
 
   it 'sets ended_on automatically if num_seasons is set' do
     contract = build(:contract, player:, num_seasons: 3)
-    expect(contract.ended_on).to be == player.team.started_on + 3.years
+    expect(contract.ended_on).to eq player.team.started_on + 3.years
   end
 
   it 'sets ended_on correctly if started during 2nd half of season and num_seasons is set' do
@@ -110,7 +110,7 @@ describe Contract do
                      player:,
                      started_on: player.team.started_on + 7.months,
                      num_seasons: 3)
-    expect(contract.ended_on).to be == player.team.started_on + 4.years
+    expect(contract.ended_on).to eq player.team.started_on + 4.years
   end
 
   it 'sets ended_on to end of season ' \
@@ -119,7 +119,7 @@ describe Contract do
                      player:,
                      started_on: player.team.started_on + 7.months,
                      num_seasons: 0)
-    expect(contract.ended_on).to be == player.team.started_on + 1.year
+    expect(contract.ended_on).to eq player.team.started_on + 1.year
   end
 
   describe 'when unsigned' do
@@ -133,7 +133,7 @@ describe Contract do
       original_contract = player.contracts.first
       first_contract_end_on = original_contract.ended_on
       create(:contract, player:)
-      expect(original_contract.reload.ended_on).to be == first_contract_end_on
+      expect(original_contract.reload.ended_on).to eq first_contract_end_on
     end
   end
 
@@ -145,7 +145,7 @@ describe Contract do
                         player: create(:player, contracts_count: 0),
                         signed_on: Time.zone.today,
                         started_on: future_date)
-      expect(contract.player.status).to be == 'Pending'
+      expect(contract.player.status).to eq 'Pending'
     end
 
     it 'sets Pending Player as Active once current date reaches effective date' do
@@ -157,7 +157,7 @@ describe Contract do
                         started_on: future_date,
                         ended_on: future_date + 1.year)
       contract.player.team.update(currently_on: future_date)
-      expect(contract.player.reload.active?).to be == true
+      expect(contract.player.reload.active?).to be true
     end
 
     it 'sets new Player as Active if effective date < current date' do
@@ -179,7 +179,7 @@ describe Contract do
     end
 
     it "sets conclusion as 'Expired'" do
-      expect(player.last_contract.conclusion).to be == 'Expired'
+      expect(player.last_contract.conclusion).to eq 'Expired'
     end
   end
 
@@ -205,7 +205,7 @@ describe Contract do
     end
 
     it 'stops tracking injury' do
-      expect(player.last_injury.ended_on).to be == player.team.currently_on
+      expect(player.last_injury.ended_on).to eq player.team.currently_on
     end
   end
 
@@ -233,7 +233,7 @@ describe Contract do
     end
 
     it 'stops tracking loan' do
-      expect(player.last_loan.ended_on).to be == player.team.currently_on
+      expect(player.last_loan.ended_on).to eq player.team.currently_on
     end
   end
 
@@ -254,7 +254,7 @@ describe Contract do
     end
 
     it "sets conclusion as 'Released'" do
-      expect(contract.conclusion).to be == 'Released'
+      expect(contract.conclusion).to eq 'Released'
     end
   end
 
@@ -272,11 +272,11 @@ describe Contract do
 
     it 'sets expirate date to end of the season' do
       expect(contract.ended_on)
-        .to be == player.team.end_of_current_season + 1.day
+        .to eq player.team.end_of_current_season + 1.day
     end
 
     it "sets conclusion as 'Retired'" do
-      expect(contract.conclusion).to be == 'Retired'
+      expect(contract.conclusion).to eq 'Retired'
     end
   end
 
@@ -295,15 +295,15 @@ describe Contract do
     end
 
     it 'terminates the previous contract' do
-      expect(contract.reload.ended_on).to be == contract.team.currently_on
+      expect(contract.reload.ended_on).to eq contract.team.currently_on
     end
 
     it "sets previous conclusion as 'Renewed'" do
-      expect(contract.reload.conclusion).to be == 'Renewed'
+      expect(contract.reload.conclusion).to eq 'Renewed'
     end
 
     it 'connects to the previous Contract' do
-      expect(contract.renewal).to be == contract.player.current_contract
+      expect(contract.renewal).to eq contract.player.current_contract
     end
   end
 end

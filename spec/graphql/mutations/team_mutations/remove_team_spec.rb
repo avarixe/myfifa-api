@@ -29,7 +29,7 @@ describe Mutations::TeamMutations::RemoveTeam, type: :graphql do
 
   it 'returns the removed Team' do
     expect(response_data.dig('removeTeam', 'team', 'id'))
-      .to be == team.id.to_s
+      .to eq team.id.to_s
   end
 
   it 'returns error messages when failed' do

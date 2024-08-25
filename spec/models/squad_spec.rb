@@ -66,12 +66,12 @@ describe Squad do
 
     it "creates SquadPlayers matching Caps' player id" do
       squad.store_lineup(match)
-      expect(squad.squad_players.pluck(:player_id)).to be == match.caps.pluck(:player_id)
+      expect(squad.squad_players.pluck(:player_id)).to eq match.caps.pluck(:player_id)
     end
 
     it "creates SquadPlayers matching Caps' positions" do
       squad.store_lineup(match)
-      expect(squad.squad_players.pluck(:pos)).to be == match.caps.pluck(:pos)
+      expect(squad.squad_players.pluck(:pos)).to eq match.caps.pluck(:pos)
     end
   end
 end

@@ -32,11 +32,11 @@ describe Mutations::LoanMutations::UpdateLoan, type: :graphql do
   it 'updates the Loan' do
     old_attributes = loan.attributes
     execute_graphql
-    expect(loan.reload.attributes).not_to be == old_attributes
+    expect(loan.reload.attributes).not_to eq old_attributes
   end
 
   it 'returns the update Loan' do
     expect(response_data.dig('updateLoan', 'loan', 'id'))
-      .to be == loan.id.to_s
+      .to eq loan.id.to_s
   end
 end

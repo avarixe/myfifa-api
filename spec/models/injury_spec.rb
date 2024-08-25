@@ -64,7 +64,7 @@ describe Injury do
     it "automatically sets ended_on when #{timespan} duration is provided" do
       injury.duration = { length: 3, timespan: }
       expect(injury.ended_on)
-        .to be == injury.team.currently_on + 3.public_send(timespan.downcase)
+        .to eq injury.team.currently_on + 3.public_send(timespan.downcase)
     end
   end
 end

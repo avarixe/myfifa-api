@@ -28,11 +28,11 @@ describe Mutations::MatchMutations::UpdateMatch, type: :graphql do
   it 'updates the Match' do
     old_attributes = match.attributes
     execute_graphql
-    expect(match.reload.attributes).not_to be == old_attributes
+    expect(match.reload.attributes).not_to eq old_attributes
   end
 
   it 'returns the update Match' do
     expect(response_data.dig('updateMatch', 'match', 'id'))
-      .to be == match.id.to_s
+      .to eq match.id.to_s
   end
 end
